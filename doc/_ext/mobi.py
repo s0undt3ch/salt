@@ -6,17 +6,19 @@
     Build mobi files.
     Originally derived from epub.py.
 
+    This code was contributed by Pedro Kroger, see:
+        http://pedrokroger.net/2012/10/using-sphinx-to-write-books
+
     :copyright: Copyright 2007-2011 by the Sphinx team, see AUTHORS.
+    :copyright: Copyright 2013 by the SaltStack team, see AUTHORS.
     :license: BSD, see LICENSE for details.
 """
 
 import os
 import re
 import shutil
-import sys
 import time
 import codecs
-import zipfile
 import subprocess
 from os import path
 
@@ -34,7 +36,7 @@ from sphinx.util.smartypants import sphinx_smarty_pants as ssp
 # output but that may be customized by (re-)setting module attributes,
 # e.g. from conf.py.
 
-_mimetype_template = 'application/x-mobipocket-ebook' # no EOL!
+_mimetype_template = 'application/x-mobipocket-ebook'  # no EOL!
 
 _container_template = u'''\
 <?xml version="1.0" encoding="UTF-8"?>
@@ -209,13 +211,14 @@ class MobiBuilder(StandaloneHTMLBuilder):
         """Collect section titles, their depth in the toc and the refuri."""
         # XXX: is there a better way than checking the attribute
         # toctree-l[1-8] on the parent node?
-        if isinstance(doctree, nodes.reference) and doctree.has_key('refuri'):
+        if isinstance(doctree, nodes.reference) and 'refuri' in doctree:
             refuri = doctree['refuri']
             if refuri.startswith('http://') or refuri.startswith('https://') \
-                or refuri.startswith('irc:') or refuri.startswith('mailto:'):
+                    or refuri.startswith('irc:') \
+                    or refuri.startswith('mailto:'):
                 return result
             classes = doctree.parent.attributes['classes']
-            for level in range(8, 0, -1): # or range(1, 8)?
+            for level in range(8, 0, -1):  # or range(1, 8)?
                 if (_toctree_template % level) in classes:
                     result.append({
                         'level': level,
@@ -232,19 +235,23 @@ class MobiBuilder(StandaloneHTMLBuilder):
         """Get the total table of contents, containg the master_doc
         and pre and post files not managed by sphinx.
         """
-        doctree = self.env.get_and_resolve_doctree(self.config.master_doc,
-            self, prune_toctrees=False)
+        doctree = self.env.get_and_resolve_doctree(
+            self.config.master_doc, self, prune_toctrees=False
+        )
         self.refnodes = self.get_refnodes(doctree, [])
         master_dir = os.path.dirname(self.config.master_doc)
         if master_dir:
-            master_dir += '/' # XXX or os.sep?
+            master_dir += '/'  # XXX or os.sep?
             for item in self.refnodes:
                 item['refuri'] = master_dir + item['refuri']
         self.refnodes.insert(0, {
             'level': 1,
             'refuri': self.esc(self.config.master_doc + '.html'),
-            'text': ssp(self.esc(
-                    self.env.titles[self.config.master_doc].astext()))
+            'text': ssp(
+                self.esc(
+                    self.env.titles[self.config.master_doc].astext()
+                )
+            )
         })
         for file, text in reversed(self.config.mobi_pre_files):
             self.refnodes.insert(0, {
@@ -322,8 +329,10 @@ class MobiBuilder(StandaloneHTMLBuilder):
                     for (i, (ismain, link)) in enumerate(subentrylinks):
                         m = _refuri_re.match(link)
                         if m:
-                            subentrylinks[i] = (ismain,
-                                self.fix_fragment(m.group(1), m.group(2)))
+                            subentrylinks[i] = (
+                                ismain,
+                                self.fix_fragment(m.group(1), m.group(2))
+                            )
 
     def handle_page(self, pagename, addctx, templatename='page.html',
                     outfilename=None, event_arg=None):
@@ -334,9 +343,9 @@ class MobiBuilder(StandaloneHTMLBuilder):
         """
         if pagename.startswith('genindex'):
             self.fix_genindex(addctx['genindexentries'])
-        StandaloneHTMLBuilder.handle_page(self, pagename, addctx, templatename,
-            outfilename, event_arg)
-
+        StandaloneHTMLBuilder.handle_page(
+            self, pagename, addctx, templatename, outfilename, event_arg
+        )
 
     # Finish by building the mobi file
     def handle_finish(self):
@@ -353,7 +362,6 @@ class MobiBuilder(StandaloneHTMLBuilder):
         mobi_name = self.config.mobi_basename + '.mobi'
         fullname = os.path.join(self.outdir, "content.opf")
         subprocess.call(["kindlegen", "-c1", fullname, "-o", mobi_name])
-
 
     def build_mimetype(self, outdir, outname):
         """Write the metainfo file mimetype."""
@@ -409,10 +417,14 @@ class MobiBuilder(StandaloneHTMLBuilder):
         olen = len(outdir)
         projectfiles = []
         self.files = []
-        self.ignored_files = ['.buildinfo',
-            'mimetype', 'content.opf', 'toc.ncx', 'META-INF/container.xml',
-            self.config.mobi_basename + '.mobi'] + \
-            self.config.mobi_exclude_files
+        self.ignored_files = [
+            '.buildinfo',
+            'mimetype',
+            'content.opf',
+            'toc.ncx',
+            'META-INF/container.xml',
+            self.config.mobi_basename + '.mobi'
+        ] + self.config.mobi_exclude_files
         for root, dirs, files in os.walk(outdir):
             for fn in files:
                 filename = path.join(root, fn)[olen:]
@@ -453,7 +465,7 @@ class MobiBuilder(StandaloneHTMLBuilder):
         if self.config.mobi_cover:
             image = self.config.mobi_cover
             mpos = content_tmpl.rfind('</metadata>')
-            cpos = content_tmpl.rfind('\n', 0 , mpos) + 1
+            cpos = content_tmpl.rfind('\n', 0, mpos) + 1
             content_tmpl = content_tmpl[:cpos] + \
                 _cover_template % {'cover': self.esc(self.make_id(image))} + \
                 content_tmpl[cpos:]
@@ -464,8 +476,7 @@ class MobiBuilder(StandaloneHTMLBuilder):
         # write the project file
         f = codecs.open(path.join(outdir, outname), 'w', 'utf-8')
         try:
-            f.write(content_tmpl % \
-                self.content_metadata(projectfiles, spine))
+            f.write(content_tmpl % self.content_metadata(projectfiles, spine))
         finally:
             f.close()
 
@@ -565,22 +576,26 @@ class MobiBuilder(StandaloneHTMLBuilder):
 
 
 def setup(app):
-    app.add_config_value('mobi_basename',lambda self: make_filename(self.project), None)
-    app.add_config_value('mobi_theme','mobi', 'html')
-    app.add_config_value('mobi_title',lambda self: self.html_title, 'html')
-    app.add_config_value('mobi_author','unknown', 'html')
-    app.add_config_value('mobi_language',lambda self: self.language or 'en', 'html')
-    app.add_config_value('mobi_publisher','unknown', 'html')
-    app.add_config_value('mobi_copyright',lambda self: self.copyright, 'html')
-    app.add_config_value('mobi_identifier','unknown', 'html')
-    app.add_config_value('mobi_scheme','unknown', 'html')
-    app.add_config_value('mobi_uid','unknown', 'env')
-    app.add_config_value('mobi_cover',(), 'env')
-    app.add_config_value('mobi_pre_files',[], 'env')
-    app.add_config_value('mobi_post_files',[], 'env')
-    app.add_config_value('mobi_exclude_files',[], 'env')
-    app.add_config_value('mobi_tocdepth',3, 'env')
-    app.add_config_value('mobi_tocdup',True, 'env')
-    app.add_config_value('mobi_add_visible_links',True, 'env')
+    app.add_config_value(
+        'mobi_basename', lambda self: make_filename(self.project), None
+    )
+    app.add_config_value('mobi_theme', 'mobi', 'html')
+    app.add_config_value('mobi_title', lambda self: self.html_title, 'html')
+    app.add_config_value('mobi_author', 'unknown', 'html')
+    app.add_config_value(
+        'mobi_language', lambda self: self.language or 'en', 'html'
+    )
+    app.add_config_value('mobi_publisher', 'unknown', 'html')
+    app.add_config_value('mobi_copyright', lambda self: self.copyright, 'html')
+    app.add_config_value('mobi_identifier', 'unknown', 'html')
+    app.add_config_value('mobi_scheme', 'unknown', 'html')
+    app.add_config_value('mobi_uid', 'unknown', 'env')
+    app.add_config_value('mobi_cover', (), 'env')
+    app.add_config_value('mobi_pre_files', [], 'env')
+    app.add_config_value('mobi_post_files', [], 'env')
+    app.add_config_value('mobi_exclude_files', [], 'env')
+    app.add_config_value('mobi_tocdepth', 3, 'env')
+    app.add_config_value('mobi_tocdup', True, 'env')
+    app.add_config_value('mobi_add_visible_links', True, 'env')
 
     app.add_builder(MobiBuilder)
