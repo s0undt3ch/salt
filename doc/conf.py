@@ -75,8 +75,8 @@ for mod_name in MOCK_MODULES:
 
 docs_basepath = os.path.abspath(os.path.dirname(__file__))
 addtl_paths = (
-        os.pardir, # salt itself (for autodoc)
-        '_ext', # custom Sphinx extensions
+        os.pardir,  # salt itself (for autodoc)
+        '_ext',  # custom Sphinx extensions
 )
 
 for path in addtl_paths:
@@ -100,6 +100,8 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', '_incl/*']
 
 extensions = [
+    'mobi',
+    'epub2',
     'saltdocs',
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
@@ -212,6 +214,50 @@ epub_scheme = 'URL'
 epub_identifier = 'http://saltstack.org/'
 
 #epub_tocdepth = 3
+
+
+# -- Options for Mobi output ---------------------------------------------------
+
+mobi_theme = 'mobi'
+mobi_title = epub_title
+mobi_author = epub_author
+mobi_publisher = epub_publisher
+mobi_copyright = epub_copyright
+mobi_basename = mobi_title.replace(' ', '')
+
+# The scheme of the identifier. Typical schemes are ISBN or URL.
+#mobi_scheme = ''
+
+# The unique identifier of the text. This can be a ISBN number
+# or the project homepage.
+#mobi_identifier = ''
+
+# A unique identification for the text.
+#mobi_uid = ''
+
+mobi_cover = "_static/saltstack_logo.png"
+
+# HTML files that should be inserted before the pages created by sphinx.
+# The format is a list of tuples containing the path and title.
+#mobi_pre_files = []
+
+# HTML files shat should be inserted after the pages created by sphinx.
+# The format is a list of tuples containing the path and title.
+#mobi_post_files = []
+
+# A list of files that should not be packed into the mobi file.
+#mobi_exclude_files = ['_static/opensearch.xml', '_static/doctools.js',
+#'_static/jquery.js', '_static/searchtools.js', '_static/underscore.js',
+#'_static/basic.css', 'search.html', '_static/websupport.js']
+
+# The depth of the table of contents in toc.ncx.
+mobi_tocdepth = 2
+
+# Allow duplicate toc entries.
+mobi_tocdup = False
+
+mobi_add_visible_links = False
+
 
 
 def skip_mod_init_member(app, what, name, obj, skip, options):
