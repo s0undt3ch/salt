@@ -69,6 +69,7 @@ def delete_vm(options):
         log_stdout=True
     )
     while proc.isalive():
+        proc.recv()
         time.sleep(0.025)
     return proc.exitstatus
 
@@ -122,6 +123,7 @@ def download_unittest_reports(options):
             log_stdout=True
         )
         while proc.isalive():
+            proc.recv()
             time.sleep(0.025)
 
         if proc.exitstatus != 0:
@@ -164,6 +166,7 @@ def download_coverage_report(options):
             log_stdout=True
         )
         while proc.isalive():
+            proc.recv()
             time.sleep(0.025)
 
         if proc.exitstatus != 0:
@@ -211,6 +214,7 @@ def download_remote_logs(options):
             log_stdout=True
         )
         while proc.isalive():
+            proc.recv()
             time.sleep(0.025)
 
         if proc.exitstatus != 0:
@@ -252,6 +256,7 @@ def run(opts):
         log_stdout=True
     )
     while proc.isalive():
+        proc.recv()
         time.sleep(0.025)
 
     retcode = proc.exitstatus
