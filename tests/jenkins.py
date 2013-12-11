@@ -265,8 +265,6 @@ def run(opts):
         shell=True,
         stream_stdout=True,
         stream_stderr=True,
-        log_stderr=True,
-        log_stdout=True
     )
 
     exiting = False
