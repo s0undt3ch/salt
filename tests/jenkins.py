@@ -293,7 +293,7 @@ def run(opts):
         if exiting is True:
             break
 
-        if not proc.isalive:
+        if not proc.isalive():
             exiting = True
 
         time.sleep(0.025)
