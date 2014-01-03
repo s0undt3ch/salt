@@ -246,12 +246,10 @@ def run(opts):
         '--no-color\' -p {provider}_{platform} {0}'.format(
             vm_name,
             sls=opts.sls,
-            pillar=opts.pillar.format(
-                commit=opts.commit,
-                salt_url=opts.salt_url
-            ),
-            vm_name=vm_name,
-            commit=opts.commit
+            pillar=opts.pillar.format(commit=opts.commit),
+            commit=opts.commit,
+            provider=opts.provider,
+            platform=opts.platform
         )
     )
     print('Running CMD: {0}'.format(cmd))
