@@ -1222,9 +1222,13 @@ class TestDaemon(object):
         '''
         Clean out the tmp files
         '''
+        def remove_readonly(func, path, excinfo):
+            os.chmod(path, stat.S_IWRITE)
+            func(path)
+
         for dirname in (TMP, TMP_STATE_TREE, TMP_PRODENV_STATE_TREE):
             if os.path.isdir(dirname):
-                shutil.rmtree(dirname)
+                shutil.rmtree(dirname, onerror=remove_readonly)
 
     def wait_for_jid(self, targets, jid, timeout=120):
         time.sleep(1)  # Allow some time for minions to accept jobs
