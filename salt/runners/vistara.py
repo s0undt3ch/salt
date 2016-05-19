@@ -74,7 +74,7 @@ def _get_vistara_configuration():
                  "Exception enountered: {0}.format(exc)"
             )
             return False
-    log.warning(
+    log.error(
         "vistara config has not been specificed in the Salt master config. "
         "See documentation for this runner."
     )
