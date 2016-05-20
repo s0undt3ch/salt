@@ -266,6 +266,9 @@ def save_minions(jid, minions, syndic_id=None):
     else:
         minions_path = os.path.join(jid_dir, MINIONS_P)
 
+    if not os.path.exists(os.path.dirname(minions_path)):
+        os.makedirs(os.path.dirname(minions_path))
+
     try:
         serial.dump(minions, salt.utils.fopen(minions_path, 'w+b'))
     except IOError as exc:
