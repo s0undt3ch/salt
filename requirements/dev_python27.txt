@@ -1,2 +1,2 @@
-# This is a legacy file, use dev.txt
--r dev.txt
+# This is a legacy file, use py2/dev.txt
+-r py2/dev.txt

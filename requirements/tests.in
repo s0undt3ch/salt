@@ -1,6 +1,6 @@
--r zeromq.txt
--r dev.txt
--r pytest.txt
+-r zeromq.in
+-r dev.in
+-r pytest.in
 apache-libcloud>=1.0.0
 boto>=2.32.1
 boto3>=1.2.1
