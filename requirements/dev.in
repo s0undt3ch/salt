@@ -1,4 +1,4 @@
--r base.txt
+-r base.in
 
 mock>=2.0.0
 SaltPyLint>=v2017.3.6
