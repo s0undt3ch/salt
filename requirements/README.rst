@@ -11,7 +11,6 @@ Salt currently defines several requirements files, each defines a set of python 
 
 * ``base.in``: Core requirements to run salt
 * ``zeromq.in``: Requirements to Salt's default communication transport
-* ``raet.in``: Requirement to use, the now deprecated, RAET communication protocol
 * ``dev.in``: Development requirements
 * ``tests.in``: Test suite requiremnts
 * ``opt.in``: Optional requirements
