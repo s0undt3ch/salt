@@ -8,7 +8,6 @@ moto>=0.3.6
 docker; sys.platform != 'win32'
 docker==2.7.0; sys.platform == 'win32'
 virtualenv
-setuptools>=30
 six>=1.10.0
 timelib
 coverage
