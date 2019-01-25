@@ -1,4 +1,4 @@
--r base.txt
+-r base.in
 
 libnacl>=1.0.0
 ioflo>=1.1.7
