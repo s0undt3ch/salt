@@ -374,7 +374,7 @@ def latest_version(*names, **kwargs):
             ret[name] = ''
 
     # Append package names which are not found
-    unmatched = list([name for name in names if not reduce(lambda x, y: x or name in y, ret, False)])
+    unmatched = list([name for name in names if not reduce(lambda x, y: x or name in y, ret, False)])  # pylint: disable=cell-var-from-loop
     ret.update(zip(unmatched, itertools.cycle(('',))))
 
     # Return a string if only one package name passed
