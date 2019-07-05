@@ -794,7 +794,7 @@ def append(table='filter', chain=None, rule=None, family='ipv4'):
           format(_nftables_cmd(), nft_family, table, chain, rule)
     out = __salt__['cmd.run'](cmd, python_shell=False)
 
-    if len(out) == 0:
+    if not out:
         ret['result'] = True
         ret['comment'] = 'Added rule "{0}" chain {1} in table {2} in family {3}.'.\
                          format(rule, chain, table, family)
@@ -868,7 +868,7 @@ def insert(table='filter', chain=None, position=None, rule=None, family='ipv4'):
                 format(_nftables_cmd(), nft_family, table, chain, rule)
     out = __salt__['cmd.run'](cmd, python_shell=False)
 
-    if len(out) == 0:
+    if not out:
         ret['result'] = True
         ret['comment'] = 'Added rule "{0}" chain {1} in table {2} in family {3}.'.\
                          format(rule, chain, table, family)
@@ -935,7 +935,7 @@ def delete(table, chain=None, position=None, rule=None, family='ipv4'):
           format(_nftables_cmd(), nft_family, table, chain, position)
     out = __salt__['cmd.run'](cmd, python_shell=False)
 
-    if len(out) == 0:
+    if not out:
         ret['result'] = True
         ret['comment'] = 'Deleted rule "{0}" in chain {1} in table {2} in family {3}.'.\
                          format(rule, chain, table, family)
@@ -985,7 +985,7 @@ def flush(table='filter', chain='', family='ipv4'):
                   format(table, family)
     out = __salt__['cmd.run'](cmd, python_shell=False)
 
-    if len(out) == 0:
+    if not out:
         ret['result'] = True
         ret['comment'] = 'Flushed rules {0}'.format(comment)
     else:

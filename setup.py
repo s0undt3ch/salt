@@ -468,7 +468,7 @@ class DownloadWindowsDlls(Command):
                                 if IS_PY3:
                                     while True:
                                         chunk = req.read(4096)
-                                        if len(chunk) == 0:
+                                        if not chunk:
                                             break
                                         wfh.write(chunk)
                                         wfh.flush()
