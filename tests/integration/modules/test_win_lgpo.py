@@ -150,7 +150,6 @@ class WinLgpoTest(ModuleCase):
         '''
         runTest method
         '''
-        pass
 
     @classmethod
     def setUpClass(cls):

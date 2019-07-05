@@ -20,10 +20,12 @@ from salt.exceptions import SaltException, SaltRenderError
 
 
 class DeserializationError(SaltRenderError, RuntimeError):
-    """Raised when stream of string failed to be deserialized"""
-    pass
+    '''
+    Raised when stream of string failed to be deserialized
+    '''
 
 
 class SerializationError(SaltException, RuntimeError):
-    """Raised when stream of string failed to be serialized"""
-    pass
+    '''
+    Raised when stream of string failed to be serialized
+    '''

@@ -508,14 +508,12 @@ def save_minions(jid, minions, syndic_id=None):  # pylint: disable=unused-argume
     '''
     Included for API consistency
     '''
-    pass
 
 
 def save_load(jid, load):  # pylint: disable=unused-argument
     '''
     Included for API consistency
     '''
-    pass
 
 
 def get_load(jid):

@@ -29,8 +29,9 @@ class GlusterResults(object):
         ''' This is for version 3.4 results '''
 
         class list_peers(object):
-            ''' results from "peer status" '''
-            pass
+            '''
+            results from "peer status"
+            '''
 
         class peer_probe(object):
             fail_cant_connect = fail_bad_hostname = '\n'.join([

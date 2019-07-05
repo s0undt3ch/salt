@@ -175,8 +175,9 @@ log = logging.getLogger()
 
 
 class GsiNotUpdatableError(Exception):
-    '''Raised when a global secondary index cannot be updated.'''
-    pass
+    '''
+    Raised when a global secondary index cannot be updated.
+    '''
 
 
 def __virtual__():

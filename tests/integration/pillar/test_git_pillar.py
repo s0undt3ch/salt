@@ -542,7 +542,6 @@ class TestGitPythonHTTP(GitPillarHTTPTestBase, GitPythonMixin):
     '''
     Test git_pillar with GitPython using unauthenticated HTTP
     '''
-    pass
 
 
 @skipIf(NO_MOCK, NO_MOCK_REASON)

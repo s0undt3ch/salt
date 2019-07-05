@@ -367,7 +367,6 @@ class StateError(Exception):
     '''
     Custom exception class.
     '''
-    pass
 
 
 class Compiler(object):

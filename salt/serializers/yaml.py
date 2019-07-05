@@ -100,8 +100,9 @@ class EncryptedString(str):
 
 
 class Loader(BaseLoader):  # pylint: disable=W0232
-    '''Overwrites Loader as not for pollute legacy Loader'''
-    pass
+    '''
+    Overwrites Loader as not for pollute legacy Loader
+    '''
 
 
 Loader.add_multi_constructor(EncryptedString.yaml_tag, EncryptedString.yaml_constructor)
@@ -120,8 +121,9 @@ Loader.add_multi_constructor('tag:yaml.org,2002:map', Loader.construct_yaml_map)
 
 
 class Dumper(BaseDumper):  # pylint: disable=W0232
-    '''Overwrites Dumper as not for pollute legacy Dumper'''
-    pass
+    '''
+    Overwrites Dumper as not for pollute legacy Dumper
+    '''
 
 
 Dumper.add_multi_representer(EncryptedString, EncryptedString.yaml_dumper)

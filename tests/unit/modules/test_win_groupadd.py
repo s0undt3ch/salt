@@ -53,14 +53,12 @@ class MockGroupObj(object):
         This should be a no-op unless we want to test raising an error, in
         which case this should be overridden in a subclass.
         '''
-        pass
 
     def Remove(self, name):
         '''
         This should be a no-op unless we want to test raising an error, in
         which case this should be overridden in a subclass.
         '''
-        pass
 
 
 if not NO_MOCK:

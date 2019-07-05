@@ -26,25 +26,24 @@ import salt.states.winrepo as winrepo
 
 class MockRunnerClient(object):
     '''
-        Mock RunnerClient class
+    Mock RunnerClient class
     '''
     def __init__(self):
         pass
 
     class RunnerClient(object):
         '''
-            Mock RunnerClient class
+        Mock RunnerClient class
         '''
         def __init__(self, master_config):
             '''
-                init method
+            init method
             '''
-            pass
 
         @staticmethod
         def cmd(arg1, arg2):
             '''
-                Mock cmd method
+            Mock cmd method
             '''
             return []
 

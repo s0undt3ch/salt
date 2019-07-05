@@ -123,7 +123,6 @@ def _empty(dummy):
     '''
     Action of empty line of ``drbdadm status``
     '''
-    pass
 
 
 def _unknown_parser(line):

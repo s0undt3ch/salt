@@ -53,7 +53,6 @@ class IndentedSafeOrderedDumper(IndentMixin, SafeOrderedDumper):
     A YAML safe dumper that represents python OrderedDict as simple YAML map,
     and also indents lists by two spaces.
     '''
-    pass
 
 
 def represent_ordereddict(dumper, data):
