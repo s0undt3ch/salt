@@ -307,6 +307,7 @@ class MapMeta(six.with_metaclass(Prepareable, type)):
         cls.__set_attributes__()
         super(MapMeta, cls).__init__(name, bases, nmspc)
 
+    @classmethod
     def __set_attributes__(cls):
         match_info = []
         grain_targets = set()
