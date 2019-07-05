@@ -18,7 +18,7 @@ import tests.integration as integration
 import salt.utils.schedule
 import salt.utils.platform
 
-from salt.modules.test import ping as ping
+from salt.modules.test import ping
 
 log = logging.getLogger(__name__)
 ROOT_DIR = os.path.join(integration.TMP, 'schedule-unit-tests')
