@@ -429,12 +429,9 @@ def _get_top_states(saltenv='base'):
     Equivalent to a salt cli: salt web state.show_top
     '''
     alt_states = []
-    try:
-        returned = __salt__['state.show_top']()
-        for i in returned[saltenv]:
-            alt_states.append(i)
-    except Exception:
-        raise
+    returned = __salt__['state.show_top']()
+    for i in returned[saltenv]:
+        alt_states.append(i)
     # log.info("top states: %s", alt_states)
     return alt_states
 
@@ -526,19 +523,14 @@ class SaltCheck(object):
         Generic call of salt Caller command
         '''
         value = False
-        try:
-            if args and kwargs:
-                value = self.salt_lc.cmd(fun, *args, **kwargs)
-            elif args and not kwargs:
-                value = self.salt_lc.cmd(fun, *args)
-            elif not args and kwargs:
-                value = self.salt_lc.cmd(fun, **kwargs)
-            else:
-                value = self.salt_lc.cmd(fun)
-        except salt.exceptions.SaltException:
-            raise
-        except Exception:
-            raise
+        if args and kwargs:
+            value = self.salt_lc.cmd(fun, *args, **kwargs)
+        elif args and not kwargs:
+            value = self.salt_lc.cmd(fun, *args)
+        elif not args and kwargs:
+            value = self.salt_lc.cmd(fun, **kwargs)
+        else:
+            value = self.salt_lc.cmd(fun)
         if isinstance(value, dict) and assertion_section:
             return value.get(assertion_section, False)
         else:
@@ -681,10 +673,7 @@ class SaltCheck(object):
         '''
         result = "Pass"
         if isinstance(returned, str):
-            try:
-                returned = bool(returned)
-            except ValueError:
-                raise
+            returned = bool(returned)
         try:
             assert (returned is False), "{0} not False".format(returned)
         except AssertionError as err:

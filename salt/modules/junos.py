@@ -95,10 +95,7 @@ def timeoutDecorator(function):
                 conn.timeout = restore_timeout
                 raise
         else:
-            try:
-                return function(*args, **kwargs)
-            except Exception:
-                raise
+            return function(*args, **kwargs)
 
     return wrapper
 

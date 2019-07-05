@@ -51,7 +51,7 @@ try:
         MetadataEndpointError,
         get_cloud_from_metadata_endpoint,
     )
-    from msrestazure.azure_exceptions import CloudError
+    from msrestazure.azure_exceptions import CloudError  # pylint: disable=unused-import
     HAS_AZURE = True
 except ImportError:
     HAS_AZURE = False
@@ -224,8 +224,6 @@ def paged_object_to_list(paged_object):
         try:
             page = next(paged_object)
             paged_return.append(page.as_dict())
-        except CloudError:
-            raise
         except StopIteration:
             break
 

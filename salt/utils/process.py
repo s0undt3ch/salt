@@ -763,7 +763,7 @@ class MultiprocessingProcess(multiprocessing.Process, NewStyleClassMixIn):
     def _run(self):
         try:
             return self._original_run()
-        except SystemExit:
+        except SystemExit:  # pylint: disable=try-except-raise
             # These are handled by multiprocessing.Process._bootstrap()
             raise
         except Exception as exc:

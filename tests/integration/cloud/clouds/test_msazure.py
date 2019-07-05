@@ -130,17 +130,14 @@ class AzureTest(ShellCase):
             raise
 
         # delete the instance
-        try:
-            self.assertIn(
-                INSTANCE_NAME + ':',
-                [i.strip() for i in self.run_cloud(
-                    '-d {0} --assume-yes'.format(
-                        INSTANCE_NAME
-                    ), timeout=TIMEOUT
-                )]
-            )
-        except AssertionError:
-            raise
+        self.assertIn(
+            INSTANCE_NAME + ':',
+            [i.strip() for i in self.run_cloud(
+                '-d {0} --assume-yes'.format(
+                    INSTANCE_NAME
+                ), timeout=TIMEOUT
+            )]
+        )
 
     def tearDown(self):
         '''

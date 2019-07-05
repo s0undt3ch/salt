@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
+
+# Import Python Libs
 from __future__ import absolute_import, unicode_literals, print_function
 
-try:
-    import pyrax
-except ImportError:
-    raise
+# Import 3rd-party libs
+import pyrax
 
 
 class Authenticate(object):

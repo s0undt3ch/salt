@@ -95,11 +95,8 @@ class GCETest(ShellCase):
         delete_str = ''.join(delete)
 
         # check if deletion was performed appropriately
-        try:
-            self.assertIn(self.INSTANCE_NAME, delete_str)
-            self.assertIn('True', delete_str)
-        except AssertionError:
-            raise
+        self.assertIn(self.INSTANCE_NAME, delete_str)
+        self.assertIn('True', delete_str)
 
     @flaky
     def test_instance_extra(self):
@@ -126,11 +123,8 @@ class GCETest(ShellCase):
         delete_str = ''.join(delete)
 
         # check if deletion was performed appropriately
-        try:
-            self.assertIn(self.INSTANCE_NAME, delete_str)
-            self.assertIn('True', delete_str)
-        except AssertionError:
-            raise
+        self.assertIn(self.INSTANCE_NAME, delete_str)
+        self.assertIn('True', delete_str)
 
     def tearDown(self):
         '''

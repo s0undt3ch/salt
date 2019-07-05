@@ -3206,7 +3206,7 @@ class SyndicManager(MinionBase):
                     'Error while bringing up syndic for multi-syndic. Is the '
                     'master at %s responding?', opts['master']
                 )
-            except (KeyboardInterrupt, SystemExit):
+            except (KeyboardInterrupt, SystemExit):  # pylint: disable=try-except-raise
                 raise
             except Exception:
                 failed = True

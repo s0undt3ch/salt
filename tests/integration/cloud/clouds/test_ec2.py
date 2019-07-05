@@ -165,10 +165,7 @@ class EC2Test(ShellCase):
         ret_str = '                    shutting-down'
 
         # check if deletion was performed appropriately
-        try:
-            self.assertIn(ret_str, delete)
-        except AssertionError:
-            raise
+        self.assertIn(ret_str, delete)
 
     def test_instance_rename(self):
         '''

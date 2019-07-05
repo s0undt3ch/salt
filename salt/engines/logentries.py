@@ -119,10 +119,7 @@ class PlainTextSocketAppender(object):
 
             wait_for = root_delay + random.uniform(0, root_delay)
 
-            try:
-                time.sleep(wait_for)
-            except KeyboardInterrupt:
-                raise
+            time.sleep(wait_for)
 
     def close_connection(self):
         if self._conn is not None:

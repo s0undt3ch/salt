@@ -103,11 +103,8 @@ def flavor_access_list(name, projects, **kwargs):
     dry_run = __opts__['test']
     ret = {'name': name, 'result': False, 'comment': '', 'changes': {}}
     kwargs.update({'filter': {'is_public': False}})
-    try:
-        flavor_list = __salt__['nova.flavor_list'](**kwargs)
-        flavor_id = flavor_list[name]['id']
-    except KeyError:
-        raise
+    flavor_list = __salt__['nova.flavor_list'](**kwargs)
+    flavor_id = flavor_list[name]['id']
 
     project_list = __salt__['keystone.project_list'](**kwargs)
     access_list = __salt__['nova.flavor_access_list'](flavor_id, **kwargs)

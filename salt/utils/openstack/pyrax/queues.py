@@ -1,20 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import, unicode_literals, print_function
-
 # Import Python libs
+from __future__ import absolute_import, unicode_literals, print_function
 import logging
-log = logging.getLogger(__name__)
 
 # Import pyrax (SDK for Rackspace cloud) third party libs
-try:
-    import pyrax
-    import pyrax.exceptions
-except ImportError:
-    raise
+import pyrax
+import pyrax.exceptions
 
 # Import salt classes
 from salt.utils.openstack.pyrax import authenticate
+
+log = logging.getLogger(__name__)
 
 
 class RackspaceQueues(object):
