@@ -155,7 +155,8 @@ disable=R,
   E8402,
   E8731,
   3rd-party-local-module-not-gated,
-  pep8-reserved-keywords
+  pep8-reserved-keywords,
+  keyword-arg-before-vararg
 
 # Disabled:
 # R* [refactoring suggestions & reports]
@@ -207,6 +208,7 @@ disable=R,
 # E8501 PEP8 line too long
 # E8402 module level import not at top of file
 # E8731 do not assign a lambda expression, use a def
+# keyword-arg-before-vararg - This would require serious code refactoring on cross module calls
 
 
 [REPORTS]
