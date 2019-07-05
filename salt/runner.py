@@ -145,17 +145,6 @@ class RunnerClient(mixins.SyncClientMixin, mixins.AsyncClientMixin, object):
         reformatted_low = self._reformat_low(low)
         return mixins.SyncClientMixin.cmd_sync(self, reformatted_low, timeout, full_return)
 
-    def cmd(self, fun, arg=None, pub_data=None, kwarg=None, print_event=True, full_return=False):
-        '''
-        Execute a function
-        '''
-        return super(RunnerClient, self).cmd(fun,
-                                             arg,
-                                             pub_data,
-                                             kwarg,
-                                             print_event,
-                                             full_return)
-
 
 class Runner(RunnerClient):
     '''

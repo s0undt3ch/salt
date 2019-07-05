@@ -129,13 +129,6 @@ class MySQLExtPillar(SqlBaseExtPillar):
         finally:
             conn.close()
 
-    def extract_queries(self, args, kwargs):
-        '''
-            This function normalizes the config block into a set of queries we
-            can use.  The return is a list of consistently laid out dicts.
-        '''
-        return super(MySQLExtPillar, self).extract_queries(args, kwargs)
-
 
 def ext_pillar(minion_id,
                pillar,
