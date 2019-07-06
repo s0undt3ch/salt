@@ -11,9 +11,6 @@ thread of execution.
 from __future__ import absolute_import
 import threading
 
-# Import 3rd-party libs
-from salt.ext import six
-
 
 class ThreadLocalProxy(object):
     '''
@@ -582,18 +579,3 @@ class ThreadLocalProxy(object):
         except AttributeError:
             return NotImplemented
         return func()
-
-    def __coerce__(self, other):
-        reference = ThreadLocalProxy.get_reference(self)
-        other = ThreadLocalProxy.unproxy(other)
-        return coerce(reference, other)
-
-    if six.PY2:
-        # pylint: disable=incompatible-py3-code
-        def __unicode__(self):
-            reference = ThreadLocalProxy.get_reference(self)
-            return unicode(reference)
-
-        def __long__(self):
-            reference = ThreadLocalProxy.get_reference(self)
-            return long(reference)

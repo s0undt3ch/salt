@@ -55,7 +55,6 @@ except ImportError:
 
 # Import salt libs
 import salt.utils.msgpack
-from salt.ext import six
 
 
 DEFAULT_TABLE = 'sdb'
@@ -123,10 +122,7 @@ def set_(key, value, profile=None):
     if not profile:
         return False
     conn, cur, table = _connect(profile)
-    if six.PY2:
-        value = buffer(salt.utils.msgpack.packb(value))
-    else:
-        value = memoryview(salt.utils.msgpack.packb(value))
+    value = memoryview(salt.utils.msgpack.packb(value))
     q = profile.get('set_query', ('INSERT OR REPLACE INTO {0} VALUES '
                                   '(:key, :value)').format(table))
     conn.execute(q, {'key': key, 'value': value})
