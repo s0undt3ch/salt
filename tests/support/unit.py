@@ -300,7 +300,7 @@ class TestCase(_TestCase):
                 )
             )
 
-        def assertRegex(self, text, regex, msg=None):
+        def assertRegex(self, text, regex, msg=None):  # pylint: disable=arguments-differ
             # In python 2, alias to the future python 3 function
             return _TestCase.assertRegexpMatches(self, text, regex, msg=msg)
 
@@ -313,7 +313,7 @@ class TestCase(_TestCase):
                 )
             )
 
-        def assertNotRegex(self, text, regex, msg=None):
+        def assertNotRegex(self, text, regex, msg=None):  # pylint: disable=arguments-differ
             # In python 2, alias to the future python 3 function
             return _TestCase.assertNotRegexpMatches(self, text, regex, msg=msg)
 
@@ -326,7 +326,7 @@ class TestCase(_TestCase):
                 )
             )
 
-        def assertRaisesRegex(self, exception, regexp, *args, **kwds):
+        def assertRaisesRegex(self, exception, regexp, *args, **kwds):  # pylint: disable=arguments-differ
             # In python 2, alias to the future python 3 function
             return _TestCase.assertRaisesRegexp(self, exception, regexp, *args, **kwds)
     else:

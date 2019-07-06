@@ -705,7 +705,7 @@ class TestSaltProgram(six.with_metaclass(TestSaltProgramMeta, TestProgram)):
 
         os.chmod(script_path, 0o755)
 
-    def run(self, **kwargs):
+    def run(self, **kwargs):  # pylint: disable=arguments-differ
         if not kwargs.get('verbatim_args'):
             args = kwargs.setdefault('args', [])
             if '-c' not in args and '--config-dir' not in args:

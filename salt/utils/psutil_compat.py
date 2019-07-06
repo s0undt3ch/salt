@@ -58,6 +58,8 @@ else:
         net_io_counters = psutil.network_io_counters()
 
     class Process(psutil.Process):  # pylint: disable=no-init
+        # pylint: disable=arguments-differ
+
         # Reimplement overloaded getters/setters
         def cpu_affinity(self, *args, **kwargs):
             if args or kwargs:
@@ -88,6 +90,7 @@ else:
                     return self.get_rlimit()
             else:
                 pass
+        # pylint: enable=arguments-differ
 
     # Alias renamed Process functions
     _PROCESS_FUNCTION_MAP = {

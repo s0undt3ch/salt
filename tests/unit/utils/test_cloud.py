@@ -47,6 +47,7 @@ try:
         def supported(self):
             return 0
 
+          # pylint: disable=arguments-differ
         def set_password(self, servicename, username, password):
             self.__storage.setdefault(servicename, {}).update({username: password})
             return 0
@@ -57,6 +58,7 @@ try:
         def delete_password(self, servicename, username):
             self.__storage.setdefault(servicename, {}).pop(username, None)
             return 0
+        # pylint: enable=arguments-differ
 
     # set the keyring for keyring lib
     keyring.set_keyring(TestKeyring())
