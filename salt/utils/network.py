@@ -46,12 +46,9 @@ log = logging.getLogger(__name__)
 try:
     import ctypes
     import ctypes.util
-    libc = ctypes.cdll.LoadLibrary(ctypes.util.find_library("c"))
-    res_init = libc.__res_init
+    RES_INIT = ctypes.cdll.LoadLibrary(ctypes.util.find_library("c")).__res_init
 except (ImportError, OSError, AttributeError, TypeError):
-    pass
-
-# pylint: disable=C0103
+    RES_INIT = None
 
 
 def sanitize_host(host):
@@ -59,8 +56,8 @@ def sanitize_host(host):
     Sanitize host string.
     https://tools.ietf.org/html/rfc1123#section-2.1
     '''
-    RFC952_characters = ascii_letters + digits + ".-"
-    return "".join([c for c in host[0:255] if c in RFC952_characters])
+    rfc952_characters = ascii_letters + digits + ".-"
+    return "".join([c for c in host[0:255] if c in rfc952_characters])
 
 
 def isportopen(host, port):
@@ -233,8 +230,6 @@ def ip_to_host(ip):
         log.debug('salt.utils.network.ip_to_host(%r) failed: %s', ip, exc)
         hostname = None
     return hostname
-
-# pylint: enable=C0103
 
 
 def is_reachable_host(entity_name):
@@ -647,7 +642,6 @@ def _number_of_set_bits(x):
     x += x >> 8
     x += x >> 16
     return x & 0x0000003f
-
 # pylint: enable=C0103
 
 
@@ -666,9 +660,9 @@ def _interfaces_ip(out):
         brd = None
         scope = None
         if '/' in value:  # we have a CIDR in this address
-            ip, cidr = value.split('/')  # pylint: disable=C0103
+            ip, cidr = value.split('/')
         else:
-            ip = value  # pylint: disable=C0103
+            ip = value
             cidr = 32
 
         if type_ == 'inet':
@@ -1334,10 +1328,10 @@ def active_tcp():
                     if line.strip().startswith('sl'):
                         continue
                     iret = _parse_tcp_line(line)
-                    sl = next(iter(iret))
-                    if iret[sl]['state'] == 1:  # 1 is ESTABLISHED
-                        del iret[sl]['state']
-                        ret[len(ret)] = iret[sl]
+                    sl_ = next(iter(iret))
+                    if iret[sl_]['state'] == 1:  # 1 is ESTABLISHED
+                        del iret[sl_]['state']
+                        ret[len(ret)] = iret[sl_]
     return ret
 
 
@@ -1378,9 +1372,9 @@ def _remotes_on(port, which_end):
                     if line.strip().startswith('sl'):
                         continue
                     iret = _parse_tcp_line(line)
-                    sl = next(iter(iret))
-                    if iret[sl][which_end] == port and iret[sl]['state'] == 1:  # 1 is ESTABLISHED
-                        ret.add(iret[sl]['remote_addr'])
+                    sl_ = next(iter(iret))
+                    if iret[sl_][which_end] == port and iret[sl_]['state'] == 1:  # 1 is ESTABLISHED
+                        ret.add(iret[sl_]['remote_addr'])
 
     if not proc_available:  # Fallback to use OS specific tools
         if salt.utils.platform.is_sunos():
@@ -1407,15 +1401,15 @@ def _parse_tcp_line(line):
     '''
     ret = {}
     comps = line.strip().split()
-    sl = comps[0].rstrip(':')
-    ret[sl] = {}
+    sl_ = comps[0].rstrip(':')
+    ret[sl_] = {}
     l_addr, l_port = comps[1].split(':')
     r_addr, r_port = comps[2].split(':')
-    ret[sl]['local_addr'] = hex2ip(l_addr, True)
-    ret[sl]['local_port'] = int(l_port, 16)
-    ret[sl]['remote_addr'] = hex2ip(r_addr, True)
-    ret[sl]['remote_port'] = int(r_port, 16)
-    ret[sl]['state'] = int(comps[3], 16)
+    ret[sl_]['local_addr'] = hex2ip(l_addr, True)
+    ret[sl_]['local_port'] = int(l_port, 16)
+    ret[sl_]['remote_addr'] = hex2ip(r_addr, True)
+    ret[sl_]['remote_port'] = int(r_port, 16)
+    ret[sl_]['state'] = int(comps[3], 16)
     return ret
 
 
@@ -1853,11 +1847,8 @@ def refresh_dns():
     '''
     issue #21397: force glibc to re-read resolv.conf
     '''
-    try:
-        res_init()
-    except NameError:
-        # Exception raised loading the library, thus res_init is not defined
-        pass
+    if callable(RES_INIT):
+        RES_INIT()
 
 
 @jinja_filter('connection_check')
@@ -1913,13 +1904,13 @@ def dns_check(addr, port=80, safe=False, ipv6=None, attempt_connect=True):
         else:
             resolved = False
             candidates = []
-            for h in hostnames:
+            for hostname in hostnames:
                 # Input is IP address, passed through unchanged, just return it
-                if h[4][0] == addr:
+                if hostname[4][0] == addr:
                     resolved = salt.utils.zeromq.ip_bracket(addr)
                     break
 
-                candidate_addr = salt.utils.zeromq.ip_bracket(h[4][0])
+                candidate_addr = salt.utils.zeromq.ip_bracket(hostname[4][0])
 
                 # sometimes /etc/hosts contains ::1 localhost
                 if not ipv6 and candidate_addr == '[::1]':
@@ -1929,10 +1920,10 @@ def dns_check(addr, port=80, safe=False, ipv6=None, attempt_connect=True):
 
                 if attempt_connect:
                     try:
-                        s = socket.socket(h[0], socket.SOCK_STREAM)
-                        s.settimeout(2)
-                        s.connect((candidate_addr.strip('[]'), h[4][1]))
-                        s.close()
+                        sock = socket.socket(hostname[0], socket.SOCK_STREAM)
+                        sock.settimeout(2)
+                        sock.connect((candidate_addr.strip('[]'), hostname[4][1]))
+                        sock.close()
 
                         resolved = candidate_addr
                         break

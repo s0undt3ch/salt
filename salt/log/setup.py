@@ -125,6 +125,7 @@ __MP_IN_MAINPROCESS = multiprocessing.current_process().name == 'MainProcess'
 __MP_MAINPROCESS_ID = None
 
 
+# pylint: disable=invalid-name
 class __NullLoggingHandler(TemporaryLoggingHandler):
     '''
     This class exists just to better identify which temporary logging
@@ -137,6 +138,7 @@ class __StoreLoggingHandler(TemporaryLoggingHandler):
     This class exists just to better identify which temporary logging
     handler is being used for what.
     '''
+# pylint: enable=invalid-name
 
 
 def is_console_configured():
@@ -155,7 +157,7 @@ def is_temp_logging_configured():
     return __TEMP_LOGGING_CONFIGURED
 
 
-def is_mp_logging_listener_configured():
+def is_mp_logging_listener_configured():  # pylint: disable=invalid-name
     return __MP_LOGGING_LISTENER_CONFIGURED
 
 
@@ -215,9 +217,10 @@ class SaltColorLogRecord(SaltLogRecord):
         # pylint: enable=E1321
 
 
-_LOG_RECORD_FACTORY = SaltLogRecord
+_LOG_RECORD_FACTORY = SaltLogRecord  # pylint: disable=invalid-name
 
 
+# pylint: disable=invalid-name
 def setLogRecordFactory(factory):
     '''
     Set the factory to be used when instantiating a log record.
@@ -235,6 +238,7 @@ def getLogRecordFactory():
     '''
 
     return _LOG_RECORD_FACTORY
+# pylint: enable=invalid-name
 
 
 setLogRecordFactory(SaltLogRecord)
@@ -826,6 +830,7 @@ def setup_extended_logging(opts):
     __EXTERNAL_LOGGERS_CONFIGURED = True
 
 
+# pylint: disable=invalid-name
 def get_multiprocessing_logging_queue():
     global __MP_LOGGING_QUEUE
     from salt.utils.platform import is_darwin
@@ -900,6 +905,7 @@ def setup_multiprocessing_logging_listener(opts, queue=None):
     __MP_LOGGING_QUEUE_PROCESS.daemon = True
     __MP_LOGGING_QUEUE_PROCESS.start()
     __MP_LOGGING_LISTENER_CONFIGURED = True
+# pylint: disable=invalid-name
 
 
 def setup_multiprocessing_logging(queue=None):
@@ -992,6 +998,7 @@ def shutdown_temp_logging():
     __remove_temp_logging_handler()
 
 
+# pylint: disable=invalid-name
 def shutdown_multiprocessing_logging():
     global __MP_LOGGING_CONFIGURED
     global __MP_LOGGING_QUEUE_HANDLER
@@ -1061,6 +1068,7 @@ def shutdown_multiprocessing_logging_listener(daemonizing=False):
         __MP_LOGGING_QUEUE_PROCESS = None
         __MP_LOGGING_LISTENER_CONFIGURED = False
         logging.getLogger(__name__).debug('Stopped the multiprocessing logging queue listener')
+# pylint: enable=invalid-name
 
 
 def set_logger_level(logger_name, log_level='error'):
@@ -1085,7 +1093,7 @@ def patch_python_logging_handlers():
         logging.handlers.QueueHandler = QueueHandler
 
 
-def __process_multiprocessing_logging_queue(opts, queue):
+def __process_multiprocessing_logging_queue(opts, queue):  # pylint: disable=invalid-name
     # Avoid circular import
     import salt.utils.process
     salt.utils.process.appendproctitle('MultiprocessingLoggingQueue')
@@ -1203,7 +1211,7 @@ def __remove_temp_logging_handler():
         logging.captureWarnings(True)
 
 
-def __global_logging_exception_handler(exc_type, exc_value, exc_traceback):
+def __global_logging_exception_handler(exc_type, exc_value, exc_traceback):  # pylint: disable=invalid-name
     '''
     This function will log all un-handled python exceptions.
     '''

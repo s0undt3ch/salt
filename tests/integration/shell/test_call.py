@@ -98,14 +98,14 @@ class CallTest(ShellCase, testprogram.TestProgramCase, ShellCaseCommonTestsMixin
         ret = self.run_call('-l quiet -d user.delete')
         assert 'salt \'*\' user.delete name remove=True force=True' in ''.join(ret)
 
-    def test_salt_documentation_too_many_arguments(self):
+    def test_salt_documentation_too_many_arguments(self):  # pylint: disable=invalid-name
         '''
         Test to see if passing additional arguments shows an error
         '''
         data = self.run_call('-d virtualenv.create /tmp/ve', catch_stderr=True)
         self.assertIn('You can only get documentation for one method at one time', '\n'.join(data[1]))
 
-    def test_issue_6973_state_highstate_exit_code(self):
+    def test_issue_6973_state_highstate_exit_code(self):  # pylint: disable=invalid-name
         '''
         If there is no tops/master_tops or state file matches
         for this minion, salt-call should exit non-zero if invoked with
@@ -343,7 +343,7 @@ class CallTest(ShellCase, testprogram.TestProgramCase, ShellCaseCommonTestsMixin
 
     @skipIf(True, 'This test is unreliable. Need to investigate why more deeply.')
     @flaky
-    def test_issue_15074_output_file_append(self):
+    def test_issue_15074_output_file_append(self):  # pylint: disable=invalid-name
         output_file_append = os.path.join(RUNTIME_VARS.TMP, 'issue-15074')
         try:
             # Let's create an initial output file with some data
@@ -377,7 +377,7 @@ class CallTest(ShellCase, testprogram.TestProgramCase, ShellCaseCommonTestsMixin
 
     @skipIf(True, 'This test is unreliable. Need to investigate why more deeply.')
     @flaky
-    def test_issue_14979_output_file_permissions(self):
+    def test_issue_14979_output_file_permissions(self):  # pylint: disable=invalid-name
         output_file = os.path.join(RUNTIME_VARS.TMP, 'issue-14979')
         with salt.utils.files.set_umask(0o077):
             try:

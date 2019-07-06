@@ -360,7 +360,7 @@ ignore-imports=no
 bad-functions=map,filter,apply,input
 
 # Good variable names which should always be accepted, separated by a comma
-good-names=i,j,k,ex,Run,_,log
+good-names=i,j,k,ex,Run,_,log,ip
 
 # Bad variable names which should always be refused, separated by a comma
 bad-names=foo,bar,baz,toto,tutu,tata

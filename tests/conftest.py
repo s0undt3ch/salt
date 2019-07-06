@@ -362,93 +362,10 @@ def pytest_collection_modifyitems(items):
 
 
 # ----- Pytest Helpers ---------------------------------------------------------------------------------------------->
-if six.PY2:
-    # backport mock_open from the python 3 unittest.mock library so that we can
-    # mock read, readline, readlines, and file iteration properly
-
-    file_spec = None
-
-    def _iterate_read_data(read_data):
-        # Helper for mock_open:
-        # Retrieve lines from read_data via a generator so that separate calls to
-        # readline, read, and readlines are properly interleaved
-        data_as_list = ['{0}\n'.format(l) for l in read_data.split('\n')]
-
-        if data_as_list[-1] == '\n':
-            # If the last line ended in a newline, the list comprehension will have an
-            # extra entry that's just a newline.  Remove this.
-            data_as_list = data_as_list[:-1]
-        else:
-            # If there wasn't an extra newline by itself, then the file being
-            # emulated doesn't have a newline to end the last line  remove the
-            # newline that our naive format() added
-            data_as_list[-1] = data_as_list[-1][:-1]
-
-        for line in data_as_list:
-            yield line
-
-    @pytest.helpers.mock.register
-    def mock_open(mock=None, read_data=''):
-        """
-        A helper function to create a mock to replace the use of `open`. It works
-        for `open` called directly or used as a context manager.
-
-        The `mock` argument is the mock object to configure. If `None` (the
-        default) then a `MagicMock` will be created for you, with the API limited
-        to methods or attributes available on standard file handles.
-
-        `read_data` is a string for the `read` methoddline`, and `readlines` of the
-        file handle to return.  This is an empty string by default.
-        """
-        _mock = pytest.importorskip('mock', minversion='2.0.0')
-
-        # pylint: disable=unused-argument
-        def _readlines_side_effect(*args, **kwargs):
-            if handle.readlines.return_value is not None:
-                return handle.readlines.return_value
-            return list(_data)
-
-        def _read_side_effect(*args, **kwargs):
-            if handle.read.return_value is not None:
-                return handle.read.return_value
-            return ''.join(_data)
-        # pylint: enable=unused-argument
-
-        def _readline_side_effect():
-            if handle.readline.return_value is not None:
-                while True:
-                    yield handle.readline.return_value
-            for line in _data:
-                yield line
-
-        global file_spec  # pylint: disable=global-statement
-        if file_spec is None:
-            file_spec = file  # pylint: disable=undefined-variable
-
-        if mock is None:
-            mock = _mock.MagicMock(name='open', spec=open)
-
-        handle = _mock.MagicMock(spec=file_spec)
-        handle.__enter__.return_value = handle
-
-        _data = _iterate_read_data(read_data)
-
-        handle.write.return_value = None
-        handle.read.return_value = None
-        handle.readline.return_value = None
-        handle.readlines.return_value = None
-
-        handle.read.side_effect = _read_side_effect
-        handle.readline.side_effect = _readline_side_effect()
-        handle.readlines.side_effect = _readlines_side_effect
-
-        mock.return_value = handle
-        return mock
-else:
-    @pytest.helpers.mock.register
-    def mock_open(mock=None, read_data=''):
-        _mock = pytest.importorskip('mock', minversion='2.0.0')
-        return _mock.mock_open(mock=mock, read_data=read_data)
+@pytest.helpers.mock.register
+def mock_open(mock=None, read_data=''):
+    _mock = pytest.importorskip('mock', minversion='2.0.0')
+    return _mock.mock_open(mock=mock, read_data=read_data)
 # <---- Pytest Helpers -----------------------------------------------------------------------------------------------
 
 
@@ -752,7 +669,7 @@ def session_minion_config_overrides():
 
 
 @pytest.fixture(scope='session')
-def session_secondary_minion_default_options(request, session_root_dir):
+def session_secondary_minion_default_options(request, session_root_dir):  # pylint: disable=invalid-name
     with salt.utils.files.fopen(os.path.join(RUNTIME_VARS.CONF_DIR, 'sub_minion')) as rfh:
         opts = yaml.load(rfh.read())
 
@@ -764,7 +681,7 @@ def session_secondary_minion_default_options(request, session_root_dir):
 
 
 @pytest.fixture(scope='session')
-def session_master_of_masters_default_options(request, session_root_dir):
+def session_master_of_masters_default_options(request, session_root_dir):  # pylint: disable=invalid-name
     with salt.utils.files.fopen(os.path.join(RUNTIME_VARS.CONF_DIR, 'syndic_master')) as rfh:
         opts = yaml.load(rfh.read())
 
@@ -776,7 +693,7 @@ def session_master_of_masters_default_options(request, session_root_dir):
 
 
 @pytest.fixture(scope='session')
-def session_master_of_masters_config_overrides(session_master_of_masters_root_dir):
+def session_master_of_masters_config_overrides(session_master_of_masters_root_dir):  # pylint: disable=invalid-name
     if salt.utils.platform.is_windows():
         ext_pillar = {'cmd_yaml': 'type {0}'.format(os.path.join(RUNTIME_VARS.FILES, 'ext.yaml'))}
     else:
@@ -824,7 +741,7 @@ def session_master_of_masters_config_overrides(session_master_of_masters_root_di
 
 
 @pytest.fixture(scope='session')
-def session_syndic_master_default_options(request, session_root_dir):
+def session_syndic_master_default_options(request, session_root_dir):  # pylint: disable=invalid-name
     with salt.utils.files.fopen(os.path.join(RUNTIME_VARS.CONF_DIR, 'syndic_master')) as rfh:
         opts = yaml.load(rfh.read())
 
@@ -848,7 +765,7 @@ def session_syndic_default_options(request, session_root_dir):
 
 
 @pytest.fixture(scope='session', autouse=True)
-def bridge_pytest_and_runtests(session_root_dir,
+def bridge_pytest_and_runtests(session_root_dir,  # pylint: disable=invalid-name
                                session_conf_dir,
                                session_secondary_conf_dir,
                                session_syndic_conf_dir,
