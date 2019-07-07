@@ -48,6 +48,8 @@ jobs=1
 blacklisted-functions=posix.umask=salt.utils.files.set_umask or get_umask,
   nt.umask=salt.utils.files.set_umask or get_umask
 
+# Py3 Modernize Settings
+modernize-no-six = yes
 # Allow loading of arbitrary C extensions. Extensions are imported into the
 # active Python interpreter and may run arbitrary code.
 unsafe-load-any-extension=no
