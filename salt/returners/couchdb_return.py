@@ -375,13 +375,10 @@ def get_fun(fun):
         _response = _request("GET",
                              options['url'] +
                                      options['db'] +
-                                     ('/_design/salt/_view/by-minion-fun-times'
-                                      'tamp?descending=true&endkey=["{0}","{1}'
-                                      '",0]&startkey=["{2}","{3}",9999999999]&'
-                                      'limit=1').format(minion,
-                                                        fun,
-                                                        minion,
-                                                        fun))
+                                     '/_design/salt/_view/by-minion-fun-times'
+                                     'tamp?descending=true&endkey=["{minion}","{fun}'
+                                     '",0]&startkey=["{minion}","{fun}",9999999999]&'
+                                     'limit=1'.format(minion=minion, fun=fun))
         # Skip the minion if we got an error..
         if 'error' in _response:
             log.warning('Got an error when querying for last command '
