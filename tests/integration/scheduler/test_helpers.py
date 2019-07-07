@@ -85,5 +85,5 @@ class SchedulerHelpersTest(ModuleCase, SaltReturnAssertsMixin):
         # Add the job to the scheduler
         self.schedule.opts.update(job)
 
-        ret = self.schedule.run_job('test_run_job')
+        self.schedule.run_job('test_run_job')
         self.assertIn('_last_run', job['schedule']['test_run_job'])
