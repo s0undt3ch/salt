@@ -6,7 +6,7 @@ import logging
 
 # Import pyrax (SDK for Rackspace cloud) third party libs
 import pyrax
-import pyrax.exceptions
+import pyrax.exceptions  # pylint: disable=no-name-in-module
 
 # Import salt classes
 from salt.utils.openstack.pyrax import authenticate

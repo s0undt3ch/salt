@@ -130,7 +130,7 @@ def auth(username, password):
     if not is_connection_usable():
         connection.close()
 
-    import django.contrib.auth  # pylint: disable=import-error,3rd-party-module-not-gated
+    import django.contrib.auth  # pylint: disable=import-error,3rd-party-module-not-gated,no-name-in-module
     user = django.contrib.auth.authenticate(username=username, password=password)
     if user is not None:
         if user.is_active:

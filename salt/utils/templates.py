@@ -451,6 +451,7 @@ def render_jinja_tmpl(tmplstr, context, tmplpath=None):
 
 # pylint: disable=3rd-party-module-not-gated
 def render_mako_tmpl(tmplstr, context, tmplpath=None):
+    # pylint: disable=no-name-in-module
     import mako.exceptions
     from mako.template import Template
     from salt.utils.mako import SaltMakoTemplateLookup
@@ -476,6 +477,7 @@ def render_mako_tmpl(tmplstr, context, tmplpath=None):
         ).render(**context)
     except Exception:
         raise SaltRenderError(mako.exceptions.text_error_template().render())
+    # pylint: enable=no-name-in-module
 
 
 def render_wempy_tmpl(tmplstr, context, tmplpath=None):
@@ -500,6 +502,7 @@ def render_genshi_tmpl(tmplstr, context, tmplpath=None):
     Note that the ``text`` method will call ``NewTextTemplate``. If ``oldtext``
     is desired, it must be called explicitly
     '''
+    # pylint: disable=no-name-in-module
     method = context.get('method', 'xml')
     if method == 'text' or method == 'newtext':
         from genshi.template import NewTextTemplate
@@ -510,6 +513,7 @@ def render_genshi_tmpl(tmplstr, context, tmplpath=None):
     else:
         from genshi.template import MarkupTemplate
         tmpl = MarkupTemplate(tmplstr)
+    # pylint: enable=no-name-in-module
 
     return tmpl.generate(**context).render(method)
 
