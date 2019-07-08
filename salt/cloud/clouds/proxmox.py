@@ -213,7 +213,7 @@ def _get_vm_by_id(vmid, allDetails=False):
     '''
     Retrieve a VM based on the ID.
     '''
-    for vm_name, vm_details in six.iteritems(get_resources_vms(includeConfig=allDetails)):
+    for vm_details in get_resources_vms(includeConfig=allDetails).values():
         if six.text_type(vm_details['vmid']) == six.text_type(vmid):
             return vm_details
 
@@ -235,7 +235,7 @@ def _check_ip_available(ip_addr):
     This function can be used to prevent VMs being created with duplicate
     IP's or to generate a warning.
     '''
-    for vm_name, vm_details in six.iteritems(get_resources_vms(includeConfig=True)):
+    for vm_details in get_resources_vms(includeConfig=True).values():
         vm_config = vm_details['config']
         if ip_addr in vm_config['ip_address'] or vm_config['ip_address'] == ip_addr:
             log.debug('IP "%s" is already defined', ip_addr)
@@ -434,7 +434,7 @@ def avail_images(call=None, location='local'):
         )
 
     ret = {}
-    for host_name, host_details in six.iteritems(avail_locations()):
+    for host_name in avail_locations():
         for item in query('get', 'nodes/{0}/storage/{1}/content'.format(host_name, location)):
             ret[item['volid']] = item
     return ret
@@ -619,7 +619,6 @@ def create(vm_):
     else:
         vmid = data['vmid']       # vmid which we have received
     host = data['node']       # host which we have received
-    nodeType = data['technology']  # VM tech (Qemu / OpenVZ)
 
     if 'agent_get_ip' not in vm_ or vm_['agent_get_ip'] == 0:
         # Determine which IP to use in order of preference:
@@ -1062,7 +1061,7 @@ def get_vmconfig(vmid, node=None, node_type='openvz'):
     '''
     if node is None:
         # We need to figure out which node this VM is on.
-        for host_name, host_details in six.iteritems(avail_locations()):
+        for host_name in avail_locations():
             for item in query('get', 'nodes/{0}/{1}'.format(host_name, node_type)):
                 if item['vmid'] == vmid:
                     node = host_name

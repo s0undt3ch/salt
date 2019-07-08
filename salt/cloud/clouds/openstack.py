@@ -668,7 +668,7 @@ def create(vm_):
     '''
     Create a single VM from a data dict
     '''
-    deploy = config.get_cloud_config_value('deploy', vm_, __opts__)
+    config.get_cloud_config_value('deploy', vm_, __opts__)
     key_filename = config.get_cloud_config_value(
         'ssh_key_file', vm_, __opts__, search_global=False, default=None
     )

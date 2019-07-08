@@ -240,7 +240,7 @@ def get_vm_ip(name=None, session=None, call=None):
         for vif in vifs:
             if session.xenapi.VIF.get_ipv4_addresses(vif):
                 cidr = session.xenapi.VIF.get_ipv4_addresses(vif).pop()
-                ret, subnet = cidr.split('/')
+                ret, _ = cidr.split('/')
                 log.debug(
                     'VM vif returned for instance: %s ip: %s', name, ret)
                 return ret

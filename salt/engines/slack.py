@@ -154,6 +154,7 @@ import itertools
 import logging
 import time
 import re
+import pprint
 import traceback
 
 log = logging.getLogger(__name__)
@@ -646,8 +647,7 @@ class SlackClient(object):
                 out=outputter,
                 opts=__opts__,
             )
-        except Exception as exc:
-            import pprint
+        except Exception:
             log.exception(
                 'Exception encountered when trying to serialize %s',
                 pprint.pformat(data)

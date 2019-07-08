@@ -510,11 +510,11 @@ def get_cloud_init_mime(cloud_init):
         cloud_init = salt.utils.json.loads(cloud_init)
     _cloud_init = email.mime.multipart.MIMEMultipart()
     if 'boothooks' in cloud_init:
-        for script_name, script in six.iteritems(cloud_init['boothooks']):
+        for script in cloud_init['boothooks'].values():
             _script = email.mime.text.MIMEText(script, 'cloud-boothook')
             _cloud_init.attach(_script)
     if 'scripts' in cloud_init:
-        for script_name, script in six.iteritems(cloud_init['scripts']):
+        for script in cloud_init['scripts'].values():
             _script = email.mime.text.MIMEText(script, 'x-shellscript')
             _cloud_init.attach(_script)
     if 'cloud-config' in cloud_init:

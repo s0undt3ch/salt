@@ -179,14 +179,11 @@ def search_lxc_bridges():
                     running_bridges.add(line.split()[0].strip())
         except (SaltInvocationError, CommandExecutionError):
             pass
-        for ifc, ip in six.iteritems(
-            __grains__.get('ip_interfaces', {})
-        ):
+        for ifc in __grains__.get('ip_interfaces', {}):
             if ifc in running_bridges:
                 bridges.add(ifc)
             elif os.path.exists(
-                '/sys/devices/virtual/net/{0}/bridge'.format(ifc)
-            ):
+                    '/sys/devices/virtual/net/{0}/bridge'.format(ifc)):
                 bridges.add(ifc)
         bridges = list(bridges)
         # if we found interfaces that have lxc in their names
@@ -407,7 +404,6 @@ def cloud_init_interface(name, vm_=None, **kwargs):
     snapshot = _cloud_get('snapshot', False)
     autostart = bool(_cloud_get('autostart', True))
     dnsservers = _cloud_get('dnsservers', [])
-    dns_via_dhcp = _cloud_get('dns_via_dhcp', True)
     password = _cloud_get('password', 's3cr3t')
     password_encrypted = _cloud_get('password_encrypted', False)
     fstype = _cloud_get('fstype', None)
@@ -1497,11 +1493,11 @@ def init(name,
                     users.append(default_user)
             for user in users:
                 try:
-                    cret = set_password(name,
-                                        users=[user],
-                                        path=path,
-                                        password=password,
-                                        encrypted=password_encrypted)
+                    set_password(name,
+                                 users=[user],
+                                 path=path,
+                                 password=password,
+                                 encrypted=password_encrypted)
                 except (SaltInvocationError, CommandExecutionError) as exc:
                     msg = '{0}: Failed to set password'.format(
                         user) + exc.strerror
@@ -3516,10 +3512,10 @@ def bootstrap(name,
                     bootstrap=bootstrap_url)
                 script = '/sbin/{0}_bootstrap.sh'.format(rstr)
                 copy_to(name, bs_, script, path=path)
-                result = run_all(name,
-                                 'sh -c "chmod +x {0}"'.format(script),
-                                 path=path,
-                                 python_shell=True)
+                run_all(name,
+                        'sh -c "chmod +x {0}"'.format(script),
+                        path=path,
+                        python_shell=True)
 
                 copy_to(name, cfg_files['config'],
                         os.path.join(configdir, 'minion'),

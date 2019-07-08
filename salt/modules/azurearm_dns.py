@@ -163,7 +163,7 @@ def record_set_delete(name, zone_name, resource_group, record_type, **kwargs):
     result = False
     dnsconn = __utils__['azurearm.get_client']('dns', **kwargs)
     try:
-        record_set = dnsconn.record_sets.delete(
+        dnsconn.record_sets.delete(
             relative_record_set_name=name,
             zone_name=zone_name,
             resource_group_name=resource_group,

@@ -255,8 +255,6 @@ def update_user(email, profile="splunk", **kwargs):
         salt myminion splunk.update_user example@domain.com roles=['user'] realname="Test User"
     '''
 
-    client = _get_splunk(profile)
-
     email = email.lower()
 
     user = list_users(profile).get(email)

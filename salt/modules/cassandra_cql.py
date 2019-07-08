@@ -308,7 +308,7 @@ def cql_query(query, contact_points=None, port=None, cql_user=None, cql_pass=Non
          salt 'cassandra-server' cassandra_cql.cql_query "SELECT * FROM users_by_name WHERE first_name = 'jane'"
     '''
     try:
-        cluster, session = _connect(contact_points=contact_points, port=port, cql_user=cql_user, cql_pass=cql_pass)
+        _, session = _connect(contact_points=contact_points, port=port, cql_user=cql_user, cql_pass=cql_pass)
     except CommandExecutionError:
         log.critical('Could not get Cassandra cluster session.')
         raise
@@ -329,7 +329,7 @@ def cql_query(query, contact_points=None, port=None, cql_user=None, cql_pass=Non
                                   cql_user=cql_user,
                                   cql_pass=cql_pass)
         match = re.match(r'^(\d+)\.(\d+)(?:\.(\d+))?', cluster_version)
-        major, minor, point = match.groups()
+        major, _, _ = match.groups()
         # try to find the specific version in the query dictionary
         # then try the major version
         # otherwise default to the highest version number
@@ -410,8 +410,8 @@ def cql_query_with_prepare(query, statement_name, statement_arguments, callback_
     # Backward-compatibility with Python 3.7: "async" is a reserved word
     asynchronous = kwargs.get('async', False)
     try:
-        cluster, session = _connect(contact_points=contact_points, port=port,
-                                    cql_user=cql_user, cql_pass=cql_pass)
+        _, session = _connect(contact_points=contact_points, port=port,
+                              cql_user=cql_user, cql_pass=cql_pass)
     except CommandExecutionError:
         log.critical('Could not get Cassandra cluster session.')
         raise
@@ -434,7 +434,7 @@ def cql_query_with_prepare(query, statement_name, statement_arguments, callback_
 
     try:
         if asynchronous:
-            future_results = session.execute_async(bound_statement.bind(statement_arguments))
+            future_results = session.execute_async(bound_statement.bind(statement_arguments))  # pylint: disable=unused-variable
             # future_results.add_callbacks(_async_log_errors)
         else:
             results = session.execute(bound_statement.bind(statement_arguments))

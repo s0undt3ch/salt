@@ -142,7 +142,7 @@ class Engine(SignalHandlingMultiprocessingProcess):
         kwargs = self.config or {}
         try:
             self.engine[self.fun](**kwargs)
-        except Exception as exc:
+        except Exception:
             log.critical(
                 'Engine \'%s\' could not be started!',
                 self.fun.split('.')[0], exc_info=True

@@ -411,7 +411,7 @@ def _refresh_buckets_cache_file(cache_file):
 
     log.debug('Refreshing buckets cache file')
 
-    key, keyid, service_url, verify_ssl, kms_keyid, location, path_style, https_enable = _get_s3_key()
+    key, keyid, service_url, verify_ssl, _, location, path_style, https_enable = _get_s3_key()
     metadata = {}
 
     # helper s3 query function
@@ -658,7 +658,7 @@ def _get_file_from_s3(metadata, saltenv, bucket_name, path, cached_file_path):
     Checks the local cache for the file, if it's old or missing go grab the
     file from S3 and update the cache
     '''
-    key, keyid, service_url, verify_ssl, kms_keyid, location, path_style, https_enable = _get_s3_key()
+    key, keyid, service_url, verify_ssl, _, location, path_style, https_enable = _get_s3_key()
 
     # check the local cache...
     if os.path.isfile(cached_file_path):

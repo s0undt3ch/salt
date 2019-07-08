@@ -194,7 +194,7 @@ def start(endpoint='data.logentries.com',
     with event_bus_context(__opts__) as event_bus:
         log.debug('Logentries engine started')
         try:
-            val = uuid.UUID(token)
+            uuid.UUID(token)
         except ValueError:
             log.warning('Not a valid logentries token')
 

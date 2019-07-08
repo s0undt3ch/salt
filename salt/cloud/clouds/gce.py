@@ -2618,7 +2618,7 @@ def create(vm_=None, call=None):
     node_dict = node_info[0]
     node_data = node_info[1]
 
-    ssh_user, ssh_key = __get_ssh_credentials(vm_)
+    _, ssh_key = __get_ssh_credentials(vm_)
     vm_['ssh_host'] = __get_host(node_data, vm_)
     vm_['key_filename'] = ssh_key
 

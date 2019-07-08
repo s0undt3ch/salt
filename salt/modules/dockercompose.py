@@ -422,7 +422,7 @@ def _get_convergence_plans(project, service_names):
     plans = project._get_convergence_plans(project.get_services(service_names),
                                            ConvergenceStrategy.changed)
     for cont in plans:
-        (action, container) = plans[cont]
+        (action, _) = plans[cont]
         if action == 'create':
             ret[cont] = 'Creating container'
         elif action == 'recreate':

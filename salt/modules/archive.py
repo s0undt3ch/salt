@@ -807,7 +807,7 @@ def zip_(zip_file, sources, template=None, cwd=None, runas=None, zip64=False):
                     else:
                         rel_root = cwd if cwd is not None else '/'
                     if os.path.isdir(src):
-                        for dir_name, sub_dirs, files in salt.utils.path.os_walk(src):
+                        for dir_name, _, files in salt.utils.path.os_walk(src):
                             if cwd and dir_name.startswith(cwd):
                                 arc_dir = os.path.relpath(dir_name, cwd)
                             else:

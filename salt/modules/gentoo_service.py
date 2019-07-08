@@ -100,7 +100,7 @@ def get_enabled():
 
         salt '*' service.get_enabled
     '''
-    (enabled_services, disabled_services) = _get_service_list()
+    (enabled_services, _) = _get_service_list()
     return odict.OrderedDict(enabled_services)
 
 
@@ -114,8 +114,8 @@ def get_disabled():
 
         salt '*' service.get_disabled
     '''
-    (enabled_services, disabled_services) = _get_service_list(include_enabled=False,
-                                                              include_disabled=True)
+    (enabled_services, _) = _get_service_list(include_enabled=False,
+                                              include_disabled=True)
     return sorted(disabled_services)
 
 

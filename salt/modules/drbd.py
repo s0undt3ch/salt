@@ -138,8 +138,6 @@ def _line_parser(line):
     Call action for different lines
     '''
     section = _analyse_status_type(line)
-    fields = line.strip().split()
-
     switch = {
         '': _empty,
         'RESOURCE': _add_res,

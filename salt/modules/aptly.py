@@ -615,7 +615,6 @@ def get_published(name, config_path=_DEFAULT_CONFIG_PATH, endpoint='', prefix=No
     _validate_config(config_path)
 
     ret = dict()
-    sources = list()
     cmd = ['publish', 'show', '-config={}'.format(config_path), name]
 
     if prefix:
@@ -735,8 +734,6 @@ def get_snapshot(name, config_path=_DEFAULT_CONFIG_PATH, with_packages=False):
         salt '*' aptly.get_snapshot name="test-repo"
     '''
     _validate_config(config_path)
-
-    sources = list()
 
     cmd = ['snapshot', 'show', '-config={}'.format(config_path),
            '-with-packages={}'.format(str(with_packages).lower()),

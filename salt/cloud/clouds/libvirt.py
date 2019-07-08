@@ -254,7 +254,7 @@ def get_domain_ips(domain, ip_source):
         log.info("Exception polling address %s", error)
         return ips
 
-    for (name, val) in six.iteritems(addresses):
+    for val in addresses.values():
         if val['addrs']:
             for addr in val['addrs']:
                 tp = to_ip_addr_type(addr['type'])
@@ -338,7 +338,7 @@ def create(vm_):
             # for idempotency the salt-bootstrap needs -F argument
             #  script_args: -F
             clone_domain = conn.lookupByName(name)
-        except libvirtError as e:
+        except libvirtError:
             domain = conn.lookupByName(base)
             # TODO: ensure base is shut down before cloning
             xml = domain.XMLDesc(0)
@@ -673,7 +673,7 @@ def get_domain_volumes(conn, domain):
         if disk.find("./driver[@name='qemu'][@type='qcow2']") is not None:
             source = disk.find("./source").attrib['file']
             try:
-                pool, volume = find_pool_and_volume(conn, source)
+                _, volume = find_pool_and_volume(conn, source)
                 volumes.append(volume)
             except libvirtError:
                 log.warning("Disk not found '%s'", source)

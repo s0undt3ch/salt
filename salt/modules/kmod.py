@@ -134,7 +134,7 @@ def available():
                 # Strip .ko from the basename
                 ret.append(os.path.basename(line)[:-4])
 
-    for root, dirs, files in salt.utils.path.os_walk(mod_dir):
+    for _, _, files in salt.utils.path.os_walk(mod_dir):
         for fn_ in files:
             if '.ko' in fn_:
                 ret.append(fn_[:fn_.index('.ko')].replace('-', '_'))

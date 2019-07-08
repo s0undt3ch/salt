@@ -151,7 +151,7 @@ class BatchAsync(object):
     @tornado.gen.coroutine
     def find_job(self, minions):
         not_done = minions.difference(self.done_minions)
-        ping_return = yield self.local.run_job_async(
+        yield self.local.run_job_async(
             not_done,
             'saltutil.find_job',
             [self.batch_jid],

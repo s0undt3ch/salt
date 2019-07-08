@@ -236,7 +236,7 @@ def _parse(cli_output):
 
 
 def __process_tokens(tokens):
-    result, token_no = __process_tokens_internal(tokens)
+    result, _ = __process_tokens_internal(tokens)
     return result
 
 
@@ -297,10 +297,8 @@ def __process_tokens_internal(tokens, start_at=0):
             return result, token_no
         elif __is_assignment(token):
             log.debug("    TYPE: ASSIGNMENT")
-            is_assignment = True
         elif __is_expression(token):
             log.debug("    TYPE: EXPRESSION")
-            is_expression = True
         else:
             raise CommandExecutionError('Unknown token! Token: {0}'.format(token))
 

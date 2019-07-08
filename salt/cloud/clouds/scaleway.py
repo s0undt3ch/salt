@@ -173,7 +173,7 @@ def create_node(args):
     '''
     node = query(method='servers', args=args, http_method='POST')
 
-    action = query(
+    query(
         method='servers',
         server_id=node['server']['id'],
         command='action',

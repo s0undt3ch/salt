@@ -258,7 +258,7 @@ def _config_logic(napalm_device,
                                                      once=commit_time)
                 log.debug('Scheduling job')
                 log.debug(scheduled)
-                saved = __salt__['schedule.save']()  # ensure the schedule is
+                __salt__['schedule.save']()  # ensure the schedule is
                 # persistent cross Minion restart
                 discarded = _safe_dicard_config(loaded_result, napalm_device)
                 # discard the changes
@@ -2255,7 +2255,7 @@ def cancel_commit(jid):
     job_name = '__napalm_commit_{}'.format(jid)
     removed = __salt__['schedule.delete'](job_name)
     if removed['result']:
-        saved = __salt__['schedule.save']()
+        __salt__['schedule.save']()
         removed['comment'] = 'Commit #{jid} cancelled.'.format(jid=jid)
     else:
         removed['comment'] = 'Unable to find commit #{jid}.'.format(jid=jid)
@@ -2452,18 +2452,18 @@ def replace_pattern(pattern,
     if not config_saved or not config_saved['result']:
         return config_saved
     path = config_saved['out']
-    replace_pattern = __salt__['file.replace'](path,
-                                               pattern,
-                                               repl,
-                                               count=count,
-                                               flags=flags,
-                                               bufsize=bufsize,
-                                               append_if_not_found=append_if_not_found,
-                                               prepend_if_not_found=prepend_if_not_found,
-                                               not_found_content=not_found_content,
-                                               search_only=search_only,
-                                               show_changes=show_changes,
-                                               backslash_literal=backslash_literal)
+    __salt__['file.replace'](path,
+                             pattern,
+                             repl,
+                             count=count,
+                             flags=flags,
+                             bufsize=bufsize,
+                             append_if_not_found=append_if_not_found,
+                             prepend_if_not_found=prepend_if_not_found,
+                             not_found_content=not_found_content,
+                             search_only=search_only,
+                             show_changes=show_changes,
+                             backslash_literal=backslash_literal)
     with salt.utils.files.fopen(path, 'r') as fh_:
         updated_config = fh_.read()
     return __salt__['net.load_config'](text=updated_config,
@@ -2565,14 +2565,14 @@ def blockreplace(marker_start,
     if not config_saved or not config_saved['result']:
         return config_saved
     path = config_saved['out']
-    replace_pattern = __salt__['file.blockreplace'](path,
-                                                    marker_start=marker_start,
-                                                    marker_end=marker_end,
-                                                    content=content,
-                                                    append_if_not_found=append_if_not_found,
-                                                    prepend_if_not_found=prepend_if_not_found,
-                                                    show_changes=show_changes,
-                                                    append_newline=append_newline)
+    __salt__['file.blockreplace'](path,
+                                  marker_start=marker_start,
+                                  marker_end=marker_end,
+                                  content=content,
+                                  append_if_not_found=append_if_not_found,
+                                  prepend_if_not_found=prepend_if_not_found,
+                                  show_changes=show_changes,
+                                  append_newline=append_newline)
     with salt.utils.files.fopen(path, 'r') as fh_:
         updated_config = fh_.read()
     return __salt__['net.load_config'](text=updated_config,
@@ -2658,9 +2658,7 @@ def patch(patchfile,
             'result': False,
             'comment': 'The file "{}" does not exist.'.format(patchfile)
         }
-    replace_pattern = __salt__['file.patch'](path,
-                                             patchfile_cache,
-                                             options=options)
+    __salt__['file.patch'](path, patchfile_cache, options=options)
     with salt.utils.files.fopen(path, 'r') as fh_:
         updated_config = fh_.read()
     return __salt__['net.load_config'](text=updated_config,

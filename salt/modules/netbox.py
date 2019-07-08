@@ -82,7 +82,7 @@ def _nb_obj(auth_required=False):
 def _strip_url_field(input_dict):
     if 'url' in input_dict.keys():
         del input_dict['url']
-    for k, v in input_dict.items():
+    for v in input_dict.values():
         if isinstance(v, dict):
             _strip_url_field(v)
     return input_dict
@@ -377,7 +377,6 @@ def create_device(name,
         if not nb_site:
             return False
 
-        status = {'label': "Active", 'value': 1}
     except RequestError as e:
         log.error('%s, %s, %s', e.req.request.headers, e.request_body, e.error)
         return False
@@ -674,7 +673,7 @@ def openconfig_lacp(device_name=None):
     for interface in interfaces:
         if not interface['lag']:
             continue
-        if_name, if_unit = _if_name_unit(interface['name'])
+        if_name, _ = _if_name_unit(interface['name'])
         parent_if = interface['lag']['name']
         if parent_if not in oc_lacp:
             oc_lacp[parent_if] = {

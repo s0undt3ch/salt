@@ -1016,7 +1016,7 @@ def modify_cache_parameter_group(name, region=None, key=None, keyid=None, profil
     args = dict([(k, v) for k, v in args.items() if not k.startswith('_')])
     try:
         Params = args['ParameterNameValues']
-    except ValueError as e:
+    except ValueError:
         raise SaltInvocationError('Invalid `ParameterNameValues` structure passed.')
     while Params:
         args.update({'ParameterNameValues': Params[:20]})

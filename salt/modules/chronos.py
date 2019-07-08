@@ -136,7 +136,7 @@ def rm_job(name):
 
         salt chronos-minion-id chronos.rm_job my-job
     '''
-    response = salt.utils.http.query(
+    salt.utils.http.query(
         "{0}/scheduler/job/{1}".format(_base_url(), name),
         method='DELETE',
     )

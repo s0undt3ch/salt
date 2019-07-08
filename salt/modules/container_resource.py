@@ -317,7 +317,7 @@ def copy_to(name,
         )
 
     local_file = cache_file(source)
-    source_dir, source_name = os.path.split(local_file)
+    _, source_name = os.path.split(local_file)
 
     # Source file sanity checks
     if not os.path.isabs(local_file):
@@ -342,7 +342,7 @@ def copy_to(name,
         # Destination was not a directory. We will check to see if the parent
         # dir is a directory, and then (if makedirs=True) attempt to create the
         # parent directory.
-        dest_dir, dest_name = os.path.split(dest)
+        dest_dir, _ = os.path.split(dest)
         if run_all(name,
                    'test -d {0}'.format(pipes.quote(dest_dir)),
                    **cmd_kwargs)['retcode'] != 0:

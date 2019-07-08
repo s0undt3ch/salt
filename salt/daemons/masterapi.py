@@ -147,7 +147,7 @@ def clean_pub_auth(opts):
         if not os.path.exists(auth_cache):
             return
         else:
-            for (dirpath, dirnames, filenames) in salt.utils.path.os_walk(auth_cache):
+            for (dirpath, _, filenames) in salt.utils.path.os_walk(auth_cache):
                 for auth_file in filenames:
                     auth_file_path = os.path.join(dirpath, auth_file)
                     if not os.path.isfile(auth_file_path):
@@ -184,7 +184,6 @@ def clean_proc_dir(opts):
     jobs that for some reason were not properly removed
     when finished or errored.
     '''
-    serial = salt.payload.Serial(opts)
     proc_dir = os.path.join(opts['cachedir'], 'proc')
     for fn_ in os.listdir(proc_dir):
         proc_file = os.path.join(*[proc_dir, fn_])
@@ -372,9 +371,9 @@ class AutoKey(object):
         expire_minutes = self.opts.get('autosign_timeout', 120)
         if expire_minutes > 0:
             min_time = time.time() - (60 * int(expire_minutes))
-            for root, dirs, filenames in salt.utils.path.os_walk(autosign_dir):
-                for f in filenames:
-                    stub_file = os.path.join(autosign_dir, f)
+            for _, _, filenames in salt.utils.path.os_walk(autosign_dir):
+                for fname in filenames:
+                    stub_file = os.path.join(autosign_dir, fname)
                     mtime = os.path.getmtime(stub_file)
                     if mtime < min_time:
                         log.warning('Autosign keyid expired %s', stub_file)
@@ -394,7 +393,7 @@ class AutoKey(object):
             return False
 
         autosign_grains_dir = self.opts['autosign_grains_dir']
-        for root, dirs, filenames in os.walk(autosign_grains_dir):
+        for _, _, filenames in os.walk(autosign_grains_dir):
             for grain in filenames:
                 if grain in autosign_grains:
                     grain_file = os.path.join(autosign_grains_dir, grain)
@@ -1110,7 +1109,7 @@ class LocalFuncs(object):
         Send a master control function back to the runner system
         '''
         # All runner opts pass through eauth
-        auth_type, err_name, key = self._prep_auth_info(load)
+        auth_type, err_name, _ = self._prep_auth_info(load)
 
         # Authenticate
         auth_check = self.loadauth.check_authentication(load, auth_type)
@@ -1260,7 +1259,7 @@ class LocalFuncs(object):
         minions = _res['minions']
 
         # Check for external auth calls and authenticate
-        auth_type, err_name, key = self._prep_auth_info(extra)
+        auth_type, _, key = self._prep_auth_info(extra)
         if auth_type == 'user':
             auth_check = self.loadauth.check_authentication(load, auth_type, key=key)
         else:

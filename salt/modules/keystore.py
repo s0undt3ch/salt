@@ -35,7 +35,6 @@ def __virtual__():
 
 
 def _parse_cert(alias, public_cert, return_cert=False):
-    ASN1 = OpenSSL.crypto.FILETYPE_ASN1
     PEM = OpenSSL.crypto.FILETYPE_PEM
     cert_data = {}
     sha1 = public_cert.digest(b'sha1')
@@ -145,7 +144,7 @@ def add(name, keystore, passphrase, certificate, private_key=None):
     certs_list = []
     if os.path.isfile(keystore):
         keystore_object = jks.KeyStore.load(keystore, passphrase)
-        for alias, loaded_cert in keystore_object.entries.items():
+        for loaded_cert in keystore_object.entries.values():
             certs_list.append(loaded_cert)
 
     try:

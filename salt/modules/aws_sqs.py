@@ -147,8 +147,8 @@ def delete_message(queue, region, receipthandle, opts=None, user=None):
         log.info('"%s" queue does not exist.', queue)
         return False
 
-    out = _run_aws('delete-message', region, opts, user,
-                   receipthandle=receipthandle, queue=url_map[queue],)
+     _run_aws('delete-message', region, opts, user,
+              receipthandle=receipthandle, queue=url_map[queue],)
     return True
 
 
@@ -241,7 +241,7 @@ def delete_queue(name, region, opts=None, user=None):
     if name in url_map:
         delete = {'queue-url': url_map[name]}
 
-        rtn = _run_aws(
+        _run_aws(
             'delete-queue',
             region=region,
             opts=opts,

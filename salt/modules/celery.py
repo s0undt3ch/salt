@@ -105,7 +105,7 @@ def run_task(task_name, args=None, kwargs=None, broker=None, backend=None, wait_
                 try:
                     return async_result.get(timeout=timeout, propagate=propagate,
                                             interval=interval, no_ack=no_ack)
-                except TimeoutError as ex:
+                except TimeoutError:
                     log.error('Waiting for the result of a celery task execution timed out.')
                     if raise_timeout:
                         six.reraise(*sys.exc_info())

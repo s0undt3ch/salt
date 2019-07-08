@@ -1034,7 +1034,6 @@ def list_repo_pkgs(*args, **kwargs):
         if args:
             for arg in args:
                 if fnmatch.fnmatch(pkg_name, arg):
-                    skip_pkg = False
                     break
             else:
                 # Package doesn't match any of the passed args, skip it

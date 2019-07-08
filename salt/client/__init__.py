@@ -1015,7 +1015,6 @@ class LocalClient(object):
             print('jid: {0}'.format(jid))
         if timeout is None:
             timeout = self.opts['timeout']
-        fret = {}
         # make sure the minions is a set (since we do set operations on it)
         minions = set(minions)
 
@@ -1086,7 +1085,6 @@ class LocalClient(object):
         if timeout is None:
             timeout = self.opts['timeout']
         gather_job_timeout = int(kwargs.get('gather_job_timeout', self.opts['gather_job_timeout']))
-        start = int(time.time())
 
         # timeouts per minion, id_ -> timeout time
         minion_timeouts = {}
@@ -1103,7 +1101,6 @@ class LocalClient(object):
         except Exception as exc:
             log.warning('Returner unavailable: %s', exc, exc_info_on_loglevel=logging.DEBUG)
         # Wait for the hosts to check in
-        last_time = False
         # iterator for this job's return
         if self.opts['order_masters']:
             # If we are a MoM, we need to gather expected minions from downstreams masters.

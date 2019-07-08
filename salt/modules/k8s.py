@@ -763,7 +763,7 @@ def create_secret(namespace, name, sources, apiserver_url=None, force=False, upd
             ret["comment"] += "Could not find source files or your sources are empty"
             ret["result"] = False
         elif secret.get("data") and data != secret.get("data"):
-            res = _update_secret(namespace, name, data, apiserver_url)
+            _update_secret(namespace, name, data, apiserver_url)
             ret['comment'] = 'Updated secret'
             ret['changes'] = 'Updated secret'
         else:

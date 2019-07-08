@@ -107,7 +107,7 @@ class SysLogHandler(ExcInfoOnLogLevelFormatMixIn, logging.handlers.SysLogHandler
         '''
         handled = False
         if sys.stderr and sys.version_info >= (3, 5, 4):
-            t, v, tb = sys.exc_info()
+            t, _, _ = sys.exc_info()
             if t.__name__ in 'FileNotFoundError':
                 sys.stderr.write('[WARNING ] The log_file does not exist. Logging not setup correctly or syslog service not started.\n')
                 handled = True

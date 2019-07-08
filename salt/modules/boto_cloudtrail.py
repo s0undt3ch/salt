@@ -223,7 +223,7 @@ def describe(Name,
         else:
             return {'trail': None}
     except ClientError as e:
-        err = __utils__['boto3.get_error'](e)
+        __utils__['boto3.get_error'](e)
         if e.response.get('Error', {}).get('Code') == 'TrailNotFoundException':
             return {'trail': None}
         return {'error': __utils__['boto3.get_error'](e)}
@@ -264,7 +264,7 @@ def status(Name,
         else:
             return {'trail': None}
     except ClientError as e:
-        err = __utils__['boto3.get_error'](e)
+        __utils__['boto3.get_error'](e)
         if e.response.get('Error', {}).get('Code') == 'TrailNotFoundException':
             return {'trail': None}
         return {'error': __utils__['boto3.get_error'](e)}

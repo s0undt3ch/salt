@@ -144,7 +144,6 @@ def upgrade_available(name, **kwargs):
 
         salt '*' pkg.upgrade_available apache-22
     '''
-    version = None
     cmd = ['pkg', 'list', '-Huv', name]
     lines = __salt__['cmd.run_stdout'](cmd).splitlines()
     if not lines:

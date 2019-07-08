@@ -528,7 +528,7 @@ def config(commands=None,
     # whatever the source of the commands would be, split them line by line
     commands = [line for line in file_str.splitlines() if line.strip()]
     # push the commands one by one, removing empty lines
-    configured = call('config', commands, **kwargs)
+    call('config', commands, **kwargs)
     current_config = get_config(as_string=True, **kwargs)
     diff = difflib.unified_diff(initial_config.splitlines(1)[4:], current_config.splitlines(1)[4:])
     return ''.join([x.replace('\r', '') for x in diff])

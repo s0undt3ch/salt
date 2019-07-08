@@ -133,7 +133,7 @@ def beacon(config):
                 continue
             try:
                 d[tag] = re.compile(r'{0}'.format(_config['tags'][tag]['regex']))
-            except Exception as e:
+            except Exception:
                 event = SKEL.copy()
                 event['tag'] = tag
                 event['error'] = 'bad regex'

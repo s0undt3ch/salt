@@ -330,7 +330,7 @@ def list_downloads():
        salt '*' softwareupdate.list_downloads
     '''
     outfiles = []
-    for root, subFolder, files in salt.utils.path.os_walk('/Library/Updates'):
+    for root, _, files in salt.utils.path.os_walk('/Library/Updates'):
         for f in files:
             outfiles.append(os.path.join(root, f))
 
@@ -464,7 +464,7 @@ def set_catalog(url):
 
     try:
         salt.utils.mac_utils.execute_return_success(cmd)
-    except CommandExecutionError as exc:
+    except CommandExecutionError:
         pass
 
     return get_catalog() == url
@@ -492,7 +492,7 @@ def reset_catalog():
 
     try:
         salt.utils.mac_utils.execute_return_success(cmd)
-    except CommandExecutionError as exc:
+    except CommandExecutionError:
         pass
 
     return get_catalog() == 'Default'

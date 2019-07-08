@@ -400,7 +400,7 @@ class MasterKeys(dict):
             key_error = ValueError
         try:
             key = get_rsa_key(path, passphrase)
-        except key_error as e:
+        except key_error:
             message = 'Unable to read key: {0}; passphrase may be incorrect'.format(path)
             log.error(message)
             raise MasterExit(message)
@@ -1232,9 +1232,6 @@ class SAuth(AsyncAuth):
                         # We have a list of masters, so we should break
                         # and try the next one in the list.
                         if self.opts.get('local_masters', None):
-                            error = SaltClientError('Minion failed to authenticate'
-                                                    ' with the master, has the '
-                                                    'minion key been accepted?')
                             break
                         else:
                             print('Minion failed to authenticate with the master, '

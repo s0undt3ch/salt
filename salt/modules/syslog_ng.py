@@ -436,7 +436,7 @@ def _get_type_id_options(name, configuration):
     '''
     # it's in a form of source.name
     if '.' in name:
-        type_, sep, id_ = name.partition('.')
+        type_, _, id_ = name.partition('.')
         options = configuration
     else:
         type_ = next(six.iterkeys(configuration))
@@ -584,7 +584,7 @@ def _add_junction(item):
     '''
     Adds a junction to the _current_statement.
     '''
-    type_, channels = _expand_one_key_dictionary(item)
+    _, channels = _expand_one_key_dictionary(item)
     junction = UnnamedStatement(type='junction')
     for item in channels:
         type_, value = _expand_one_key_dictionary(item)
@@ -911,7 +911,7 @@ def modules(syslog_ng_sbin_dir=None):
     lines = ret['stdout'].split('\n')
     for line in lines:
         if line.startswith('Available-Modules'):
-            label, installed_modules = line.split()
+            _, installed_modules = line.split()
             return _format_return_data(ret['retcode'],
                                        stdout=installed_modules)
     return _format_return_data(-1, stderr='Unable to find the modules.')

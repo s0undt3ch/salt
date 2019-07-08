@@ -501,10 +501,6 @@ def create(vm_):
     response['password'] = passwd
     response['public_ip'] = ip_address
 
-    ssh_username = config.get_cloud_config_value(
-        'ssh_username', vm_, __opts__, default=username
-    )
-
     vm_['ssh_host'] = ip_address
     vm_['password'] = passwd
     ret = __utils__['cloud.bootstrap'](vm_, __opts__)

@@ -1187,7 +1187,7 @@ def clear_cache(days=-1):
         salt '*' saltutil.clear_cache days=7
     '''
     threshold = time.time() - days * 24 * 60 * 60
-    for root, dirs, files in salt.utils.files.safe_walk(__opts__['cachedir'], followlinks=False):
+    for root, _, files in salt.utils.files.safe_walk(__opts__['cachedir'], followlinks=False):
         for name in files:
             try:
                 file = os.path.join(root, name)
@@ -1219,7 +1219,7 @@ def clear_job_cache(hours=24):
         salt '*' saltutil.clear_job_cache hours=12
     '''
     threshold = time.time() - hours * 60 * 60
-    for root, dirs, files in salt.utils.files.safe_walk(os.path.join(__opts__['cachedir'], 'minion_jobs'),
+    for root, dirs, _ in salt.utils.files.safe_walk(os.path.join(__opts__['cachedir'], 'minion_jobs'),
                                                   followlinks=False):
         for name in dirs:
             try:
@@ -1784,7 +1784,7 @@ def wheel(name, *args, **kwargs):
                                    kwarg=valid_kwargs,
                                    print_event=False,
                                    full_return=True)
-    except SaltInvocationError as e:
+    except SaltInvocationError:
         raise CommandExecutionError(
             'This command can only be executed on a minion that is located on '
             'the master.'

@@ -79,7 +79,7 @@ def version(*names, **kwargs):
 def upgrade(name=None, pkgs=None, refresh=True, skip_verify=True,
             normalize=True, **kwargs):
     old = __proxy__['dummy.package_list']()
-    new = __proxy__['dummy.uptodate']()
+    __proxy__['dummy.uptodate']()
     pkg_installed = __proxy__['dummy.upgrade']()
     ret = salt.utils.data.compare_dicts(old, pkg_installed)
     return ret

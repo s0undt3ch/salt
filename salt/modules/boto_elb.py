@@ -294,7 +294,7 @@ def delete(name, region=None, key=None, keyid=None, profile=None):
         conn.delete_load_balancer(name)
         log.info('Deleted ELB %s.', name)
         return True
-    except boto.exception.BotoServerError as error:
+    except boto.exception.BotoServerError:
         log.error('Failed to delete ELB %s', name,
                   exc_info_on_loglevel=logging.DEBUG)
         return False
@@ -679,7 +679,7 @@ def set_health_check(name, health_check, region=None, key=None, keyid=None,
             conn.configure_health_check(name, hc)
             log.info('Configured health check on ELB %s', name)
             return True
-        except boto.exception.BotoServerError as error:
+        except boto.exception.BotoServerError:
             if retries and e.code == 'Throttling':
                 log.debug('Throttled by AWS API, will retry in 5 seconds.')
                 time.sleep(5)

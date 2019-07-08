@@ -394,7 +394,7 @@ def do(cmdline, runas=None, env=None):
     try:
         cmdline = salt.utils.args.shlex_split(cmdline)
     except AttributeError:
-        cmdauth = salt.utils.args.shlex_split(six.text_type(cmdline))
+        cmdline = salt.utils.args.shlex_split(six.text_type(cmdline))
 
     result = __salt__['cmd.run_all'](
         cmdline,

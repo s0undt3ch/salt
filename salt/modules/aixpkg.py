@@ -43,7 +43,6 @@ def _check_pkg(target):
     '''
     Return name, version and if rpm package for specified target
     '''
-    ret = {}
     cmd = ['/usr/bin/lslpp', '-Lc', target]
     lines = __salt__['cmd.run'](
             cmd,
@@ -329,7 +328,7 @@ def remove(name=None, pkgs=None, **kwargs):
     # Remove the fileset or rpm package(s)
     for target in targets:
         try:
-            named, versionpkg, rpmpkg = _check_pkg(target)
+            named, _, rpmpkg = _check_pkg(target)
         except CommandExecutionError as exc:
             if exc.info:
                 errors.append(exc.info['errors'])
@@ -337,10 +336,10 @@ def remove(name=None, pkgs=None, **kwargs):
 
         if rpmpkg:
             cmd = ['/usr/bin/rpm', '-e', named]
-            out = __salt__['cmd.run_all'](cmd, output_loglevel='trace')
+            __salt__['cmd.run_all'](cmd, output_loglevel='trace')
         else:
             cmd = ['/usr/sbin/installp', '-u', named]
-            out = __salt__['cmd.run_all'](cmd, output_loglevel='trace')
+            __salt__['cmd.run_all'](cmd, output_loglevel='trace')
 
     # Get a list of the packages after the uninstall
     __context__.pop('pkg.list_pkgs', None)

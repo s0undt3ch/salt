@@ -516,7 +516,6 @@ def flush(set=None, family='ipv4'):
     if not settype:
         return 'Error: Set {0} does not exist'.format(set)
 
-    ipset_family = _IPSET_FAMILIES[family]
     if set:
         cmd = '{0} flush {1}'.format(_ipset_cmd(), set)
     else:

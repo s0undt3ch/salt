@@ -246,10 +246,10 @@ def add_comment(issue_key,
     jira_ = _get_jira(server=server,
                       username=username,
                       password=password)
-    comm = jira_.add_comment(issue_key,
-                             comment,
-                             visibility=visibility,
-                             is_internal=is_internal)
+    jira_.add_comment(issue_key,
+                      comment,
+                      visibility=visibility,
+                      is_internal=is_internal)
     return True
 
 

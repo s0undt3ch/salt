@@ -2354,8 +2354,11 @@ class State(object):
                         else:
                             return 'run'
                         time.sleep(1)
-            except Exception as exc:
-                log.error('Failed to read in pause data for file located at: %s', pause_path)
+            except Exception:
+                log.error(
+                    'Failed to read in pause data for file located at: %s',
+                    pause_path,
+                    exc_info_on_loglevel=logging.DEBUG)
                 return 'run'
         return 'run'
 
@@ -2481,7 +2484,7 @@ class State(object):
                                         reqs[r_state].append(chunk)
                             else:
                                 raise KeyError
-                        except KeyError as exc:
+                        except KeyError:
                             raise SaltRenderError(
                                 'Could not locate requisite of [{0}] present in state with name [{1}]'.format(
                                     req_key, chunk['name']))

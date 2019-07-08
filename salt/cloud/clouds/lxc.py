@@ -285,15 +285,6 @@ def list_nodes(conn=None, call=None):
     nodes = {}
     for state, lxcs in six.iteritems(lxclist):
         for lxcc, linfos in six.iteritems(lxcs):
-            info = {
-                'id': lxcc,
-                'name': lxcc,  # required for cloud cache
-                'image': None,
-                'size': linfos['size'],
-                'state': state.lower(),
-                'public_ips': linfos['public_ips'],
-                'private_ips': linfos['private_ips'],
-            }
             # in creation mode, we need to go inside the create method
             # so we hide the running vm from being seen as already installed
             # do not also mask half configured nodes which are explicitly asked
@@ -545,7 +536,7 @@ def get_configured_provider(vm_=None):
             curprof in profs and
             profs[curprof]['provider'] == __active_provider_name__
         ):
-            prov, cdriver = profs[curprof]['provider'].split(':')
+            prov, _ = profs[curprof]['provider'].split(':')
             tgt += ' provider: {0}'.format(prov)
             data = get_provider(prov)
             matched = True

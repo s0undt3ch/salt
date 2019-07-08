@@ -851,7 +851,7 @@ def avail_images(call=None):
     if not img_url.startswith('http://') and not img_url.startswith('https://'):
         img_url = '{0}://{1}'.format(_get_proto(), img_url)
 
-    rcode, data = query(command='my/images', method='GET')
+    _, data = query(command='my/images', method='GET')
     log.debug(data)
 
     ret = {}
@@ -896,7 +896,7 @@ def list_keys(kwargs=None, call=None):
         kwargs = {}
 
     ret = {}
-    rcode, data = query(command='my/keys', method='GET')
+    _, data = query(command='my/keys', method='GET')
     for pair in data:
         ret[pair['name']] = pair['key']
     return {'keys': ret}
@@ -919,7 +919,7 @@ def show_key(kwargs=None, call=None):
         log.error('A keyname is required.')
         return False
 
-    rcode, data = query(
+    _, data = query(
         command='my/keys/{0}'.format(kwargs['keyname']),
         method='GET',
     )
@@ -963,7 +963,7 @@ def import_key(kwargs=None, call=None):
     send_data = {'name': kwargs['keyname'], 'key': kwargs['key']}
     kwargs['data'] = salt.utils.json.dumps(send_data)
 
-    rcode, data = query(
+    _, data = query(
         command='my/keys',
         method='POST',
         data=kwargs['data'],
@@ -995,7 +995,7 @@ def delete_key(kwargs=None, call=None):
         log.error('A keyname is required.')
         return False
 
-    rcode, data = query(
+    _, data = query(
         command='my/keys/{0}'.format(kwargs['keyname']),
         method='DELETE',
     )
@@ -1027,7 +1027,7 @@ def query(action=None,
     if not user:
         log.error('username is required for Joyent API requests. Please set one in your provider configuration')
 
-    password = config.get_cloud_config_value(
+    config.get_cloud_config_value(
         'password', get_configured_provider(), __opts__,
         search_global=False
     )

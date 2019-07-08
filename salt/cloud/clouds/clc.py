@@ -313,7 +313,7 @@ def create(vm_):
     '''
     creds = get_creds()
     clc.v1.SetCredentials(creds["token"], creds["token_pass"])
-    cloud_profile = config.is_provider_configured(
+    config.is_provider_configured(
         __opts__,
         __active_provider_name__ or __virtualname__,
         ('token',)

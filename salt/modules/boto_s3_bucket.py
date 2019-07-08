@@ -118,7 +118,7 @@ def exists(Bucket,
 
     try:
         conn = _get_conn(region=region, key=key, keyid=keyid, profile=profile)
-        buckets = conn.head_bucket(Bucket=Bucket)
+        conn.head_bucket(Bucket=Bucket)
         return {'exists': True}
     except ClientError as e:
         if e.response.get('Error', {}).get('Code') == '404':
@@ -309,7 +309,7 @@ def describe(Bucket,
             result['Tagging'] = tags
         return {'bucket': result}
     except ClientError as e:
-        err = __utils__['boto3.get_error'](e)
+        __utils__['boto3.get_error'](e)
         if e.response.get('Error', {}).get('Code') == 'NoSuchBucket':
             return {'bucket': None}
         return {'error': __utils__['boto3.get_error'](e)}

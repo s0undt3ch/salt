@@ -207,7 +207,7 @@ def generate_mtime_map(opts, path_map):
     Generate a dict of filename -> mtime
     '''
     file_map = {}
-    for saltenv, path_list in six.iteritems(path_map):
+    for path_list in path_map.values():
         for path in path_list:
             for directory, _, filenames in salt.utils.path.os_walk(path):
                 for item in filenames:
@@ -269,7 +269,7 @@ def reap_fileserver_cache_dir(cache_base, find_func):
                 file_path = os.path.join(root, file_)
                 file_rel_path = os.path.relpath(file_path, env_base)
                 try:
-                    filename, _, hash_type = file_rel_path.rsplit('.', 2)
+                    filename, _, _ = file_rel_path.rsplit('.', 2)
                 except ValueError:
                     log.warning(
                         'Found invalid hash file [%s] when attempting to reap '
@@ -408,7 +408,7 @@ class Fileserver(object):
 
     def update_opts(self):
         # This fix func monkey patching by pillar
-        for name, func in self.servers.items():
+        for func in self.servers.values():
             try:
                 if '__opts__' in func.__globals__:
                     func.__globals__['__opts__'].update(self.opts)

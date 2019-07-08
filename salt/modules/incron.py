@@ -190,7 +190,6 @@ def list_tab(user):
     ret = {'crons': [],
            'pre': []
            }
-    flag = False
     for line in data.splitlines():
         if len(line.split()) > 3:
             # Appears to be a standard incron line

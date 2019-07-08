@@ -2222,7 +2222,6 @@ def fqdns():
     # Provides:
     # fqdns
 
-    grains = {}
     fqdns = set()
 
     addresses = salt.utils.network.ip_addrs(include_loopback=False, interface_data=_get_interfaces())
@@ -2230,7 +2229,7 @@ def fqdns():
     err_message = 'Exception during resolving address: %s'
     for ip in addresses:
         try:
-            name, aliaslist, addresslist = socket.gethostbyaddr(ip)
+            name, aliaslist, _ = socket.gethostbyaddr(ip)
             fqdns.update([socket.getfqdn(name)] + [als for als in aliaslist if salt.utils.network.is_fqdn(als)])
         except socket.herror as err:
             if err.errno == 0:

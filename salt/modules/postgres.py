@@ -3274,7 +3274,7 @@ def default_privileges_grant(name,
     runas
         System user all operations should be performed on behalf of
     '''
-    object_type, pdefrivileges, _defprivs = _mod_defpriv_opts(object_type, defprivileges)
+    object_type, _, _defprivs = _mod_defpriv_opts(object_type, defprivileges)
 
     _validate_default_privileges(object_type, _defprivs, defprivileges)
 
@@ -3411,11 +3411,6 @@ def default_privileges_revoke(name,
         return False
 
     _grants = ','.join(_defprivs)
-
-    if object_type in ['table', 'sequence']:
-        on_part = '{0}.{1}'.format(prepend, object_name)
-    else:
-        on_part = object_name
 
     if object_type == 'group':
         query = 'ALTER DEFAULT PRIVILEGES REVOKE {0} FROM {1}'.format(object_name, name)

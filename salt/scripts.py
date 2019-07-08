@@ -163,7 +163,7 @@ def minion_process():
                       functools.partial(handle_hup,
                                         minion))
         minion.start()
-    except (SaltClientError, SaltReqTimeoutError, SaltSystemExit) as exc:
+    except (SaltClientError, SaltReqTimeoutError, SaltSystemExit):
         lock.acquire(blocking=True)
         log.warning('Fatal functionality error caught by minion handler:\n', exc_info=True)
         log.warning('** Restarting minion **')

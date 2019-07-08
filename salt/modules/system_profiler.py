@@ -40,7 +40,7 @@ def _call_system_profiler(datatype):
     p = subprocess.Popen(
         [PROFILER_BINARY, '-detailLevel', 'full',
          '-xml', datatype], stdout=subprocess.PIPE)
-    (sysprofresults, sysprof_stderr) = p.communicate(input=None)
+    (sysprofresults, _) = p.communicate(input=None)
 
     if six.PY2:
         plist = plistlib.readPlistFromString(sysprofresults)

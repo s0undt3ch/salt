@@ -630,7 +630,7 @@ class Cloud(object):
 
         pmap = {}
         for alias, drivers in six.iteritems(self.opts['providers']):
-            for driver, details in six.iteritems(drivers):
+            for driver in drivers:
                 fun = '{0}.{1}'.format(driver, query)
                 if fun not in self.clouds:
                     log.error('Public cloud provider %s is not available', driver)
@@ -1339,7 +1339,7 @@ class Cloud(object):
         '''
         output = {}
 
-        alias, driver = extra_['provider'].split(':')
+        _, driver = extra_['provider'].split(':')
         fun = '{0}.{1}'.format(driver, extra_['action'])
         if fun not in self.clouds:
             log.error(
@@ -1522,7 +1522,7 @@ class Cloud(object):
         if invalid_functions:
             ret['Invalid Actions'] = invalid_functions
             invalid_func_vms = set()
-            for key, val in six.iteritems(invalid_functions):
+            for val in invalid_functions.values():
                 invalid_func_vms = invalid_func_vms.union(set(val))
 
             # Find the VMs that are in names, but not in set of invalid functions.
@@ -1720,8 +1720,8 @@ class Map(Cloud):
             'reboot': ['running', 'active'],
         }
         vm_names = []
-        for alias, drivers in six.iteritems(query_map):
-            for driver, vms in six.iteritems(drivers):
+        for drivers in query_map.values():
+            for vms in drivers.values():
                 for vm_name, vm_details in six.iteritems(vms):
                     # Only certain actions are support in to use in this case. Those actions are the
                     # "Global" salt-cloud actions defined in the "matching_states" dictionary above.
@@ -1983,16 +1983,16 @@ class Map(Cloud):
 
         def get_matching_by_name(name):
             matches = {}
-            for alias, drivers in six.iteritems(pmap):
-                for driver, vms in six.iteritems(drivers):
-                    for vm_name, details in six.iteritems(vms):
+            for drivers in pmap.values():
+                for driver, vms in drivers.items():
+                    for vm_name in vms:
                         if vm_name == name and driver not in matches:
                             matches[driver] = details['state']
             return matches
 
         for alias, drivers in six.iteritems(pmap):
             for driver, vms in six.iteritems(drivers):
-                for name, details in six.iteritems(vms):
+                for name in vms:
                     exist.add((alias, driver, name))
                     if name not in ret['create']:
                         continue
@@ -2004,7 +2004,7 @@ class Map(Cloud):
 
                     # A machine by the same name exists
                     for item in matching:
-                        if name not in ret['create']:
+                        if item not in ret['create']:
                             # Machine already removed
                             break
 

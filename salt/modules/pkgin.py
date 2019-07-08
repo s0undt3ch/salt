@@ -544,9 +544,7 @@ def remove(name=None, pkgs=None, **kwargs):
         salt '*' pkg.remove pkgs='["foo", "bar"]'
     '''
     try:
-        pkg_params, pkg_type = __salt__['pkg_resource.parse_targets'](
-            name, pkgs
-        )
+        pkg_params, _ = __salt__['pkg_resource.parse_targets'](name, pkgs)
     except MinionError as exc:
         raise CommandExecutionError(exc)
 

@@ -260,7 +260,6 @@ def swarm_service_info(service_name=str):
         swarm_id = dump['ID']
         create_date = dump['CreatedAt']
         update_date = dump['UpdatedAt']
-        labels = dump['Spec']['Labels']
         replicas = dump['Spec']['Mode']['Replicated']['Replicas']
         network = dump['Endpoint']['VirtualIPs']
         image = dump['Spec']['TaskTemplate']['ContainerSpec']['Image']

@@ -265,7 +265,7 @@ def export_distributions(region=None, key=None, keyid=None, profile=None):
             results['Manage CloudFront distribution {0}'.format(name)] = {
                 'boto_cloudfront.present': distribution_sls_data,
             }
-    except botocore.exceptions.ClientError as err:
+    except botocore.exceptions.ClientError:
         # Raise an exception, as this is meant to be user-invoked at the CLI
         # as opposed to being called from execution or state modules
         six.reraise(*sys.exc_info())
@@ -1514,7 +1514,6 @@ def list_tags_for_resource(region=None, key=None, keyid=None, profile=None, **kw
     sleep = 6
     kwargs = {k: v for k, v in kwargs.items() if not k.startswith('_')}
     conn = _get_conn(region=region, key=key, keyid=keyid, profile=profile)
-    Id = kwargs.get('Id')
     while retries:
         try:
             log.debug('Listing tags for CloudFront resource `%s`.', kwargs.get('Resource'))
@@ -1626,7 +1625,7 @@ def untag_resource(region=None, key=None, keyid=None, profile=None, **kwargs):
         try:
             log.debug('Removing tags (%s) from CloudFront resource `%s`.', kwargs['TagKeys'],
                     kwargs.get('Resource'))
-            ret = conn.untag_resource(**kwargs)
+            conn.untag_resource(**kwargs)
             return True
         except botocore.exceptions.ParamValidationError as err:
             raise SaltInvocationError(str(err))

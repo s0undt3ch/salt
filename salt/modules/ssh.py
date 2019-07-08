@@ -1254,7 +1254,7 @@ def set_known_host(user=None,
             os.chmod(full, 0o600)
 
     if key and hash_known_hosts:
-        cmd_result = __salt__['ssh.hash_known_hosts'](user=user, config=full)
+        __salt__['ssh.hash_known_hosts'](user=user, config=full)
 
     rval = {'status': 'updated', 'old': stored_host_entries, 'new': remote_host_entries}
     return rval

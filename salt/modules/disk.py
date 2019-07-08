@@ -350,7 +350,7 @@ def tune(device, **kwargs):
             else:
                 opts += '--{0} {1} '.format(switch, kwargs[key])
     cmd = 'blockdev {0}{1}'.format(opts, device)
-    out = __salt__['cmd.run'](cmd, python_shell=False).splitlines()
+    __salt__['cmd.run'](cmd, python_shell=False).splitlines()
     return dump(device, args)
 
 
@@ -368,7 +368,7 @@ def wipe(device):
     cmd = 'wipefs -a {0}'.format(device)
     try:
         out = __salt__['cmd.run_all'](cmd, python_shell=False)
-    except subprocess.CalledProcessError as err:
+    except subprocess.CalledProcessError:
         return False
     if out['retcode'] == 0:
         return True
@@ -420,7 +420,7 @@ def resize2fs(device):
     cmd = 'resize2fs {0}'.format(device)
     try:
         out = __salt__['cmd.run_all'](cmd, python_shell=False)
-    except subprocess.CalledProcessError as err:
+    except subprocess.CalledProcessError:
         return False
     if out['retcode'] == 0:
         return True
@@ -916,7 +916,6 @@ def _iostat_aix(interval, count, disks):
     else:
         iostat_cmd = 'iostat -dD {0} {1} {2}'.format(' '.join(disks), interval, count)
 
-    ret = {}
     procn = None
     fields = []
     disk_name = ''

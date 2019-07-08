@@ -1169,9 +1169,6 @@ def netstats():
                     headers = comps
         return ret
 
-    def freebsd_netstats():
-        return bsd_netstats()
-
     def bsd_netstats():
         '''
         bsd specific netstats implementation
@@ -1214,7 +1211,6 @@ def netstats():
         AIX specific netstats implementation
         '''
         ret = {}
-        fields = []
         procn = None
         proto_name = None
         for line in __salt__['cmd.run']('netstat -s').splitlines():
@@ -1671,9 +1667,9 @@ def ping_master(master):
     result = False
     channel = salt.transport.client.ReqChannel.factory(opts, crypt='clear')
     try:
-        payload = channel.send(load, tries=0, timeout=timeout)
+        channel.send(load, tries=0, timeout=timeout)
         result = True
-    except Exception as e:
+    except Exception:
         pass
 
     if result:

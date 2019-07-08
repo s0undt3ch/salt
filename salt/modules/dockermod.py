@@ -1579,9 +1579,9 @@ def exists(name):
     if contextkey in __context__:
         return __context__[contextkey]
     try:
-        c_info = _client_wrapper('inspect_container',
-                                 name,
-                                 catch_api_errors=False)
+        _client_wrapper('inspect_container',
+                        name,
+                        catch_api_errors=False)
     except docker.errors.APIError:
         __context__[contextkey] = False
     else:
@@ -5357,7 +5357,7 @@ def remove_network(network_id):
         salt myminion docker.remove_network mynet
         salt myminion docker.remove_network 1f9d2454d0872b68dd9e8744c6e7a4c66b86f10abaccc21e14f7f014f729b2bc
     '''
-    response = _client_wrapper('remove_network', network_id)
+    _client_wrapper('remove_network', network_id)
     _clear_context()
     return True
 
@@ -5413,10 +5413,10 @@ def connect_container_to_network(container, net_id, **kwargs):
         'Connecting container \'%s\' to network \'%s\' with the following '
         'configuration: %s', container, net_id, kwargs
     )
-    response = _client_wrapper('connect_container_to_network',
-                               container,
-                               net_id,
-                               **kwargs)
+    _client_wrapper('connect_container_to_network',
+                    container,
+                    net_id,
+                    **kwargs)
     log.debug(
         'Successfully connected container \'%s\' to network \'%s\'',
         container, net_id
@@ -5448,9 +5448,9 @@ def disconnect_container_from_network(container, network_id):
         'Disconnecting container \'%s\' from network \'%s\'',
         container, network_id
     )
-    response = _client_wrapper('disconnect_container_from_network',
-                               container,
-                               network_id)
+    _client_wrapper('disconnect_container_from_network',
+                    container,
+                    network_id)
     log.debug(
         'Successfully disconnected container \'%s\' from network \'%s\'',
         container, network_id
@@ -5564,7 +5564,7 @@ def remove_volume(name):
 
         salt myminion docker.remove_volume my_volume
     '''
-    response = _client_wrapper('remove_volume', name)
+    _client_wrapper('remove_volume', name)
     _clear_context()
     return True
 

@@ -193,14 +193,14 @@ def update():
             elif not os.path.isdir(path):
                 shutil.rmtree(path)
                 os.makedirs(path)
-        except Exception as exc:
+        except Exception:
             log.exception('Error occurred creating cache directory for azurefs')
             continue
         blob_service = _get_container_service(container)
         name = container['container_name']
         try:
             blob_list = blob_service.list_blobs(name)
-        except Exception as exc:
+        except Exception:
             log.exception('Error occurred fetching blob list for azurefs')
             continue
 
@@ -243,7 +243,7 @@ def update():
 
                 try:
                     blob_service.get_blob_to_path(name, blob.name, fname)
-                except Exception as exc:
+                except Exception:
                     log.exception('Error occurred fetching blob from azurefs')
                     continue
 
@@ -315,11 +315,12 @@ def file_list(load):
                 continue
             with salt.utils.files.fopen(container_list, 'r') as fp_:
                 ret.update(set(salt.utils.json.load(fp_)))
-    except Exception as exc:
+    except Exception:
         log.error('azurefs: an error ocurred retrieving file lists. '
                   'It should be resolved next time the fileserver '
                   'updates. Please do not manually modify the azurefs '
-                  'cache directory.')
+                  'cache directory.',
+                  exc_info_on_loglevel=logging.DEBUG)
     return list(ret)
 
 

@@ -61,7 +61,7 @@ def version():
     pybluez_version = '<= 0.18 (Unknown, but installed)'
     try:
         pybluez_version = bluetooth.__version__
-    except Exception as exc:
+    except Exception:
         pass
     return {'Bluez': bluez_version, 'PyBluez': pybluez_version}
 

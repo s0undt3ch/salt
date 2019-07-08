@@ -548,7 +548,7 @@ def destroy(name, conn=None, call=None):
     if flush_mine_on_destroy:
         log.info('Clearing Salt Mine: %s', name)
         salt_client = salt.client.get_local_client(__opts__['conf_file'])
-        minions = salt_client.cmd(name, 'mine.flush')
+        salt_client.cmd(name, 'mine.flush')
 
     log.info('Clearing Salt Mine: %s, %s', name, flush_mine_on_destroy)
     log.info('Destroying VM: %s', name)
@@ -945,7 +945,7 @@ def create(vm_):
     except AttributeError:
         pass
 
-    deploy = config.get_cloud_config_value('deploy', vm_, __opts__)
+    config.get_cloud_config_value('deploy', vm_, __opts__)
     key_filename = config.get_cloud_config_value(
         'ssh_key_file', vm_, __opts__, search_global=False, default=None
     )
@@ -1170,7 +1170,7 @@ def list_nodes_full(call=None, **kwargs):
             ret[server] = conn.server_show_libcloud(
                 server_list[server]['id']
             ).__dict__
-        except IndexError as exc:
+        except IndexError:
             ret = {}
 
     __utils__['cloud.cache_node_list'](ret, __active_provider_name__.split(':')[0], __opts__)
@@ -1276,8 +1276,6 @@ def volume_create_attach(name, call=None, **kwargs):
 
     ret = []
     for volume in volumes:
-        created = False
-
         volume_dict = {
             'name': volume['name'],
         }
@@ -1295,7 +1293,6 @@ def volume_create_attach(name, call=None, **kwargs):
 
         if 'id' not in volume_dict:
             created_volume = create_volume(**volume_dict)
-            created = True
             volume_dict.update(created_volume)
 
         attach = attach_volume(

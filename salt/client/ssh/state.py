@@ -249,7 +249,7 @@ def prep_trans_tar(file_client, chunks, file_refs, pillar=None, id_=None, roster
         cwd = None
     os.chdir(gendir)
     with closing(tarfile.open(trans_tar, 'w:gz')) as tfp:
-        for root, dirs, files in salt.utils.path.os_walk(gendir):
+        for root, _, files in salt.utils.path.os_walk(gendir):
             for name in files:
                 full = os.path.join(root, name)
                 tfp.add(full[len(gendir):].lstrip(os.sep))

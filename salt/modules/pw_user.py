@@ -115,7 +115,6 @@ def _update_gecos(name, key, value):
     gecos_data[key] = value
     cmd = ['pw', 'usermod', name, '-c', _build_gecos(gecos_data)]
     __salt__['cmd.run'](cmd, python_shell=False)
-    post_info = info(name)
     return _get_gecos(name).get(key) == value
 
 

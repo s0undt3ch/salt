@@ -177,11 +177,11 @@ def fast_connect_test(**kwargs):
     try:
         if 'api_login_timeout' not in kwargs:
             kwargs['api_login_timeout'] = 0
-        with _IpmiSession(**kwargs) as s:
+        with _IpmiSession(**kwargs) as s:  # pylint: disable=unused-variable
             # TODO: should a test command be fired?
             #s.raw_command(netfn=6, command=1, retry=False)
             return True
-    except Exception as e:
+    except Exception:
         return False
     return True
 

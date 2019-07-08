@@ -4505,7 +4505,7 @@ def _get_xml(xml_str):
         xml_data = etree.XML(xml_str)
     # XMLSyntaxError seems to be only available from lxml, but that is the xml
     # library loaded by this module
-    except etree.XMLSyntaxError as err:
+    except etree.XMLSyntaxError:
         # opennebula returned invalid XML, which could be an error message, so
         # log it
         raise SaltCloudSystemExit('opennebula returned: {0}'.format(xml_str))

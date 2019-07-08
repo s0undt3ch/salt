@@ -81,7 +81,6 @@ def _auth(profile=None):
         auth_version = credentials.get('keystone.auth_version', 2)
         region_name = credentials.get('keystone.region_name', None)
         api_key = credentials.get('keystone.api_key', None)
-        os_auth_system = credentials.get('keystone.os_auth_system', None)
     else:
         user = __salt__['config.option']('keystone.user')
         password = __salt__['config.option']('keystone.password', None)

@@ -98,7 +98,6 @@ def _query(action=None,
     if method == 'DELETE':
         decode = False
 
-    return_content = None
     result = salt.utils.http.query(
         path,
         method,
@@ -135,7 +134,7 @@ def list_items(name):
         salt myminion rallydev.list_users
         salt myminion rallydev.list_artifacts
     '''
-    status, result = _query(action=name)
+    _, result = _query(action=name)
     return result
 
 
@@ -153,7 +152,7 @@ def query_item(name, query_string, order='Rank'):
         salt myminion rallydev.query_task '(Name contains github)'
         salt myminion rallydev.query_task '(Name contains reactor)' Rank
     '''
-    status, result = _query(
+    _, result = _query(
         action=name,
         args={'query': query_string,
               'order': order}
@@ -171,7 +170,7 @@ def show_item(name, id_):
 
         salt myminion rallydev.show_<item name> <item id>
     '''
-    status, result = _query(action=name, command=id_)
+    _, result = _query(action=name, command=id_)
     return result
 
 
@@ -198,7 +197,7 @@ def update_item(name, id_, field=None, value=None, postdata=None):
         raise SaltInvocationError('Either a field and a value, or a chunk of '
             'POST data must be specified.')
 
-    status, result = _query(
+    _, result = _query(
         action=name,
         command=id_,
         method='POST',

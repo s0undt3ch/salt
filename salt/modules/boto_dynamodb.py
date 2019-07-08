@@ -147,7 +147,7 @@ def create_table(table_name, region=None, key=None, keyid=None, profile=None,
     # Table creation can take several seconds to propagate.
     # We will check MAX_ATTEMPTS times.
     MAX_ATTEMPTS = 30
-    for i in range(MAX_ATTEMPTS):
+    for _ in range(MAX_ATTEMPTS):
         if exists(
             table_name,
             region,
@@ -200,7 +200,7 @@ def delete(table_name, region=None, key=None, keyid=None, profile=None):
     # Table deletion can take several seconds to propagate.
     # We will retry MAX_ATTEMPTS times.
     MAX_ATTEMPTS = 30
-    for i in range(MAX_ATTEMPTS):
+    for _ in range(MAX_ATTEMPTS):
         if not exists(table_name, region, key, keyid, profile):
             return True
         else:
@@ -278,7 +278,7 @@ def extract_index(index_data, global_index=False):
     parsed_data = {}
     keys = []
 
-    for key, value in six.iteritems(index_data):
+    for value in index_data.values():
         for item in value:
             for field, data in six.iteritems(item):
                 if field == 'hash_key':

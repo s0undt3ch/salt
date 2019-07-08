@@ -203,9 +203,9 @@ def create_event(message_type=None, routing_key='everybody', **kwargs):
                 # Should this faile on the wrong type.
                 log.error('Wrong type, skipping %s', kwarg)
 
-    status, result = _query(action='alert',
-                            routing_key=routing_key,
-                            data=salt.utils.json.dumps(data),
-                            method='POST'
-                            )
+    _, result = _query(action='alert',
+                       routing_key=routing_key,
+                       data=salt.utils.json.dumps(data),
+                       method='POST'
+                       )
     return result

@@ -48,7 +48,6 @@ class _ArgumentParser(ArgumentParser):
     def __init__(self, action=None, *args, **kwargs):
         super(_ArgumentParser, self).__init__(*args, prog='oscap', **kwargs)
         self.add_argument('action', choices=['eval'])
-        add_arg = None
         for params, kwparams in _XCCDF_MAP['eval']['parser_arguments']:
             self.add_argument(*params, **kwparams)
 
@@ -90,7 +89,7 @@ def xccdf(params):
     try:
         parser = _ArgumentParser()
         action = parser.parse_known_args(params)[0].action
-        args, argv = _ArgumentParser(action=action).parse_known_args(args=params)
+        args, _ = _ArgumentParser(action=action).parse_known_args(args=params)
     except Exception as err:
         success = False
         error = six.text_type(err)
@@ -100,7 +99,7 @@ def xccdf(params):
         tempdir = tempfile.mkdtemp()
         proc = Popen(
             shlex.split(cmd), stdout=PIPE, stderr=PIPE, cwd=tempdir)
-        (stdoutdata, error) = proc.communicate()
+        (_, error) = proc.communicate()
         success = _OSCAP_EXIT_CODES_MAP[proc.returncode]
         returncode = proc.returncode
         if success:

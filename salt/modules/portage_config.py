@@ -615,7 +615,7 @@ def get_iuse(cp):
         # aux_get might return dupes, so run them through set() to remove them
         dirty_flags = _porttree().dbapi.aux_get(cpv, ["IUSE"])[0].split()
         return list(set(dirty_flags))
-    except Exception as e:
+    except Exception:
         return []
 
 

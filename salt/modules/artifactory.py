@@ -243,8 +243,9 @@ def _get_snapshot_url(artifactory_url, repository, group_id, artifact_id, versio
                 raise ArtifactoryError(error_message)
 
             snapshot_version = snapshot_version_metadata['snapshot_versions'][packaging_with_classifier]
-        except CommandExecutionError as err:
-            log.error('Could not fetch maven-metadata.xml. Assuming snapshot_version=%s.', version)
+        except CommandExecutionError:
+            log.error('Could not fetch maven-metadata.xml. Assuming snapshot_version=%s.', version,
+                      exc_info_on_loglevel=logging.DEBUG)
             snapshot_version = version
 
     group_url = __get_group_id_subpath(group_id, use_literal_group_id)

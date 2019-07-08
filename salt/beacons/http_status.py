@@ -118,9 +118,8 @@ def beacon(config):
     _config = {}
     list(map(_config.update, config))
 
-    for site, site_config in _config.get('sites', {}).items():
+    for site_config in _config.get('sites', {}).values():
         url = site_config.pop('url')
-        content_type = site_config.pop('content_type', 'json')
         try:
             r = requests.get(url, timeout=site_config.pop('timeout', 30))
         except requests.exceptions.RequestException as e:

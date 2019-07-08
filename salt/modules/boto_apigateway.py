@@ -647,7 +647,7 @@ def disassociate_api_key_stagekeys(apiKey, stagekeyslist, region=None, key=None,
     try:
         conn = _get_conn(region=region, key=key, keyid=keyid, profile=profile)
         pvlist = [('/stages', stagekey) for stagekey in stagekeyslist]
-        response = _api_key_patch_remove(conn, apiKey, pvlist)
+        _api_key_patch_remove(conn, apiKey, pvlist)
         return {'disassociated': True}
     except ClientError as e:
         return {'disassociated': False, 'error': __utils__['boto3.get_error'](e)}
@@ -1597,7 +1597,7 @@ def delete_usage_plan(plan_id, region=None, key=None, keyid=None, profile=None):
 
         if 'plans' in existing and existing['plans']:
             conn = _get_conn(region=region, key=key, keyid=keyid, profile=profile)
-            res = conn.delete_usage_plan(usagePlanId=plan_id)
+            conn.delete_usage_plan(usagePlanId=plan_id)
         return {'deleted': True, 'usagePlanId': plan_id}
     except ClientError as e:
         return {'error': __utils__['boto3.get_error'](e)}

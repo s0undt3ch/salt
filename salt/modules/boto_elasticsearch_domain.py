@@ -142,7 +142,7 @@ def exists(DomainName,
 
     conn = _get_conn(region=region, key=key, keyid=keyid, profile=profile)
     try:
-        domain = conn.describe_elasticsearch_domain(DomainName=DomainName)
+        conn.describe_elasticsearch_domain(DomainName=DomainName)
         return {'exists': True}
     except ClientError as e:
         if e.response.get('Error', {}).get('Code') == 'ResourceNotFoundException':

@@ -5384,7 +5384,7 @@ def _is_valid_volume(vol):
         # Getting info on an invalid volume raises error
         vol.info()
         return True
-    except libvirt.libvirtError as err:
+    except libvirt.libvirtError:
         return False
 
 

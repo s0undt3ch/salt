@@ -209,7 +209,7 @@ def deinstall(name):
     '''
     portpath = _check_portname(name)
     old = __salt__['pkg.list_pkgs']()
-    result = __salt__['cmd.run_all'](
+    __salt__['cmd.run_all'](
         ['make', 'deinstall', 'BATCH=yes'],
         cwd=portpath,
         python_shell=False
@@ -307,7 +307,7 @@ def showconfig(name, default=False, dict_return=False):
     output = output[1:]
     for line in output:
         try:
-            opt, val, desc = re.match(
+            opt, val, _ = re.match(
                 r'\s+([^=]+)=(off|on): (.+)', line
             ).groups()
         except AttributeError:
@@ -338,7 +338,7 @@ def config(name, reset=False, **kwargs):
 
         salt '*' ports.config security/nmap IPV6=off
     '''
-    portpath = _check_portname(name)
+    _check_portname(name)
 
     if reset:
         rmconfig(name)
@@ -469,7 +469,7 @@ def list_all():
     '''
     if 'ports.list_all' not in __context__:
         __context__['ports.list_all'] = []
-        for path, dirs, files in salt.utils.path.os_walk('/usr/ports'):
+        for path, _, _ in salt.utils.path.os_walk('/usr/ports'):
             stripped = path[len('/usr/ports'):]
             if stripped.count('/') != 2 or stripped.endswith('/CVS'):
                 continue

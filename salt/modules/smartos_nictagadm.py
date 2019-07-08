@@ -152,8 +152,6 @@ def add(name, mac, mtu=1500):
         salt '*' nictagadm.add storage0 etherstub
         salt '*' nictagadm.add trunk0 'DE:AD:OO:OO:BE:EF' 9000
     '''
-    ret = {}
-
     if mtu > 9000 or mtu < 1500:
         return {'Error': 'mtu must be a value between 1500 and 9000.'}
     if mac != 'etherstub':
@@ -193,8 +191,6 @@ def update(name, mac=None, mtu=None):
 
         salt '*' nictagadm.update trunk mtu=9000
     '''
-    ret = {}
-
     if name not in list_nictags():
         return {'Error': 'nictag {0} does not exists.'.format(name)}
     if not mtu and not mac:
@@ -243,8 +239,6 @@ def delete(name, force=False):
 
         salt '*' nictagadm.exists admin
     '''
-    ret = {}
-
     if name not in list_nictags():
         return True
 

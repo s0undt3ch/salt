@@ -1228,7 +1228,7 @@ def create_storage(kwargs=None, conn=None, call=None):
                                   'must be specified (but not both)')
 
     try:
-        data = conn.create_storage_account(
+        conn.create_storage_account(
             service_name=kwargs['name'],
             label=kwargs['label'],
             description=kwargs.get('description', None),
@@ -1269,7 +1269,7 @@ def update_storage(kwargs=None, conn=None, call=None):
     if 'name' not in kwargs:
         raise SaltCloudSystemExit('A name must be specified as "name"')
 
-    data = conn.update_storage_account(
+    conn.update_storage_account(
         service_name=kwargs['name'],
         label=kwargs.get('label', None),
         description=kwargs.get('description', None),
@@ -1311,7 +1311,7 @@ def regenerate_storage_keys(kwargs=None, conn=None, call=None):
         raise SaltCloudSystemExit('A key_type must be specified ("primary" or "secondary")')
 
     try:
-        data = conn.regenerate_storage_account_keys(
+        conn.regenerate_storage_account_keys(
             service_name=kwargs['name'],
             key_type=kwargs['key_type'],
         )
@@ -1347,7 +1347,7 @@ def delete_storage(kwargs=None, conn=None, call=None):
         conn = get_conn()
 
     try:
-        data = conn.delete_storage_account(kwargs['name'])
+        conn.delete_storage_account(kwargs['name'])
         return {'Success': 'The storage account was successfully deleted'}
     except AzureMissingResourceHttpError as exc:
         raise SaltCloudSystemExit('{0}: {1}'.format(kwargs['name'], exc.message))
@@ -1449,7 +1449,7 @@ def create_service(kwargs=None, conn=None, call=None):
                                   'must be specified (but not both)')
 
     try:
-        data = conn.create_hosted_service(
+        conn.create_hosted_service(
             kwargs['name'],
             kwargs['label'],
             kwargs.get('description', None),
@@ -1590,7 +1590,7 @@ def cleanup_unattached_disks(kwargs=None, conn=None, call=None):
                 'Deleting disk %s, deleting VHD: %s',
                 del_kwargs['name'], del_kwargs['delete_vhd']
             )
-            data = delete_disk(kwargs=del_kwargs, call='function')
+            delete_disk(kwargs=del_kwargs, call='function')
     return True
 
 
@@ -1622,7 +1622,7 @@ def delete_disk(kwargs=None, conn=None, call=None):
         conn = get_conn()
 
     try:
-        data = conn.delete_disk(kwargs['name'], kwargs.get('delete_vhd', False))
+        conn.delete_disk(kwargs['name'], kwargs.get('delete_vhd', False))
         return {'Success': 'The disk was successfully deleted'}
     except AzureMissingResourceHttpError as exc:
         raise SaltCloudSystemExit('{0}: {1}'.format(kwargs['name'], exc.message))
@@ -1656,7 +1656,7 @@ def update_disk(kwargs=None, conn=None, call=None):
         raise SaltCloudSystemExit('A name must be specified as "name"')
 
     old_data = show_disk(kwargs={'name': kwargs['name']}, call='function')
-    data = conn.update_disk(
+    conn.update_disk(
         disk_name=kwargs['name'],
         has_operating_system=kwargs.get('has_operating_system', old_data['has_operating_system']),
         label=kwargs.get('label', old_data['label']),
@@ -1782,7 +1782,7 @@ def add_service_certificate(kwargs=None, conn=None, call=None):
         raise SaltCloudSystemExit('A password must be specified as "password"')
 
     try:
-        data = conn.add_service_certificate(
+        conn.add_service_certificate(
             kwargs['name'],
             kwargs['data'],
             kwargs['certificate_format'],
@@ -1828,7 +1828,7 @@ def delete_service_certificate(kwargs=None, conn=None, call=None):
         conn = get_conn()
 
     try:
-        data = conn.delete_service_certificate(
+        conn.delete_service_certificate(
             kwargs['name'],
             kwargs['thumbalgorithm'],
             kwargs['thumbprint'],
@@ -2823,7 +2823,7 @@ def set_storage_container_acl(kwargs=None, storage_conn=None, call=None):
         storage_conn = get_storage_conn(conn_kwargs=kwargs)
 
     try:
-        data = storage_conn.set_container_acl(
+        storage_conn.set_container_acl(
             container_name=kwargs['name'],
             signed_identifiers=kwargs.get('signed_identifiers', None),
             x_ms_blob_public_access=kwargs.get('blob_public_access', None),

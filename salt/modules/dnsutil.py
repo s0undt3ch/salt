@@ -385,7 +385,6 @@ def serial(zone='', update=False):
 
         salt ns1 dnsutil.serial example.com
     '''
-    grains = {}
     key = 'dnsserial'
     if zone:
         key += '_{0}'.format(zone)

@@ -475,8 +475,6 @@ def render(jinja_template_text=None, jinja_template_function='highstate_doc.mark
 
 
 def _blacklist_filter(s, config):
-    ss = s['state']
-    sf = s['fun']
     state_function = '{0}.{1}'.format(s['state'], s['fun'])
     for b in config['filter_function_regex']:
         if re.match(b, state_function):
@@ -555,7 +553,7 @@ def _format_markdown_system_file(filename, config):
             file_type = __salt__['cmd.shell']('\\file -i \'{0}\''.format(filename))
             if 'charset=binary' not in file_type:
                 is_binary = False
-        except Exception as ex:
+        except Exception:
             # likely on a windows system, set as not binary for now.
             is_binary = False
         if is_binary:

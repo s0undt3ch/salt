@@ -222,14 +222,13 @@ def __virtual__():
     '''
     if salt.utils.platform.is_windows():
         return False, "The ansiblegate module isn't supported on Windows"
-    ret = ansible is not None
-    msg = not ret and "Ansible is not installed on this system" or None
-    if ret:
-        global _resolver
-        global _caller
-        _resolver = AnsibleModuleResolver(__opts__).resolve().install()
-        _caller = AnsibleModuleCaller(_resolver)
-        _set_callables(list())
+    if ansible is None:
+        return False, "Ansible is not installed on this system"
+    global _resolver
+    global _caller
+    _resolver = AnsibleModuleResolver(__opts__).resolve().install()
+    _caller = AnsibleModuleCaller(_resolver)
+    _set_callables(list())
     return __virtualname__
 
 

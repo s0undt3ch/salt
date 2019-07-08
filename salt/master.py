@@ -316,7 +316,7 @@ class Maintenance(salt.utils.process.SignalHandlingMultiprocessingProcess):
         try:
             for pillar in self.git_pillar:
                 pillar.fetch_remotes()
-        except Exception as exc:
+        except Exception:
             log.error('Exception caught while updating git_pillar',
                       exc_info=True)
 
@@ -458,10 +458,11 @@ class FileserverUpdate(salt.utils.process.SignalHandlingMultiprocessingProcess):
                         args = ()
 
                     update_func(*args)
-                except Exception as exc:
+                except Exception:
                     log.exception(
                         'Uncaught exception while updating %s fileserver '
-                        'cache', backend_name
+                        'cache', backend_name,
+                        exc_info_on_loglevel=logging.DEBUG
                     )
 
             log.debug(
@@ -624,7 +625,7 @@ class Master(SMaster):
                     for repo in git_pillars:
                         new_opts['ext_pillar'] = [repo]
                         try:
-                            git_pillar = salt.utils.gitfs.GitPillar(
+                            salt.utils.gitfs.GitPillar(
                                 new_opts,
                                 repo['git'],
                                 per_remote_overrides=salt.pillar.git_pillar.PER_REMOTE_OVERRIDES,
@@ -2091,7 +2092,7 @@ class ClearFuncs(object):
         ssh_minions = _res.get('ssh_minions', False)
 
         # Check for external auth calls and authenticate
-        auth_type, err_name, key, sensitive_load_keys = self._prep_auth_info(extra)
+        auth_type, _, key, _ = self._prep_auth_info(extra)
         if auth_type == 'user':
             auth_check = self.loadauth.check_authentication(clear_load, auth_type, key=key)
         else:
@@ -2220,7 +2221,7 @@ class ClearFuncs(object):
         '''
         Take a load and send it across the network to connected minions
         '''
-        for transport, opts in iter_transport_opts(self.opts):
+        for _, opts in iter_transport_opts(self.opts):
             chan = salt.transport.server.PubServerChannel.factory(opts)
             chan.publish(load)
 
@@ -2313,8 +2314,6 @@ class ClearFuncs(object):
                 'The specified returner threw a stack trace:\n',
                 exc_info=True
             )
-        # Set up the payload
-        payload = {'enc': 'aes'}
         # Altering the contents of the publish load is serious!! Changes here
         # break compatibility with minion/master versions and even tiny
         # additions can have serious implications on the performance of the

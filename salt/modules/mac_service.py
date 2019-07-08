@@ -94,7 +94,7 @@ def _name_in_services(name, services):
         if service['file_path'].lower() == name:
             # Match on full path
             return service
-        basename, ext = os.path.splitext(service['file_name'])
+        basename, _ = os.path.splitext(service['file_name'])
         if basename.lower() == name:
             # Match on basename
             return service
@@ -683,7 +683,7 @@ def get_enabled(runas=None):
         if line.startswith('PID'):
             continue
 
-        pid, status, label = line.split('\t')
+        _, _, label = line.split('\t')
         enabled.append(label)
 
     return sorted(set(enabled))

@@ -181,7 +181,7 @@ def upgrade(system_image, kickstart_image=None, issu=True, **kwargs):
     impact = None
     upgrade = None
     maxtry = 60
-    for attempt in range(1, maxtry):
+    for _ in range(1, maxtry):
         # Gather impact data first.  It's possible to loose upgrade data
         # when the switch reloads or switches over to the inactive supervisor.
         # The impact data will be used if data being collected during the

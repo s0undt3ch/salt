@@ -56,8 +56,7 @@ def _cmd(binary, *args):
     if not binary:
         raise CommandNotFoundError('{0}: command not found'.format(binary))
     cmd = [binary] + list(args)
-    return __salt__['cmd.run_stdout']([binary] + list(args),
-                                      python_shell=False)
+    return __salt__['cmd.run_stdout'](cmd, python_shell=False)
 
 
 def atq(tag=None):

@@ -1601,7 +1601,7 @@ def _wait_for_job(linode_id, job_id, timeout=300, quiet=True):
     interval = 5
     iterations = int(timeout / interval)
 
-    for i in range(0, iterations):
+    for _ in range(iterations):
         jobs_result = _query('linode',
                              'job.list',
                              args={'LinodeID': linode_id})['DATA']
@@ -1640,7 +1640,7 @@ def _wait_for_status(linode_id, status=None, timeout=300, quiet=True):
     interval = 5
     iterations = int(timeout / interval)
 
-    for i in range(0, iterations):
+    for _ in range(iterations):
         result = get_linode(kwargs={'linode_id': linode_id})
 
         if result['STATUS'] == status:
@@ -1665,7 +1665,7 @@ def _get_status_descr_by_id(status_id):
     status_id
         linode VM status ID
     '''
-    for status_name, status_data in six.iteritems(LINODE_STATUS):
+    for status_data in LINODE_STATUS.values():
         if status_data['code'] == int(status_id):
             return status_data['descr']
     return LINODE_STATUS.get(status_id, None)

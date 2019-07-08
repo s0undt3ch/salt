@@ -104,7 +104,7 @@ def __virtual__():
     if get_dependencies() is False:
         return False
 
-    for provider, details in six.iteritems(__opts__['providers']):
+    for details in __opts__['providers'].values():
         if 'dimensiondata' not in details:
             continue
 

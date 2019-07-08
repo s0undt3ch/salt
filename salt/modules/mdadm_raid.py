@@ -281,7 +281,7 @@ def save_config():
     # REF: http://askubuntu.com/questions/209702/why-is-my-raid-dev-md1-showing-up-as-dev-md126-is-mdadm-conf-being-ignored
     if __grains__['os'] == 'Ubuntu':
         buggy_ubuntu_tags = ['name', 'metadata']
-        for i, elem in enumerate(scan):
+        for i in range(len(scan)):
             for bad_tag in buggy_ubuntu_tags:
                 pattern = r'\s{0}=\S+'.format(re.escape(bad_tag))
                 pattern = re.compile(pattern, flags=re.I)

@@ -108,7 +108,7 @@ def _retrieve_channel_id(email, profile='telemetry'):
 
         if response.status_code == 200:
             cache_result = {}
-            for index, alert in enumerate(response.json()):
+            for _, alert in enumerate(response.json()):
                 cache_result[alert.get('email')] = alert.get('_id', 'false')
 
             __context__[key] = cache_result
@@ -250,8 +250,6 @@ def create_alarm(deployment_id, metric_name, data, api_key=None, profile="teleme
 
     auth = _auth(api_key, profile)
     request_uri = _get_telemetry_base(profile) + "/alerts"
-
-    key = "telemetry.{0}.alerts".format(deployment_id)
 
     # set the notification channels if not already set
     post_body = {

@@ -213,7 +213,7 @@ def parse_hostname(hostname, default_port):
     An ipv6 address must have at least 2 colons.
     '''
     try:
-        host, sep, port = hostname.strip().rpartition(' ')
+        host, _, port = hostname.strip().rpartition(' ')
         if not port:  # invalid nothing there
             return None
 
@@ -222,7 +222,7 @@ def parse_hostname(hostname, default_port):
             port = default_port
             # ipv6 must have two or more colons
             if host.count(':') == 1:  # only one so may be using colon delimited port
-                host, sep, port = host.rpartition(':')
+                host, _, port = host.rpartition(':')
                 if not host:  # colon but not host so invalid
                     return None
                 if not port:  # colon but no port so use default

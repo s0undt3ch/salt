@@ -123,7 +123,6 @@ def unpurge(*packages):
     if not packages:
         return {}
     old = __salt__['pkg.list_pkgs'](purge_desired=True)
-    ret = {}
     __salt__['cmd.run'](
         ['dpkg', '--set-selections'],
         stdin=r'\n'.join(['{0} install'.format(x) for x in packages]),

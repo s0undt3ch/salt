@@ -68,7 +68,6 @@ def _ip_ifaces():
     '''
     Parse output from 'ip a'
     '''
-    tmp = {}
     ret = {}
     if_ = None
     at_ = None

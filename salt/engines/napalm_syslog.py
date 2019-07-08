@@ -364,9 +364,8 @@ def start(transport='zmq',
                 error=event_error,
                 host=event_host
             )
-        except KeyError as kerr:
-            log.warning('Missing keys from the napalm-logs object:', exc_info=True)
-            log.warning(dict_object)
+        except KeyError:
+            log.warning('Missing keys from the napalm-logs object: %r', dict_object, exc_info=True)
             continue  # jump to the next object in the queue
         log.debug('Sending event %s', tag)
         log.debug(raw_object)

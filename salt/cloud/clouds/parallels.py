@@ -345,7 +345,7 @@ def create(vm_):
     public_ip = comps[0]
 
     vm_['ssh_host'] = public_ip
-    ret = __utils__['cloud.bootstrap'](vm_, __opts__)
+    __utils__['cloud.bootstrap'](vm_, __opts__)
 
     log.info('Created Cloud VM \'%s\'', vm_['name'])
     log.debug(

@@ -851,10 +851,6 @@ def _sizes(dev):
     '''
     dev = _devbase(dev)
 
-    # standarization yay
-    block_sizes = ('hw_sector_size', 'minimum_io_size', 'physical_block_size', 'logical_block_size')
-    discard_sizes = ('discard_max_bytes', 'discard_max_hw_bytes', )
-
     sysfs = __salt__['sysfs.read'](
         ('size',
          'queue/hw_sector_size', '../queue/hw_sector_size',
@@ -885,7 +881,7 @@ def _wipe(dev):
     endres = 0
     dev = _devbase(dev)
 
-    size, block, discard = _sizes(dev)
+    size, _, discard = _sizes(dev)
 
     if discard is None:
         log.error('Unable to read SysFS props for %s', dev)

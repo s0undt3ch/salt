@@ -135,8 +135,8 @@ def create_replication_group(name, primary_cluster_id, replication_group_descrip
     if not conn:
         return None
     try:
-        cc = conn.create_replication_group(name, primary_cluster_id,
-                                           replication_group_description)
+        conn.create_replication_group(name, primary_cluster_id,
+                                      replication_group_description)
         if not wait:
             log.info('Created cache cluster %s.', name)
             return True
@@ -202,10 +202,6 @@ def describe_replication_group(name, region=None, key=None, keyid=None,
     cc = cc['DescribeReplicationGroupsResponse']['DescribeReplicationGroupsResult']
     cc = cc['ReplicationGroups'][0]
 
-    attrs = ['status', 'description', 'primary_endpoint',
-             'member_clusters', 'replication_group_id',
-             'pending_modified_values', 'primary_cluster_id',
-             'node_groups']
     for key, val in six.iteritems(cc):
         _key = boto.utils.pythonize_name(key)
         if _key == 'status':

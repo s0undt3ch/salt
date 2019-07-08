@@ -764,7 +764,7 @@ class MinionBase(object):
                     return
                 mapping = self.opts['discovery'].get('mapping', {})
                 discovered = []
-                for addr, mappings in masters.items():
+                for mappings in masters.values():
                     for proto_data in mappings:
                         cnt = len([key for key, value in mapping.items()
                                    if proto_data.get('mapping', {}).get(key) == value])
@@ -785,7 +785,6 @@ class MinionBase(object):
         if self.opts.get('return_retry_timer_max'):
             try:
                 random_retry = randint(self.opts['return_retry_timer'], self.opts['return_retry_timer_max'])
-                retry_msg = msg % random_retry
                 log.debug('%s (randomized)', msg % random_retry)
                 return random_retry
             except ValueError:
@@ -1061,7 +1060,7 @@ class MinionManager(MinionBase):
                 minion.tune_in(start=False)
                 self.minions.append(minion)
                 break
-            except SaltClientError as exc:
+            except SaltClientError:
                 failed = True
                 log.error(
                     'Error while bringing up minion for multi-master. Is '
@@ -1072,7 +1071,7 @@ class MinionManager(MinionBase):
                       'Set \'master\' value in minion config.'.format(minion.opts['master'])
                 log.error(err)
                 break
-            except Exception as e:
+            except Exception:
                 failed = True
                 log.critical(
                     'Unexpected error while connecting to %s',

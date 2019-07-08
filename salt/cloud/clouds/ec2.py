@@ -284,7 +284,7 @@ def optimize_providers(providers):
                                                       'data': data,
                                                       }
 
-    for location, tmp_data in six.iteritems(tmp_providers):
+    for tmp_data in tmp_providers.values():
         for creds, data in six.iteritems(tmp_data):
             _id, _key = creds
             _name = data['name']
@@ -306,12 +306,9 @@ def query(params=None, setname=None, requesturl=None, location=None,
     service_url = provider.get('service_url', 'amazonaws.com')
 
     # Retrieve access credentials from meta-data, or use provided
-    access_key_id, secret_access_key, token = aws.creds(provider)
-
     attempts = 0
     while attempts < aws.AWS_MAX_RETRIES:
         params_with_headers = params.copy()
-        timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
         if not location:
             location = get_location()
@@ -324,10 +321,8 @@ def query(params=None, setname=None, requesturl=None, location=None,
 
             requesturl = 'https://{0}/'.format(endpoint)
             endpoint = _urlparse(requesturl).netloc
-            endpoint_path = _urlparse(requesturl).path
         else:
             endpoint = _urlparse(requesturl).netloc
-            endpoint_path = _urlparse(requesturl).path
             if endpoint == '':
                 endpoint_err = (
                         'Could not find a valid endpoint in the '
@@ -1653,11 +1648,11 @@ def _update_enis(interfaces, instance, vm_=None):
 
         params_attachment = {'Attachment.AttachmentId': eni_data['attachmentId'],
                              'Attachment.DeleteOnTermination': delete_on_terminate}
-        set_eni_attachment_attributes = _modify_eni_properties(eni_id, params_attachment, vm_=vm_)
+        _modify_eni_properties(eni_id, params_attachment, vm_=vm_)
 
         if 'SourceDestCheck' in config_enis[eni_data['deviceIndex']]:
             params_sourcedest = {'SourceDestCheck.Value': config_enis[eni_data['deviceIndex']]['SourceDestCheck']}
-            set_eni_sourcedest_property = _modify_eni_properties(eni_id, params_sourcedest, vm_=vm_)
+            _modify_eni_properties(eni_id, params_sourcedest, vm_=vm_)
 
     return None
 
@@ -2564,9 +2559,6 @@ def create(vm_=None, call=None):
     # Check for private_key and keyfile name for bootstrapping new instances
     deploy = config.get_cloud_config_value(
         'deploy', vm_, __opts__, default=True
-    )
-    win_password = config.get_cloud_config_value(
-        'win_password', vm_, __opts__, default=''
     )
     key_filename = config.get_cloud_config_value(
         'private_key', vm_, __opts__, search_global=False, default=None
@@ -3789,12 +3781,12 @@ def _toggle_term_protect(name, value):
               'InstanceId': instance_id,
               'DisableApiTermination.Value': value}
 
-    result = aws.query(params,
-                       location=get_location(),
-                       provider=get_provider(),
-                       return_root=True,
-                       opts=__opts__,
-                       sigver='4')
+    aws.query(params,
+              location=get_location(),
+              provider=get_provider(),
+              return_root=True,
+              opts=__opts__,
+              sigver='4')
 
     return show_term_protect(name=name, instance_id=instance_id, call='action')
 
@@ -3853,12 +3845,12 @@ def disable_detailed_monitoring(name, call=None):
     params = {'Action': 'UnmonitorInstances',
               'InstanceId.1': instance_id}
 
-    result = aws.query(params,
-                       location=get_location(),
-                       provider=get_provider(),
-                       return_root=True,
-                       opts=__opts__,
-                       sigver='4')
+    aws.query(params,
+              location=get_location(),
+              provider=get_provider(),
+              return_root=True,
+              opts=__opts__,
+              sigver='4')
 
     return show_detailed_monitoring(name=name, instance_id=instance_id, call='action')
 
@@ -3880,12 +3872,12 @@ def enable_detailed_monitoring(name, call=None):
     params = {'Action': 'MonitorInstances',
               'InstanceId.1': instance_id}
 
-    result = aws.query(params,
-                       location=get_location(),
-                       provider=get_provider(),
-                       return_root=True,
-                       opts=__opts__,
-                       sigver='4')
+    aws.query(params,
+              location=get_location(),
+              provider=get_provider(),
+              return_root=True,
+              opts=__opts__,
+              sigver='4')
 
     return show_detailed_monitoring(name=name, instance_id=instance_id, call='action')
 
@@ -3933,7 +3925,7 @@ def show_delvol_on_destroy(name, kwargs=None, call=None):
 
     items = []
 
-    for idx, item in enumerate(blockmap['item']):
+    for item in blockmap['item']:
         device_name = item['deviceName']
 
         if device is not None and device != device_name:
@@ -4964,9 +4956,6 @@ def _parse_pricing(url, name):
     .. versionadded:: 2015.8.0
     '''
     price_js = http.query(url, text=True)
-
-    items = []
-    current_item = ''
 
     price_js = re.sub(JS_COMMENT_RE, '', price_js['text'])
     price_js = price_js.strip().rstrip(');').lstrip('callback(')

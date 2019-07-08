@@ -2021,7 +2021,7 @@ def _validate_opts(opts):
     '''
     def format_multi_opt(valid_type):
         try:
-            num_types = len(valid_type)
+            len(valid_type)
         except TypeError:
             # Bare type name won't have a length, return the name of the type
             # passed.
@@ -3098,7 +3098,7 @@ def apply_cloud_providers_config(overrides, defaults=None):
         config.update(overrides)
 
     # Is the user still using the old format in the new configuration file?!
-    for name, settings in six.iteritems(config.copy()):
+    for name in config.copy():
         if '.' in name:
             log.warning(
                 'Please switch to the new providers configuration syntax'

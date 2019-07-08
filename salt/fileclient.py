@@ -111,7 +111,7 @@ class Client(object):
         '''
         if not path.startswith('salt://'):
             raise MinionError('Unsupported path: {0}'.format(path))
-        file_path, saltenv = salt.utils.url.parse(path)
+        file_path, _ = salt.utils.url.parse(path)
         return file_path
 
     def _file_local_list(self, dest):
@@ -125,7 +125,7 @@ class Client(object):
 
         filelist = set()
 
-        for root, dirs, files in salt.utils.path.os_walk(destdir, followlinks=True):
+        for root, _, files in salt.utils.path.os_walk(destdir, followlinks=True):
             for name in files:
                 path = os.path.join(root, name)
                 filelist.add(path)
@@ -267,7 +267,7 @@ class Client(object):
                     ret.append(minion_dir)
         return ret
 
-    def cache_local_file(self, path, **kwargs):
+    def cache_local_file(self, path, **kwargs):  # pylint: disable=unused-variable
         '''
         Cache a local file on the minion in the localfiles cache
         '''
@@ -755,7 +755,6 @@ class Client(object):
             kwargs.pop('env')
 
         kwargs['saltenv'] = saltenv
-        url_data = urlparse(url)
         sfn = self.cache_file(url, saltenv, cachedir=cachedir)
         if not sfn or not os.path.exists(sfn):
             return ''
@@ -909,7 +908,7 @@ class PillarClient(Client):
         ret = []
         prefix = prefix.strip('/')
         for path in self.opts['pillar_roots'].get(saltenv, []):
-            for root, dirs, files in salt.utils.path.os_walk(
+            for root, _, _ in salt.utils.path.os_walk(
                 os.path.join(path, prefix), followlinks=True
             ):
                 ret.append(salt.utils.data.decode(os.path.relpath(root, path)))
@@ -1078,14 +1077,9 @@ class RemoteClient(Client):
             saltenv = senv
 
         if not salt.utils.platform.is_windows():
-            hash_server, stat_server = self.hash_and_stat_file(path, saltenv)
-            try:
-                mode_server = stat_server[0]
-            except (IndexError, TypeError):
-                mode_server = None
+            hash_server, _ = self.hash_and_stat_file(path, saltenv)
         else:
             hash_server = self.hash_file(path, saltenv)
-            mode_server = None
 
         # Check if file exists on server, before creating files and
         # directories
@@ -1126,15 +1120,9 @@ class RemoteClient(Client):
 
         if dest2check and os.path.isfile(dest2check):
             if not salt.utils.platform.is_windows():
-                hash_local, stat_local = \
-                    self.hash_and_stat_file(dest2check, saltenv)
-                try:
-                    mode_local = stat_local[0]
-                except (IndexError, TypeError):
-                    mode_local = None
+                hash_local, _ = self.hash_and_stat_file(dest2check, saltenv)
             else:
                 hash_local = self.hash_file(dest2check, saltenv)
-                mode_local = None
 
             if hash_local == hash_server:
                 return dest2check
@@ -1340,7 +1328,7 @@ class RemoteClient(Client):
         hash_result = self.hash_file(path, saltenv)
         try:
             path = self._check_proto(path)
-        except MinionError as err:
+        except MinionError:
             if not os.path.isfile(path):
                 return hash_result, None
             else:

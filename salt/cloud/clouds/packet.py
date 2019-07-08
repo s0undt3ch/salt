@@ -248,7 +248,7 @@ def _wait_for_status(status_type, object_id, status=None, timeout=500, quiet=Tru
     vm_ = get_configured_provider()
     manager = packet.Manager(auth_token=vm_['token'])
 
-    for i in range(0, iterations):
+    for _ in range(iterations):
         get_object = getattr(manager, "get_{status_type}".format(status_type=status_type))
         obj = get_object(object_id)
 

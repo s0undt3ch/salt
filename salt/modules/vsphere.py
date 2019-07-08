@@ -319,8 +319,7 @@ def gets_service_instance_via_proxy(fn):
     '''
     fn_name = fn.__name__
     try:
-        arg_names, args_name, kwargs_name, default_values, _, _, _ = \
-                inspect.getfullargspec(fn)
+        arg_names, _, kwargs_name, default_values, _, _, _ = inspect.getfullargspec(fn)
     except AttributeError:
         # Fallback to Python 2.7
         arg_names, args_name, kwargs_name, default_values = \
@@ -383,7 +382,7 @@ def gets_service_instance_via_proxy(fn):
             if local_service_instance:
                 salt.utils.vmware.disconnect(local_service_instance)
             return ret
-        except Exception as e:
+        except Exception:
             # Disconnect if connected in the decorator
             if local_service_instance:
                 salt.utils.vmware.disconnect(local_service_instance)
@@ -5620,7 +5619,7 @@ def create_vmfs_datastore(datastore_name, disk_id, vmfs_major_version,
             raise VMwareObjectRetrievalError(
                 'Disk \'{0}\' was not found in host \'{1}\''.format(disk_id,
                                                                     hostname))
-    ds_ref = salt.utils.vmware.create_vmfs_datastore(
+    salt.utils.vmware.create_vmfs_datastore(
         host_ref, datastore_name, disks[0], vmfs_major_version)
     return True
 
@@ -6233,11 +6232,11 @@ def create_diskgroup(cache_disk_id, capacity_disk_ids, safety_checks=True,
     capacity_disks = [d for d in disks if d.canonicalName in capacity_disk_ids]
     vsan_disk_mgmt_system = \
             salt.utils.vsan.get_vsan_disk_management_system(service_instance)
-    dg = salt.utils.vsan.create_diskgroup(service_instance,
-                                          vsan_disk_mgmt_system,
-                                          host_ref,
-                                          cache_disk,
-                                          capacity_disks)
+    salt.utils.vsan.create_diskgroup(service_instance,
+                                     vsan_disk_mgmt_system,
+                                     host_ref,
+                                     cache_disk,
+                                     capacity_disks)
     return True
 
 
@@ -6486,8 +6485,6 @@ def configure_host_cache(enabled, datastore=None, swap_size_MiB=None,
         raise ArgumentValueError(exc)
     if not enabled:
         raise ArgumentValueError('Disabling the host cache is not supported')
-    ret_dict = {'enabled': False}
-
     host_ref = _get_proxy_target(service_instance)
     hostname = __proxy__['esxi.get_details']()['esxi_host']
     if datastore:
@@ -7021,9 +7018,6 @@ def add_host_to_dvs(host, username, password, vmknic_name, vmnic_name,
         dvs_hostmember_config = vim.dvs.HostMember.ConfigInfo(
             host=host_ref
         )
-        dvs_hostmember = vim.dvs.HostMember(
-            config=dvs_hostmember_config
-        )
         p_nics = salt.utils.vmware._get_pnics(host_ref)
         p_nic = [x for x in p_nics if x.device == vmnic_name]
         if not p_nic:
@@ -7155,8 +7149,7 @@ def _get_proxy_target(service_instance):
         reference = salt.utils.vmware.get_cluster(dc_ref, cluster)
     elif proxy_type == 'esxdatacenter':
         # esxdatacenter proxy
-        host, username, password, protocol, port, mechanism, principal, \
-            domain, datacenter = _get_esxdatacenter_proxy_details()
+        _, _, _, _, _, _, _, _, datacenter = _get_esxdatacenter_proxy_details()
 
         reference = salt.utils.vmware.get_datacenter(service_instance,
                                                      datacenter)
@@ -9200,7 +9193,7 @@ def create_vm(vm_name, cpu, memory, image, version, datacenter, datastore,
                                    parent=container_object)
         config_spec.deviceChange.extend(disk_specs)
     if interfaces:
-        (interface_specs, nic_settings) = _create_network_adapters(
+        (interface_specs, _) = _create_network_adapters(
             interfaces, parent=container_object)
         config_spec.deviceChange.extend(interface_specs)
     if serial_ports:
@@ -9358,8 +9351,8 @@ def update_vm(vm_name, cpu=None, memory=None, image=None, version=None,
                                      datacenter_ref))
         for item in diffs['interfaces'].removed:
             network_changes.append(_delete_device(item['object']))
-        (adapters, nics) = _create_network_adapters(diffs['interfaces'].added,
-                                                    datacenter_ref)
+        (adapters, _) = _create_network_adapters(diffs['interfaces'].added,
+                                                 datacenter_ref)
         network_changes.extend(adapters)
         config_spec.deviceChange.extend(network_changes)
     if 'serial_ports' in difference_keys:
@@ -9592,10 +9585,9 @@ def _remove_vm(name, datacenter, service_instance, placement=None,
     '''
     results = {}
     if placement:
-        (resourcepool_object, placement_object) = \
-            salt.utils.vmware.get_placement(service_instance,
-                                            datacenter,
-                                            placement)
+        (_, placement_object) = salt.utils.vmware.get_placement(service_instance,
+                                                                datacenter,
+                                                                placement)
     else:
         placement_object = salt.utils.vmware.get_datacenter(service_instance,
                                                             datacenter)

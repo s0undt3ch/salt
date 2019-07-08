@@ -216,7 +216,7 @@ class Batch(object):
                 while to_run:
                     next_.append(to_run.pop())
             else:
-                for i in range(bnum - len(active) - len(wait)):
+                for _ in range(bnum - len(active) - len(wait)):
                     if to_run:
                         minion_id = to_run.pop()
                         if isinstance(minion_id, dict):

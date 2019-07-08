@@ -111,7 +111,7 @@ def __django_auth_setup():
         django_model_name = django_model_fullname.split('.')[-1]
         django_module_name = '.'.join(django_model_fullname.split('.')[0:-1])
 
-        django_auth_module = __import__(django_module_name, globals(), locals(), 'SaltExternalAuthModel')
+        __import__(django_module_name, globals(), locals(), 'SaltExternalAuthModel')
         DJANGO_AUTH_CLASS_str = 'django_auth_module.{0}'.format(django_model_name)
         DJANGO_AUTH_CLASS = eval(DJANGO_AUTH_CLASS_str)  # pylint: disable=W0123
 

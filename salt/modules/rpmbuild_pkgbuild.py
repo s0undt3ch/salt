@@ -125,7 +125,7 @@ def _get_src(tree_base, source, saltenv='base', runas='root'):
     sbase = os.path.basename(source)
     dest = os.path.join(tree_base, 'SOURCES', sbase)
     if parsed.scheme:
-        lsrc = __salt__['cp.get_url'](source, dest, saltenv=saltenv)
+        __salt__['cp.get_url'](source, dest, saltenv=saltenv)
     else:
         shutil.copy(source, dest)
     __salt__['file.chown'](path=dest, user=runas, group='mock')
@@ -556,7 +556,7 @@ def make_repo(repodir,
                 cmd = 'rpm {0} --addsign {1}'.format(define_gpg_name, abs_file)
                 preexec_fn = functools.partial(salt.utils.user.chugid_and_umask, runas, None)
                 try:
-                    stdout, stderr = None, None
+                    stdout = None
                     proc = salt.utils.vt.Terminal(
                         cmd,
                         shell=True,
@@ -565,7 +565,7 @@ def make_repo(repodir,
                         stream_stderr=True
                     )
                     while proc.has_unread_data:
-                        stdout, stderr = proc.recv()
+                        stdout, _ = proc.recv()
                         if stdout and SIGN_PROMPT_RE.search(stdout):
                             # have the prompt for inputting the passphrase
                             proc.sendline(phrase)

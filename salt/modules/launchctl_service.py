@@ -80,7 +80,7 @@ def _available_services():
     '''
     available_services = dict()
     for launch_dir in _launchd_paths():
-        for root, dirs, files in salt.utils.path.os_walk(launch_dir):
+        for root, _, files in salt.utils.path.os_walk(launch_dir):
             for filename in files:
                 file_path = os.path.join(root, filename)
                 # Follow symbolic links of files in _launchd_paths
@@ -140,7 +140,7 @@ def _service_by_name(name):
         if service['file_path'].lower() == name:
             # Match on full path
             return service
-        basename, ext = os.path.splitext(service['filename'])
+        basename, _ = os.path.splitext(service['filename'])
         if basename.lower() == name:
             # Match on basename
             return service

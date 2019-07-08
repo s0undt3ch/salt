@@ -572,9 +572,8 @@ class Authorize(object):
             log.warning('Authentication failure of type "token" occurred.')
             yield {}
         for sub_auth in adata:
-            for sub_adata in adata:
-                if token['eauth'] not in adata:
-                    continue
+            if token['eauth'] not in adata:
+                continue
             if not ((token['name'] in adata[token['eauth']]) |
                     ('*' in adata[token['eauth']])):
                 continue
@@ -638,9 +637,6 @@ class Authorize(object):
         Note: this will check that the user has at least one right that will let
         the user execute "load", this does not deal with conflicting rules
         '''
-
-        adata = self.auth_data
-        good = False
         if load.get('token', False):
             for sub_auth in self.token(self.auth_data, load):
                 if sub_auth:

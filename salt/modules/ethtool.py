@@ -100,7 +100,7 @@ def show_ring(devname):
         return 'Not supported'
 
     ret = {}
-    for key, value in ring.items():
+    for key  in ring:
         ret[ethtool_ring_remap[key]] = ring[key]
 
     return ret
@@ -124,7 +124,7 @@ def show_coalesce(devname):
         return 'Not supported'
 
     ret = {}
-    for key, value in coalesce.items():
+    for key in coalesce:
         ret[ethtool_coalesce_remap[key]] = coalesce[key]
 
     return ret

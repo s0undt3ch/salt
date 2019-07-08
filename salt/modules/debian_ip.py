@@ -616,7 +616,7 @@ def _parse_interfaces(interface_files=None):
                             attrname = attr.replace('-', '_')
                         else:
                             attrname = attr
-                        (valid, value, errmsg) = _validate_interface_option(
+                        (_, value, _) = _validate_interface_option(
                             attr, valuestr, addrfam)
                         if attrname == 'address' and 'address' in iface_dict:
                             if 'addresses' not in iface_dict:
@@ -1288,7 +1288,7 @@ def _parse_settings_eth(opts, iface_type, enabled, iface):
         _debopt = _opt.replace('-', '_')
 
         for addrfam in ['inet', 'inet6']:
-            (valid, value, errmsg) = _validate_interface_option(_opt, val, addrfam=addrfam)
+            (valid, value, _) = _validate_interface_option(_opt, val, addrfam=addrfam)
             if not valid:
                 continue
             if inet is None and _debopt not in iface_data[addrfam]:
@@ -1634,7 +1634,7 @@ def build_interface(iface, iface_type, enabled, **settings):
     elif iface_type == 'pppoe':
         settings['pppoe'] = 'yes'
         if not __salt__['pkg.version']('ppp'):
-            inst = __salt__['pkg.install']('ppp')
+            __salt__['pkg.install']('ppp')
 
     elif iface_type == 'bond':
         if 'slaves' not in settings:

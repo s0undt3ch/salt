@@ -792,7 +792,7 @@ def delete_login_profile(user_name, region=None, key=None, keyid=None,
         return False
     conn = _get_conn(region=region, key=key, keyid=keyid, profile=profile)
     try:
-        info = conn.delete_login_profile(user_name)
+        conn.delete_login_profile(user_name)
         log.info('Deleted login profile for IAM user %s.', user_name)
         return True
     except boto.exception.BotoServerError as e:

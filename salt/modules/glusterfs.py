@@ -283,7 +283,7 @@ def create_volume(name, bricks, stripe=False, replica=False, device_vg=False,
     # Validate bricks syntax
     for brick in bricks:
         try:
-            peer_name, path = brick.split(':')
+            _, path = brick.split(':')
             if not path.startswith('/'):
                 raise SaltInvocationError(
                     'Brick paths must start with / in {0}'.format(brick))

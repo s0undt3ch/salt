@@ -328,7 +328,7 @@ def install(name=None, sources=None, saltenv='base', **kwargs):
     # pkgs is not supported, but must be passed here for API compatibility
     pkgs = kwargs.pop('pkgs', None)
     try:
-        pkg_params, pkg_type = __salt__['pkg_resource.parse_targets'](
+        pkg_params, _ = __salt__['pkg_resource.parse_targets'](
             name, pkgs, sources, **kwargs
         )
     except MinionError as exc:

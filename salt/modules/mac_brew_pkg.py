@@ -384,7 +384,7 @@ def install(name=None, pkgs=None, taps=None, options=None, **kwargs):
         salt '*' pkg.install 'package package package'
     '''
     try:
-        pkg_params, pkg_type = __salt__['pkg_resource.parse_targets'](
+        pkg_params, _ = __salt__['pkg_resource.parse_targets'](
             name, pkgs, kwargs.get('sources', {})
         )
     except MinionError as exc:

@@ -170,7 +170,7 @@ def ping(allow_failure=False, hosts=None, profile=None):
     '''
     try:
         _get_instance(hosts, profile)
-    except CommandExecutionError as e:
+    except CommandExecutionError:
         if allow_failure:
             six.reraise(*sys.exc_info())
         return False

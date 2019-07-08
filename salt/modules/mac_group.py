@@ -239,7 +239,6 @@ def chgid(name, gid):
     '''
     if not isinstance(gid, int):
         raise SaltInvocationError('gid must be an integer')
-    pre_gid = __salt__['file.group_to_gid'](name)
     pre_info = info(name)
     if not pre_info:
         raise CommandExecutionError(

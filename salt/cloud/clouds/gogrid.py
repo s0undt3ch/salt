@@ -145,7 +145,7 @@ def create(vm_):
         )
         return False
 
-    ssh_username = config.get_cloud_config_value(
+   config.get_cloud_config_value(
         'ssh_username', vm_, __opts__, default='root'
     )
 
@@ -547,7 +547,6 @@ def _query(action=None,
     if method == 'DELETE':
         decode = False
 
-    return_content = None
     result = salt.utils.http.query(
         path,
         method,

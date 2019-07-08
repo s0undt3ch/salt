@@ -59,7 +59,7 @@ def usage():
         drive_bitmask >>= 1
     for drive in drives:
         try:
-            (available_bytes,
+            (_,
              total_bytes,
              total_free_bytes) = win32api.GetDiskFreeSpaceEx(
                  '{0}:\\'.format(drive)

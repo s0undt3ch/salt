@@ -109,9 +109,9 @@ def _get_netmiko_args(optional_args):
         netmiko_argument_map.pop(k)
     # Check if any of these arguments were passed in as NAPALM optional_args
     netmiko_optional_args = {}
-    for k, v in six.iteritems(netmiko_argument_map):
+    for key in netmiko_argument_map:
         try:
-            netmiko_optional_args[k] = optional_args[k]
+            netmiko_optional_args[key] = optional_args[key]
         except KeyError:
             pass
     # Return these arguments for use with establishing Netmiko SSH connection

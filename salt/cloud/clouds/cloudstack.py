@@ -403,6 +403,7 @@ def create(vm_):
         'ssh_username', vm_, __opts__, default='root'
     )
 
+    vm_['ssh_username'] = ssh_username
     vm_['ssh_host'] = get_ip(data)
     vm_['password'] = data.extra['password']
     vm_['key_filename'] = get_key()
@@ -512,7 +513,6 @@ def destroy(name, conn=None, call=None):
         return False
     log.info('Destroyed VM: %s', name)
     # Fire destroy action
-    event = salt.utils.event.SaltEvent('master', __opts__['sock_dir'])
     __utils__['cloud.fire_event'](
         'event',
         'destroyed instance',

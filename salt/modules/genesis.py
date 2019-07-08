@@ -628,7 +628,7 @@ def _tar(name, root, path=None, compress='bzip2'):
     compression, ext = _compress(compress)
 
     tarfile = '{0}/{1}.tar.{2}'.format(path, name, ext)
-    out = __salt__['archive.tar'](
+    __salt__['archive.tar'](
         options='{0}pcf'.format(compression),
         tarfile=tarfile,
         sources='.',
@@ -655,7 +655,7 @@ def _untar(name, dest=None, path=None, compress='bz2'):
     compression, ext = _compress(compress)
 
     tarfile = '{0}/{1}.tar.{2}'.format(path, name, ext)
-    out = __salt__['archive.tar'](
+    __salt__['archive.tar'](
         options='{0}xf'.format(compression),
         tarfile=tarfile,
         dest=dest,

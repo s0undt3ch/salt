@@ -75,7 +75,7 @@ def _list(query=''):
     ret = {}
     for line in out.splitlines():
         try:
-            name, version_num, category = re.split(r'\s+', line.lstrip())[0:3]
+            name, version_num, _ = re.split(r'\s+', line.lstrip())[0:3]
             version_num = version_num[1:]
         except ValueError:
             continue
@@ -299,8 +299,7 @@ def install(name=None, refresh=False, pkgs=None, **kwargs):
 
         salt '*' pkg.install 'package package package'
     '''
-    pkg_params, pkg_type = \
-        __salt__['pkg_resource.parse_targets'](name, pkgs, {})
+    pkg_params, _ = __salt__['pkg_resource.parse_targets'](name, pkgs, {})
 
     if salt.utils.data.is_true(refresh):
         refresh_db()

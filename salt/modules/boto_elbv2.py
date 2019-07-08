@@ -200,7 +200,7 @@ def delete_target_group(name,
             conn.delete_target_group(TargetGroupArn=arn)
             log.info('Deleted target group %s ARN %s', name, arn)
         return True
-    except ClientError as error:
+    except ClientError:
         log.error('Failed to delete target group %s', name,
                   exc_info_on_loglevel=logging.DEBUG)
         return False

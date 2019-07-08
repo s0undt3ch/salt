@@ -128,7 +128,7 @@ def check_valid_package(package,
     LOG.debug('Checking Valid Mirrors: %s', mirrors)
 
     for mirror in mirrors:
-        for mirror_url, key in mirror.items():
+        for mirror_url in mirror:
             if package in _get_all_packages(mirror_url, cyg_arch):
                 return True
     return False

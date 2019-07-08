@@ -1554,7 +1554,6 @@ def list_repo_pkgs(*args, **kwargs):  # pylint: disable=unused-import
 
     ret = {}
     pkg_name = None
-    skip_pkg = False
     new_pkg = re.compile('^Package: (.+)')
     for line in salt.utils.itertools.split(out['stdout'], '\n'):
         if not line.strip():
@@ -1672,7 +1671,7 @@ def get_repo(repo, **kwargs):
 
     if repos:
         try:
-            repo_type, repo_architectures, repo_uri, repo_dist, repo_comps = _split_repo_str(repo)
+            repo_type, _, repo_uri, repo_dist, repo_comps = _split_repo_str(repo)
             if ppa_auth:
                 uri_match = re.search('(http[s]?://)(.+)', repo_uri)
                 if uri_match:

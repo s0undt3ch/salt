@@ -253,7 +253,7 @@ def _install(mpt):
     Return True if install is successful or already installed.
     '''
     _check_resolv(mpt)
-    boot_, tmppath = (prep_bootstrap(mpt)
+    _, tmppath = (prep_bootstrap(mpt)
              or salt.syspaths.BOOTSTRAP)
     # Exec the chroot command
     cmd = 'if type salt-minion; then exit 0; '

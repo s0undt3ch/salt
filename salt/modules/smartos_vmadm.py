@@ -736,7 +736,6 @@ def create(from_file=None, **kwargs):
         salt '*' vmadm.create from_file=/tmp/new_vm.json
         salt '*' vmadm.create image_uuid='...' alias='...' nics='[{ "nic_tag": "admin", "ip": "198.51.100.123", ...}, {...}]' [...]
     '''
-    ret = {}
     # prepare vmcfg
     vmcfg = {}
     kwargs = salt.utils.args.clean_kwargs(**kwargs)

@@ -29,8 +29,8 @@ import time
 import glob
 import hashlib
 import mmap
+import functools
 from collections import Iterable, Mapping, namedtuple
-from functools import reduce  # pylint: disable=redefined-builtin
 
 # pylint: disable=import-error,no-name-in-module,redefined-builtin
 from salt.ext import six
@@ -1655,7 +1655,7 @@ def _get_flags(flags):
 
             _flags_acc.append(_flag)
 
-        return reduce(operator.__or__, _flags_acc)
+        return functools.reduce(operator.__or__, _flags_acc)
     elif isinstance(flags, six.integer_types):
         return flags
     else:
@@ -1909,7 +1909,6 @@ def _set_line(lines,
             if before and after:
                 _assert_occurrence(before, 'before')
                 _assert_occurrence(after, 'after')
-                first = lines.index(after[0])
                 last = lines.index(before[0])
                 lines.insert(last, _set_line_indent(lines[last], content, indent))
             elif after:
@@ -3501,7 +3500,7 @@ def tail(path, lines):
                 tail_fh.seek(-buffer_size * blk_cnt, os.SEEK_END)
             data = string.split(tail_fh.read(buffer_size), os.linesep)
 
-            for i in range(lines):
+            for _ in range(lines):
                 while len(data) == 1 and ((blk_cnt * buffer_size) < size):
                     blk_cnt += 1
                     line = data[0]
@@ -4836,7 +4835,6 @@ def check_perms(name, ret, user, group, mode, attrs=None, follow_symlinks=False,
     perms['lmode'] = salt.utils.files.normalize_mode(cur['mode'])
 
     is_dir = os.path.isdir(name)
-    is_link = os.path.islink(name)
 
     # user/group changes if needed, then check if it worked
     if user:
@@ -7053,7 +7051,7 @@ def diskusage(path):
         ret = stat_structure.st_size
         return ret
 
-    for dirpath, dirnames, filenames in salt.utils.path.os_walk(path):
+    for dirpath, _, filenames in salt.utils.path.os_walk(path):
         for f in filenames:
             fp = os.path.join(dirpath, f)
 

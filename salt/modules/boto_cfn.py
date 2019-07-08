@@ -82,10 +82,10 @@ def exists(name, region=None, key=None, keyid=None, profile=None):
 
     try:
         # Returns an object if stack exists else an exception
-        exists = conn.describe_stacks(name)
+        conn.describe_stacks(name)
         log.debug('Stack %s exists.', name)
         return True
-    except BotoServerError as e:
+    except BotoServerError:
         log.debug('boto_cfn.exists raised an exception', exc_info=True)
         return False
 

@@ -426,7 +426,7 @@ class Key(object):
             preserve_minions = []
         keys = self.list_keys()
         minions = []
-        for key, val in six.iteritems(keys):
+        for val in keys.values():
             minions.extend(val)
         if not self.opts.get('preserve_minion_cache', False):
             m_cache = os.path.join(self.opts['cachedir'], self.ACC)
@@ -496,7 +496,7 @@ class Key(object):
         '''
         ret = {}
         cur_keys = self.list_keys()
-        for status, keys in six.iteritems(match_dict):
+        for keys in match_dict.values():
             for key in salt.utils.data.sorted_ignorecase(keys):
                 for keydir in (self.ACC, self.PEND, self.REJ, self.DEN):
                     if keydir and fnmatch.filter(cur_keys.get(keydir, []), key):

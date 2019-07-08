@@ -64,7 +64,7 @@ def list_employees(order_by='id'):
         salt myminion bamboohr.list_employees order_by=workEmail
     '''
     ret = {}
-    status, result = _query(action='employees', command='directory')
+    _, result = _query(action='employees', command='directory')
     root = ET.fromstring(result)
     directory = root.getchildren()
     for cat in directory:
@@ -135,7 +135,7 @@ def show_employee(emp_id, fields=None):
             'workPhoneExtension',
         ))
 
-    status, result = _query(
+    _, result = _query(
         action='employees',
         command=emp_id,
         args={'fields': fields}
@@ -174,7 +174,7 @@ def update_employee(emp_id, key=None, value=None, items=None):
         xml_items += '<field id="{0}">{1}</field>'.format(pair, items[pair])
     xml_items = '<employee>{0}</employee>'.format(xml_items)
 
-    status, result = _query(
+    _query(
         action='employees',
         command=emp_id,
         data=xml_items,
@@ -205,16 +205,13 @@ def list_users(order_by='id'):
         salt myminion bamboohr.list_users order_by=email
     '''
     ret = {}
-    status, result = _query(action='meta', command='users')
+    _, result = _query(action='meta', command='users')
     root = ET.fromstring(result)
     users = root.getchildren()
     for user in users:
-        user_id = None
         user_ret = {}
         for item in user.items():
             user_ret[item[0]] = item[1]
-            if item[0] == 'id':
-                user_id = item[1]
         for item in user.getchildren():
             user_ret[item.tag] = item.text
         ret[user_ret[order_by]] = user_ret
@@ -230,7 +227,7 @@ def list_meta_fields():
         salt myminion bamboohr.list_meta_fields
     '''
     ret = {}
-    status, result = _query(action='meta', command='fields')
+    _, result = _query(action='meta', command='fields')
     root = ET.fromstring(result)
     fields = root.getchildren()
     for field in fields:
@@ -270,7 +267,6 @@ def _query(action=None,
     if not isinstance(args, dict):
         args = {}
 
-    return_content = None
     result = salt.utils.http.query(
         path,
         method,

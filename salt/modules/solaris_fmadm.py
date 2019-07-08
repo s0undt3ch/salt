@@ -158,7 +158,6 @@ def _fmadm_action_fmri(action, fmri):
     '''
     Internal function for fmadm.repqired, fmadm.replaced, fmadm.flush
     '''
-    ret = {}
     fmadm = _check_fmadm()
     cmd = '{cmd} {action} {fmri}'.format(
         cmd=fmadm,
@@ -262,7 +261,6 @@ def list_records(after=None, before=None):
 
         salt '*' fmadm.list
     '''
-    ret = {}
     fmdump = _check_fmdump()
     cmd = '{cmd}{after}{before}'.format(
         cmd=fmdump,
@@ -293,7 +291,6 @@ def show(uuid):
 
         salt '*' fmadm.show 11b4070f-4358-62fa-9e1e-998f485977e1
     '''
-    ret = {}
     fmdump = _check_fmdump()
     cmd = '{cmd} -u {uuid} -V'.format(
         cmd=fmdump,
@@ -320,7 +317,6 @@ def config():
 
         salt '*' fmadm.config
     '''
-    ret = {}
     fmadm = _check_fmadm()
     cmd = '{cmd} config'.format(
         cmd=fmadm
@@ -349,7 +345,6 @@ def load(path):
 
         salt '*' fmadm.load /module/path
     '''
-    ret = {}
     fmadm = _check_fmadm()
     cmd = '{cmd} load {path}'.format(
         cmd=fmadm,
@@ -379,7 +374,6 @@ def unload(module):
 
         salt '*' fmadm.unload software-response
     '''
-    ret = {}
     fmadm = _check_fmadm()
     cmd = '{cmd} unload {module}'.format(
         cmd=fmadm,
@@ -411,7 +405,6 @@ def reset(module, serd=None):
 
         salt '*' fmadm.reset software-response
     '''
-    ret = {}
     fmadm = _check_fmadm()
     cmd = '{cmd} reset {serd}{module}'.format(
         cmd=fmadm,

@@ -382,7 +382,7 @@ def describe_policy(policyName,
         else:
             return {'policy': None}
     except ClientError as e:
-        err = __utils__['boto3.get_error'](e)
+        __utils__['boto3.get_error'](e)
         if e.response.get('Error', {}).get('Code') == 'ResourceNotFoundException':
             return {'policy': None}
         return {'error': __utils__['boto3.get_error'](e)}
@@ -410,7 +410,7 @@ def policy_version_exists(policyName, policyVersionId,
                                          policyversionId=policyVersionId)
         return {'exists': bool(policy)}
     except ClientError as e:
-        err = __utils__['boto3.get_error'](e)
+        __utils__['boto3.get_error'](e)
         if e.response.get('Error', {}).get('Code') == 'ResourceNotFoundException':
             return {'exists': False}
         return {'error': __utils__['boto3.get_error'](e)}
@@ -502,7 +502,7 @@ def describe_policy_version(policyName, policyVersionId,
         else:
             return {'policy': None}
     except ClientError as e:
-        err = __utils__['boto3.get_error'](e)
+        __utils__['boto3.get_error'](e)
         if e.response.get('Error', {}).get('Code') == 'ResourceNotFoundException':
             return {'policy': None}
         return {'error': __utils__['boto3.get_error'](e)}
@@ -709,7 +709,7 @@ def topic_rule_exists(ruleName,
 
     try:
         conn = _get_conn(region=region, key=key, keyid=keyid, profile=profile)
-        rule = conn.get_topic_rule(ruleName=ruleName)
+        conn.get_topic_rule(ruleName=ruleName)
         return {'exists': True}
     except ClientError as e:
         # Nonexistent rules show up as unauthorized exceptions. It's unclear how
@@ -717,7 +717,7 @@ def topic_rule_exists(ruleName,
         # use, it's more useful to assume lack of existence than to assume a
         # genuine authorization problem; authorization problems should not be
         # the common case.
-        err = __utils__['boto3.get_error'](e)
+        __utils__['boto3.get_error'](e)
         if e.response.get('Error', {}).get('Code') == 'UnauthorizedException':
             return {'exists': False}
         return {'error': __utils__['boto3.get_error'](e)}

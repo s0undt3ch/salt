@@ -324,7 +324,7 @@ class Minion(salt.utils.parsers.MinionOptionParser, DaemonsMixin):  # pylint: di
         while True:
             try:
                 self._real_start()
-            except SaltClientError as exc:
+            except SaltClientError:
                 # Restart for multi_master failover when daemonized
                 if self.options.daemon:
                     continue
