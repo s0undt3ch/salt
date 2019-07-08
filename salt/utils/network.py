@@ -972,7 +972,7 @@ def _interfaces_ipconfig(out):
             key = key.strip(' .')
             val = val.strip()
             if addr and key == 'Subnet Mask':
-                addr['netmask'] = val
+                addr['netmask'] = val  # pylint: disable=unsupported-assignment-operation
             elif key in ('IP Address', 'IPv4 Address'):
                 if 'inet' not in iface:
                     iface['inet'] = list()

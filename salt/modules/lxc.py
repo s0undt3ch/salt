@@ -2785,7 +2785,7 @@ def info(name, path=None):
             elif not current:
                 continue
             elif key.startswith('lxc.network.'):
-                current[key.replace('lxc.network.', '', 1)] = val
+                current[key.replace('lxc.network.', '', 1)] = val  # pylint: disable=unsupported-assignment-operation
         if ifaces:
             ret['nics'] = ifaces
 
