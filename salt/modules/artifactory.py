@@ -69,7 +69,7 @@ def get_latest_snapshot(artifactory_url, repository, group_id, artifact_id, pack
 
     headers = {}
     if username and password:
-        headers['Authorization'] = 'Basic {0}'.format(base64.encodestring('{0}:{1}'.format(username, password)).replace('\n', ''))
+        headers['Authorization'] = 'Basic {0}'.format(salt.utils.stringutils.to_str(base64.b64encode('{0}:{1}'.format(username, password))))
     artifact_metadata = _get_artifact_metadata(artifactory_url=artifactory_url, repository=repository, group_id=group_id, artifact_id=artifact_id, headers=headers, use_literal_group_id=use_literal_group_id)
     version = artifact_metadata['latest_version']
     snapshot_url, file_name = _get_snapshot_url(artifactory_url=artifactory_url, repository=repository, group_id=group_id, artifact_id=artifact_id, version=version, packaging=packaging, classifier=classifier, headers=headers, use_literal_group_id=use_literal_group_id)
@@ -109,7 +109,7 @@ def get_snapshot(artifactory_url, repository, group_id, artifact_id, packaging, 
               artifactory_url, repository, group_id, artifact_id, packaging, version, target_dir, classifier)
     headers = {}
     if username and password:
-        headers['Authorization'] = 'Basic {0}'.format(base64.encodestring('{0}:{1}'.format(username, password)).replace('\n', ''))
+        headers['Authorization'] = 'Basic {0}'.format(salt.utils.stringutils.to_str(base64.b64encode('{0}:{1}'.format(username, password))))
     snapshot_url, file_name = _get_snapshot_url(artifactory_url=artifactory_url, repository=repository, group_id=group_id, artifact_id=artifact_id, version=version, packaging=packaging, snapshot_version=snapshot_version, classifier=classifier, headers=headers, use_literal_group_id=use_literal_group_id)
     target_file = __resolve_target_file(file_name, target_dir, target_file)
 
@@ -145,7 +145,7 @@ def get_latest_release(artifactory_url, repository, group_id, artifact_id, packa
               artifactory_url, repository, group_id, artifact_id, packaging, target_dir, classifier)
     headers = {}
     if username and password:
-        headers['Authorization'] = 'Basic {0}'.format(base64.encodestring('{0}:{1}'.format(username, password)).replace('\n', ''))
+        headers['Authorization'] = 'Basic {0}'.format(salt.utils.stringutils.to_str(base64.b64encode('{0}:{1}'.format(username, password))))
     version = __find_latest_version(artifactory_url=artifactory_url, repository=repository, group_id=group_id, artifact_id=artifact_id, headers=headers)
     release_url, file_name = _get_release_url(repository, group_id, artifact_id, packaging, version, artifactory_url, classifier, use_literal_group_id)
     target_file = __resolve_target_file(file_name, target_dir, target_file)
@@ -184,7 +184,7 @@ def get_release(artifactory_url, repository, group_id, artifact_id, packaging, v
               artifactory_url, repository, group_id, artifact_id, packaging, version, target_dir, classifier)
     headers = {}
     if username and password:
-        headers['Authorization'] = 'Basic {0}'.format(base64.encodestring('{0}:{1}'.format(username, password)).replace('\n', ''))
+        headers['Authorization'] = 'Basic {0}'.format(salt.utils.stringutils.to_str(base64.b64encode('{0}:{1}'.format(username, password))))
     release_url, file_name = _get_release_url(repository, group_id, artifact_id, packaging, version, artifactory_url, classifier, use_literal_group_id)
     target_file = __resolve_target_file(file_name, target_dir, target_file)
 

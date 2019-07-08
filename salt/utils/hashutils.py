@@ -58,7 +58,7 @@ def base64_encodestring(instr):
     at the end of the encoded string.
     '''
     return salt.utils.stringutils.to_unicode(
-        base64.encodestring(salt.utils.stringutils.to_bytes(instr)),
+        base64.encodebytes(salt.utils.stringutils.to_bytes(instr)),
         encoding='utf8' if salt.utils.platform.is_windows() else None
     )
 
@@ -68,12 +68,7 @@ def base64_decodestring(instr):
     Decode a base64-encoded string using the "legacy" Python interface.
     '''
     b = salt.utils.stringutils.to_bytes(instr)
-    try:
-        # PY3
-        decoded = base64.decodebytes(b)
-    except AttributeError:
-        # PY2
-        decoded = base64.decodestring(b)
+    decoded = base64.decodebytes(b)
     try:
         return salt.utils.stringutils.to_unicode(
             decoded,

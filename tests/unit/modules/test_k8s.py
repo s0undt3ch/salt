@@ -17,6 +17,7 @@ from tests.support.helpers import skip_if_binaries_missing
 # Import Salt libs
 import salt.utils.files
 import salt.utils.json
+import salt.utils.stringutils
 import salt.modules.k8s as k8s
 
 # Import 3rd-party libs
@@ -63,9 +64,9 @@ class TestK8SSecrets(TestCase):
 
     def setUp(self):
         hash = hashlib.sha1()
-        hash.update(six.text_type(time.time()))
+        hash.update(salt.utils.stringutils.to_bytes(str(time.time())))
         self.name = hash.hexdigest()[:16]
-        data = {"testsecret": base64.encodestring("teststring")}
+        data = {"testsecret": base64.encodebytes(b"teststring")}
         self.request = {
             "apiVersion": "v1",
             "kind": "Secret",

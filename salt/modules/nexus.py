@@ -71,7 +71,7 @@ def get_latest_snapshot(nexus_url, repository, group_id, artifact_id, packaging,
 
     headers = {}
     if username and password:
-        headers['Authorization'] = 'Basic {0}'.format(base64.encodestring('{0}:{1}'.format(username, password)).replace('\n', ''))
+        headers['Authorization'] = 'Basic {0}'.format(salt.utils.stringutils.to_str(base64.b64encode('{0}:{1}'.format(username, password))))
     artifact_metadata = _get_artifact_metadata(nexus_url=nexus_url, repository=repository, group_id=group_id, artifact_id=artifact_id, headers=headers)
     version = artifact_metadata['latest_version']
     snapshot_url, file_name = _get_snapshot_url(nexus_url=nexus_url, repository=repository, group_id=group_id, artifact_id=artifact_id, version=version, packaging=packaging, classifier=classifier, headers=headers)
@@ -111,7 +111,7 @@ def get_snapshot(nexus_url, repository, group_id, artifact_id, packaging, versio
               nexus_url, repository, group_id, artifact_id, packaging, version, target_dir, classifier)
     headers = {}
     if username and password:
-        headers['Authorization'] = 'Basic {0}'.format(base64.encodestring('{0}:{1}'.format(username, password)).replace('\n', ''))
+        headers['Authorization'] = 'Basic {0}'.format(salt.utils.stringutils.to_str(base64.b64encode('{0}:{1}'.format(username, password))))
     snapshot_url, file_name = _get_snapshot_url(nexus_url=nexus_url, repository=repository, group_id=group_id, artifact_id=artifact_id, version=version, packaging=packaging, snapshot_version=snapshot_version, classifier=classifier, headers=headers)
     target_file = __resolve_target_file(file_name, target_dir, target_file)
 
@@ -145,7 +145,7 @@ def get_snapshot_version_string(nexus_url, repository, group_id, artifact_id, pa
               nexus_url, repository, group_id, artifact_id, packaging, version, classifier)
     headers = {}
     if username and password:
-        headers['Authorization'] = 'Basic {0}'.format(base64.encodestring('{0}:{1}'.format(username, password)).replace('\n', ''))
+        headers['Authorization'] = 'Basic {0}'.format(salt.utils.stringutils.to_str(base64.b64encode('{0}:{1}'.format(username, password))))
     return _get_snapshot_url(nexus_url=nexus_url, repository=repository, group_id=group_id, artifact_id=artifact_id, version=version, packaging=packaging, classifier=classifier, just_get_version_string=True)
 
 
@@ -178,7 +178,7 @@ def get_latest_release(nexus_url, repository, group_id, artifact_id, packaging, 
               nexus_url, repository, group_id, artifact_id, packaging, target_dir, classifier)
     headers = {}
     if username and password:
-        headers['Authorization'] = 'Basic {0}'.format(base64.encodestring('{0}:{1}'.format(username, password)).replace('\n', ''))
+        headers['Authorization'] = 'Basic {0}'.format(salt.utils.stringutils.to_str(base64.b64encode('{0}:{1}'.format(username, password))))
     artifact_metadata = _get_artifact_metadata(nexus_url=nexus_url, repository=repository, group_id=group_id, artifact_id=artifact_id, headers=headers)
     version = artifact_metadata['latest_version']
     release_url, file_name = _get_release_url(repository, group_id, artifact_id, packaging, version, nexus_url, classifier)
@@ -218,7 +218,7 @@ def get_release(nexus_url, repository, group_id, artifact_id, packaging, version
               nexus_url, repository, group_id, artifact_id, packaging, version, target_dir, classifier)
     headers = {}
     if username and password:
-        headers['Authorization'] = 'Basic {0}'.format(base64.encodestring('{0}:{1}'.format(username, password)).replace('\n', ''))
+        headers['Authorization'] = 'Basic {0}'.format(salt.utils.stringutils.to_str(base64.b64encode('{0}:{1}'.format(username, password))))
     release_url, file_name = _get_release_url(repository, group_id, artifact_id, packaging, version, nexus_url, classifier)
     target_file = __resolve_target_file(file_name, target_dir, target_file)
 

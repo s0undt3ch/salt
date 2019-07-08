@@ -772,7 +772,7 @@ def _compute_signature(parameters, access_key_secret):
     stringToSign = 'GET&%2F&' + percent_encode(canonicalizedQueryString[1:])
 
     h = hmac.new(to_bytes(access_key_secret + "&"), stringToSign, sha1)
-    signature = base64.encodestring(h.digest()).strip()
+    signature = base64.encodebytes(h.digest()).strip()
     return signature
 
 
