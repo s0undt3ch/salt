@@ -169,7 +169,8 @@ def gen_keys(keydir, keyname, keysize, user=None, passphrase=None):
 
 
 @salt.utils.decorators.memoize
-def _get_key_with_evict(path, timestamp, passphrase):
+def _get_key_with_evict(path, timestamp, passphrase):  # pylint: disable=unused-argument
+                                                       # The timestamp argument is actually used for the memoiziation
     '''
     Load a private key from disk.  `timestamp` above is intended to be the
     timestamp of the file's last modification. This fn is memoized so if it is
@@ -1160,7 +1161,7 @@ class SAuth(AsyncAuth):
         return auth
 
     @classmethod
-    def __key(cls, opts, io_loop=None):
+    def __key(cls, opts):
         return (opts['pki_dir'],     # where the keys are stored
                 opts['id'],          # minion ID
                 opts['master_uri'],  # master ID
