@@ -51,6 +51,11 @@ blacklisted-functions=
 # Py3 Modernize Settings
 modernize-no-six = yes
 
+# String Extension Settings
+un-indexed-curly-braces-always-error = n
+enforce-string-formatting-over-substitution = y
+string-substitutions-usage-is-an-error = y
+
 # Allow loading of arbitrary C extensions. Extensions are imported into the
 # active Python interpreter and may run arbitrary code.
 unsafe-load-any-extension=no
