@@ -5,6 +5,7 @@ noxfile
 
 Nox configuration script
 '''
+# pylint: disable=resource-leakage
 
 # Import Python libs
 from __future__ import absolute_import, unicode_literals, print_function
@@ -309,7 +310,7 @@ def _runtests(session, coverage, cmd_args):
             _run_with_coverage(session, 'coverage', 'run', os.path.join('tests', 'runtests.py'), *cmd_args)
         else:
             session.run('python', os.path.join('tests', 'runtests.py'), *cmd_args)
-    except CommandFailed:
+    except CommandFailed:  # pylint: disable=try-except-raise
         # Disabling re-running failed tests for the time being
         raise
 
@@ -819,9 +820,7 @@ def lint_salt(session):
     '''
     Run PyLint against Salt. Set PYLINT_REPORT to a path to capture output.
     '''
-    flags = [
-        '--disable=I,W1307,C0411,C0413,W8410,str-format-in-logging'
-    ]
+    flags = []
     if session.posargs:
         paths = session.posargs
     else:
@@ -834,9 +833,7 @@ def lint_tests(session):
     '''
     Run PyLint against Salt and it's test suite. Set PYLINT_REPORT to a path to capture output.
     '''
-    flags = [
-        '--disable=I,W0232,E1002,W1307,C0411,C0413,W8410,str-format-in-logging'
-    ]
+    flags = []
     if session.posargs:
         paths = session.posargs
     else:
