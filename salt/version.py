@@ -17,7 +17,7 @@ try:
     def linux_distribution(**kwargs):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            return _deprecated_linux_distribution(**kwargs)
+            return _deprecated_linux_distribution(**kwargs)  # pylint: disable=deprecated-method
 except ImportError:
     from distro import linux_distribution
 

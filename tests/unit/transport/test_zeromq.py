@@ -46,9 +46,7 @@ from tests.support.mixins import AdaptedConfigurationTestCaseMixin
 from tests.support.mock import MagicMock, patch
 from tests.unit.transport.mixins import PubChannelMixin, ReqChannelMixin
 
-ON_SUSE = False
-if 'SuSE' in linux_distribution(full_distribution_name=False):
-    ON_SUSE = True
+ON_SUSE = 'SuSE' in linux_distribution(full_distribution_name=False)  # pylint: disable=deprecated-method
 
 
 class BaseZMQReqCase(TestCase, AdaptedConfigurationTestCaseMixin):

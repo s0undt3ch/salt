@@ -44,9 +44,7 @@ try:
 except ImportError:
     HAS_BOTO = False
 
-ON_SUSE = False
-if 'SuSE' in linux_distribution(full_distribution_name=False):
-    ON_SUSE = True
+ON_SUSE = 'SuSE' in linux_distribution(full_distribution_name=False)  # pylint: disable=deprecated-method
 
 # pylint: enable=import-error,no-name-in-module
 

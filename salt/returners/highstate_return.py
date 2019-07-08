@@ -85,7 +85,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import smtplib
-import cgi
+import html
 from email.mime.text import MIMEText
 
 from salt.ext.six.moves import range
@@ -237,7 +237,7 @@ def _generate_html_table(data, out, level=0, extra_style=''):
                                 new_extra_style
                             ]
                         ),
-                        cgi.escape(six.text_type(value))
+                        html.escape(six.text_type(value))
                     ), file=out)
                 print('</tr>', file=out)
         elif isinstance(subdata, list):
@@ -262,7 +262,7 @@ def _generate_html_table(data, out, level=0, extra_style=''):
                     'td',
                     [cell_style, first_style, 'value', extra_style]
                 ),
-                cgi.escape(six.text_type(subdata))
+                html.escape(six.text_type(subdata))
             ), file=out)
             print('</tr>', file=out)
         firstone = False
