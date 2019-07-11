@@ -1,31 +1,41 @@
+import groovy.transform.Field
+
+
 // Global Pipeline Definitions
 def test_distributions = [
-    'centos6-py2': ['name': 'centos', 'version': '6', 'py_version': '2', 'display_name': 'CentOS 6'],
-    'centos7-py2': ['name': 'centos', 'version': '7', 'py_version': '2', 'display_name': 'CentOS 7'],
-    'centos7-py3': ['name': 'centos', 'version': '7', 'py_version': '3', 'display_name': 'CentOS 7'],
-    'debian8-py2': ['name': 'debian', 'version': '8', 'py_version': '2', 'display_name': 'Debian 8'],
-    'debian8-py3': ['name': 'debian', 'version': '8', 'py_version': '3', 'display_name': 'Debian 8'],
-    'debian9-py2': ['name': 'debian', 'version': '9', 'py_version': '2', 'display_name': 'Debian 9'],
-    'debian9-py3': ['name': 'debian', 'version': '9', 'py_version': '3', 'display_name': 'Debian 9'],
-    'fedora29-py2': ['name': 'fedora', 'version': '29', 'py_version': '2', 'display_name': 'Fedora 29'],
-    'fedora29-py3': ['name': 'fedora', 'version': '29', 'py_version': '3', 'display_name': 'Fedora 29'],
-    'ubuntu1604-py2': ['name': 'ubuntu', 'version': '1604', 'py_version': '2', 'display_name': 'Ubuntu 16.04'],
-    'ubuntu1604-py3': ['name': 'ubuntu', 'version': '1604', 'py_version': '3', 'display_name': 'Ubuntu 16.04'],
-    'ubuntu1804-py2': ['name': 'ubuntu', 'version': '1804', 'py_version': '2', 'display_name': 'Ubuntu 18.04'],
-    'ubuntu1804-py3': ['name': 'ubuntu', 'version': '1804', 'py_version': '3', 'display_name': 'Ubuntu 18.04'],
-    'windows2016-py2': ['name': 'windows', 'version': '2016', 'py_version': '2', 'display_name': 'Windows 2016'],
-    'windows2016-py3': ['name': 'windows', 'version': '2016', 'py_version': '3', 'display_name': 'Windows 2016'],
+    'centos6-py2': ['name': 'centos', 'version': '6', 'py_version': '2', 'display_name': 'CentOS 6', 'transport': 'ZeroMQ'],
+    'centos7-py2': ['name': 'centos', 'version': '7', 'py_version': '2', 'display_name': 'CentOS 7', 'transport': 'ZeroMQ'],
+    'centos7-py3': ['name': 'centos', 'version': '7', 'py_version': '3', 'display_name': 'CentOS 7', 'transport': 'ZeroMQ'],
+    'centos7-py2-tcp': ['name': 'centos', 'version': '7', 'py_version': '2', 'display_name': 'CentOS 7', 'transport': 'TCP'],
+    'centos7-py3-tcp': ['name': 'centos', 'version': '7', 'py_version': '3', 'display_name': 'CentOS 7', 'transport': 'TCP'],
+    'debian8-py2': ['name': 'debian', 'version': '8', 'py_version': '2', 'display_name': 'Debian 8', 'transport': 'ZeroMQ'],
+    'debian8-py3': ['name': 'debian', 'version': '8', 'py_version': '3', 'display_name': 'Debian 8', 'transport': 'ZeroMQ'],
+    'debian9-py2': ['name': 'debian', 'version': '9', 'py_version': '2', 'display_name': 'Debian 9', 'transport': 'ZeroMQ'],
+    'debian9-py3': ['name': 'debian', 'version': '9', 'py_version': '3', 'display_name': 'Debian 9', 'transport': 'ZeroMQ'],
+    'fedora29-py2': ['name': 'fedora', 'version': '29', 'py_version': '2', 'display_name': 'Fedora 29', 'transport': 'ZeroMQ'],
+    'fedora29-py3': ['name': 'fedora', 'version': '29', 'py_version': '3', 'display_name': 'Fedora 29', 'transport': 'ZeroMQ'],
+    'ubuntu1604-py2': ['name': 'ubuntu', 'version': '1604', 'py_version': '2', 'display_name': 'Ubuntu 16.04', 'transport': 'ZeroMQ'],
+    'ubuntu1604-py3': ['name': 'ubuntu', 'version': '1604', 'py_version': '3', 'display_name': 'Ubuntu 16.04', 'transport': 'ZeroMQ'],
+    'ubuntu1604-py2': ['name': 'ubuntu', 'version': '1604', 'py_version': '2', 'display_name': 'Ubuntu 16.04', 'transport': 'TCP'],
+    'ubuntu1604-py3': ['name': 'ubuntu', 'version': '1604', 'py_version': '3', 'display_name': 'Ubuntu 16.04', 'transport': 'TCP'],
+    'ubuntu1804-py2': ['name': 'ubuntu', 'version': '1804', 'py_version': '2', 'display_name': 'Ubuntu 18.04', 'transport': 'ZeroMQ'],
+    'ubuntu1804-py3': ['name': 'ubuntu', 'version': '1804', 'py_version': '3', 'display_name': 'Ubuntu 18.04', 'transport': 'ZeroMQ'],
+    'windows2016-py2': ['name': 'windows', 'version': '2016', 'py_version': '2', 'display_name': 'Windows 2016', 'transport': 'ZeroMQ'],
+    'windows2016-py3': ['name': 'windows', 'version': '2016', 'py_version': '3', 'display_name': 'Windows 2016', 'transport': 'ZeroMQ'],
 ]
 
 // Define the maximum time, in hours, that a test run should run for
+@Field
 def testrun_timeout = 6
 // Now define a global pipeline timeout. This is the test run timeout with one(1) additional
 // hour to allow for artifacts to be downloaded, if possible.
+@Field
 def global_timeout = testrun_timeout + 1;
 
 def salt_target_branch = 'neon'
 def golden_images_branch = 'neon'
 
+@Field
 def checkout_directory = 'salt-checkout'
 
 def parameters_listing = [
@@ -52,12 +62,12 @@ if (buildNumber > 1) {
 milestone(buildNumber)
 
 // ---> Tests
-def run_tests(checkout_directory, stage_name, env_array, chunk_timeout) {
+def run_tests(stage_name, env_array, chunk_timeout) {
     return {
         def uuid = UUID.randomUUID().toString()
         def checkout_dir = "$checkout_directory-$uuid"
         sh "cp -Rp $checkout_directory $checkout_dir"
-        dir("$checkout_dir") {
+        dir(checkout_dir) {
             withEnv(env_array) {
                 stage(stage_name) {
                     stage('Create VM') {
@@ -70,7 +80,7 @@ def run_tests(checkout_directory, stage_name, env_array, chunk_timeout) {
                     }
                     try {
                         sshagent(credentials: ['jenkins-testing-ssh-key']) {
-                            sh 'ssh-add ~/.ssh/jenkins-testing.pem || ssh-add ~/.ssh/kitchen.pem'
+                            sh 'ssh-add ~/.ssh/kitchen.pem'
                             try {
                                 timeout(time: chunk_timeout, unit: 'HOURS') {
                                     stage('Converge VM') {
@@ -99,13 +109,17 @@ def run_tests(checkout_directory, stage_name, env_array, chunk_timeout) {
                                         '''
                                     }
                                     stage('Upload Coverage') {
-                                        script {
-                                            withCredentials([[$class: 'StringBinding', credentialsId: 'codecov-upload-token-salt', variable: 'CODECOV_TOKEN']]) {
-                                              sh '''
-                                              if [ -n "${FORCE_FULL}" -a "${FORCE_FULL}" = "true" -a -f artifacts/coverage/coverage.xml ]; then
-                                                  curl -L https://codecov.io/bash | /bin/sh -s -- -R $(pwd) -s artifacts/coverage/ -F "${CODECOV_FLAGS}"
-                                              fi
-                                              '''
+                                        retry(3) {
+                                            timeout(time: 5, unit: 'MINUTES') {
+                                                script {
+                                                    withCredentials([[$class: 'StringBinding', credentialsId: 'codecov-upload-token-salt', variable: 'CODECOV_TOKEN']]) {
+                                                      sh '''
+                                                      if [ -n "${FORCE_FULL}" -a "${FORCE_FULL}" = "true" -a -f artifacts/coverage/coverage.xml ]; then
+                                                          curl -L https://codecov.io/bash | /bin/sh -s -- -R $(pwd) -s artifacts/coverage/ -F "${CODECOV_FLAGS}"
+                                                      fi
+                                                      '''
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -122,7 +136,7 @@ def run_tests(checkout_directory, stage_name, env_array, chunk_timeout) {
     }
 }
 
-def run_testsuite(section_name, distro_name, distro_version, python_version, checkout_directory) {
+def run_testsuite(section_name, distro_name, distro_version, python_version, transport) {
     return {
         def chunks = [:]
         def nox_passthrough_opts = '--log-cli-level=warning --ignore=tests/utils'
@@ -136,9 +150,10 @@ def run_testsuite(section_name, distro_name, distro_version, python_version, che
             def chunk_no = i
             def stagename = "Integration Modules #${chunk_no}"
             def env_array = [
+                "NOX_ENV_NAME=pytest-${transport}",
                 "NOX_PASSTHROUGH_OPTS=${nox_passthrough_opts} --test-group-count=$integration_modules_chunks --test-group=$chunk_no tests/integration/modules"
             ]
-            chunks[stagename] = run_tests(checkout_directory, stagename, env_array, 2)
+            chunks[stagename] = run_tests(stagename, env_array, 2)
         }
 
         // Integration State Tests
@@ -149,7 +164,7 @@ def run_testsuite(section_name, distro_name, distro_version, python_version, che
             def env_array = [
                 "NOX_PASSTHROUGH_OPTS=${nox_passthrough_opts} --test-group-count=$integration_states_chunks --test-group=$chunk_no tests/integration/states"
             ]
-            chunks[stagename] = run_tests(checkout_directory, stagename, env_array, 2)
+            chunks[stagename] = run_tests(stagename, env_array, 2)
         }
 
         // Unit Tests
@@ -160,7 +175,7 @@ def run_testsuite(section_name, distro_name, distro_version, python_version, che
             def env_array = [
                 "NOX_PASSTHROUGH_OPTS=${nox_passthrough_opts} --test-group-count=$unit_chunks --test-group=$chunk_no tests/unit"
             ]
-            chunks[stagename] = run_tests(checkout_directory, stagename, env_array, 2)
+            chunks[stagename] = run_tests(stagename, env_array, 2)
         }
 
         // All Other
@@ -171,7 +186,7 @@ def run_testsuite(section_name, distro_name, distro_version, python_version, che
             def env_array = [
                 "NOX_PASSTHROUGH_OPTS=${nox_passthrough_opts} --test-group-count=$other_chunks --test-group=$chunk_no --ignore=tests/integration/modules --ignore=tests/integration/states --ignore=tests/unit"
             ]
-            chunks[stagename] = run_tests(checkout_directory, stagename, env_array, 2)
+            chunks[stagename] = run_tests(stagename, env_array, 2)
         }
 
         def uuid = UUID.randomUUID().toString()
@@ -186,10 +201,9 @@ def run_testsuite(section_name, distro_name, distro_version, python_version, che
             gh_commit_status_account = 'svc-builderopen3-gh'
         }
         sh "cp -Rp $checkout_directory $checkout_dir"
-        dir("$checkout_dir") {
-            section(section_name) {
+        dir(checkout_dir) {
+            stage(section_name) {
                 withEnv([
-                    'NOX_ENV_NAME=pytest-zeromq',
                     'NOX_ENABLE_FROM_FILENAMES=true',
                     "CODECOV_FLAGS=${distro_name}${distro_version},${python_version}",
                     'PATH=~/.rbenv/shims:/usr/local/rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/root/bin',
@@ -209,7 +223,6 @@ def run_testsuite(section_name, distro_name, distro_version, python_version, che
                         }
                         stage('Serial Test Run') {
                             run_tests(
-                                checkout_directory,
                                 'Full Test Suite',
                                 ["NOX_PASSTHROUGH_OPTS=${nox_passthrough_opts} tests/"],
                                 testrun_timeout
@@ -238,9 +251,10 @@ def run_testsuite(section_name, distro_name, distro_version, python_version, che
 // <--- Tests
 
 // ---> Lint
+@Field
 def lint_report_issues = []
 
-def run_changes_lint(lint_report_issues, checkout_directory) {
+def run_changes_lint() {
     return {
 
         def gh_commit_status_account
@@ -372,7 +386,7 @@ def run_changes_lint(lint_report_issues, checkout_directory) {
 }
 
 
-def run_full_lint(lint_report_issues, checkout_directory) {
+def run_full_lint() {
     return {
         def gh_commit_status_account
         def gh_commit_status_context
@@ -482,7 +496,7 @@ def run_full_lint(lint_report_issues, checkout_directory) {
 // <--- Lint
 
 // ---> Docs
-def run_docs_build(checkout_directory) {
+def run_docs_build() {
     return {
 
         def gh_commit_status_account
@@ -552,16 +566,16 @@ def run_docs_build(checkout_directory) {
 
 // ---> Main Pipeline
 main_pipeline_parallel_steps = [:]
-main_pipeline_parallel_steps['full-lint'] = run_full_lint(lint_report_issues, checkout_directory)
-main_pipeline_parallel_steps['docs'] = run_docs_build(checkout_directory)
+main_pipeline_parallel_steps['full-lint'] = run_full_lint()
+main_pipeline_parallel_steps['docs'] = run_docs_build()
 
 test_distributions.each { slug, details ->
     main_pipeline_parallel_steps[slug] = run_testsuite(
-        "Py${details['python_version']} ${details['display_name']}",
+        "Py${details['python_version']} ${details['display_name']}(${details['transport']})",
         details['name'],
         details['version'],
         details['py_version'],
-        checkout_directory
+        details['transport'].toLowerCase()
     )
 }
 
@@ -579,74 +593,69 @@ node('kitchen-xl-slave') {
             gh_commit_status_account = 'svc-builderopen3-gh'
         }
 
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
-                          accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                          credentialsId: 'AWS_ACCESS_KEY_ID',
-                          secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-            ansiColor('xterm') {
-                timestamps {
-                    withEnv([
-                        'SALT_KITCHEN_PLATFORMS=/var/jenkins/workspace/nox-platforms.yml',
-                        'SALT_KITCHEN_VERIFIER=/var/jenkins/workspace/nox-verifier.yml',
-                        'SALT_KITCHEN_DRIVER=/var/jenkins/workspace/driver.yml',
-                        'NOX_ENV_NAME=pytest-zeromq',
-                        'NOX_ENABLE_FROM_FILENAMES=true',
-                        "SALT_TARGET_BRANCH=${salt_target_branch}",
-                        "GOLDEN_IMAGES_CI_BRANCH=${golden_images_branch}",
-                        'PATH=~/.rbenv/shims:/usr/local/rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/root/bin',
-                        'RBENV_VERSION=2.4.2',
-                        "FORCE_FULL=${params.runFull}",
-                    ]) {
-                        if (env.NODE_NAME.startsWith('jenkins-pr-')) {
-                            githubNotify credentialsId: gh_commit_status_account,
-                                description: "Checking PR ...",
-                                status: 'PENDING',
-                                context: gh_commit_status_context
-                        }
+        ansiColor('xterm') {
+            timestamps {
+                withEnv([
+                    'SALT_KITCHEN_PLATFORMS=/var/jenkins/workspace/nox-platforms.yml',
+                    'SALT_KITCHEN_VERIFIER=/var/jenkins/workspace/nox-verifier.yml',
+                    'SALT_KITCHEN_DRIVER=/var/jenkins/workspace/driver.yml',
+                    'NOX_ENV_NAME=pytest-zeromq',
+                    'NOX_ENABLE_FROM_FILENAMES=true',
+                    "SALT_TARGET_BRANCH=${salt_target_branch}",
+                    "GOLDEN_IMAGES_CI_BRANCH=${golden_images_branch}",
+                    'PATH=~/.rbenv/shims:/usr/local/rbenv/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/root/bin',
+                    'RBENV_VERSION=2.4.2',
+                    "FORCE_FULL=${params.runFull}",
+                ]) {
+                    if (env.NODE_NAME.startsWith('jenkins-pr-')) {
+                        githubNotify credentialsId: gh_commit_status_account,
+                            description: "Checking PR ...",
+                            status: 'PENDING',
+                            context: gh_commit_status_context
+                    }
 
-                        dir(checkout_directory) {
-                            // Checkout the repo
-                            stage('checkout-scm') {
-                                cleanWs notFailBuild: true
-                                checkout scm
-                                sh 'git fetch --no-tags https://github.com/saltstack/salt.git +refs/heads/${SALT_TARGET_BRANCH}:refs/remotes/origin/${SALT_TARGET_BRANCH}'
-                            }
-
-                            // Setup the kitchen required bundle
-                            stage('setup-bundle') {
-                                sh 'bundle install --with ec2 windows --without docker macos opennebula vagrant'
-                            }
-                        }
-
-                        try {
-                            run_changes_lint(lint_report_issues, checkout_directory)
-                            parallel main_pipeline_parallel_steps
-                        } catch (Exception e) {
-                            println("FAILURE 1: ${e}")
-                            currentBuild.result = 'FAILURE'
-                        } finally {
+                    dir(checkout_directory) {
+                        // Checkout the repo
+                        stage('checkout-scm') {
                             cleanWs notFailBuild: true
-                            if (currentBuild.resultIsBetterOrEqualTo('SUCCESS')) {
-                                if (env.NODE_NAME.startsWith('jenkins-pr-')) {
-                                    githubNotify credentialsId: gh_commit_status_account,
-                                        description: "PR checks succeeded...",
-                                        status: 'SUCCESS',
-                                        context: gh_commit_status_context
-                                }
-                            } else {
-                                if (env.NODE_NAME.startsWith('jenkins-pr-')) {
-                                    githubNotify credentialsId: gh_commit_status_account,
-                                        description: "PR checks failed...",
-                                        status: 'FAILURE',
-                                        context: gh_commit_status_context
-                                }
-                                try {
-                                  slackSend channel: "#jenkins-prod-pr",
-                                      color: '#FF0000',
-                                      message: "*${currentBuild.currentResult}*: ${currentBuild.getFullDisplayName()} (<${env.BUILD_URL}|open>)"
-                                } catch (Exception e) {
-                                  sh 'echo Failed to send the Slack notification'
-                                }
+                            checkout scm
+                            sh 'git fetch --no-tags https://github.com/saltstack/salt.git +refs/heads/${SALT_TARGET_BRANCH}:refs/remotes/origin/${SALT_TARGET_BRANCH}'
+                        }
+
+                        // Setup the kitchen required bundle
+                        stage('setup-bundle') {
+                            sh 'bundle install --with ec2 windows --without docker macos opennebula vagrant'
+                        }
+                    }
+
+                    try {
+                        run_changes_lint()
+                        parallel main_pipeline_parallel_steps
+                    } catch (Exception e) {
+                        println("FAILURE 1: ${e}")
+                        currentBuild.result = 'FAILURE'
+                    } finally {
+                        cleanWs notFailBuild: true
+                        if (currentBuild.resultIsBetterOrEqualTo('SUCCESS')) {
+                            if (env.NODE_NAME.startsWith('jenkins-pr-')) {
+                                githubNotify credentialsId: gh_commit_status_account,
+                                    description: "PR checks succeeded...",
+                                    status: 'SUCCESS',
+                                    context: gh_commit_status_context
+                            }
+                        } else {
+                            if (env.NODE_NAME.startsWith('jenkins-pr-')) {
+                                githubNotify credentialsId: gh_commit_status_account,
+                                    description: "PR checks failed...",
+                                    status: 'FAILURE',
+                                    context: gh_commit_status_context
+                            }
+                            try {
+                              slackSend channel: "#jenkins-prod-pr",
+                                  color: '#FF0000',
+                                  message: "*${currentBuild.currentResult}*: ${currentBuild.getFullDisplayName()} (<${env.BUILD_URL}|open>)"
+                            } catch (Exception e) {
+                              sh 'echo Failed to send the Slack notification'
                             }
                         }
                     }
