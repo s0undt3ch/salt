@@ -77,13 +77,17 @@ def run_tests(checkout_directory, stage_name, env_array, chunk_timeout) {
                                         '''
                                     }
                                     stage('Upload Coverage') {
-                                        script {
-                                            withCredentials([[$class: 'StringBinding', credentialsId: 'codecov-upload-token-salt', variable: 'CODECOV_TOKEN']]) {
-                                              sh '''
-                                              if [ -n "${FORCE_FULL}" -a "${FORCE_FULL}" = "true" -a -f artifacts/coverage/coverage.xml ]; then
-                                                  curl -L https://codecov.io/bash | /bin/sh -s -- -R $(pwd) -s artifacts/coverage/ -F "${CODECOV_FLAGS}"
-                                              fi
-                                              '''
+                                        retry(3) {
+                                            timeout(time: 5, unit: 'MINUTES') {
+                                                script {
+                                                    withCredentials([[$class: 'StringBinding', credentialsId: 'codecov-upload-token-salt', variable: 'CODECOV_TOKEN']]) {
+                                                      sh '''
+                                                      if [ -n "${FORCE_FULL}" -a "${FORCE_FULL}" = "true" -a -f artifacts/coverage/coverage.xml ]; then
+                                                          curl -L https://codecov.io/bash | /bin/sh -s -- -R $(pwd) -s artifacts/coverage/ -F "${CODECOV_FLAGS}"
+                                                      fi
+                                                      '''
+                                                    }
+                                                }
                                             }
                                         }
                                     }
