@@ -1,5 +1,4 @@
-import groovy.transform.Field
-
+@Library('salt@master') _
 
 // Global Pipeline Definitions
 def test_distributions = [

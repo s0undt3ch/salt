@@ -1,3 +1,5 @@
+@Library('salt@master') _
+
 // Define the maximum time, in hours, that a test run should run for
 def global_timeout = 3
 def salt_target_branch = 'neon'
@@ -25,7 +27,7 @@ def gh_commit_status_context = "ci/lint"
 
 def display_name = "Lint"
 
-wrappedNode('lint', gh_commit_status_context, gh_commit_status_account, display_name, 2, slack_channel) {
+wrappedNode('lint', gh_commit_status_context, gh_commit_status_account, display_name, global_timeout, slack_channel) {
 
     if (userTriggered || upstreamTrigger) {
 
