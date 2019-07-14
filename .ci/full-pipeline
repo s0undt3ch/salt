@@ -61,7 +61,7 @@ stage('Run Docs & Tests') {
         build job: job_name, wait: true, propagate: true
     }
     test_distributions.each { slug, details ->
-        (if params[slug]) {
+        if (params[slug]) {
             builds[slug] = {
                 def job_name = "pr-kitchen-${details['name']}${details['version']}-py${details['py_version']}/${env.BRANCH_NAME}"
                 println "Triggering build on ${job_name}"
