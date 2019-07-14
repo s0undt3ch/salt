@@ -20,7 +20,7 @@ def golden_images_branch = 'neon'
 def random = new Random()
 def gh_commit_status_accounts = ['svc-builderopen-gh', 'svc-builderopen2-gh', 'svc-builderopen3-gh', 'salt-jenkins-gh']
 def gh_commit_status_account = gh_commit_status_accounts.get(random.nextInt(gh_commit_status_accounts.size()))
-def gh_commit_status_context = "ci/${python_version}/${distro_name}-${distro_version}"
+def gh_commit_status_context = "ci/${python_version}/${distro_name}-${distro_version}/tcp"
 
 echo "Using GH Account: ${gh_commit_status_account}"
 
