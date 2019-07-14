@@ -35,6 +35,9 @@ def other_chunks = 4
 // Which node do we run this pipeline
 def node_name = 'kitchen-xl-slave'
 
+// Which slack channel to send notifications to
+def slack_channel = '#jenkins-prod-pr'
+
 // Distro Specific Nox Passthrough Options
 def nox_passthrough_opts = '--ssh-tests'
 
@@ -83,7 +86,8 @@ withEnv(['SALT_KITCHEN_PLATFORMS=/var/jenkins/workspace/nox-platforms.yml',
         gh_commit_status_account,
         parallel_testrun_timeout,
         serial_testrun_timeout,
-        global_timeout
+        global_timeout,
+        slack_channel
     )
 
 }
