@@ -23,9 +23,10 @@ def gh_commit_status_context = "ci/lint"
 
 def display_name = "Lint"
 
-wrappedNode('lint', gh_commit_status_context, gh_commit_status_account, display_name, global_timeout, slack_channel) {
+if (userTriggered || upstreamTrigger) {
 
-    if (userTriggered || upstreamTrigger) {
+    wrappedNode('lint', gh_commit_status_context, gh_commit_status_account, display_name, global_timeout, slack_channel) {
+
 
         // Be sure to cancel any previously running builds
         cancelPreviousBuilds()
@@ -210,9 +211,9 @@ wrappedNode('lint', gh_commit_status_context, gh_commit_status_account, display_
             )
             cleanWs notFailBuild: true
         }
-    } else {
-        currentBuild.result = 'ABORTED'
-        error('The build was not triggered by an upstream job or a user. Aborting.')
     }
+} else {
+    currentBuild.result = 'ABORTED'
+    error('The build was not triggered by an upstream job or a user. Aborting.')
 }
 // vim: ft=groovy

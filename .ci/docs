@@ -21,9 +21,8 @@ def gh_commit_status_context = "ci/docs"
 
 def display_name = "Docs"
 
-wrappedNode('docs', gh_commit_status_context, gh_commit_status_account, display_name, global_timeout, slack_channel) {
-
-    if (userTriggered || upstreamTrigger) {
+if (userTriggered || upstreamTrigger) {
+    wrappedNode('docs', gh_commit_status_context, gh_commit_status_account, display_name, global_timeout, slack_channel) {
 
         // Be sure to cancel any previously running builds
         cancelPreviousBuilds()
@@ -60,10 +59,10 @@ wrappedNode('docs', gh_commit_status_context, gh_commit_status_account, display_
             '''
             archiveArtifacts artifacts: 'doc/doc-archive.tar.gz'
         }
-    } else {
-        currentBuild.result = 'ABORTED'
-        error('The build was not triggered by an upstream job or a user. Aborting.')
     }
+} else {
+    currentBuild.result = 'ABORTED'
+    error('The build was not triggered by an upstream job or a user. Aborting.')
 }
 
 // vim: ft=groovy
