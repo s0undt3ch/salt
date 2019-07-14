@@ -1,3 +1,5 @@
+@Library('salt@1.0') _
+
 // Define the maximum time, in hours, that a test run should run for
 def global_timeout = 2
 def salt_target_branch = 'neon'
