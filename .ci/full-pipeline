@@ -49,17 +49,23 @@ if (buildNumber > 1) {
 milestone(buildNumber)
 
 stage('Run Lint') {
-    build "pr-lint/${env.BRANCH_NAME}", wait: true, propagate: true
+    def job_name = "pr-lint/${env.BRANCH_NAME}"
+    println "Triggering build on ${job_name}"
+    build job: job_name, wait: true, propagate: true
 }
 stage('Run Docs & Tests') {
     builds = [:]
     buidls['docs'] = {
-        build "pr-doc/${env.BRANCH_NAME}", wait: true, propagate: true
+        def job_name = "pr-doc/${env.BRANCH_NAME}"
+        println "Triggering build on ${job_name}"
+        build job: job_name, wait: true, propagate: true
     }
     test_distributions.each { slug, details ->
         (if params[slug]) {
             builds[slug] = {
-                build "pr-kitchen-${details['name']}${details['version']}-py${details['py_version']}/${env.BRANCH_NAME}", wait: true, propagate: true
+                def job_name = "pr-kitchen-${details['name']}${details['version']}-py${details['py_version']}/${env.BRANCH_NAME}"
+                println "Triggering build on ${job_name}"
+                build job: job_name, wait: true, propagate: true
             }
         }
     }
