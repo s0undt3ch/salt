@@ -12,10 +12,6 @@ properties([
 def userTriggered = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
 def upstreamTrigger = currentBuild.getBuildCauses('hudson.model.Cause$UpstreamCause')
 
-println "userTriggered: ${userTriggered}"
-println "upstreamTrigger: ${upstreamTrigger}"
-
-
 // Which slack channel to send notifications to
 def slack_channel = '#jenkins-prod-pr'
 

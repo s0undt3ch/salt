@@ -52,9 +52,6 @@ properties([
 def userTriggered = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')
 def upstreamTrigger = currentBuild.getBuildCauses('hudson.model.Cause$UpstreamCause')
 
-println "userTriggered: ${userTriggered}"
-println "upstreamTrigger: ${upstreamTrigger}"
-
 if (userTriggered || upstreamTrigger) {
 
     // Be sure to cancel any previously running builds

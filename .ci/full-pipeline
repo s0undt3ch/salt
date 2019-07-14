@@ -58,19 +58,24 @@ withSetBuildResult(slack_channel) {
             println "Triggering build on ${job_name}"
             build job: job_name, wait: true, propagate: true
         }
-        stage('Run Docs & Tests') {
-            builds = [:]
-            builds['docs'] = {
+        builds = [:]
+        builds['docs'] = {
+            stage('Build Docs') {
                 def job_name = "pr-doc/${env.BRANCH_NAME}"
                 println "Triggering build on ${job_name}"
                 build job: job_name, wait: true, propagate: true
             }
+        }
+        stage('Run Tests') {
             test_distributions.each { slug, details ->
                 if (params[slug]) {
                     builds[slug] = {
-                        def job_name = "pr-kitchen-${details['name']}${details['version']}-py${details['py_version']}/${env.BRANCH_NAME}"
-                        println "Triggering build on ${job_name}"
-                        build job: job_name, wait: true, propagate: true
+                        def display_name = "${details['name'].capitalize()} ${details['version']} Py${details['py_version']}(${details['transport']})"
+                        stage(display_name) {
+                            def job_name = "pr-kitchen-${details['name']}${details['version']}-py${details['py_version']}/${env.BRANCH_NAME}"
+                            println "Triggering build on ${job_name}"
+                            build job: job_name, wait: true, propagate: true
+                        }
                     }
                 }
             }
