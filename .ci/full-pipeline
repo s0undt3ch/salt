@@ -48,27 +48,42 @@ if (buildNumber > 1) {
 // Define a milestone for this build so that, if another build starts, this one will be aborted
 milestone(buildNumber)
 
-stage('Run Lint') {
-    def job_name = "pr-lint/${env.BRANCH_NAME}"
-    println "Triggering build on ${job_name}"
-    build job: job_name, wait: true, propagate: true
-}
-stage('Run Docs & Tests') {
-    builds = [:]
-    buidls['docs'] = {
-        def job_name = "pr-doc/${env.BRANCH_NAME}"
-        println "Triggering build on ${job_name}"
-        build job: job_name, wait: true, propagate: true
-    }
-    test_distributions.each { slug, details ->
-        if (params[slug]) {
-            builds[slug] = {
-                def job_name = "pr-kitchen-${details['name']}${details['version']}-py${details['py_version']}/${env.BRANCH_NAME}"
+// Which slack channel to send notifications to
+def slack_channel = '#jenkins-prod-pr'
+
+// Select a random GH account for notifications
+def random = new Random()
+def gh_commit_status_accounts = ['svc-builderopen-gh', 'svc-builderopen2-gh', 'svc-builderopen3-gh', 'salt-jenkins-gh']
+def gh_commit_status_account = gh_commit_status_accounts.get(random.nextInt(gh_commit_status_accounts.size()))
+def gh_commit_status_context = "ci"
+
+def display_name = "${env.BRANCH_NAME}"
+
+withSetBuildResult(slack_channel) {
+    withSetGithubCommitContext(display_name, gh_commit_status_context, gh_commit_status_account) {
+        stage('Run Lint') {
+            def job_name = "pr-lint/${env.BRANCH_NAME}"
+            println "Triggering build on ${job_name}"
+            build job: job_name, wait: true, propagate: true
+        }
+        stage('Run Docs & Tests') {
+            builds = [:]
+            builds['docs'] = {
+                def job_name = "pr-doc/${env.BRANCH_NAME}"
                 println "Triggering build on ${job_name}"
                 build job: job_name, wait: true, propagate: true
             }
+            test_distributions.each { slug, details ->
+                if (params[slug]) {
+                    builds[slug] = {
+                        def job_name = "pr-kitchen-${details['name']}${details['version']}-py${details['py_version']}/${env.BRANCH_NAME}"
+                        println "Triggering build on ${job_name}"
+                        build job: job_name, wait: true, propagate: true
+                    }
+                }
+            }
+            parallel builds
         }
     }
-    parallel builds
 }
 // vim: ft=groovy ts=4 sts=4 et
