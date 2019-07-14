@@ -1,0 +1,68 @@
+import groovy.transform.Field
+
+
+// Global Pipeline Definitions
+def test_distributions = [
+    'centos6-py2': ['name': 'centos', 'version': '6', 'py_version': '2', 'display_name': 'CentOS 6', 'transport': 'ZeroMQ'],
+    'centos7-py2': ['name': 'centos', 'version': '7', 'py_version': '2', 'display_name': 'CentOS 7', 'transport': 'ZeroMQ'],
+    'centos7-py3': ['name': 'centos', 'version': '7', 'py_version': '3', 'display_name': 'CentOS 7', 'transport': 'ZeroMQ'],
+    'centos7-py2-tcp': ['name': 'centos', 'version': '7', 'py_version': '2', 'display_name': 'CentOS 7', 'transport': 'TCP'],
+    'centos7-py3-tcp': ['name': 'centos', 'version': '7', 'py_version': '3', 'display_name': 'CentOS 7', 'transport': 'TCP'],
+    'debian8-py2': ['name': 'debian', 'version': '8', 'py_version': '2', 'display_name': 'Debian 8', 'transport': 'ZeroMQ'],
+    'debian8-py3': ['name': 'debian', 'version': '8', 'py_version': '3', 'display_name': 'Debian 8', 'transport': 'ZeroMQ'],
+    'debian9-py2': ['name': 'debian', 'version': '9', 'py_version': '2', 'display_name': 'Debian 9', 'transport': 'ZeroMQ'],
+    'debian9-py3': ['name': 'debian', 'version': '9', 'py_version': '3', 'display_name': 'Debian 9', 'transport': 'ZeroMQ'],
+    'fedora29-py2': ['name': 'fedora', 'version': '29', 'py_version': '2', 'display_name': 'Fedora 29', 'transport': 'ZeroMQ'],
+    'fedora29-py3': ['name': 'fedora', 'version': '29', 'py_version': '3', 'display_name': 'Fedora 29', 'transport': 'ZeroMQ'],
+    'ubuntu1604-py2': ['name': 'ubuntu', 'version': '1604', 'py_version': '2', 'display_name': 'Ubuntu 16.04', 'transport': 'ZeroMQ'],
+    'ubuntu1604-py3': ['name': 'ubuntu', 'version': '1604', 'py_version': '3', 'display_name': 'Ubuntu 16.04', 'transport': 'ZeroMQ'],
+    'ubuntu1604-py2': ['name': 'ubuntu', 'version': '1604', 'py_version': '2', 'display_name': 'Ubuntu 16.04', 'transport': 'TCP'],
+    'ubuntu1604-py3': ['name': 'ubuntu', 'version': '1604', 'py_version': '3', 'display_name': 'Ubuntu 16.04', 'transport': 'TCP'],
+    'ubuntu1804-py2': ['name': 'ubuntu', 'version': '1804', 'py_version': '2', 'display_name': 'Ubuntu 18.04', 'transport': 'ZeroMQ'],
+    'ubuntu1804-py3': ['name': 'ubuntu', 'version': '1804', 'py_version': '3', 'display_name': 'Ubuntu 18.04', 'transport': 'ZeroMQ'],
+    'windows2016-py2': ['name': 'windows', 'version': '2016', 'py_version': '2', 'display_name': 'Windows 2016', 'transport': 'ZeroMQ'],
+    'windows2016-py3': ['name': 'windows', 'version': '2016', 'py_version': '3', 'display_name': 'Windows 2016', 'transport': 'ZeroMQ'],
+]
+
+
+def parameters_listing = [
+    booleanParam(defaultValue: true, description: 'Run full test suite', name: 'runFull')
+]
+test_distributions.each { slug, details ->
+    parameters_listing.add(
+        booleanParam(defaultValue: true, description: "Run ${details['display_name']} tests under Py${details['py_version']}", name: slug)
+    )
+}
+
+properties([
+    buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')),
+    parameters(parameters_listing)
+])
+
+// Be sure to cancel any previously running builds
+def buildNumber = env.BUILD_NUMBER as int
+if (buildNumber > 1) {
+    // This will cancel the previous build which also defined a matching milestone
+    milestone(buildNumber - 1)
+}
+// Define a milestone for this build so that, if another build starts, this one will be aborted
+milestone(buildNumber)
+
+stage('Run Lint') {
+    build "pr-lint/${env.BRANCH_NAME}", wait: true, propagate: true
+}
+stage('Run Docs & Tests') {
+    builds = [:]
+    buidls['docs'] = {
+        build "pr-doc/${env.BRANCH_NAME}", wait: true, propagate: true
+    }
+    test_distributions.each { slug, details ->
+        (if params[slug]) {
+            builds[slug] = {
+                build "pr-kitchen-${details['name']}${details['version']}-py${details['py_version']}/${env.BRANCH_NAME}", wait: true, propagate: true
+            }
+        }
+    }
+    parallel builds
+}
+// vim: ft=groovy ts=4 sts=4 et
