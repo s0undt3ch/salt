@@ -27,10 +27,10 @@ echo "Using GH Account: ${gh_commit_status_account}"
 def checkout_directory = 'salt-checkout'
 
 // Test Chunks Definitions
-def integration_modules_chunks = 2
-def integration_states_chunks = 2
-def unit_chunks = 2
-def other_chunks = 4
+def integration_modules_chunks = 3
+def integration_states_chunks = 3
+def unit_chunks = 3
+def other_chunks = 6
 
 // Which node do we run this pipeline
 def node_name = 'kitchen-xl-slave'
