@@ -1,4 +1,4 @@
-@Library('salt@master') _
+@Library('salt@1.0') _
 
 // Define the maximum time, in hours, that a test run should run for
 def global_timeout = 3

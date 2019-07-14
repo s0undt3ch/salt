@@ -1,7 +1,7 @@
 @Library('salt@1.0') _
 
 // Define the maximum time, in hours, that a serial test run should run for
-def serial_testrun_timeout = 6
+def serial_testrun_timeout = 8
 // Define the maximum time, in hours, that a parallel test run should run for
 def parallel_testrun_timeout = 2
 
@@ -9,9 +9,9 @@ def parallel_testrun_timeout = 2
 // runs with one(1) additional hour to allow for artifacts to be downloaded, if possible.
 def global_timeout = serial_testrun_timeout + parallel_testrun_timeout + 1;
 
-def distro_name = 'centos'
-def distro_version = '6'
-def python_version = 'py2'
+def distro_name = 'windows'
+def distro_version = '2016'
+def python_version = 'py3'
 def test_transport = 'ZeroMQ'
 def distro_display_name = "${distro_name.capitalize()} ${distro_version} ${python_version.capitalize()}(${test_transport})"
 def salt_target_branch = 'neon'
@@ -39,7 +39,7 @@ def node_name = 'kitchen-xl-slave'
 def slack_channel = '#jenkins-prod-pr'
 
 // Distro Specific Nox Passthrough Options
-def nox_passthrough_opts = '--ssh-tests'
+def nox_passthrough_opts = ''
 
 properties([
     buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')),

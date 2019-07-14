@@ -10,8 +10,8 @@ def parallel_testrun_timeout = 2
 def global_timeout = serial_testrun_timeout + parallel_testrun_timeout + 1;
 
 def distro_name = 'centos'
-def distro_version = '6'
-def python_version = 'py2'
+def distro_version = '7'
+def python_version = 'py3'
 def test_transport = 'ZeroMQ'
 def distro_display_name = "${distro_name.capitalize()} ${distro_version} ${python_version.capitalize()}(${test_transport})"
 def salt_target_branch = 'neon'

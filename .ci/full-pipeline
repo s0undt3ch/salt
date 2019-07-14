@@ -1,4 +1,4 @@
-@Library('salt@master') _
+@Library('salt@1.0') _
 
 // Global Pipeline Definitions
 def test_distributions = [
