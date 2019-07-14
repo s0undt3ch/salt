@@ -56,15 +56,9 @@ println "userTriggered: ${userTriggered}"
 println "upstreamTrigger: ${upstreamTrigger}"
 
 if (userTriggered || upstreamTrigger) {
-    // Be sure to cancel any previously running builds
-    def buildNumber = env.BUILD_NUMBER as int
-    if (buildNumber > 1) {
-        // This will cancel the previous build which also defined a matching milestone
-        milestone(buildNumber - 1)
-    }
-    // Define a milestone for this build so that, if another build starts, this one will be aborted
-    milestone(buildNumber)
 
+    // Be sure to cancel any previously running builds
+    cancelPreviousBuilds()
 
     withEnv(['SALT_KITCHEN_PLATFORMS=/var/jenkins/workspace/nox-platforms.yml',
              'SALT_KITCHEN_VERIFIER=/var/jenkins/workspace/nox-verifier.yml',
@@ -100,6 +94,9 @@ if (userTriggered || upstreamTrigger) {
 
     }
 
+} else {
+    currentBuild.result = 'ABORTED'
+    error('The build was not triggered by an upstream job or a user. Aborting.')
 }
 
 // vim: ft=groovy
