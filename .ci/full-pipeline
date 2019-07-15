@@ -53,34 +53,44 @@ def display_name = "${env.BRANCH_NAME}"
 
 withSetBuildResult(slack_channel) {
     withSetGithubCommitContext(display_name, gh_commit_status_context, gh_commit_status_account) {
-        stage('Run Lint') {
-            def job_name = "pr-lint/${env.BRANCH_NAME}"
-            println "Triggering build on ${job_name}"
-            build job: job_name, wait: true, propagate: true
+        def first_stage_builds = [:]
+        first_stage_builds['lint'] = {
+            stage('Run Lint') {
+                def job_name = "pr-lint/${env.BRANCH_NAME}"
+                println "Triggering build on ${job_name}"
+                build job: job_name, wait: true, propagate: true
+            }
         }
-        builds = [:]
-        builds['docs'] = {
+        first_stage_builds['docs'] = {
             stage('Build Docs') {
                 def job_name = "pr-doc/${env.BRANCH_NAME}"
                 println "Triggering build on ${job_name}"
                 build job: job_name, wait: true, propagate: true
             }
         }
-        stage('Run Tests') {
-            test_distributions.each { slug, details ->
-                if (params[slug]) {
-                    builds[slug] = {
-                        def job_display_name = "${details['name'].capitalize()} ${details['version']} Py${details['py_version']}(${details['transport']})"
-                        stage(job_display_name) {
-                            def job_name = "pr-kitchen-${details['name']}${details['version']}-py${details['py_version']}/${env.BRANCH_NAME}"
-                            println "Triggering build on ${job_name}"
-                            build job: job_name, wait: true, propagate: true
-                        }
+        parallel first_stage_builds
+
+        def second_stage_builds = [:]
+        test_distributions.each { slug, details ->
+            if (params[slug]) {
+                second_stage_builds[slug] = {
+                    def job_display_name = "${details['name'].capitalize()} ${details['version']} Py${details['py_version']} (${details['transport']}) Tests"
+                    stage(job_display_name) {
+                        def job_name = "pr-kitchen-${details['name']}${details['version']}-py${details['py_version']}/${env.BRANCH_NAME}"
+                        println "Triggering build on ${job_name}"
+                        build(
+                            job: job_name,
+                            wait: true,
+                            propagate: true,
+                            parameters: [
+                                booleanParam(name: 'runFull', value: params['runFull'])
+                            ]
+                        )
                     }
                 }
             }
-            parallel builds
         }
+        parallel second_stage_builds
     }
 }
 // vim: ft=groovy ts=4 sts=4 et
