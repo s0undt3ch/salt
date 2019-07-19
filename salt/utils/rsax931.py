@@ -12,6 +12,7 @@ import os
 # Import Salt libs
 import salt.utils.platform
 import salt.utils.stringutils
+from salt._compat import weakref
 
 # Import 3rd-party libs
 from ctypes import cdll, c_char_p, c_int, c_void_p, pointer, create_string_buffer
@@ -115,10 +116,11 @@ class RSAX931Signer(object):
         keydata = salt.utils.stringutils.to_bytes(keydata, 'ascii')
         self._bio = libcrypto.BIO_new_mem_buf(keydata, len(keydata))
         self._rsa = c_void_p(libcrypto.RSA_new())
+        weakref.finalize(self, self.__destroy__)
         if not libcrypto.PEM_read_bio_RSAPrivateKey(self._bio, pointer(self._rsa), None, None):
             raise ValueError('invalid RSA private key')
 
-    def __del__(self):
+    def __destroy__(self):
         libcrypto.BIO_free(self._bio)
         libcrypto.RSA_free(self._rsa)
 
@@ -153,10 +155,11 @@ class RSAX931Verifier(object):
         pubdata = pubdata.replace(b'RSA ', b'')
         self._bio = libcrypto.BIO_new_mem_buf(pubdata, len(pubdata))
         self._rsa = c_void_p(libcrypto.RSA_new())
+        weakref.finalize(self, self.__destroy__)
         if not libcrypto.PEM_read_bio_RSA_PUBKEY(self._bio, pointer(self._rsa), None, None):
             raise ValueError('invalid RSA public key')
 
-    def __del__(self):
+    def __destroy__(self):
         libcrypto.BIO_free(self._bio)
         libcrypto.RSA_free(self._rsa)
 

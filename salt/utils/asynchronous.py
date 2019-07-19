@@ -10,6 +10,7 @@ import sys
 import tornado.ioloop
 import tornado.concurrent
 import contextlib
+from salt._compat import weakref
 from salt.ext import six
 from salt.utils import zeromq
 
@@ -41,7 +42,7 @@ class SyncWrapper(object):
     # the sync wrapper will automatically wait on the future
     ret = sync.async_method()
     '''
-    def __init__(self, method, args=tuple(), kwargs=None):
+    def __init__(self, method, args=(), kwargs=None):
         if kwargs is None:
             kwargs = {}
 
@@ -50,6 +51,7 @@ class SyncWrapper(object):
 
         with current_ioloop(self.io_loop):
             self.asynchronous = method(*args, **kwargs)
+        weakref.finalize(self, self.__destroy__)
 
     def __getattribute__(self, key):
         try:
@@ -76,7 +78,7 @@ class SyncWrapper(object):
         self.io_loop.start()
         return future.result()
 
-    def __del__(self):
+    def __destroy__(self):
         '''
         On deletion of the asynchronous wrapper, make sure to clean up the asynchronous stuff
         '''

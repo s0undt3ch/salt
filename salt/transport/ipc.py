@@ -24,6 +24,7 @@ from tornado.iostream import IOStream, StreamClosedError
 # Import Salt libs
 import salt.transport.client
 import salt.transport.frame
+from salt._compat import weakref
 from salt.ext import six
 
 log = logging.getLogger(__name__)
@@ -113,6 +114,7 @@ class IPCServer(object):
         self.sock = None
         self.io_loop = io_loop or IOLoop.current()
         self._closing = False
+        weakref.finalize(self, self.close)
 
     def start(self):
         '''
@@ -223,14 +225,6 @@ class IPCServer(object):
         if hasattr(self.sock, 'close'):
             self.sock.close()
 
-    def __del__(self):
-        try:
-            self.close()
-        except TypeError:
-            # This is raised when Python's GC has collected objects which
-            # would be needed when calling self.close()
-            pass
-
 
 class IPCClient(object):
     '''
@@ -266,6 +260,7 @@ class IPCClient(object):
         else:
             encoding = 'utf-8'
         self.unpacker = msgpack.Unpacker(encoding=encoding)
+        weakref.finalize(self, self.close)
 
     def connected(self):
         return self.stream is not None and not self.stream.closed()
@@ -334,18 +329,6 @@ class IPCClient(object):
                     break
 
                 yield tornado.gen.sleep(1)
-
-    def __del__(self):
-        try:
-            self.close()
-        except socket.error as exc:
-            if exc.errno != errno.EBADF:
-                # If its not a bad file descriptor error, raise
-                raise
-        except TypeError:
-            # This is raised when Python's GC has collected objects which
-            # would be needed when calling self.close()
-            pass
 
     def close(self):
         '''
@@ -474,6 +457,7 @@ class IPCMessagePublisher(object):
         self.io_loop = io_loop or IOLoop.current()
         self._closing = False
         self.streams = set()
+        weakref.finalize(self, self.close)
 
     def start(self):
         '''
@@ -565,14 +549,6 @@ class IPCMessagePublisher(object):
         self.streams.clear()
         if hasattr(self.sock, 'close'):
             self.sock.close()
-
-    def __del__(self):
-        try:
-            self.close()
-        except TypeError:
-            # This is raised when Python's GC has collected objects which
-            # would be needed when calling self.close()
-            pass
 
 
 class IPCMessageSubscriber(IPCClient):

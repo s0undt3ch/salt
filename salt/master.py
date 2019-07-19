@@ -68,6 +68,7 @@ import salt.utils.stringutils
 import salt.utils.user
 import salt.utils.verify
 import salt.utils.zeromq
+from salt._compat import weakref
 from salt.config import DEFAULT_INTERVAL
 from salt.defaults import DEFAULT_TARGET_DELIM
 from salt.transport import iter_transport_opts
@@ -844,6 +845,7 @@ class ReqServer(salt.utils.process.SignalHandlingMultiprocessingProcess):
         # Prepare the AES key
         self.key = key
         self.secrets = secrets
+        weakref.finalize(self, self.destroy)
 
     # __setstate__ and __getstate__ are only used on Windows.
     # We do this so that __init__ will be invoked on Windows in the child
@@ -947,9 +949,6 @@ class ReqServer(salt.utils.process.SignalHandlingMultiprocessingProcess):
             self.process_manager.stop_restarting()
             self.process_manager.send_signal_to_processes(signum)
             self.process_manager.kill_children()
-
-    def __del__(self):
-        self.destroy()
 
 
 class MWorker(salt.utils.process.SignalHandlingMultiprocessingProcess):

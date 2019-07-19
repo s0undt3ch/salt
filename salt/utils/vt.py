@@ -31,6 +31,7 @@ import select
 import logging
 
 # Import salt libs
+from salt._compat import weakref
 from salt.ext import six
 
 mswindows = (sys.platform == "win32")
@@ -283,6 +284,7 @@ class Terminal(object):
         else:
             self.stderr_logger = None
         # <---- Setup Logging ------------------------------------------------
+        weakref.finalize(self, self.__destroy__, _maxsize=sys.maxsize, _active=_ACTIVE)
 
     # ----- Common Public API ----------------------------------------------->
     def send(self, data):
@@ -931,7 +933,7 @@ class Terminal(object):
     # <---- Linux Methods ----------------------------------------------------
 
     # ----- Cleanup!!! ------------------------------------------------------>
-    def __del__(self, _maxsize=sys.maxsize, _active=_ACTIVE):  # pylint: disable=W0102
+    def __destroy__(self, _maxsize=sys.maxsize, _active=_ACTIVE):  # pylint: disable=W0102
         # I've disabled W0102 above which is regarding a dangerous default
         # value of [] for _ACTIVE, though, this is how Python itself handles
         # their subprocess clean up code.

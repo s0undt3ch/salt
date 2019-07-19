@@ -17,6 +17,7 @@ import salt.log
 import salt.transport.frame
 import salt.utils.immutabletypes as immutabletypes
 import salt.utils.stringutils
+from salt._compat import weakref
 from salt.exceptions import SaltReqTimeoutError
 from salt.utils.data import CaseInsensitiveDict
 
@@ -304,6 +305,7 @@ class SREQ(object):
         self.context = zmq.Context()
         self.poller = zmq.Poller()
         self.opts = opts
+        weakref.finalize(self, self.destroy)
 
     @property
     def socket(self):
@@ -421,6 +423,3 @@ class SREQ(object):
             self.socket.close()
         if self.context.closed is False:
             self.context.term()
-
-    def __del__(self):
-        self.destroy()

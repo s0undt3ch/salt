@@ -24,7 +24,7 @@ from binascii import crc32
 # Import Salt Libs
 # pylint: disable=import-error,no-name-in-module,redefined-builtin
 from salt.ext import six
-from salt._compat import ipaddress
+from salt._compat import ipaddress, weakref
 from salt.utils.network import parse_host_port
 from salt.ext.six.moves import range
 from salt.utils.zeromq import zmq, ZMQDefaultLoop, install_zmq, ZMQ_VERSION_INFO
@@ -964,9 +964,7 @@ class MinionManager(MinionBase):
         self.io_loop = ZMQDefaultLoop.current()
         self.process_manager = ProcessManager(name='MultiMinionProcessManager')
         self.io_loop.spawn_callback(self.process_manager.run, **{'asynchronous': True})  # Tornado backward compat
-
-    def __del__(self):
-        self.destroy()
+        weakref.finalize(self, self.destroy)
 
     def _bind(self):
         # start up the event publisher, so we can see events during startup
@@ -1203,6 +1201,7 @@ class Minion(MinionBase):
         if signal.getsignal(signal.SIGTERM) is signal.SIG_DFL:
             # No custom signal handling was added, install our own
             signal.signal(signal.SIGTERM, self._handle_signals)
+        weakref.finalize(self, self.destroy)
 
     def _handle_signals(self, signum, sigframe):  # pylint: disable=unused-argument
         self._running = False
@@ -2953,9 +2952,6 @@ class Minion(MinionBase):
         if hasattr(self, 'periodic_callbacks'):
             for cb in six.itervalues(self.periodic_callbacks):
                 cb.stop()
-
-    def __del__(self):
-        self.destroy()
 
 
 class Syndic(Minion):

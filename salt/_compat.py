@@ -8,6 +8,7 @@ Salt compatibility code
 from __future__ import absolute_import, unicode_literals, print_function
 import sys
 import logging
+import weakref
 import binascii
 
 # Import 3rd-party libs
@@ -233,3 +234,8 @@ if ipaddress:
     ipaddress.IPv6Address = IPv6AddressScoped
     if sys.version_info.major == 2:
         ipaddress.IPv6Interface = IPv6InterfaceScoped
+
+
+if sys.version_info < (3, 7):
+    from salt.ext.weakref_finalize import finalize as weakref_finalize
+    weakref.finalize = weakref_finalize

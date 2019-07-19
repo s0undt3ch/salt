@@ -16,7 +16,6 @@ import sys
 import time
 import threading
 import traceback
-import weakref
 
 # Import Salt Libs
 import salt.crypt
@@ -34,6 +33,7 @@ import salt.transport.ipc
 import salt.transport.client
 import salt.transport.server
 import salt.transport.mixins.auth
+from salt._compat import weakref
 from salt.ext import six
 from salt.ext.six.moves import queue  # pylint: disable=import-error
 from salt.exceptions import SaltReqTimeoutError, SaltClientError
@@ -154,6 +154,7 @@ if USE_LOAD_BALANCER:
             self.opts = opts
             self.socket_queue = socket_queue
             self._socket = None
+            weakref.finalize(self, self.close)
 
         # __setstate__ and __getstate__ are only used on Windows.
         # We do this so that __init__ will be invoked on Windows in the child
@@ -181,9 +182,6 @@ if USE_LOAD_BALANCER:
                 self._socket.shutdown(socket.SHUT_RDWR)
                 self._socket.close()
                 self._socket = None
-
-        def __del__(self):
-            self.close()
 
         def run(self):
             '''
@@ -293,6 +291,7 @@ class AsyncTCPReqChannel(salt.transport.client.ReqChannel):
                                                     kwargs={'io_loop': self.io_loop, 'resolver': resolver,
                                                             'source_ip': self.opts.get('source_ip'),
                                                             'source_port': self.opts.get('source_ret_port')})
+        weakref.finalize(self, self.__destroy__)
 
     def close(self):
         if self._closing:
@@ -323,7 +322,7 @@ class AsyncTCPReqChannel(salt.transport.client.ReqChannel):
             if not loop_instance_map:
                 del self.__class__.instance_map[self.io_loop]
 
-    def __del__(self):
+    def __destroy__(self):
         with self._refcount_lock:
             # Make sure we actually close no matter if something
             # went wrong with our ref counting
@@ -431,6 +430,7 @@ class AsyncTCPPubChannel(salt.transport.mixins.auth.AESPubClientMixin, salt.tran
             opts=self.opts,
             listen=False
         )
+        weakref.finalize(self, self.close)
 
     def close(self):
         if self._closing:
@@ -438,9 +438,6 @@ class AsyncTCPPubChannel(salt.transport.mixins.auth.AESPubClientMixin, salt.tran
         self._closing = True
         if hasattr(self, 'message_client'):
             self.message_client.close()
-
-    def __del__(self):
-        self.close()
 
     def _package_load(self, load):
         return {
@@ -604,6 +601,7 @@ class TCPReqServerChannel(salt.transport.mixins.auth.AESReqServerMixin, salt.tra
     def __init__(self, opts):
         salt.transport.server.ReqServerChannel.__init__(self, opts)
         self._socket = None
+        weakref.finalize(self, self.close)
 
     @property
     def socket(self):
@@ -627,9 +625,6 @@ class TCPReqServerChannel(salt.transport.mixins.auth.AESReqServerMixin, salt.tra
                 self.req_server.stop()
             except Exception as exc:
                 log.exception('TCPReqServerChannel close generated an exception: %s', str(exc))
-
-    def __del__(self):
-        self.close()
 
     def pre_fork(self, process_manager):
         '''
@@ -873,9 +868,7 @@ class SaltMessageClientPool(salt.transport.MessageClientPool):
     '''
     def __init__(self, opts, args=None, kwargs=None):
         super(SaltMessageClientPool, self).__init__(SaltMessageClient, opts, args=args, kwargs=kwargs)
-
-    def __del__(self):
-        self.close()
+        weakref.finalize(self, self.close)
 
     def close(self):
         for message_client in self.message_clients:
@@ -941,6 +934,7 @@ class SaltMessageClient(object):
         self._connecting_future = self.connect()
         self._stream_return_future = tornado.concurrent.Future()
         self.io_loop.spawn_callback(self._stream_return)
+        weakref.finalize(self, self.close)
 
     def _stop_io_loop(self):
         if self.io_loop is not None:
@@ -988,9 +982,6 @@ class SaltMessageClient(object):
         # to be deleted.
         self.connect_callback = None
         self.disconnect_callback = None
-
-    def __del__(self):
-        self.close()
 
     def connect(self):
         '''
@@ -1215,6 +1206,7 @@ class Subscriber(object):
         self._closing = False
         self._read_until_future = None
         self.id_ = None
+        weakref.finalize(self, self.close)
 
     def close(self):
         if self._closing:
@@ -1230,9 +1222,6 @@ class Subscriber(object):
                 # the next message and the associated read future is marked
                 # 'StreamClosedError' when the stream is closed.
                 self._read_until_future.exception()
-
-    def __del__(self):
-        self.close()
 
 
 class PubServer(tornado.tcpserver.TCPServer, object):
@@ -1265,14 +1254,12 @@ class PubServer(tornado.tcpserver.TCPServer, object):
                 opts=self.opts,
                 listen=False
             )
+        weakref.finalize(self, self.close)
 
     def close(self):
         if self._closing:
             return
         self._closing = True
-
-    def __del__(self):
-        self.close()
 
     def _add_client_present(self, client):
         id_ = client.id_

@@ -18,6 +18,7 @@ import psutil
 import ctypes
 from ctypes import wintypes
 
+from salt._compat import weakref
 from salt.ext.six.moves import range
 from salt.ext.six.moves import zip
 
@@ -181,6 +182,7 @@ class HANDLE(wintypes.HANDLE):
     __slots__ = 'closed',
 
     def __int__(self):
+        weakref.finalize(self, self.Close)
         return self.value or 0
 
     def Detach(self):
@@ -194,8 +196,6 @@ class HANDLE(wintypes.HANDLE):
     def Close(self, CloseHandle=kernel32.CloseHandle):
         if self and not getattr(self, 'closed', False):
             CloseHandle(self.Detach())
-
-    __del__ = Close
 
     def __repr__(self):
         return "{}({})".format(self.__class__.__name__, int(self))

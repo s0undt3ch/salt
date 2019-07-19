@@ -89,6 +89,7 @@ import salt.log.setup
 import salt.defaults.exitcodes
 import salt.transport.ipc
 import salt.transport.client
+from salt._compat import weakref
 
 log = logging.getLogger(__name__)
 
@@ -280,6 +281,7 @@ class SaltEvent(object):
         self.pending_tags = []
         self.pending_events = []
         self.__load_cache_regex()
+        weakref.finalize(self, self.destroy)
         if listen and not self.cpub:
             # Only connect to the publisher at initialization time if
             # we know we want to listen. If we connect to the publisher
@@ -890,14 +892,6 @@ class SaltEvent(object):
         # This will handle reconnects
         return self.subscriber.read_async()
 
-    def __del__(self):
-        # skip exceptions in destroy-- since destroy() doesn't cover interpreter
-        # shutdown-- where globals start going missing
-        try:
-            self.destroy()
-        except Exception:
-            pass
-
     def __enter__(self):
         return self
 
@@ -1051,6 +1045,7 @@ class AsyncEventPublisher(object):
             payload_handler=self.handle_publish
         )
 
+        weakref.finalize(self, self.close)
         log.info('Starting pull socket on %s', epull_uri)
         with salt.utils.files.set_umask(0o177):
             self.publisher.start()
@@ -1078,9 +1073,6 @@ class AsyncEventPublisher(object):
         if hasattr(self, 'puller'):
             self.puller.close()
 
-    def __del__(self):
-        self.close()
-
 
 class EventPublisher(salt.utils.process.SignalHandlingMultiprocessingProcess):
     '''
@@ -1092,6 +1084,7 @@ class EventPublisher(salt.utils.process.SignalHandlingMultiprocessingProcess):
         self.opts = salt.config.DEFAULT_MASTER_OPTS.copy()
         self.opts.update(opts)
         self._closing = False
+        weakref.finalize(self, self.close)
 
     # __setstate__ and __getstate__ are only used on Windows.
     # We do this so that __init__ will be invoked on Windows in the child
@@ -1187,9 +1180,6 @@ class EventPublisher(salt.utils.process.SignalHandlingMultiprocessingProcess):
     def _handle_signals(self, signum, sigframe):
         self.close()
         super(EventPublisher, self)._handle_signals(signum, sigframe)
-
-    def __del__(self):
-        self.close()
 
 
 class EventReturn(salt.utils.process.SignalHandlingMultiprocessingProcess):

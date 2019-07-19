@@ -13,7 +13,6 @@ import signal
 import socket
 import hashlib
 import logging
-import weakref
 import threading
 from random import randint
 
@@ -35,7 +34,7 @@ import salt.transport.server
 import salt.transport.mixins.auth
 from salt.ext import six
 from salt.exceptions import SaltReqTimeoutError, SaltException
-from salt._compat import ipaddress
+from salt._compat import ipaddress, weakref
 
 from salt.utils.zeromq import zmq, ZMQDefaultLoop, install_zmq, ZMQ_VERSION_INFO, LIBZMQ_VERSION_INFO
 import zmq.error
@@ -211,6 +210,7 @@ class AsyncZeroMQReqChannel(salt.transport.client.ReqChannel):
                                                         args=(self.opts, self.opts['master_uri'],),
                                                         kwargs={'io_loop': self._io_loop})
         self._closing = False
+        weakref.finalize(self, self.__destroy__)
 
     def close(self):
         '''
@@ -246,7 +246,7 @@ class AsyncZeroMQReqChannel(salt.transport.client.ReqChannel):
             if not loop_instance_map:
                 del self.__class__.instance_map[self._io_loop]
 
-    def __del__(self):
+    def __destroy__(self):
         with self._refcount_lock:
             # Make sure we actually close no matter if something
             # went wrong with our ref counting
@@ -469,6 +469,7 @@ class AsyncZeroMQPubChannel(salt.transport.mixins.auth.AESPubClientMixin, salt.t
         if HAS_ZMQ_MONITOR and self.opts['zmq_monitor']:
             self._monitor = ZeroMQSocketMonitor(self._socket)
             self._monitor.start_io_loop(self.io_loop)
+        weakref.finalize(self, self.close)
 
     def close(self):
         if hasattr(self, '_monitor') and self._monitor is not None:
@@ -495,9 +496,6 @@ class AsyncZeroMQPubChannel(salt.transport.mixins.auth.AESPubClientMixin, salt.t
             ),
             stacklevel=3
         )
-        self.close()
-
-    def __del__(self):
         self.close()
 
     # TODO: this is the time to see if we are connected, maybe use the req channel to guess?
@@ -1064,6 +1062,7 @@ class AsyncReqMessageClientPool(salt.transport.MessageClientPool):
     def __init__(self, opts, args=None, kwargs=None):
         super(AsyncReqMessageClientPool, self).__init__(AsyncReqMessageClient, opts, args=args, kwargs=kwargs)
         self._closing = False
+        weakref.finalize(self, self.close)
 
     def close(self):
         if self._closing:
@@ -1087,9 +1086,6 @@ class AsyncReqMessageClientPool(salt.transport.MessageClientPool):
             ),
             stacklevel=3
         )
-        self.close()
-
-    def __del__(self):
         self.close()
 
 
@@ -1133,6 +1129,7 @@ class AsyncReqMessageClient(object):
 
         self.send_timeout_map = {}  # message -> timeout
         self._closing = False
+        weakref.finalize(self, self.close)
 
     # TODO: timeout all in-flight sessions, or error
     def close(self):
@@ -1165,9 +1162,6 @@ class AsyncReqMessageClient(object):
             ),
             stacklevel=3
         )
-        self.close()
-
-    def __del__(self):
         self.close()
 
     def _init_socket(self):

@@ -44,6 +44,7 @@ import salt.utils.user
 import salt.utils.verify
 import salt.utils.zeromq
 import salt.syspaths as syspaths
+from salt._compat import weakref
 from salt.exceptions import (
     AuthenticationError,
     AuthorizationError,
@@ -171,6 +172,7 @@ class LocalClient(object):
         self.utils = salt.loader.utils(self.opts)
         self.functions = salt.loader.minion_mods(self.opts, utils=self.utils)
         self.returners = salt.loader.returners(self.opts, self.functions)
+        weakref.finalize(self, self.__destroy__)
 
     def __read_master_key(self):
         '''
@@ -1912,7 +1914,7 @@ class LocalClient(object):
         raise tornado.gen.Return({'jid': payload['load']['jid'],
                                   'minions': payload['load']['minions']})
 
-    def __del__(self):
+    def __destroy__(self):
         # This IS really necessary!
         # When running tests, if self.events is not destroyed, we leak 2
         # threads per test case which uses self.client

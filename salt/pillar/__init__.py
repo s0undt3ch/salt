@@ -26,6 +26,7 @@ import salt.utils.crypt
 import salt.utils.data
 import salt.utils.dictupdate
 import salt.utils.url
+from salt._compat import weakref
 from salt.exceptions import SaltClientError
 from salt.template import compile_template
 from salt.utils.odict import OrderedDict
@@ -156,6 +157,7 @@ class AsyncRemotePillar(RemotePillarMixin):
                                      recursive_update=True,
                                      merge_lists=True)
         self._closing = False
+        weakref.finalize(self, self.destroy)
 
     @tornado.gen.coroutine
     def compile_pillar(self):
@@ -196,9 +198,6 @@ class AsyncRemotePillar(RemotePillarMixin):
         self._closing = True
         self.channel.close()
 
-    def __del__(self):
-        self.destroy()
-
 
 class RemotePillar(RemotePillarMixin):
     '''
@@ -227,6 +226,7 @@ class RemotePillar(RemotePillarMixin):
                                      recursive_update=True,
                                      merge_lists=True)
         self._closing = False
+        weakref.finalize(self, self.destroy)
 
     def compile_pillar(self):
         '''
@@ -260,9 +260,6 @@ class RemotePillar(RemotePillarMixin):
 
         self._closing = True
         self.channel.close()
-
-    def __del__(self):
-        self.destroy()
 
 
 class PillarCache(object):
@@ -378,6 +375,7 @@ class Pillar(object):
     '''
     def __init__(self, opts, grains, minion_id, saltenv, ext=None, functions=None,
                  pillar_override=None, pillarenv=None, extra_minion_data=None):
+        weakref.finalize(self, self.destroy)
         self.minion_id = minion_id
         self.ext = ext
         if pillarenv is None:
@@ -1148,9 +1146,6 @@ class Pillar(object):
         if self._closing:
             return
         self._closing = True
-
-    def __del__(self):
-        self.destroy()
 
 
 # TODO: actually migrate from Pillar to AsyncPillar to allow for futures in

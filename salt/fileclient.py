@@ -35,6 +35,7 @@ import salt.utils.stringutils
 import salt.utils.templates
 import salt.utils.url
 import salt.utils.versions
+from salt._compat import weakref
 from salt.utils.openstack.swift import SaltSwift
 
 # pylint: disable=no-name-in-module,import-error
@@ -1036,6 +1037,7 @@ class RemoteClient(Client):
             self.auth = self.channel.auth
         else:
             self.auth = ''
+        weakref.finalize(self, self.destroy)
 
     def _refresh_channel(self):
         '''
@@ -1043,9 +1045,6 @@ class RemoteClient(Client):
         '''
         self.channel = salt.transport.client.ReqChannel.factory(self.opts)
         return self.channel
-
-    def __del__(self):
-        self.destroy()
 
     def destroy(self):
         if self._closing:
