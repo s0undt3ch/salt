@@ -142,6 +142,7 @@ class AsyncRemotePillar(RemotePillarMixin):
         self.grains = grains
         self.minion_id = minion_id
         self.channel = salt.transport.client.AsyncReqChannel.factory(opts)
+        weakref.finalize(self, self.__weakref_destroy__, self.channel)
         if pillarenv is not None:
             self.opts['pillarenv'] = pillarenv
         self.pillar_override = pillar_override or {}
@@ -157,7 +158,6 @@ class AsyncRemotePillar(RemotePillarMixin):
                                      recursive_update=True,
                                      merge_lists=True)
         self._closing = False
-        weakref.finalize(self, self.destroy)
 
     @tornado.gen.coroutine
     def compile_pillar(self):
@@ -198,6 +198,10 @@ class AsyncRemotePillar(RemotePillarMixin):
         self._closing = True
         self.channel.close()
 
+    @staticmethod
+    def __weakref_destroy__(channel):
+        channel.close()
+
 
 class RemotePillar(RemotePillarMixin):
     '''
@@ -211,6 +215,7 @@ class RemotePillar(RemotePillarMixin):
         self.grains = grains
         self.minion_id = minion_id
         self.channel = salt.transport.client.ReqChannel.factory(opts)
+        weakref.finalize(self, self.__weakref_destroy__, self.channel)
         if pillarenv is not None:
             self.opts['pillarenv'] = pillarenv
         self.pillar_override = pillar_override or {}
@@ -226,7 +231,6 @@ class RemotePillar(RemotePillarMixin):
                                      recursive_update=True,
                                      merge_lists=True)
         self._closing = False
-        weakref.finalize(self, self.destroy)
 
     def compile_pillar(self):
         '''
@@ -260,6 +264,10 @@ class RemotePillar(RemotePillarMixin):
 
         self._closing = True
         self.channel.close()
+
+    @staticmethod
+    def __weakref_destroy__(channel):
+        channel.close()
 
 
 class PillarCache(object):
@@ -375,7 +383,6 @@ class Pillar(object):
     '''
     def __init__(self, opts, grains, minion_id, saltenv, ext=None, functions=None,
                  pillar_override=None, pillarenv=None, extra_minion_data=None):
-        weakref.finalize(self, self.destroy)
         self.minion_id = minion_id
         self.ext = ext
         if pillarenv is None:

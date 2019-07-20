@@ -4352,8 +4352,8 @@ class RemoteHighState(object):
         self.serial = salt.payload.Serial(self.opts)
         # self.auth = salt.crypt.SAuth(opts)
         self.channel = salt.transport.client.ReqChannel.factory(self.opts['master_uri'])
+        weakref.finalize(self, self.__weakref_destroy__, self.channel)
         self._closing = False
-        weakref.finalize(self, self.destroy)
 
     def compile_master(self):
         '''
@@ -4373,3 +4373,7 @@ class RemoteHighState(object):
 
         self._closing = True
         self.channel.close()
+
+    @staticmethod
+    def __weakref_destroy__(channel):
+        channel.close()

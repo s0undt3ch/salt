@@ -182,7 +182,7 @@ class HANDLE(wintypes.HANDLE):
     __slots__ = 'closed',
 
     def __int__(self):
-        weakref.finalize(self, self.Close)
+        weakref.finalize(self, self.__weakref_destroy__, self.value or 0)
         return self.value or 0
 
     def Detach(self):
@@ -199,6 +199,10 @@ class HANDLE(wintypes.HANDLE):
 
     def __repr__(self):
         return "{}({})".format(self.__class__.__name__, int(self))
+
+    @staticmethod
+    def __weakref_destroy__(handle):
+        kernel32.CloseHandle(handle)
 
 
 class LARGE_INTEGER(wintypes.LARGE_INTEGER):

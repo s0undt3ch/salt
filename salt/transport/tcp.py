@@ -177,6 +177,11 @@ if USE_LOAD_BALANCER:
                 'log_queue_level': self.log_queue_level
             }
 
+        @staticmethod
+        def __weakref_destroy__(_socket):
+            _socket.shutdown(socket.SHUT_RDWR)
+            _socket.close()
+
         def close(self):
             if self._socket is not None:
                 self._socket.shutdown(socket.SHUT_RDWR)
@@ -291,7 +296,13 @@ class AsyncTCPReqChannel(salt.transport.client.ReqChannel):
                                                     kwargs={'io_loop': self.io_loop, 'resolver': resolver,
                                                             'source_ip': self.opts.get('source_ip'),
                                                             'source_port': self.opts.get('source_ret_port')})
-        weakref.finalize(self, self.__destroy__)
+        weakref.finalize(
+            self,
+            self.__weakref_destroy__,
+            self.message_client,
+            self.io_loop,
+            self.instance_map,
+            self.__key(opts, **kwargs))
 
     def close(self):
         if self._closing:
@@ -322,17 +333,20 @@ class AsyncTCPReqChannel(salt.transport.client.ReqChannel):
             if not loop_instance_map:
                 del self.__class__.instance_map[self.io_loop]
 
-    def __destroy__(self):
-        with self._refcount_lock:
-            # Make sure we actually close no matter if something
-            # went wrong with our ref counting
-            self._refcount = 1
-        try:
-            self.close()
-        except socket.error as exc:
-            if exc.errno != errno.EBADF:
-                # If its not a bad file descriptor error, raise
-                raise
+    @staticmethod
+    def __weakref_destroy__(message_client, io_loop, instance_map, instance_key):
+        message_client.close()
+
+        # Remove the entry from the instance map so that a closed entry may not
+        # be reused.
+        # This forces this operation even if the reference count of the entry
+        # has not yet gone to zero.
+        if io_loop in instance_map:
+            loop_instance_map = instance_map[io_loop]
+            if instance_key in loop_instance_map:
+                del loop_instance_map[instance_key]
+            if not loop_instance_map:
+                del instance_map[self.io_loop]
 
     def _package_load(self, load):
         return {
@@ -430,7 +444,15 @@ class AsyncTCPPubChannel(salt.transport.mixins.auth.AESPubClientMixin, salt.tran
             opts=self.opts,
             listen=False
         )
-        weakref.finalize(self, self.close)
+        weakref.finalize(self, self.__weakref_destroy_event__, self.event)
+
+    @staticmethod
+    def __weakref_destroy__(message_client):
+        message_client.close()
+
+    @staticmethod
+    def __weakref_destroy_event__(event):
+        event.destroy()
 
     def close(self):
         if self._closing:
@@ -567,6 +589,7 @@ class AsyncTCPPubChannel(salt.transport.mixins.auth.AESPubClientMixin, salt.tran
                             'source_port': self.opts.get('source_publish_port')})
                 yield self.message_client.connect()  # wait for the client to be connected
                 self.connected = True
+                weakref.finalize(self, self.__weakref_destroy_event__, self.message_client)
         # TODO: better exception handling...
         except KeyboardInterrupt:
             raise
@@ -601,7 +624,19 @@ class TCPReqServerChannel(salt.transport.mixins.auth.AESReqServerMixin, salt.tra
     def __init__(self, opts):
         salt.transport.server.ReqServerChannel.__init__(self, opts)
         self._socket = None
-        weakref.finalize(self, self.close)
+
+    @staticmethod
+    def __weakref_destroy_socket__(_socket):
+        try:
+            _socket.shutdown(socket.SHUT_RDWR)
+        except socket.error as exc:
+            if exc.errno == errno.ENOTCONN:
+                # We may try to shutdown a socket which is already disconnected.
+                # Ignore this condition and continue.
+                pass
+            else:
+                six.reraise(*sys.exc_info())
+        _socket.close()
 
     @property
     def socket(self):
@@ -642,6 +677,7 @@ class TCPReqServerChannel(salt.transport.mixins.auth.AESReqServerMixin, salt.tra
             _set_tcp_keepalive(self._socket, self.opts)
             self._socket.setblocking(0)
             self._socket.bind((self.opts['interface'], int(self.opts['ret_port'])))
+            weakref.finalize(self, self.__weakref_destroy_socket__, self._socket)
 
     def post_fork(self, payload_handler, io_loop):
         '''
@@ -665,6 +701,7 @@ class TCPReqServerChannel(salt.transport.mixins.auth.AESReqServerMixin, salt.tra
                     _set_tcp_keepalive(self._socket, self.opts)
                     self._socket.setblocking(0)
                     self._socket.bind((self.opts['interface'], int(self.opts['ret_port'])))
+                    weakref.finalize(self, self.__weakref_destroy_socket__, self._socket)
                 self.req_server = SaltMessageServer(self.handle_message,
                                                     ssl_options=self.opts.get('ssl'))
                 self.req_server.add_socket(self._socket)
@@ -868,7 +905,13 @@ class SaltMessageClientPool(salt.transport.MessageClientPool):
     '''
     def __init__(self, opts, args=None, kwargs=None):
         super(SaltMessageClientPool, self).__init__(SaltMessageClient, opts, args=args, kwargs=kwargs)
-        weakref.finalize(self, self.close)
+        weakref.finalize(self, self.__weakref_destroy__, self.message_clients)
+
+    @staticmethod
+    def __weakref_destroy__(message_clients):
+        for message_client in message_clients:
+            message_client.close()
+        message_clients[:] = []
 
     def close(self):
         for message_client in self.message_clients:
@@ -1254,7 +1297,6 @@ class PubServer(tornado.tcpserver.TCPServer, object):
                 opts=self.opts,
                 listen=False
             )
-        weakref.finalize(self, self.close)
 
     def close(self):
         if self._closing:

@@ -169,10 +169,10 @@ class LocalClient(object):
                 listen=False,
                 io_loop=io_loop,
                 keep_loop=keep_loop)
+        weakref.finalize(self, self.__weakref_destroy__, self.event)
         self.utils = salt.loader.utils(self.opts)
         self.functions = salt.loader.minion_mods(self.opts, utils=self.utils)
         self.returners = salt.loader.returners(self.opts, self.functions)
-        weakref.finalize(self, self.__destroy__)
 
     def __read_master_key(self):
         '''
@@ -1914,13 +1914,9 @@ class LocalClient(object):
         raise tornado.gen.Return({'jid': payload['load']['jid'],
                                   'minions': payload['load']['minions']})
 
-    def __destroy__(self):
-        # This IS really necessary!
-        # When running tests, if self.events is not destroyed, we leak 2
-        # threads per test case which uses self.client
-        if hasattr(self, 'event'):
-            # The call below will take care of calling 'self.event.destroy()'
-            del self.event
+    @staticmethod
+    def __weakref_destroy__(event):
+        del event
 
     def _clean_up_subscriptions(self, job_id):
         if self.opts.get('order_masters'):

@@ -1037,7 +1037,11 @@ class RemoteClient(Client):
             self.auth = self.channel.auth
         else:
             self.auth = ''
-        weakref.finalize(self, self.destroy)
+        weakref.finalize(self, self.__weakref_destroy__, self.channel)
+
+    @staticmethod
+    def __weakref_destroy__(obj):
+        obj.close()
 
     def _refresh_channel(self):
         '''

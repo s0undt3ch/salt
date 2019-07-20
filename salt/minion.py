@@ -964,7 +964,7 @@ class MinionManager(MinionBase):
         self.io_loop = ZMQDefaultLoop.current()
         self.process_manager = ProcessManager(name='MultiMinionProcessManager')
         self.io_loop.spawn_callback(self.process_manager.run, **{'asynchronous': True})  # Tornado backward compat
-        weakref.finalize(self, self.destroy)
+        weakref.finalize(self, self.__weakref_destroy_minions__, self.minions)
 
     def _bind(self):
         # start up the event publisher, so we can see events during startup
@@ -972,9 +972,11 @@ class MinionManager(MinionBase):
             self.opts,
             io_loop=self.io_loop,
         )
+        weakref.finalize(self, self.__weakref_destroy_event_publisher__, self.event_publisher)
         self.event = salt.utils.event.get_event('minion', opts=self.opts, io_loop=self.io_loop)
         self.event.subscribe('')
         self.event.set_event_handler(self.handle_event)
+        weakref.finalize(self, self.__weakref_destroy_event__, self.event)
 
     @tornado.gen.coroutine
     def handle_event(self, package):
@@ -1113,6 +1115,23 @@ class MinionManager(MinionBase):
         for minion in self.minions:
             minion.destroy()
 
+    @staticmethod
+    def __weakref_destroy_minions__(minions):
+        for _minion in minions:
+            _minion.process_manager.stop_restarting()
+            _minion.process_manager.send_signal_to_processes(signal.SIGTERM)
+            # kill any remaining processes
+            _minion.process_manager.kill_children()
+            _minion.destroy()
+
+    @staticmethod
+    def __weakref_destroy_event__(event):
+        event.destroy()
+
+    @staticmethod
+    def __weakref_destroy_event_publisher__(event_publisher):
+        event_publisher.close()
+
 
 class Minion(MinionBase):
     '''
@@ -1138,6 +1157,7 @@ class Minion(MinionBase):
         self.ready = False
         self.jid_queue = [] if jid_queue is None else jid_queue
         self.periodic_callbacks = {}
+        weakref.finalize(self, self.__weakref_destroy_periodic_callbacks__, self.periodic_callbacks)
 
         if io_loop is None:
             install_zmq()
@@ -1201,7 +1221,6 @@ class Minion(MinionBase):
         if signal.getsignal(signal.SIGTERM) is signal.SIG_DFL:
             # No custom signal handling was added, install our own
             signal.signal(signal.SIGTERM, self._handle_signals)
-        weakref.finalize(self, self.destroy)
 
     def _handle_signals(self, signum, sigframe):  # pylint: disable=unused-argument
         self._running = False
@@ -1250,6 +1269,7 @@ class Minion(MinionBase):
         Return a future which will complete when you are connected to a master
         '''
         master, self.pub_channel = yield self.eval_master(self.opts, self.timeout, self.safe, failed)
+        weakref.finalize(self, self.__weakref_destroy_pub_channel__, self.pub_channel)
         yield self._post_master_init(master)
 
     # TODO: better name...
@@ -1298,6 +1318,7 @@ class Minion(MinionBase):
                 self.functions,
                 self.returners,
                 cleanup=[master_event(type='alive')])
+            weakref.finalize(self, self.__weakref_destroy_schedule__, self.schedule)
 
         # add default scheduling jobs to the minions scheduler
         if self.opts['mine_enabled'] and 'mine.update' in self.functions:
@@ -2537,6 +2558,7 @@ class Minion(MinionBase):
                                                         opts=self.opts,
                                                         failed=True,
                                                         failback=tag.startswith(master_event(type='failback')))
+                    weakref.finalize(self, self.__weakref_destroy_pub_channel__, self.pub_channel)
                 except SaltClientError:
                     pass
 
@@ -2953,6 +2975,22 @@ class Minion(MinionBase):
             for cb in six.itervalues(self.periodic_callbacks):
                 cb.stop()
 
+    @staticmethod
+    def __weakref_destroy_schedule__(schedule):
+        del schedule
+
+    @staticmethod
+    def __weakref_destroy_pub_channel__(pub_channel):
+        pub_channel.on_recv(None)
+        if hasattr(pub_channel, 'close'):
+            pub_channel.close()
+        del pub_channel
+
+    @staticmethod
+    def __weakref_destroy_periodic_callbacks__(periodic_callbacks):
+        for cb in six.itervalues(periodic_callbacks):
+            cb.stop()
+
 
 class Syndic(Minion):
     '''
@@ -3069,6 +3107,7 @@ class Syndic(Minion):
         # if eval_master finds a new master for us, self.connected
         # will be True again on successful master authentication
         master, self.pub_channel = yield self.eval_master(opts=self.opts)
+        weakref.finalize(self, self.__weakref_destroy_pub_channel__, self.pub_channel)
 
         if self.connected:
             self.opts['master'] = master
@@ -3089,6 +3128,17 @@ class Syndic(Minion):
 
         if hasattr(self, 'forward_events'):
             self.forward_events.stop()
+
+    @staticmethod
+    def __weakref_destroy_pub_channel__(pub_channel):
+        pub_channel.on_recv(None)
+        if hasattr(pub_channel, 'close'):
+            pub_channel.close()
+        del pub_channel
+
+    @staticmethod
+    def __weakref_destroy_forward_events__(forward_events):
+        forward_events.stop()
 
 
 # TODO: need a way of knowing if the syndic connection is busted
@@ -3351,6 +3401,7 @@ class SyndicManager(MinionBase):
                                                               self.opts['syndic_event_forward_timeout'] * 1000,
                                                               )
         self.forward_events.start()
+        weakref.finalize(self, self.__weakref_destroy_forward_events__, self.forward_events)
 
         # Make sure to gracefully handle SIGUSR1
         enable_sigusr1_handler()

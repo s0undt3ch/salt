@@ -303,7 +303,9 @@ class SREQ(object):
         self.serial = Serial(serial)
         self.linger = linger
         self.context = zmq.Context()
+        weakref.finalize(self, self.__weakref_destroy_context__, self.context)
         self.poller = zmq.Poller()
+        weakref.finalize(self, self.__weakref_destroy_poller__, self.poller)
         self.opts = opts
         weakref.finalize(self, self.destroy)
 
@@ -331,6 +333,7 @@ class SREQ(object):
             if self.id_:
                 self._socket.setsockopt(zmq.IDENTITY, self.id_)
             self._socket.connect(self.master)
+            weakref.finalize(self, self.__weakref_destroy_socket__, self._socket)
         return self._socket
 
     def _set_tcp_keepalive(self):
@@ -423,3 +426,30 @@ class SREQ(object):
             self.socket.close()
         if self.context.closed is False:
             self.context.term()
+
+    @staticmethod
+    def __weakref_destroy_context__(context):
+        if context.closed is False:
+            context.close()
+
+    @staticmethod
+    def __weakref_destroy_socket__(socket):
+        if socket.closed is False:
+            socket.setsockopt(zmq.LINGER, 1)
+            socket.close()
+
+    @staticmethod
+    def __weakref_destroy_poller__(poller):
+        if isinstance(poller.sockets, dict):
+            sockets = list(poller.sockets.keys())
+            for socket in sockets:
+                if socket.closed is False:
+                    socket.setsockopt(zmq.LINGER, 1)
+                    socket.close()
+                poller.unregister(socket)
+        else:
+            for socket in poller.sockets:
+                if socket[0].closed is False:
+                    socket[0].setsockopt(zmq.LINGER, 1)
+                    socket[0].close()
+                poller.unregister(socket[0])

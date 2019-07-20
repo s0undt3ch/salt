@@ -9,6 +9,7 @@ import errno
 import logging
 import socket
 import time
+import threading
 
 # Import 3rd-party libs
 import msgpack
@@ -114,7 +115,6 @@ class IPCServer(object):
         self.sock = None
         self.io_loop = io_loop or IOLoop.current()
         self._closing = False
-        weakref.finalize(self, self.close)
 
     def start(self):
         '''
@@ -138,6 +138,8 @@ class IPCServer(object):
         else:
             # sndbuf/rcvbuf does not apply to unix sockets
             self.sock = tornado.netutil.bind_unix_socket(self.socket_path, backlog=self.opts['ipc_so_backlog'])
+
+        weakref.finalize(self, self.__weakref_destroy__, self.sock)
 
         with salt.utils.asynchronous.current_ioloop(self.io_loop):
             tornado.netutil.add_accept_handler(
@@ -225,6 +227,11 @@ class IPCServer(object):
         if hasattr(self.sock, 'close'):
             self.sock.close()
 
+    @staticmethod
+    def __weakref_destroy__(sock):
+        if hasattr(sock, 'close'):
+            sock.close()
+
 
 class IPCClient(object):
     '''
@@ -253,14 +260,13 @@ class IPCClient(object):
         '''
         self.io_loop = io_loop or tornado.ioloop.IOLoop.current()
         self.socket_path = socket_path
-        self._closing = False
+        self._closing = threading.Event()
         self.stream = None
         if six.PY2:
             encoding = None
         else:
             encoding = 'utf-8'
         self.unpacker = msgpack.Unpacker(encoding=encoding)
-        weakref.finalize(self, self.close)
 
     def connected(self):
         return self.stream is not None and not self.stream.closed()
@@ -304,7 +310,7 @@ class IPCClient(object):
             timeout_at = time.time() + timeout
 
         while True:
-            if self._closing:
+            if self._closing.is_set():
                 break
 
             if self.stream is None:
@@ -312,6 +318,7 @@ class IPCClient(object):
                     self.stream = IOStream(
                         socket.socket(sock_type, socket.SOCK_STREAM)
                     )
+                    weakref.finalize(self, self.__weakref_destroy__, self.stream, self._closing)
             try:
                 log.trace('IPCClient: Connecting to socket: %s', self.socket_path)
                 yield self.stream.connect(sock_addr)
@@ -336,15 +343,21 @@ class IPCClient(object):
         Sockets and filehandles should be closed explicitly, to prevent
         leaks.
         '''
-        if self._closing:
+        if self._closing.is_set():
             return
 
-        self._closing = True
+        self._closing.set()
 
         log.debug('Closing %s instance', self.__class__.__name__)
 
         if self.stream is not None and not self.stream.closed():
             self.stream.close()
+
+    @staticmethod
+    def __weakref_destroy__(stream, closing_event):
+        closing_event.set()
+        if stream is not None and not stream.closed():
+            stream.close()
 
 
 class IPCMessageClient(IPCClient):
@@ -457,7 +470,6 @@ class IPCMessagePublisher(object):
         self.io_loop = io_loop or IOLoop.current()
         self._closing = False
         self.streams = set()
-        weakref.finalize(self, self.close)
 
     def start(self):
         '''
@@ -481,6 +493,8 @@ class IPCMessagePublisher(object):
         else:
             # sndbuf/rcvbuf does not apply to unix sockets
             self.sock = tornado.netutil.bind_unix_socket(self.socket_path, backlog=self.opts['ipc_so_backlog'])
+
+        weakref.finalize(self, self.__weakref_destroy__, self.sock, self.streams)
 
         with salt.utils.asynchronous.current_ioloop(self.io_loop):
             tornado.netutil.add_accept_handler(
@@ -549,6 +563,14 @@ class IPCMessagePublisher(object):
         self.streams.clear()
         if hasattr(self.sock, 'close'):
             self.sock.close()
+
+    @staticmethod
+    def __weakref_destroy__(sock, streams):
+        for stream in streams:
+            stream.close()
+        streams.clear()
+        if hasattr(sock, 'close'):
+            sock.close()
 
 
 class IPCMessageSubscriber(IPCClient):

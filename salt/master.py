@@ -845,7 +845,6 @@ class ReqServer(salt.utils.process.SignalHandlingMultiprocessingProcess):
         # Prepare the AES key
         self.key = key
         self.secrets = secrets
-        weakref.finalize(self, self.destroy)
 
     # __setstate__ and __getstate__ are only used on Windows.
     # We do this so that __init__ will be invoked on Windows in the child
@@ -900,6 +899,7 @@ class ReqServer(salt.utils.process.SignalHandlingMultiprocessingProcess):
         # Wait for kill should be less then parent's ProcessManager.
         self.process_manager = salt.utils.process.ProcessManager(name='ReqServer_ProcessManager',
                                                                  wait_for_kill=1)
+        weakref.finalize(self, self.__weakref_destroy__, self.process_manager)
 
         req_channels = []
         tcp_only = True
@@ -949,6 +949,12 @@ class ReqServer(salt.utils.process.SignalHandlingMultiprocessingProcess):
             self.process_manager.stop_restarting()
             self.process_manager.send_signal_to_processes(signum)
             self.process_manager.kill_children()
+
+    @staticmethod
+    def __weakref_destroy__(process_manager):
+        process_manager.stop_restarting()
+        process_manager.send_signal_to_processes(signum)
+        process_manager.kill_children()
 
 
 class MWorker(salt.utils.process.SignalHandlingMultiprocessingProcess):

@@ -210,7 +210,13 @@ class AsyncZeroMQReqChannel(salt.transport.client.ReqChannel):
                                                         args=(self.opts, self.opts['master_uri'],),
                                                         kwargs={'io_loop': self._io_loop})
         self._closing = False
-        weakref.finalize(self, self.__destroy__)
+        weakref.finalize(
+            self,
+            self.__weakref_destroy__,
+            self.message_client,
+            self.io_loop,
+            self.instance_map,
+            self.__key(opts, **kwargs))
 
     def close(self):
         '''
@@ -246,17 +252,20 @@ class AsyncZeroMQReqChannel(salt.transport.client.ReqChannel):
             if not loop_instance_map:
                 del self.__class__.instance_map[self._io_loop]
 
-    def __destroy__(self):
-        with self._refcount_lock:
-            # Make sure we actually close no matter if something
-            # went wrong with our ref counting
-            self._refcount = 1
-        try:
-            self.close()
-        except socket.error as exc:
-            if exc.errno != errno.EBADF:
-                # If its not a bad file descriptor error, raise
-                raise
+    @staticmethod
+    def __weakref_destroy__(message_client, io_loop, instance_map, instance_key):
+        message_client.close()
+
+        # Remove the entry from the instance map so that a closed entry may not
+        # be reused.
+        # This forces this operation even if the reference count of the entry
+        # has not yet gone to zero.
+        if io_loop in instance_map:
+            loop_instance_map = instance_map[io_loop]
+            if instance_key in loop_instance_map:
+                del loop_instance_map[instance_key]
+            if not loop_instance_map:
+                del instance_map[self.io_loop]
 
     @property
     def master_uri(self):

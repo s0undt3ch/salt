@@ -256,6 +256,8 @@ class SaltEvent(object):
         else:
             self.io_loop = tornado.ioloop.IOLoop()
             self._run_io_loop_sync = True
+        if not keep_loop:
+            weakref.finalize(self, self.__weakref_destroy__, self.io_loop)
         self.cpub = False
         self.cpush = False
         self.subscriber = None
@@ -281,7 +283,6 @@ class SaltEvent(object):
         self.pending_tags = []
         self.pending_events = []
         self.__load_cache_regex()
-        weakref.finalize(self, self.destroy)
         if listen and not self.cpub:
             # Only connect to the publisher at initialization time if
             # we know we want to listen. If we connect to the publisher
@@ -401,6 +402,7 @@ class SaltEvent(object):
             # For the asynchronous case, the connect will be defered to when
             # set_event_handler() is invoked.
             self.cpub = True
+        weakref.finalize(self, self.__weakref_destroy__, self.subscriber)
         return self.cpub
 
     def close_pub(self):
@@ -445,6 +447,7 @@ class SaltEvent(object):
             # For the asynchronous case, the connect will be deferred to when
             # fire_event() is invoked.
             self.cpush = True
+            weakref.finalize(self, self.__weakref_destroy__, self.pusher)
         return self.cpush
 
     @classmethod
@@ -791,6 +794,10 @@ class SaltEvent(object):
         if self._run_io_loop_sync and not self.keep_loop:
             self.io_loop.close()
 
+    @staticmethod
+    def __weakref_destroy__(obj):
+        obj.close()
+
     def _fire_ret_load_specific_fun(self, load, fun_index=0):
         '''
         Helper function for fire_ret_load
@@ -1045,11 +1052,12 @@ class AsyncEventPublisher(object):
             payload_handler=self.handle_publish
         )
 
-        weakref.finalize(self, self.close)
         log.info('Starting pull socket on %s', epull_uri)
         with salt.utils.files.set_umask(0o177):
             self.publisher.start()
             self.puller.start()
+        weakref.finalize(self, self.__weakref_destroy__, self.publisher)
+        weakref.finalize(self, self.__weakref_destroy__, self.puller)
 
     def handle_publish(self, package, _):
         '''
@@ -1073,6 +1081,10 @@ class AsyncEventPublisher(object):
         if hasattr(self, 'puller'):
             self.puller.close()
 
+    @staticmethod
+    def __weakref_destroy__(puller, obj):
+        obj.close()
+
 
 class EventPublisher(salt.utils.process.SignalHandlingMultiprocessingProcess):
     '''
@@ -1084,7 +1096,6 @@ class EventPublisher(salt.utils.process.SignalHandlingMultiprocessingProcess):
         self.opts = salt.config.DEFAULT_MASTER_OPTS.copy()
         self.opts.update(opts)
         self._closing = False
-        weakref.finalize(self, self.close)
 
     # __setstate__ and __getstate__ are only used on Windows.
     # We do this so that __init__ will be invoked on Windows in the child
@@ -1110,6 +1121,7 @@ class EventPublisher(salt.utils.process.SignalHandlingMultiprocessingProcess):
         '''
         salt.utils.process.appendproctitle(self.__class__.__name__)
         self.io_loop = tornado.ioloop.IOLoop()
+        weakref.finalize(self, self.__weakref_destroy__, self.io_loop)
         with salt.utils.asynchronous.current_ioloop(self.io_loop):
             if self.opts['ipc_mode'] == 'tcp':
                 epub_uri = int(self.opts['tcp_master_pub_port'])
@@ -1146,6 +1158,8 @@ class EventPublisher(salt.utils.process.SignalHandlingMultiprocessingProcess):
                         self.opts['external_auth'])):
                     os.chmod(os.path.join(
                         self.opts['sock_dir'], 'master_event_pub.ipc'), 0o666)
+            weakref.finalize(self, self.__weakref_destroy__, self.publisher)
+            weakref.finalize(self, self.__weakref_destroy__, self.puller)
 
             # Make sure the IO loop and respective sockets are closed and
             # destroyed
@@ -1180,6 +1194,10 @@ class EventPublisher(salt.utils.process.SignalHandlingMultiprocessingProcess):
     def _handle_signals(self, signum, sigframe):
         self.close()
         super(EventPublisher, self)._handle_signals(signum, sigframe)
+
+    @staticmethod
+    def __weakref_destroy__(obj):
+        obj.close()
 
 
 class EventReturn(salt.utils.process.SignalHandlingMultiprocessingProcess):
