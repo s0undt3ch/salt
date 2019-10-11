@@ -41,7 +41,7 @@ from pytestsalt.utils import get_unused_localhost_port
 # Import Salt Tests Support libs
 from tests.support.unit import SkipTest
 from tests.support.mock import patch
-from tests.support.runtests import RUNTIME_VARS
+from tests.support.runtime import RUNTIME_VARS
 
 # Import Salt libs
 import salt.utils.files

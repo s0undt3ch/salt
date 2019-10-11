@@ -19,7 +19,7 @@ import salt.ext.six as six
 
 # Import Salt Testing libs
 from tests.support.unit import TestCase
-from tests.support.runtests import RUNTIME_VARS
+from tests.support.runtime import RUNTIME_VARS
 
 log = logging.getLogger(__name__)
 

@@ -23,7 +23,7 @@ from salt.ext import six
 
 # Import tests libs
 try:
-    from tests.support.runtests import RUNTIME_VARS
+    from tests.support.runtime import RUNTIME_VARS
 except ImportError:
     # Salt SSH Tests
     SYS_TMP_DIR = os.path.realpath(

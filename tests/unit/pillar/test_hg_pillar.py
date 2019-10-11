@@ -12,7 +12,7 @@ import subprocess
 # Import Salt Testing libs
 from tests.support.mixins import AdaptedConfigurationTestCaseMixin, LoaderModuleMockMixin
 from tests.support.unit import TestCase, skipIf
-from tests.support.runtests import RUNTIME_VARS
+from tests.support.runtime import RUNTIME_VARS
 
 
 COMMIT_USER_NAME = 'test_user'

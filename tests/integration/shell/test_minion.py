@@ -17,12 +17,12 @@ import logging
 
 # Import Salt Testing libs
 import tests.integration.utils
-from tests.support.runtests import RUNTIME_VARS
+from tests.support.runtime import RUNTIME_VARS
 from tests.support.case import ShellCase
 from tests.support.unit import skipIf
 from tests.support.mixins import ShellCaseCommonTestsMixin
 from tests.integration.utils import testprogram
-from tests.support.runtests import RUNTIME_VARS
+from tests.support.runtime import RUNTIME_VARS
 
 # Import 3rd-party libs
 from salt.ext import six
