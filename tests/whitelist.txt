@@ -107,6 +107,3 @@ integration.states.test_user
 integration.utils.testprogram
 integration.wheel.test_client
 integration.wheel.test_key
-multimaster.beacons.test_inotify
-multimaster.minion.test_event
-multimaster.modules.test_test
