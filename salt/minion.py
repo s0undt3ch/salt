@@ -17,6 +17,7 @@ import threading
 import traceback
 import contextlib
 import multiprocessing
+import multiprocessing.pool
 from random import randint, shuffle
 from stat import S_IMODE
 import salt.serializers.msgpack
@@ -94,9 +95,7 @@ from salt.defaults import DEFAULT_TARGET_DELIM
 from salt.utils.debug import enable_sigusr1_handler
 from salt.utils.event import tagify
 from salt.utils.odict import OrderedDict
-from salt.utils.process import (default_signals,
-                                SignalHandlingProcess,
-                                ProcessManager)
+from salt.utils.process import ProcessManager
 from salt.exceptions import (
     CommandExecutionError,
     CommandNotFoundError,
@@ -411,6 +410,16 @@ def service_name():
     Return the proper service name based on platform
     '''
     return 'salt_minion' if 'bsd' in sys.platform else 'salt-minion'
+
+
+def pool_process_initializer(log_queue, log_level):
+    '''
+    This function is called for every process started on the process pool
+    '''
+    salt.log.setup.set_multiprocessing_logging_queue(log_queue)
+    salt.log.setup.set_multiprocessing_logging_level(log_level)
+    salt.log.setup.setup_multiprocessing_logging(log_queue)
+    salt.utils.crypt.reinit_crypto()
 
 
 class MinionBase(object):
@@ -1185,8 +1194,32 @@ class Minion(MinionBase):
             # No custom signal handling was added, install our own
             signal.signal(signal.SIGTERM, self._handle_signals)
 
+        process_pool = None
+        multiprocessing_enabled = self.opts.get('multiprocessing', True)
+        if multiprocessing_enabled:
+
+            num_processes = self.opts.get('process_count_max')
+            if num_processes <= 0:
+                num_processes = multiprocessing.cpu_count()
+            log.warning('Num processes: %s(CPU Count: %s)', num_processes, multiprocessing.cpu_count())
+            #self.process_pool = ProcessPool(
+            self.process_pool_semaphore = threading.BoundedSemaphore(num_processes)
+            self.process_pool = multiprocessing.Pool(
+                processes=num_processes,
+                initializer=pool_process_initializer,
+                initargs=(
+                    salt.log.setup.get_multiprocessing_logging_queue(),
+                    salt.log.setup.get_multiprocessing_logging_level()
+                ),
+                maxtasksperchild=100
+            )
+        self.process_pool = process_pool
+
     def _handle_signals(self, signum, sigframe):  # pylint: disable=unused-argument
         self._running = False
+        if self.process_pool:
+            self.process_pool.close()
+            self.process_pool.terminate()
         # escalate the signals to the process manager
         self.process_manager.stop_restarting()
         self.process_manager.send_signal_to_processes(signum)
@@ -1507,48 +1540,40 @@ class Minion(MinionBase):
                 self.schedule.functions = self.functions
                 self.schedule.returners = self.returners
 
-        process_count_max = self.opts.get('process_count_max')
-        if process_count_max > 0:
-            process_count = len(salt.utils.minion.running(self.opts))
-            while process_count >= process_count_max:
-                log.warning("Maximum number of processes reached while executing jid %s, waiting...", data['jid'])
-                yield tornado.gen.sleep(10)
-                process_count = len(salt.utils.minion.running(self.opts))
-
         # We stash an instance references to allow for the socket
         # communication in Windows. You can't pickle functions, and thus
         # python needs to be able to reconstruct the reference on the other
         # side.
-        instance = self
-        multiprocessing_enabled = self.opts.get('multiprocessing', True)
-        if multiprocessing_enabled:
-            if sys.platform.startswith('win'):
-                # let python reconstruct the minion on the other side if we're
-                # running on windows
-                instance = None
-            with default_signals(signal.SIGINT, signal.SIGTERM):
-                process = SignalHandlingProcess(
-                    target=self._target,
-                    name='ProcessPayload',
-                    args=(instance, self.opts, data, self.connected)
-                )
-                process._after_fork_methods.append((salt.utils.crypt.reinit_crypto, [], {}))
+        if self.process_pool:
+            while True:
+                try:
+                    self.process_pool_semaphore.acquire()
+                    self.process_pool.apply_async(
+                        self._target,
+                        (None, self.opts, data, self.connected),
+                        callback=lambda result: self.process_pool_semaphore.release()
+                    )
+                    break
+                except ValueError:
+                    log.warning("Maximum number of processes reached while executing jid %s, waiting...", data['jid'])
+                    yield tornado.gen.sleep(10)
         else:
+            process_count_max = self.opts.get('process_count_max')
+            if process_count_max > 0:
+                process_count = len(salt.utils.minion.running(self.opts))
+                while process_count >= process_count_max:
+                    log.warning("Maximum number of processes reached while executing jid %s, waiting...", data['jid'])
+                    yield tornado.gen.sleep(10)
+                    process_count = len(salt.utils.minion.running(self.opts))
+
             process = threading.Thread(
                 target=self._target,
-                args=(instance, self.opts, data, self.connected),
+                args=(self, self.opts, data, self.connected),
                 name=data['jid']
             )
-
-        if multiprocessing_enabled:
-            with default_signals(signal.SIGINT, signal.SIGTERM):
-                # Reset current signals before starting the process in
-                # order not to inherit the current signal handlers
-                process.start()
-        else:
+            process.name = '{}-Job-{}'.format(process.name, data['jid'])
             process.start()
-        process.name = '{}-Job-{}'.format(process.name, data['jid'])
-        self.subprocess_list.add(process)
+            self.subprocess_list.add(process)
 
     def ctx(self):
         '''
