@@ -491,6 +491,9 @@ def get_multiprocessing_logging_queue():
     if __MP_LOGGING_QUEUE is not None:
         return __MP_LOGGING_QUEUE
 
+    if __MP_LOGGING_QUEUE is not None:
+        return __MP_LOGGING_QUEUE
+
     if __MP_IN_MAINPROCESS is False:
         # We're not in the MainProcess, return! No Queue shall be instantiated
         return __MP_LOGGING_QUEUE
