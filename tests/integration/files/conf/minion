@@ -112,3 +112,5 @@ autosign_grains:
 discovery: false
 sdbvault:
   driver: vault
+
+max_open_files: 4096

@@ -130,3 +130,5 @@ sdbvault:
   driver: vault
 venafi:
   fake: "true"
+
+max_open_files: 4096
