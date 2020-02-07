@@ -1,0 +1,63 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+
+  macOS:
+    runs-on: macOS-latest
+
+    timeout-minutes: 420
+
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        python-version:
+          - 2.7
+          - 3.6
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Set up Python 3.7 For Nox
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+
+    - name: Install Nox
+      run: |
+        python -m pip install --upgrade pip
+        pip install nox-py2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Test
+      run: |
+        nox --force-color -e 'runtests-zeromq-${{ matrix.python-version }}(coverage=True)' -- --sysinfo --xml=artifacts/xml-unittests-output/test-results.xml -v --run-destructive
+
+    - name: Build CodeCov Flags
+      id: codecov-flags
+      run: |
+        echo ::set-output name=py_version::$(python -c "import sys; print('py{}{}'.format(*sys.version_info))")
+
+    - name: Upload Code Coverage
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        #file: ./coverage.xml #optional
+        flags: macos,${{ steps.codecov-flags.outputs.py_version }}
+        name: macOS-Py${{ matrix.python-version }} #optional
+        #yml: ./codecov.yml #optional
+        fail_ci_if_error: true #optional (default = false)
+
+
+    - name: Upload Artifacts
+      if: always()
+      uses: actions/upload-artifact@master
+      with:
+        name: artifacts
+        path: artifact

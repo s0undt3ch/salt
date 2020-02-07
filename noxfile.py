@@ -30,7 +30,12 @@ from nox.command import CommandFailed
 IS_PY3 = sys.version_info > (2,)
 
 # Be verbose when runing under a CI context
-PIP_INSTALL_SILENT = (os.environ.get('JENKINS_URL') or os.environ.get('CI') or os.environ.get('DRONE')) is None
+PIP_INSTALL_SILENT = (
+    os.environ.get('JENKINS_URL')
+    or os.environ.get('CI')
+    or os.environ.get('DRONE')
+    or os.environ.get("GITHUB_ACTIONS")
+) is None
 
 
 # Global Path Definitions
