@@ -547,6 +547,7 @@ class PubServerChannel(TestCase, AdaptedConfigurationTestCaseMixin):
         server_channel.pub_close()
         assert len(results) == send_num, (len(results), set(expect).difference(results))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_zeromq_publish_port(self):
         """
         test when connecting that we
@@ -652,6 +653,7 @@ class PubServerChannel(TestCase, AdaptedConfigurationTestCaseMixin):
         assert res.result()["enc"] == "aes"
 
     @pytest.mark.skipif('grains["os_family"] == "Windows"', reason="Skip on Windows")
+    @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
     def test_zeromq_filtering(self):
         """
         Test sending messags to publisher using UDP
@@ -703,6 +705,7 @@ class PubServerChannel(TestCase, AdaptedConfigurationTestCaseMixin):
         'grains["os_family"] in ("MacOS", "Windows")',
         reason="Skip on Windows and MacOS",
     )
+    @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
     def test_publish_to_pubserv_tcp(self):
         """
         Test sending 10K messags to ZeroMQPubServerChannel using TCP transport
@@ -752,6 +755,7 @@ class PubServerChannel(TestCase, AdaptedConfigurationTestCaseMixin):
             server_channel.publish(load)
         server_channel.close()
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_issue_36469_tcp(self):
         """
         Test sending both large and small messags to publisher using TCP

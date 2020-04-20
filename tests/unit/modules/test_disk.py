@@ -6,6 +6,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt libs
 import salt.modules.disk as disk
 import salt.utils.path
@@ -205,6 +207,7 @@ class DiskTestCase(TestCase, LoaderModuleMockMixin):
             disk.wipe("/dev/sda")
             mock.assert_called_once_with("wipefs -a /dev/sda", python_shell=False)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_tune(self):
         mock = MagicMock(
             return_value="712971264\n512\n512\n512\n0\n0\n88\n712971264\n365041287168\n512\n512"
@@ -270,6 +273,7 @@ class DiskTestCase(TestCase, LoaderModuleMockMixin):
         ), patch("salt.utils.path.which", MagicMock(return_value=True)):
             self.assertEqual(disk.fstype(device), fs_type)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_resize2fs(self):
         """
         unit tests for disk.resize2fs
@@ -298,6 +302,7 @@ class DiskTestCase(TestCase, LoaderModuleMockMixin):
 
     @skipIf(salt.utils.platform.is_windows(), "Skip on Windows")
     @skipIf(not salt.utils.path.which("mkfs"), "mkfs not found")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_format__fat(self):
         """
         unit tests for disk.format_ with FAT parameter

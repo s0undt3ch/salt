@@ -97,6 +97,7 @@ class DecoratorTest(ModuleCase):
     def test_versioned_depend_sufficient(self):
         self.assertTrue(self.run_function("runtests_decorators.version_depends_true"))
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_versioned_depend_versionless(self):
         self.assertTrue(
             self.run_function("runtests_decorators.version_depends_versionless_true")

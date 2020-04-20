@@ -3,6 +3,7 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import salt.config
 
 # Import salt libs
@@ -70,6 +71,7 @@ class TestModuleTest(MultimasterModuleCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(ret[0][0], 6765)
         self.assertEqual(ret[1][0], 6765)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_collatz(self):
         """
         test.collatz
@@ -78,6 +80,7 @@ class TestModuleTest(MultimasterModuleCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(ret[0][0][-1], 2)
         self.assertEqual(ret[1][0][-1], 2)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_outputter(self):
         """
         test.outputter

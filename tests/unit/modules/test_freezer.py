@@ -8,6 +8,7 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import salt.modules.freezer as freezer
 from salt.exceptions import CommandExecutionError
 
@@ -26,6 +27,7 @@ class FreezerTestCase(TestCase, LoaderModuleMockMixin):
         return {freezer: {"__salt__": {}, "__opts__": {"cachedir": ""}}}
 
     @patch("os.path.isfile")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_status(self, isfile):
         """
         Test if a frozen state exist.
@@ -162,6 +164,7 @@ class FreezerTestCase(TestCase, LoaderModuleMockMixin):
     @patch("salt.utils.json.load")
     @patch("salt.modules.freezer.fopen")
     @patch("salt.modules.freezer.status")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_restore_add_missing_repo(self, status, fopen, load):
         """
         Test to restore an old state

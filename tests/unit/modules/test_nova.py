@@ -6,6 +6,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.nova as nova
 
@@ -59,6 +61,7 @@ class NovaTestCase(TestCase, LoaderModuleMockMixin):
         with patch.object(self.mock_auth, "volume_create", MagicMock(return_value="A")):
             self.assertTrue(nova.volume_create("name"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_volume_delete(self):
         """
         Test for Destroy the volume
@@ -232,6 +235,7 @@ class NovaTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertTrue(nova.server_list_detailed())
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_server_show(self):
         """
         Test for Return detailed information for an active server

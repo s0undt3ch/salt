@@ -11,6 +11,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from copy import deepcopy
 
+import pytest
+
 # Import Salt Libs
 from salt import config
 from salt.cloud.clouds import vmware
@@ -1209,6 +1211,7 @@ class CloneFromSnapshotTest(TestCase):
         self._test_clone_type(vmware.CURRENT_STATE_LINKED_CLONE)
 
     @skipIf(HAS_LIBS is False, "Install pyVmomi to be able to run this unit test.")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_copy_all_disks_full_clone(self):
         """
         Test that disk move type is

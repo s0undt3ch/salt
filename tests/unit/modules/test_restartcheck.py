@@ -6,6 +6,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libsrestartcheck
 import salt.modules.restartcheck as restartcheck
 
@@ -65,6 +67,7 @@ class RestartcheckTestCase(TestCase, LoaderModuleMockMixin):
                 restartcheck._kernel_versions_redhat(), ["3.10.0-862.el7.x86_64"]
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_valid_deleted_file_deleted(self):
         """
         Test (deleted) file

@@ -5,6 +5,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.states.ipmi as ipmi
 
@@ -146,6 +148,7 @@ class IpmiTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'user_absent' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_user_absent(self):
         """
         Test to delete all user (uid) records having the matching name.

@@ -11,6 +11,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import copy
 import textwrap
 
+import pytest
 import salt.modules.aptpkg as aptpkg
 from salt.exceptions import CommandExecutionError, SaltInvocationError
 from salt.ext import six
@@ -202,6 +203,7 @@ class AptPkgTestCase(TestCase, LoaderModuleMockMixin):
         with patch.dict(aptpkg.__salt__, {"cmd.run_all": mock}):
             self.assertEqual(aptpkg.get_repo_keys(), REPO_KEYS)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_file_dict(self):
         """
         Test - List the files that belong to a package, grouped by package.
@@ -289,6 +291,7 @@ class AptPkgTestCase(TestCase, LoaderModuleMockMixin):
             ):
                 self.assertRaises(CommandExecutionError, aptpkg.refresh_db, **kwargs)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_autoremove(self):
         """
         Test - Remove packages not required by another package.

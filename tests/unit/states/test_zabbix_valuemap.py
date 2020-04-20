@@ -6,6 +6,7 @@
 # Import Python Libs
 from __future__ import absolute_import, unicode_literals
 
+import pytest
 import salt.states.zabbix_valuemap as zabbix_valuemap
 
 # Import Salt Testing Libs
@@ -132,6 +133,7 @@ class ZabbixActionTestCase(TestCase, LoaderModuleMockMixin):
                 )
                 self.assertDictEqual(zabbix_valuemap.present(name, {}), ret)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_present_update(self):
         """
         Test to ensure that named value map is present but must be updated

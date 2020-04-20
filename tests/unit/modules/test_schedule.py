@@ -8,6 +8,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.schedule as schedule
 from salt.utils.event import SaltEvent
@@ -231,6 +233,7 @@ class ScheduleTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'save' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_save(self):
         """
         Test if it save all scheduled jobs on the minion.
@@ -273,6 +276,7 @@ class ScheduleTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'move' function tests: 1
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_move(self):
         """
         Test if it move scheduled job to another minion or minions.
@@ -453,6 +457,7 @@ class ScheduleTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'modify' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_modify(self):
         """
         Test if modifying job to the schedule.

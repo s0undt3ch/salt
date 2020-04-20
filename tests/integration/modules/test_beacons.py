@@ -319,6 +319,7 @@ class BeaconsWithBeaconTypeTest(ModuleCase):
         _list = self.run_function("beacons.list", return_yaml=False)
         self.assertTrue(_list["watch_apache"]["enabled"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_list(self):
         """
         Test lising the beacons

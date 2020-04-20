@@ -8,6 +8,8 @@ import random
 import string
 from copy import deepcopy
 
+import pytest
+
 # Import Salt libs
 import salt.loader
 import salt.modules.boto_s3_bucket as boto_s3_bucket
@@ -605,6 +607,7 @@ class BotoS3BucketTestCase(BotoS3BucketTestCaseBase, BotoS3BucketTestCaseMixin):
             error_message.format("put_bucket_tagging"),
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_putting_versioning_succeeds_the_put_versioning_method_returns_true(
         self,
     ):
@@ -617,6 +620,7 @@ class BotoS3BucketTestCase(BotoS3BucketTestCaseBase, BotoS3BucketTestCaseMixin):
 
         self.assertTrue(result["updated"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_putting_versioning_fails_the_put_versioning_method_returns_error(
         self,
     ):
@@ -792,6 +796,7 @@ class BotoS3BucketTestCase(BotoS3BucketTestCaseBase, BotoS3BucketTestCaseMixin):
 
         self.assertTrue(result["deleted"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_deleting_website_fails_the_delete_website_method_returns_error(
         self,
     ):

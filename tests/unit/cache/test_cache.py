@@ -6,6 +6,7 @@ unit tests for salt.cache
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import salt.cache
 
 # Import Salt libs
@@ -151,6 +152,7 @@ class MemCacheTest(TestCase):
 
     @patch("salt.cache.Cache.store")
     @patch("salt.loader.cache", return_value={})
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_max_items(self, loader_mock, cache_store_mock):
         # Put MAX=3 values
         with patch("time.time", return_value=0):

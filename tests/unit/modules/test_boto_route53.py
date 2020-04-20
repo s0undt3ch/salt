@@ -9,6 +9,8 @@ import sys
 
 import pkg_resources
 
+import pytest
+
 # Import Salt Libs
 import salt.config
 import salt.loader
@@ -119,6 +121,7 @@ class BotoRoute53TestCase(TestCase, LoaderModuleMockMixin):
         del self.opts
 
     @mock_route53_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_healthcheck(self):
         """
         tests that given a valid instance id and valid ELB that

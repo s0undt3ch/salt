@@ -3,6 +3,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.helm as helm
 
@@ -316,6 +318,7 @@ class HelmTestCase(TestCase, LoaderModuleMockMixin):
                 magic_mock.mock_calls,
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_plugin_install(self):
         magic_mock = MagicMock(return_value=True)
         with patch("salt.modules.helm._exec_true_return", magic_mock):

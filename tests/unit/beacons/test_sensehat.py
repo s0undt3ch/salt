@@ -3,6 +3,8 @@
 # Python libs
 from __future__ import absolute_import
 
+import pytest
+
 # Salt libs
 import salt.beacons.sensehat as sensehat
 from tests.support.mixins import LoaderModuleMockMixin
@@ -66,6 +68,7 @@ class SensehatBeaconTestCase(TestCase, LoaderModuleMockMixin):
         ret = sensehat.beacon(config)
         self.assertEqual(ret, [{"tag": "sensehat/humidity", "humidity": 80}])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_sensehat_temperature_match(self):
 
         config = [{"sensors": {"temperature": 20}}]

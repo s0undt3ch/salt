@@ -7,6 +7,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import textwrap
 
+import pytest
 import salt.modules.ddns as ddns
 
 # Import Salt Libs
@@ -47,6 +48,7 @@ class DDNSTestCase(TestCase, LoaderModuleMockMixin):
             ddns_update.return_value = True
             self.assertTrue(ddns.add_host(zone="A", name="B", ttl=1, ip="172.27.0.0"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_delete_host(self):
         """
         Tests for delete the forward and reverse records for a host.

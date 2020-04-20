@@ -6,6 +6,7 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import salt.modules.cp as cp
 import salt.transport.client
 
@@ -104,6 +105,7 @@ class CpTestCase(TestCase, LoaderModuleMockMixin):
             with patch("salt.modules.cp.cache_file", MagicMock(return_value=dest)):
                 self.assertEqual(cp.get_file_str(path, dest), ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_push_non_absolute_path(self):
         """
         Test if push fails on a non absolute path.

@@ -3,6 +3,8 @@
 # Python libs
 from __future__ import absolute_import
 
+import pytest
+
 # Salt libs
 import salt.beacons.smartos_vmadm as vmadm
 from tests.support.mixins import LoaderModuleMockMixin
@@ -164,6 +166,7 @@ class SmartOSImgAdmBeaconTestCase(TestCase, LoaderModuleMockMixin):
 
             self.assertEqual(ret, res)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_deleted(self):
         """
         Test with two vms and one gets destroyed

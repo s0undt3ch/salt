@@ -8,6 +8,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 import textwrap
 
+import pytest
 import salt.modules.mount as mount
 
 # Import Salt Libs
@@ -31,6 +32,7 @@ class MountTestCase(TestCase, LoaderModuleMockMixin):
     def setup_loader_modules(self):
         return {mount: {}}
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_active(self):
         """
         List the active mounts.

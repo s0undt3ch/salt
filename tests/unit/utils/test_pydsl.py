@@ -10,6 +10,7 @@ import sys
 import tempfile
 import textwrap
 
+import pytest
 import salt.config
 
 # Import Salt libs
@@ -100,6 +101,7 @@ class PyDSLRendererTestCase(CommonTestCaseBoilerplate):
             StringIO(content), saltenv=saltenv, sls=sls, **kws
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_state_declarations(self):
         result = self.render_sls(
             textwrap.dedent(
@@ -145,6 +147,7 @@ class PyDSLRendererTestCase(CommonTestCaseBoilerplate):
         self.assertEqual(s[1]["name"], "myfile.txt")
         self.assertEqual(s[2]["source"], "salt://path/to/file")
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_requisite_declarations(self):
         result = self.render_sls(
             textwrap.dedent(
@@ -465,6 +468,7 @@ class PyDSLRendererTestCase(CommonTestCaseBoilerplate):
         self.state_highstate({"base": ["aaa"]}, dirpath)
 
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_repeat_includes(self, dirpath):
         output = os.path.join(dirpath, "output")
         write_to(

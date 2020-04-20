@@ -178,6 +178,7 @@ class MacPowerModuleTestSleepOnPowerButton(ModuleCase):
         if self.SLEEP_ON_BUTTON is not None:
             self.run_function("power.set_sleep_on_power_button", [self.SLEEP_ON_BUTTON])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_sleep_on_power_button(self):
         """
         Test power.get_sleep_on_power_button
@@ -324,6 +325,7 @@ class MacPowerModuleTestWakeOnModem(ModuleCase):
         if self.WAKE_ON_MODEM is not None:
             self.run_function("power.set_wake_on_modem", [self.WAKE_ON_MODEM])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_wake_on_modem(self):
         """
         Test power.get_wake_on_modem

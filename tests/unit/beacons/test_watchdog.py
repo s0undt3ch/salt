@@ -8,6 +8,8 @@ import shutil
 import tempfile
 import time
 
+import pytest
+
 # Salt libs
 import salt.utils.files
 import salt.utils.platform
@@ -157,6 +159,7 @@ class IWatchdogBeaconTestCase(TestCase, LoaderModuleMockMixin):
         self.assertEqual(ret[0]["path"], path)
         self.assertEqual(ret[0]["change"], "created")
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_trigger_all_possible_events(self):
         path = os.path.join(self.tmpdir, "tmpfile")
         moved = path + "_moved"

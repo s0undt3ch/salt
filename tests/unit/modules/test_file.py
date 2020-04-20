@@ -2420,6 +2420,7 @@ class LsattrTests(TestCase, LoaderModuleMockMixin):
             # pylint: enable=E1322
             assert actual == expected, msg
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_if_chattr_version_is_high_enough_then_extended_flags_should_be_returned(
         self,
     ):

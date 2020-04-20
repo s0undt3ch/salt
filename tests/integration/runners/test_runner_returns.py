@@ -95,6 +95,7 @@ class RunnerReturnsTest(ShellCase):
         )
         self.assertFalse(os.path.isfile(serialized_return))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_runner_returns_enabled(self):
         """
         Test with runner_returns enabled

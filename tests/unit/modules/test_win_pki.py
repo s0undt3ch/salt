@@ -9,6 +9,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.win_pki as win_pki
 
@@ -150,6 +152,7 @@ class WinPkiTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertTrue(win_pki.export_cert(**kwargs))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_test_cert(self):
         """
         Test - Check the certificate for validity.

@@ -181,6 +181,7 @@ class SPMTest(TestCase, AdaptedConfigurationTestCaseMixin):
                     self.client.run(["local", "install", pkgpath])
             assert len(self.ui._error) == 0
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_failure_paths(self):
         fail_args = (
             ["bogus", "command"],

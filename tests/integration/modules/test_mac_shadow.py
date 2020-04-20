@@ -198,6 +198,7 @@ class MacShadowModuleTest(ModuleCase):
         )
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_set_password(self):
         """
         Test shadow.set_password

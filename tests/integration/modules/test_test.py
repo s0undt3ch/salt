@@ -27,6 +27,7 @@ class TestModuleTest(ModuleCase, AdaptedConfigurationTestCaseMixin):
         """
         self.assertEqual(self.run_function("test.echo", ["text"]), "text")
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_version(self):
         """
         test.version
@@ -68,6 +69,7 @@ class TestModuleTest(ModuleCase, AdaptedConfigurationTestCaseMixin):
         """
         self.assertEqual(self.run_function("test.collatz", ["40"],)[0][-1], 2)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_outputter(self):
         """
         test.outputter

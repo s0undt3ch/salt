@@ -6,6 +6,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import salt libs
 import salt.modules.dig as dig
 
@@ -70,6 +72,7 @@ class DigTestCase(TestCase, LoaderModuleMockMixin):
             dig.check_ip("-127.0.0.1"), msg="Did not detect negative value as invalid"
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_check_ip_empty(self):
         self.assertFalse(dig.check_ip(""), msg="Did not detect empty value as invalid")
 

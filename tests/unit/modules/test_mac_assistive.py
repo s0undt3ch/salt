@@ -3,6 +3,7 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import salt.modules.mac_assistive as assistive
 
 # Import Salt Libs
@@ -124,6 +125,7 @@ class AssistiveTestCase(TestCase, LoaderModuleMockMixin):
         with patch.dict(assistive.__salt__, {"cmd.run_all": mock_ret}):
             self.assertRaises(CommandExecutionError, assistive.remove, "foo")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_assistive_access(self):
         """
         Test if a bundle ID is enabled for assistive access

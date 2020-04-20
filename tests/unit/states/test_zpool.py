@@ -11,6 +11,8 @@ Tests for salt.states.zpool
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Utils
 import salt.loader
 import salt.states.zpool as zpool
@@ -160,6 +162,7 @@ class ZpoolTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zpool.__utils__, self.utils_patch):
             self.assertEqual(zpool.present("myzpool", config=config), ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_present_import_fail(self):
         """
         Test zpool present with import allowed and no unimported pool or layout
@@ -259,6 +262,7 @@ class ZpoolTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(zpool.present("myzpool", config=config), ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_present_create_passthrough_fail(self):
         """
         Test zpool present with non existing pool (without a layout)
@@ -325,6 +329,7 @@ class ZpoolTestCase(TestCase, LoaderModuleMockMixin):
                 ret,
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_present_update_success(self):
         """
         Test zpool present with an existing pool that needs an update
@@ -408,6 +413,7 @@ class ZpoolTestCase(TestCase, LoaderModuleMockMixin):
                 ret,
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_present_update_nochange_success(self):
         """
         Test zpool present with non existing pool

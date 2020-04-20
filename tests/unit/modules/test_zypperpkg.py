@@ -9,6 +9,7 @@ from __future__ import absolute_import
 import os
 from xml.dom import minidom
 
+import pytest
 import salt.modules.pkg_resource as pkg_resource
 import salt.modules.zypperpkg as zypper
 
@@ -815,6 +816,7 @@ Repository 'DUMMY' not found by its alias, number, or URI.
                 self.assertFalse(zypper.upgrade_available(pkg_name))
             self.assertTrue(zypper.upgrade_available("vim"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_list_pkgs(self):
         """
         Test packages listing.

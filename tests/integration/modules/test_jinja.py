@@ -8,6 +8,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+import pytest
 import salt.utils.files
 
 # Import Salt libs
@@ -45,6 +46,7 @@ class TestModulesJinja(ModuleCase):
             self.assertDictEqual(salt.utils.yaml.safe_load(fh_), ret)
 
     @requires_system_grains
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_load_map(self, grains):
         ret = self.run_function("jinja.load_map", [self._path("map.jinja"), "template"])
 

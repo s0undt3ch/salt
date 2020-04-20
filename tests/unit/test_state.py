@@ -620,6 +620,7 @@ class StateFormatSlotsTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         mock.assert_not_called()
         self.assertEqual(cdata, sls_data)
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_slot_traverse_dict(self):
         """
         Test the slot parsing of dict response.
@@ -635,6 +636,7 @@ class StateFormatSlotsTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         mock.assert_called_once_with("fun_arg", fun_key="fun_val")
         self.assertEqual(cdata, {"args": ["arg"], "kwargs": {"key": "value1"}})
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_slot_append(self):
         """
         Test the slot parsing of dict response.
@@ -656,6 +658,7 @@ class StateFormatSlotsTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
     @pytest.mark.skip_on_windows(
         reason="Skipped until parallel states can be fixed on Windows",
     )
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_format_slots_parallel(self):
         """
         Test if slots work with "parallel: true".

@@ -65,6 +65,7 @@ class DarwinSysctlModuleTest(ModuleCase):
             self.run_function("sysctl.assign", [ASSIGN_CMD, self.val])
             raise
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_persist_new_file(self):
         """
         Tests assigning a sysctl value to a system without a sysctl.conf file
@@ -96,6 +97,7 @@ class DarwinSysctlModuleTest(ModuleCase):
             os.remove(CONFIG)
             raise
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_persist_apply_change(self):
         """
         Tests assigning a sysctl value and applying the change to system

@@ -12,6 +12,7 @@ class AliasesTest(ModuleCase):
     Validate aliases module
     """
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_set_target(self):
         """
         aliases.set_target and aliases.get_target
@@ -40,6 +41,7 @@ class AliasesTest(ModuleCase):
         self.assertIsInstance(tgt_ret, dict)
         self.assertIn("fred", tgt_ret)
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_rm_alias(self):
         """
         aliases.rm_alias

@@ -8,6 +8,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
+import pytest
 import salt.modules.libcloud_compute as libcloud_compute
 from salt.utils.versions import LooseVersion as _LooseVersion
 
@@ -275,6 +276,7 @@ class LibcloudComputeModuleTestCase(TestCase, LoaderModuleMockMixin):
         self.assertEqual(len(nodes), 1)
         self._validate_node(nodes[0])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_list_sizes(self):
         sizes = libcloud_compute.list_sizes("test")
         self.assertEqual(len(sizes), 1)

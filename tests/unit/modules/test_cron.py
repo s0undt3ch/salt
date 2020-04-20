@@ -6,6 +6,8 @@
 # Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt libs
 import salt.modules.cron as cron
 from salt.ext.six.moves import StringIO, builtins, range
@@ -1246,6 +1248,7 @@ class PsTestCase(TestCase, LoaderModuleMockMixin):
         self.assertEqual("crontab /tmp", cron._get_cron_cmdstr(STUB_PATH))
 
     # Test get_cron_cmdstr() when user is added
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test__get_cron_cmdstr_user(self):
         """
         Passes if a user is added to crontab command

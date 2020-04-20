@@ -7,6 +7,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+import pytest
+
 # Import salt libs
 import salt.modules.linux_service as service
 
@@ -65,6 +67,7 @@ class ServiceTestCase(TestCase, LoaderModuleMockMixin):
             with patch.object(service, "run", MagicMock(return_value=True)):
                 self.assertTrue(service.reload_("name"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_run(self):
         """
         Test to run the specified service

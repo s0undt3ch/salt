@@ -171,6 +171,7 @@ class ServiceModuleTest(ModuleCase):
             self.assertNotIn(srv_name, self.run_function("service.get_disabled"))
 
     @skipIf(not salt.utils.platform.is_windows(), "Windows Only Test")
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_service_get_service_name(self):
         """
         test service.get_service_name

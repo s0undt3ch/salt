@@ -890,6 +890,7 @@ class SaltKeyOptionParserTestCase(ParserBase, TestCase):
         # Check log file logger log level
         self.assertEqual(self.log_setup.log_level_logfile, log_level)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_log_level_default(self):
         """
         Tests that log level default value is ignored

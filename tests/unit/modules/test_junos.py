@@ -5,6 +5,8 @@
 # Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import salt modules
 import salt.modules.junos as junos
 
@@ -996,6 +998,7 @@ class Test_Junos_Module(TestCase, LoaderModuleMockMixin, XMLEqualityMixin):
             self.assertEqual(junos.shutdown(**args), ret)
             assert mock_poweroff.called
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_shutdown_with_shutdown_as_false(self):
         ret = dict()
         ret["message"] = "Nothing to be done."
@@ -1787,6 +1790,7 @@ class Test_Junos_Module(TestCase, LoaderModuleMockMixin, XMLEqualityMixin):
             ret["out"] = False
             self.assertEqual(junos.rpc("get_config"), ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_rpc_get_config_filter(self):
         with patch("jnpr.junos.device.Device.execute") as mock_execute:
             mock_execute.return_value = etree.XML("<reply><rpc/></reply>")
@@ -1925,6 +1929,7 @@ class Test_Junos_Module(TestCase, LoaderModuleMockMixin, XMLEqualityMixin):
             ret = junos.unlock()
             self.assertEqual(ret, ret_exp)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_load_none_path(self):
         ret_exp = {
             "out": False,

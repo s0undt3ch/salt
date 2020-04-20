@@ -8,6 +8,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import copy
 
+import pytest
+
 # Import Salt Libs
 import salt.utils.json
 import salt.utils.schema as schema
@@ -553,6 +555,7 @@ class ConfigTestCase(TestCase):
             jsonschema.validate({"item": 1}, TestConf.serialize())
         self.assertIn("is not of type", excinfo.exception.message)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_string_config(self):
         item = schema.StringItem(title="Foo", description="Foo Item")
         self.assertDictEqual(
@@ -901,6 +904,7 @@ class ConfigTestCase(TestCase):
             )
         self.assertIn("is not a", excinfo.exception.message)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_secret_config(self):
         item = schema.SecretItem(title="Foo", description="Foo Item")
         self.assertDictEqual(

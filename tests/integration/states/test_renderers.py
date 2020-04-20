@@ -30,6 +30,7 @@ class TestJinjaRenderer(ModuleCase):
     @skipIf(
         salt.utils.platform.is_darwin() and six.PY2, "This test hangs on OS X on Py2"
     )
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_salt_contains_function(self):
         """
         Test if we are able to check if a function exists inside the "salt"

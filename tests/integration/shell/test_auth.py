@@ -118,6 +118,7 @@ class TestGroupAuth(object):
     Test group auth mechanisms
     """
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_pam_auth_valid_group(self, salt_cli, saltadm_account):
         """
         test that pam auth mechanism works for a valid group

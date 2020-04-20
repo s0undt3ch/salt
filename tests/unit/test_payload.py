@@ -17,6 +17,7 @@ import logging
 import threading
 import time
 
+import pytest
 import salt.exceptions
 import salt.payload
 
@@ -256,6 +257,7 @@ class SREQTestCase(TestCase):
     def get_sreq(self):
         return salt.payload.SREQ("tcp://127.0.0.1:{0}".format(SREQTestCase.port))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_send_auto(self):
         """
         Test creation, send/rect
@@ -328,6 +330,7 @@ class SREQTestCase(TestCase):
         odata = payload.loads(sdata, encoding=None)
         assert isinstance(odata[dtvalue], six.string_types)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_raw_vs_encoding_utf8(self):
         """
         Test that we handle the new raw parameter in 5.0.2 correctly based on

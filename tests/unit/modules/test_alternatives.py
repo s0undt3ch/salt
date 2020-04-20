@@ -10,6 +10,8 @@
 # Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import salt libs
 import salt.modules.alternatives as alternatives
 from tests.support.helpers import TstSuiteLoggingHandler
@@ -24,6 +26,7 @@ class AlternativesTestCase(TestCase, LoaderModuleMockMixin):
     def setup_loader_modules(self):
         return {alternatives: {}}
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_display(self):
         with patch.dict(alternatives.__grains__, {"os_family": "RedHat"}):
             mock = MagicMock(return_value={"retcode": 0, "stdout": "salt"})

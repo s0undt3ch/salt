@@ -16,6 +16,7 @@ class WinDNSTest(ModuleCase):
     """
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_add_remove_dns(self):
         """
         Test add and removing a dns server

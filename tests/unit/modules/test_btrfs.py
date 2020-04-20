@@ -571,6 +571,7 @@ transid marker was 1024""",
                 ["btrfs", "subvolume", "get-default", "/mnt"]
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_subvolume_list_fails_parameters(self):
         """
         Test btrfs subvolume list

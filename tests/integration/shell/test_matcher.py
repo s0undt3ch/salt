@@ -332,6 +332,7 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         self.assertIn("minion", data)
         self.assertIn("sub_minion", data)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_static(self):
         """
         test salt static call
@@ -366,6 +367,7 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         )
         self.assertIn(expect_to_find, stdout, msg=error_msg)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_salt_documentation_too_many_arguments(self):
         """
         Test to see if passing additional arguments shows an error

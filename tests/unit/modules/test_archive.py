@@ -12,6 +12,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os.path
 
+import pytest
+
 # Import salt libs
 import salt.modules.archive as archive
 import salt.utils.path
@@ -129,6 +131,7 @@ class ArchiveTestCase(TestCase, LoaderModuleMockMixin):
                 )
                 self.assertFalse(mock.called)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_gunzip(self):
         mock = MagicMock(return_value="salt")
         with patch.dict(archive.__salt__, {"cmd.run": mock}):

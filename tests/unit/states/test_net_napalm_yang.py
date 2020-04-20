@@ -5,6 +5,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.states.net_napalm_yang as netyang
 
@@ -20,6 +22,7 @@ class NetyangTestCase(TestCase, LoaderModuleMockMixin):
     def setup_loader_modules(self):
         return {netyang: {}}
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_managed(self):
         ret = {"changes": {}, "comment": "Loaded.", "name": "test", "result": False}
         parse = MagicMock(return_value="abcdef")

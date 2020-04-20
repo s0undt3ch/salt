@@ -9,6 +9,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 import traceback
 
+import pytest
+
 # Import Salt libs
 import salt.config
 import salt.utils.yaml
@@ -182,6 +184,7 @@ class OutputReturnTest(ShellCase):
         ret = self.run_salt('"minion" test.ping --out=highstate')
         self.assertEqual(ret, expected)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_static_simple(self):
         """
         Tests passing the --static option with a basic test.ping command. This

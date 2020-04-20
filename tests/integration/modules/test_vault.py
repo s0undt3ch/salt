@@ -197,6 +197,7 @@ class VaultTestCaseCurrent(ModuleCase):
         cls.sminion.states.docker_image.absent(name="vault", force=True)
         cls.sminion = None
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_write_read_secret_kv2(self):
         write_return = self.run_function(
             "vault.write_secret", path="secret/my/secret", user="foo", password="bar"
@@ -235,6 +236,7 @@ class VaultTestCaseCurrent(ModuleCase):
         list_return = self.run_function("vault.list_secrets", arg=["secret/my/"])
         self.assertIn("secret", list_return["keys"])
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_write_raw_read_secret_kv2(self):
         write_return = self.run_function(
             "vault.write_raw",
@@ -269,6 +271,7 @@ class VaultTestCaseCurrent(ModuleCase):
         )
         self.assertEqual(delete_return, True)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_destroy_secret_kv2(self):
         write_return = self.run_function(
             "vault.write_secret",

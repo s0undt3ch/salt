@@ -6,6 +6,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 from tempfile import NamedTemporaryFile
 
+import pytest
 import salt.modules.timezone as timezone
 import salt.utils.platform
 import salt.utils.stringutils
@@ -440,6 +441,7 @@ class TimezoneModuleTestCase(TestCase, LoaderModuleMockMixin):
     @patch("os.unlink", MagicMock())
     @patch("os.symlink", MagicMock())
     @patch("salt.modules.timezone.get_zone", MagicMock(return_value="TEST_TIMEZONE"))
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_set_hwclock_suse(self):
         """
         Test set hwclock on SUSE

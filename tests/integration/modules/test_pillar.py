@@ -50,6 +50,7 @@ class PillarModuleTest(ModuleCase):
             self.run_function("pillar.data")["ext_pillar_opts"]["file_roots"]["base"],
         )
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_pillar_items(self):
         """
         Test to ensure we get expected output
@@ -61,6 +62,7 @@ class PillarModuleTest(ModuleCase):
             {"knights": ["Lancelot", "Galahad", "Bedevere", "Robin"]}, get_items
         )
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_pillar_command_line(self):
         """
         Test to ensure when using pillar override

@@ -6,6 +6,7 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import tests.support.napalm as napalm_test_support
 
 # Import Salt Testing Libs
@@ -73,6 +74,7 @@ class NapalmProbesModuleTestCase(TestCase, LoaderModuleMockMixin):
         ret = napalm_probes.results()
         assert ret["out"] == napalm_test_support.TEST_PROBES_RESULTS
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_set_probes(self):
         ret = napalm_probes.set_probes(TEST_PROBES)
         assert ret["result"] is True

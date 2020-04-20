@@ -663,6 +663,7 @@ class StateModuleTest(ModuleCase, SaltReturnAssertsMixin):
             "Something pretended to change", ret[changes]["changes"]["testing"]["new"]
         )
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_watch_in_failure(self):
         """
         test watch_in requisite when there is a failure
@@ -1487,6 +1488,7 @@ class StateModuleTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertFalse(ret["changes"])
         self.assertEqual(ret["comment"], "Success!")
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_unless_req_retcode(self):
         ret = self.run_function(
             "state.single",
@@ -2277,6 +2279,7 @@ class StateModuleTest(ModuleCase, SaltReturnAssertsMixin):
     @skipIf(
         six.PY3 and salt.utils.platform.is_darwin(), "Test is broken on macosx and PY3"
     )
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_state_sls_unicode_characters_cmd_output(self):
         """
         test the output from running and echo command with non-ascii
@@ -2324,6 +2327,7 @@ class StateModuleTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertEqual(state_run[state_id]["comment"], "Success!")
         self.assertTrue(state_run[state_id]["result"])
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_state_sls_lazyloader_allows_recursion(self):
         """
         This tests that referencing dunders like __salt__ work
@@ -2364,6 +2368,7 @@ class StateModuleTest(ModuleCase, SaltReturnAssertsMixin):
         assert state_run is not False
         assert os.path.exists(unzip_path)
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_jinja_renderer_argline(self):
         """
         This is a test case for https://github.com/saltstack/salt/issues/55124

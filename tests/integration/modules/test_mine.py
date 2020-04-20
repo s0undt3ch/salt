@@ -101,6 +101,7 @@ class MineTest(ModuleCase, ShellCase):
         for ret in [min_ret, sub_ret]:
             assert "            - one" in ret
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_send_allow_tgt_doesnotexist(self):
         """
         test mine.send with allow_tgt set when
@@ -143,6 +144,7 @@ class MineTest(ModuleCase, ShellCase):
         )
         self.assertEqual(ret["minion"]["id"], "minion")
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_mine_flush(self):
         """
         Test mine.flush
@@ -167,6 +169,7 @@ class MineTest(ModuleCase, ShellCase):
         self.assertEqual(ret_flushed.get("minion", None), None)
         self.assertEqual(ret_flushed["sub_minion"]["id"], "sub_minion")
 
+    @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
     def test_mine_delete(self):
         """
         Test mine.delete

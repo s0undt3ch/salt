@@ -9,6 +9,7 @@ import logging
 import os
 import textwrap
 
+import pytest
 import salt.config
 import salt.minion
 import salt.syspaths
@@ -658,6 +659,7 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(config["id"], "king_bob")
 
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_minion_id_remove_domain_string_positive(self, tempdir):
         """
         This tests that the values of `minion_id_remove_domain` is suppressed from a generated minion id,
@@ -683,6 +685,7 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(config["id"], "king_bob")
 
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_minion_id_remove_domain_string_negative(self, tempdir):
         """
         See above
@@ -705,6 +708,7 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(config["id"], "king_bob.foo.org")
 
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_minion_id_remove_domain_bool_true(self, tempdir):
         """
         See above
@@ -726,6 +730,7 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(config["id"], "king_bob")
 
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_minion_id_remove_domain_bool_false(self, tempdir):
         """
         See above
@@ -1615,6 +1620,7 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         "You can't set an environment dynamically in Windows",
     )
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_load_cloud_config_from_environ_var(self, tempdir):
         env_root_dir = os.path.join(tempdir, "foo", "env")
         os.makedirs(env_root_dir)
@@ -1664,6 +1670,7 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
             deploy_dir_path, default_config["deploy_scripts_search_path"][0]
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_includes_load(self):
         """
         Tests that cloud.{providers,profiles}.d directories are loaded, even if not
@@ -1676,6 +1683,7 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
 
     # <---- Salt Cloud Configuration Tests ---------------------------------------------
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_include_config_without_errors(self):
         """
         Tests that include_config function returns valid configuration

@@ -21,6 +21,7 @@ class ReactorTest(SaltMinionEventAssertsMixin, ModuleCase):
     Test Salt's reactor system
     """
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_ping_reaction(self):
         """
         Fire an event on the master and ensure

@@ -88,6 +88,7 @@ class HostsModuleTest(ModuleCase):
             self.run_function("hosts.has_pair", ["127.0.0.1", "othername"])
         )
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_set_host(self):
         """
         hosts.set_hosts
@@ -113,12 +114,14 @@ class HostsModuleTest(ModuleCase):
         )
         self.assertEqual(len(self.run_function("hosts.list_hosts")), 11)
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_rm_host(self):
         self.assertTrue(self.run_function("hosts.has_pair", ["127.0.0.1", "myname"]))
         self.assertTrue(self.run_function("hosts.rm_host", ["127.0.0.1", "myname"]))
         self.assertFalse(self.run_function("hosts.has_pair", ["127.0.0.1", "myname"]))
         self.assertTrue(self.run_function("hosts.rm_host", ["127.0.0.1", "unknown"]))
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_add_host_formatting(self):
         """
         Ensure that hosts.add_host isn't adding duplicates and that

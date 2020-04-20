@@ -6,6 +6,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.bower as bower
 from salt.exceptions import CommandExecutionError
@@ -50,6 +52,7 @@ class BowerTestCase(TestCase, LoaderModuleMockMixin):
         with patch.dict(bower.__salt__, {"cmd.run_all": mock}):
             self.assertFalse(bower.install("/path/to/project", "underscore"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_uninstall_with_error(self):
         """
         Test if it raises an exception when uninstall package fails

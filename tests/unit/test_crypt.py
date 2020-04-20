@@ -7,6 +7,7 @@ import os
 import shutil
 import tempfile
 
+import pytest
 import salt.utils.files
 from salt import crypt
 
@@ -205,6 +206,7 @@ class M2CryptTestCase(TestCase):
     @patch("os.chmod", MagicMock())
     @patch("os.chown", MagicMock())
     @patch("os.access", MagicMock(return_value=True))
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_gen_keys_with_passphrase(self):
         with patch("M2Crypto.RSA.RSA.save_pem", MagicMock()) as save_pem:
             with patch("M2Crypto.RSA.RSA.save_pub_key", MagicMock()) as save_pub:

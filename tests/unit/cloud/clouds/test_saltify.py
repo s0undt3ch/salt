@@ -6,6 +6,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.client
 from salt.cloud.clouds import saltify
@@ -189,6 +191,7 @@ class SaltifyTestCase(TestCase, LoaderModuleMockMixin):
         with patch("salt.client.LocalClient", return_value=lcl):
             self.assertEqual(saltify.list_nodes(), expected_result)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_saltify_reboot(self):
         mm_cmd = MagicMock(return_value=True)
         lcl = salt.client.LocalClient()
@@ -198,6 +201,7 @@ class SaltifyTestCase(TestCase, LoaderModuleMockMixin):
             mm_cmd.assert_called_with("nodeS1", "system.reboot")
             self.assertTrue(result)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_saltify_destroy(self):
         # destroy calls local.cmd several times and expects
         # different results, so we will provide a list of

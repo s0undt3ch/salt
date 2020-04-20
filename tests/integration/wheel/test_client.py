@@ -28,6 +28,7 @@ class WheelModuleTest(TestCase, AdaptedConfigurationTestCaseMixin):
     def tearDown(self):
         del self.wheel
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_master_call(self):
         """
         Test executing master_call with lowdata
@@ -89,6 +90,7 @@ class WheelModuleTest(TestCase, AdaptedConfigurationTestCaseMixin):
 
         self.wheel.cmd_async(low)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_cmd_sync_w_arg(self):
         low = {
             "fun": "key.finger",
@@ -100,6 +102,7 @@ class WheelModuleTest(TestCase, AdaptedConfigurationTestCaseMixin):
         ret = self.wheel.cmd_sync(low)
         self.assertIn("return", ret.get("data", {}))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_wildcard_auth(self):
         low = {
             "username": "the_s0und_of_t3ch",

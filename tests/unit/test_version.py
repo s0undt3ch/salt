@@ -14,6 +14,7 @@ from __future__ import absolute_import
 
 import re
 
+import pytest
 import salt.version
 
 # Import Salt libs
@@ -249,6 +250,7 @@ class VersionTestCase(TestCase):
             assert saltstack_version.full_info_all_versions, full_info
             assert len(saltstack_version.full_info_all_versions) == len(full_info)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_discover_version(self):
         """
         Test call to __discover_version

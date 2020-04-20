@@ -7,6 +7,8 @@ import logging
 import random
 import string
 
+import pytest
+
 # Import Salt libs
 import salt.config
 import salt.loader
@@ -444,6 +446,7 @@ class BotoCloudTrailTestCase(BotoCloudTrailTestCaseBase, BotoCloudTrailTestCaseM
 
         self.assertTrue(result["tagged"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_removing_tags_fails_the_remove_tags_method_returns_false(self):
         """
         tests False tags not removed.

@@ -6,6 +6,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os.path
 
+import pytest
 import salt.config
 import salt.modules.saltcheck as saltcheck
 import salt.syspaths as syspaths
@@ -467,6 +468,7 @@ class SaltcheckTestCase(TestCase, LoaderModuleMockMixin):
             mybool = sc_instance._SaltCheck__assert_not_empty("")
             self.assertNotEqual(mybool, "Pass")
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_run_test_1(self):
         """test"""
         with patch.dict(
@@ -505,6 +507,7 @@ class SaltcheckTestCase(TestCase, LoaderModuleMockMixin):
                 returned = saltcheck.report_highstate_tests()
                 self.assertEqual(returned, expected_output)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_validation(self):
         """test validation of tests"""
         sc_instance = saltcheck.SaltCheck()
@@ -657,6 +660,7 @@ class SaltcheckTestCase(TestCase, LoaderModuleMockMixin):
             val_ret = sc_instance._SaltCheck__is_valid_test(test_dict)
             self.assertEqual(val_ret, expected_return)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_sls_path_generation(self):
         """test generation of sls paths"""
         with patch.dict(
@@ -691,6 +695,7 @@ class SaltcheckTestCase(TestCase, LoaderModuleMockMixin):
             ret = testLoader._generate_sls_path(state_name)
             self.assertEqual(ret, expected_return)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_generate_output(self):
         # passing states
         sc_results = {

@@ -133,6 +133,7 @@ class PublishModuleTest(ModuleCase, SaltReturnAssertsMixin):
         )
         self.assertIn("The following keyword arguments are not valid", ret)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_reject_minion(self):
         """
         Test bad authentication

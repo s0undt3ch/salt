@@ -13,6 +13,8 @@ Tests for the zfs utils library
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Execution module to test
 import salt.utils.zfs as zfs
 
@@ -501,6 +503,7 @@ class ZfsUtilsTestCase(TestCase):
                             "/sbin/zfs list mypool",
                         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_zfs_command_flag(self):
         """
         Test if zfs_command builds the correct string

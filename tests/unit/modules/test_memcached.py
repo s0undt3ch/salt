@@ -6,6 +6,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.memcached as memcached
 from salt.exceptions import CommandExecutionError, SaltInvocationError
@@ -244,6 +246,7 @@ class MemcachedTestCase(TestCase):
 
     # 'replace' function tests: 1
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_replace(self):
         """
         Test if it replace a key from memcache server

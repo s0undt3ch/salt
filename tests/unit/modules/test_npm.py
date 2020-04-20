@@ -8,6 +8,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import textwrap
 
+import pytest
 import salt.modules.npm as npm
 
 # Import Salt Libs
@@ -35,6 +36,7 @@ class NpmTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'install' function tests: 4
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_install(self):
         """
         Test if it installs an NPM package.

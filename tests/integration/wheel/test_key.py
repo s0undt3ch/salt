@@ -40,6 +40,7 @@ class KeyWheelModuleTest(TestCase, AdaptedConfigurationTestCaseMixin):
             ret.get("priv", "").startswith("-----BEGIN RSA PRIVATE KEY-----")
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_master_key_str(self):
         ret = self.wheel.cmd("key.master_key_str", print_event=False)
         self.assertIn("local", ret)

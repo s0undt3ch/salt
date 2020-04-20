@@ -8,6 +8,8 @@ import logging
 import random
 import string
 
+import pytest
+
 # Import Salt libs
 import salt.loader
 import salt.modules.boto_apigateway as boto_apigateway
@@ -1559,6 +1561,7 @@ class BotoApiGatewayTestCase(BotoApiGatewayTestCaseBase, BotoApiGatewayTestCaseM
         )
         self.assertFalse(result.get("created"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_deleting_an_api_model_that_exists_the_delete_api_model_method_returns_true(
         self,
     ):
@@ -1911,6 +1914,7 @@ class BotoApiGatewayTestCase(BotoApiGatewayTestCaseBase, BotoApiGatewayTestCaseM
         )
         self.assertFalse(result.get("deleted"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_deleting_an_api_method_for_a_resource_that_does_not_exist_the_delete_api_method_method_returns_false(
         self,
     ):
@@ -2446,6 +2450,7 @@ class BotoApiGatewayTestCase(BotoApiGatewayTestCaseBase, BotoApiGatewayTestCaseM
         )
         self.assertTrue(self.conn.delete_usage_plan.call_count >= 1)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_attach_or_detach_usage_plan_when_apis_is_empty_that_success_is_returned(
         self,
     ):

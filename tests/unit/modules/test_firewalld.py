@@ -5,6 +5,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.firewalld as firewalld
 
@@ -116,6 +118,7 @@ class FirewalldTestCase(TestCase, LoaderModuleMockMixin):
         with patch.object(firewalld, "__mgmt", return_value="A"):
             self.assertEqual(firewalld.new_service("zone", False), "A")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_delete_service(self):
         """
         Test for Delete an existing service

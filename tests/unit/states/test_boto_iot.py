@@ -7,6 +7,8 @@ import logging
 import random
 import string
 
+import pytest
+
 # Import Salt libs
 import salt.config
 import salt.loader
@@ -268,6 +270,7 @@ class BotoIoTThingTypeTestCase(BotoIoTStateTestCaseBase, BotoIoTTestCaseMixin):
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_absent_when_thing_type_exists(self):
         """
         Tests absent on a thing type
@@ -507,6 +510,7 @@ class BotoIoTTopicRuleTestCase(BotoIoTStateTestCaseBase, BotoIoTTestCaseMixin):
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_present_with_failure(self):
         self.conn.get_topic_rule.side_effect = [
             topic_rule_not_found_error,
@@ -543,6 +547,7 @@ class BotoIoTTopicRuleTestCase(BotoIoTStateTestCaseBase, BotoIoTTestCaseMixin):
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"]["new"]["rule"], None)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_absent_with_failure(self):
         self.conn.get_topic_rule.return_value = topic_rule_ret
         self.conn.delete_topic_rule.side_effect = ClientError(

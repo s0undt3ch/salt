@@ -244,6 +244,7 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
     )
     @pytest.mark.requires_network
     @requires_system_grains
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_hold_unhold(self, grains):
         """
         test holding and unholding a package
@@ -290,6 +291,7 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
     @pytest.mark.requires_salt_modules("pkg.refresh_db")
     @pytest.mark.requires_network
     @requires_system_grains
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_refresh_db(self, grains):
         """
         test refreshing the package database
@@ -435,6 +437,7 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
     @pytest.mark.requires_salt_states("pkg.removed")
     @pytest.mark.requires_salt_modules("pkg.remove", "pkg.latest_version")
     @requires_system_grains
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_pkg_latest_version(self, grains):
         """
         Check that pkg.latest_version returns the latest version of the uninstalled package.

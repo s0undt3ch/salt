@@ -602,6 +602,7 @@ class TestEventsSaltAPIHandler(_SaltnadoIntegrationTestCase):
         self.events_to_fire = 0
         return application
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_get(self):
         self.events_to_fire = 5
         response = self.fetch(

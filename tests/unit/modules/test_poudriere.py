@@ -8,6 +8,8 @@ from __future__ import absolute_import
 
 import os
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.poudriere as poudriere
 
@@ -119,6 +121,7 @@ class PoudriereTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'create_jail' function tests: 1
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_jail(self):
         """
         Test if it creates a new poudriere jail if one does not exist.
@@ -226,6 +229,7 @@ class PoudriereTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'bulk_build' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_bulk_build(self):
         """
         Test if it run bulk build on poudriere server.

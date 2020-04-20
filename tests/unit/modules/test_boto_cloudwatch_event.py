@@ -7,6 +7,8 @@ import logging
 import random
 import string
 
+import pytest
+
 # Import Salt libs
 import salt.config
 import salt.loader
@@ -298,6 +300,7 @@ class BotoCloudWatchEventTestCase(
             result.get("error", {}).get("message"), error_message.format("put_targets")
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_removing_targets_succeeds_the_remove_targets_method_returns_true(
         self,
     ):
@@ -312,6 +315,7 @@ class BotoCloudWatchEventTestCase(
         self.assertIsNone(result["failures"])
         self.assertEqual(result.get("error"), None)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_removing_targets_fails_the_remove_targets_method_returns_error(
         self,
     ):

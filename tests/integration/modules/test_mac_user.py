@@ -55,6 +55,7 @@ class MacUserModuleTest(ModuleCase):
         ret = self.run_function("user.delete", [DEL_USER])
         self.assertTrue(ret)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mac_user_primary_group(self):
         """
         Tests the primary_group function
@@ -121,6 +122,7 @@ class MacUserModuleTest(ModuleCase):
             self.run_function("user.delete", [CHANGE_USER])
             raise
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mac_user_enable_auto_login(self):
         """
         Tests mac_user functions that enable auto login
@@ -173,6 +175,7 @@ class MacUserModuleTest(ModuleCase):
             if self.run_function("user.get_auto_login"):
                 raise Exception("Failed to disable auto login")
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mac_user_disable_auto_login(self):
         """
         Tests mac_user functions that disable auto login

@@ -12,6 +12,8 @@ Tests for salt.modules.zfs
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Utils
 import salt.loader
 import salt.modules.zfs as zfs
@@ -1016,6 +1018,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.set("myzpool/mydataset", compression="lz4"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_set_failure(self):
         """
         Tests zfs set failure
@@ -1041,6 +1044,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.set("myzpool/mydataset", canmount="lz4"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_get_success(self):
         """
         Tests zfs get success
@@ -1065,6 +1069,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.get("myzpool", properties="used", fields="value"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_parsable_success(self):
         """
         Tests zfs get with parsable output

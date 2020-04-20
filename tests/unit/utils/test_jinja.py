@@ -1713,6 +1713,7 @@ class TestDotNotationLookup(ModuleCase):
             ret = self.render(tmpl_str)
         self.assertEqual(ret, "Hello, True.")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_shadowed_dict_method(self):
         """
         Check calling a stub function with a name that shadows a ``dict``

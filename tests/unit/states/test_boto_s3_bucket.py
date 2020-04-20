@@ -8,6 +8,7 @@ import random
 import string
 from copy import deepcopy
 
+import pytest
 import salt.loader
 import salt.states.boto_s3_bucket as boto_s3_bucket
 
@@ -338,6 +339,7 @@ class BotoS3BucketTestCase(BotoS3BucketStateTestCaseBase, BotoS3BucketTestCaseMi
         self.assertTrue(result["result"])
         self.assertNotEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_present_with_failure(self):
         self.conn.head_bucket.side_effect = [not_found_error, None]
         self.conn.list_buckets.return_value = deepcopy(list_ret)
@@ -368,6 +370,7 @@ class BotoS3BucketTestCase(BotoS3BucketStateTestCaseBase, BotoS3BucketTestCaseMi
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"]["new"]["bucket"], None)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_absent_with_failure(self):
         self.conn.delete_bucket.side_effect = ClientError(
             error_content, "delete_bucket"

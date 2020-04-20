@@ -6,6 +6,8 @@ mac_power tests
 # Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.mac_power as mac_power
 from salt.exceptions import SaltInvocationError
@@ -44,6 +46,7 @@ class MacPowerTestCase(TestCase):
         """
         self.assertRaises(SaltInvocationError, mac_power._validate_sleep, "bob")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_validate_sleep_bool_true(self):
         """
         test _validate_sleep function with True

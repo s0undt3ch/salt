@@ -543,6 +543,7 @@ class PipStateTest(ModuleCase, SaltReturnAssertsMixin):
         "Old version of virtualenv too old for python3.6",
     )
     @skipIf(salt.utils.platform.is_windows(), "Carbon does not install in Windows")
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_46127_pip_env_vars(self):
         """
         Test that checks if env_vars passed to pip.installed are also passed
@@ -616,6 +617,7 @@ class PipStateTest(ModuleCase, SaltReturnAssertsMixin):
 @pytest.mark.windows_whitelisted
 class PipStateInRequisiteTest(ModuleCase, SaltReturnAssertsMixin):
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_issue_54755(self, tmpdir):
         """
         Verify github issue 54755 is resolved. This only fails when there is no

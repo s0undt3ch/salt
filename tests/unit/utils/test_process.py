@@ -15,6 +15,7 @@ import time
 import warnings
 
 import psutil
+import pytest
 
 # Import salt libs
 import salt.utils.platform
@@ -502,6 +503,7 @@ class TestProcessList(TestCase):
                 raise Exception("Process did not finishe before timeout")
             time.sleep(0.3)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_process_list_process(self):
         plist = salt.utils.process.SubprocessList()
         proc = multiprocessing.Process(target=null_target)
@@ -524,6 +526,7 @@ class TestProcessList(TestCase):
         plist.cleanup()
         assert thread not in plist.processes
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_process_list_cleanup(self):
         plist = salt.utils.process.SubprocessList()
         event = multiprocessing.Event()

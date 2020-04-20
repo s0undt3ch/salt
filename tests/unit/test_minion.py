@@ -384,6 +384,7 @@ class MinionTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
             finally:
                 minion.destroy()
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_when_ping_interval_is_set_the_callback_should_be_added_to_periodic_callbacks(
         self,
     ):
@@ -415,6 +416,7 @@ class MinionTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
             finally:
                 minion.destroy()
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_when_passed_start_event_grains(self):
         mock_opts = self.get_config("minion", from_scratch=True)
         mock_opts["start_event_grains"] = ["os"]
@@ -449,6 +451,7 @@ class MinionTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         finally:
             minion.destroy()
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_when_other_events_fired_and_start_event_grains_are_set(self):
         mock_opts = self.get_config("minion", from_scratch=True)
         mock_opts["start_event_grains"] = ["os"]
@@ -506,6 +509,7 @@ class MinionTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
             minion.destroy()
 
     @patch("salt.utils.process.default_signals")
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_reinit_crypto_on_fork(self, def_mock):
         """
         Ensure salt.utils.crypt.reinit_crypto() is executed when forking for new job

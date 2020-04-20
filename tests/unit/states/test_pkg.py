@@ -3,6 +3,7 @@
 # Import Python libs
 from __future__ import absolute_import
 
+import pytest
 import salt.states.pkg as pkg
 
 # Import Salt Libs
@@ -63,6 +64,7 @@ class PkgTestCase(TestCase, LoaderModuleMockMixin):
                 self.assertIsNone(ret["result"])
                 self.assertDictEqual(ret["changes"], self.pkgs)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_uptodate_with_pkgs_with_changes(self):
         """
         Test pkg.uptodate with simulated changes

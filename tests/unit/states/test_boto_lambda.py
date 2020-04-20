@@ -7,6 +7,8 @@ import logging
 import random
 import string
 
+import pytest
+
 # Import Salt libs
 import salt.config
 import salt.loader
@@ -238,6 +240,7 @@ class BotoLambdaFunctionTestCase(BotoLambdaStateTestCaseBase, BotoLambdaTestCase
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_present_with_failure(self):
         self.conn.list_functions.side_effect = [
             {"Functions": []},
@@ -297,6 +300,7 @@ class BotoLambdaFunctionTestCase(BotoLambdaStateTestCaseBase, BotoLambdaTestCase
         self.assertFalse(result["result"])
         self.assertTrue("An error occurred" in result["comment"])
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_present_when_function_exists_and_permissions(self):
         self.conn.list_functions.return_value = {"Functions": [function_ret]}
         self.conn.update_function_code.return_value = function_ret
@@ -502,6 +506,7 @@ class BotoLambdaEventSourceMappingTestCase(
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_present_with_failure(self):
         self.conn.list_event_source_mappings.side_effect = [
             {"EventSourceMappings": []},
@@ -547,6 +552,7 @@ class BotoLambdaEventSourceMappingTestCase(
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"]["new"]["event_source_mapping"], None)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_absent_with_failure(self):
         self.conn.list_event_source_mappings.return_value = {
             "EventSourceMappings": [event_source_mapping_ret]

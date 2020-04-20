@@ -3,6 +3,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.utils.platform
 import salt.utils.win_functions as win_functions
@@ -54,6 +56,7 @@ class WinFunctionsTestCase(TestCase):
 
         self.assertEqual(encoded, "C:\\some\\path")
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_escape_argument_path_with_space(self):
         """
         Test to make sure we encode path arguments containing spaces correctly

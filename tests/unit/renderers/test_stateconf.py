@@ -7,6 +7,7 @@ import os
 import os.path
 import tempfile
 
+import pytest
 import salt.config
 
 # Import Salt libs
@@ -112,6 +113,7 @@ test:
             "echo sls_dir=path{0}to".format(os.sep),
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_states_declared_with_shorthand_no_args(self):
         result = self._render_sls(
             """
@@ -146,6 +148,7 @@ test2:
         self.assertEqual(result["test::test"]["pkg.installed"][0]["name"], "test")
         self.assertEqual(result["test::test2"]["pkg.installed"][0]["name"], "vim")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_state_prefix(self):
         result = self._render_sls(
             """
@@ -274,6 +277,7 @@ include:
             sls="test.work",
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_start_state_generation(self):
         result = self._render_sls(
             """
@@ -370,6 +374,7 @@ G:
             [next(six.itervalues(i)) for i in goal_args[0]["require"]], list("ABCDEFG")
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_slsdir(self):
         result = self._render_sls(
             """

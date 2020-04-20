@@ -25,6 +25,7 @@ class MacDesktopTestCase(ModuleCase):
         ret = self.run_function("desktop.get_output_volume")
         self.assertIsNotNone(ret)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_set_output_volume(self):
         """
         Tests the return of set_output_volume.
@@ -54,6 +55,7 @@ class MacDesktopTestCase(ModuleCase):
         """
         self.assertTrue(self.run_function("desktop.lock"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_say(self):
         """
         Tests the return of the say function.

@@ -198,6 +198,7 @@ class GrainsAppendTestCase(ModuleCase):
         assert msg == ret
 
     @pytest.mark.flaky(max_runs=4)
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_grains_append_val_is_list(self):
         """
         Tests the return of a grains.append call when val is passed in as a list.
@@ -210,6 +211,7 @@ class GrainsAppendTestCase(ModuleCase):
         )
         self.assertEqual(ret[self.GRAIN_KEY], [self.GRAIN_VAL, second_grain])
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_grains_append_call_twice(self):
         """
         Tests the return of a grains.append call when the value is already present
@@ -250,6 +252,7 @@ class GrainsAppendTestCase(ModuleCase):
             time.sleep(sleep)
         return False
 
+    @pytest.mark.slow_test(seconds=480)  # Test takes >= 480 seconds
     def test_grains_remove_add(self):
         second_grain = self.GRAIN_VAL + "-2"
         ret = self.run_function("grains.get", [self.GRAIN_KEY])

@@ -525,6 +525,7 @@ class PkgTest(ModuleCase, SaltReturnAssertsMixin):
         "pkg.hold", "pkg.unhold", "pkg.version", "pkg.list_pkgs"
     )
     @requires_system_grains
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_pkg_015_installed_held(self, grains=None):
         """
         Tests that a package can be held even when the package is already installed.

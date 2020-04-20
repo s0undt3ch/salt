@@ -8,6 +8,8 @@ Unit tests for AWS KMS Decryption Renderer.
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt libs
 import salt.exceptions
 import salt.renderers.aws_kms as aws_kms
@@ -99,6 +101,7 @@ class AWSKMSTestCase(TestCase, LoaderModuleMockMixin):
             )
             self.assertRaises(salt.exceptions.SaltConfigurationError, aws_kms._session)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test__session_noregion(self):
         """
         _session raises a SaltConfigurationError
@@ -125,6 +128,7 @@ class AWSKMSTestCase(TestCase, LoaderModuleMockMixin):
             session.side_effect = botocore.exceptions.NoRegionError
             self.assertRaises(salt.exceptions.SaltConfigurationError, aws_kms._kms)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test__api_decrypt(self):  # pylint: disable=no-self-use
         """
         _api_decrypt_response calls kms.decrypt with the

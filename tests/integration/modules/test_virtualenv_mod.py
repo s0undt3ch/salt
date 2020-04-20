@@ -6,6 +6,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os
 import tempfile
 
+import pytest
+
 # Import salt libs
 import salt.utils.path
 from salt.modules.virtualenv_mod import KNOWN_BINARY_NAMES
@@ -37,6 +39,7 @@ class VirtualenvModuleTest(ModuleCase):
         pip_file = os.path.join(self.venv_dir, "bin", "pip")
         self.assertTrue(os.path.exists(pip_file))
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_site_packages(self):
         pip_bin = os.path.join(self.venv_dir, "bin", "pip")
         self.run_function(
@@ -48,6 +51,7 @@ class VirtualenvModuleTest(ModuleCase):
         without_site = self.run_function("pip.freeze", bin_env=pip_bin)
         self.assertFalse(with_site == without_site)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_clear(self):
         pip_bin = os.path.join(self.venv_dir, "bin", "pip")
         self.run_function("virtualenv.create", [self.venv_dir])

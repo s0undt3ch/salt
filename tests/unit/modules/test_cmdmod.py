@@ -10,6 +10,7 @@ import os
 import sys
 import tempfile
 
+import pytest
 import salt.modules.cmdmod as cmdmod
 
 # Import Salt Libs
@@ -367,6 +368,7 @@ class CMDMODTestCase(TestCase, LoaderModuleMockMixin):
                         getpwnam_mock.assert_called_with("foobar")
 
     @skipIf(not salt.utils.platform.is_darwin(), "applicable to macOS only")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_shell_properly_handled_on_macOS(self):
         """
         cmd.run should invoke a new bash login only
@@ -454,6 +456,7 @@ class CMDMODTestCase(TestCase, LoaderModuleMockMixin):
 
     @skipIf(salt.utils.platform.is_windows(), "Do not run on Windows")
     @skipIf(salt.utils.platform.is_darwin(), "Do not run on MacOS")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_run_cwd_in_combination_with_runas(self):
         """
         cmd.run executes command in the cwd directory

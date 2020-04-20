@@ -5,6 +5,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.win_timezone as win_timezone
 from salt.exceptions import CommandExecutionError
@@ -102,6 +104,7 @@ class WinTimezoneTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'set_zone' function tests: 1
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_set_zone(self):
         """
         Test if it unlinks, then symlinks /etc/localtime to the set timezone.

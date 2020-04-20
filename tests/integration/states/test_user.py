@@ -316,6 +316,7 @@ class WinUserTest(ModuleCase, SaltReturnAssertsMixin):
     def tearDown(self):
         self.assertSaltTrueReturn(self.run_state("user.absent", name=USER))
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_user_present_existing(self):
         ret = self.run_state(
             "user.present",

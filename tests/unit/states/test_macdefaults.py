@@ -3,6 +3,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.states.macdefaults as macdefaults
 
@@ -68,6 +70,7 @@ class MacDefaultsTestCase(TestCase, LoaderModuleMockMixin):
             assert not write_mock.called
             self.assertEqual(out, expected)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_write_boolean(self):
         """
             Test writing a default setting with a boolean

@@ -9,6 +9,7 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import salt.modules.win_iis as win_iis
 import salt.utils.json
 
@@ -236,6 +237,7 @@ class WinIisTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertTrue(win_iis.create_app(**kwargs))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_list_apps(self):
         """
         Test - Get all configured IIS applications for the specified site.

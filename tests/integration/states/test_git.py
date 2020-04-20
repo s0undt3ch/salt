@@ -14,6 +14,8 @@ import socket
 import string
 import tempfile
 
+import pytest
+
 # Import salt libs
 import salt.utils.files
 import salt.utils.path
@@ -896,6 +898,7 @@ class LocalRepoGitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertIn("forced update", ret["changes"])
         self.assertIn("revision", ret["changes"])
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_renamed_default_branch(self):
         """
         Test the case where the remote branch has been removed

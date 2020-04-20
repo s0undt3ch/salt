@@ -3,6 +3,7 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import salt.serializers.yamlex as yamlex
 
 # Import Salt libs
@@ -53,6 +54,7 @@ class RendererTests(TestCase, RendererMixin, LoaderModuleMockMixin):
         assert sls_obj == {"foo": "bar"}, sls_obj
 
     @skipIf(not yamlex.available, SKIP_MESSAGE % "yamlex")
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_complex(self):
 
         sls_obj = self.render(complex_template)

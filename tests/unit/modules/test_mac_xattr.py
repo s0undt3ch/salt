@@ -3,6 +3,7 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import salt.modules.mac_xattr as xattr
 import salt.utils.mac_utils
 
@@ -71,6 +72,7 @@ class XAttrTestCase(TestCase, LoaderModuleMockMixin):
                 ["xattr", "-p", "-x", "com.attr", "/path/to/file"]
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_read_missing(self):
         """
         Test reading a specific attribute from a file

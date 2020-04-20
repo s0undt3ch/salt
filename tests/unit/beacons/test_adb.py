@@ -3,6 +3,8 @@
 # Python libs
 from __future__ import absolute_import
 
+import pytest
+
 # Salt libs
 import salt.beacons.adb as adb
 from tests.support.mixins import LoaderModuleMockMixin
@@ -20,6 +22,7 @@ class ADBBeaconTestCase(TestCase, LoaderModuleMockMixin):
     def setup_loader_modules(self):
         return {adb: {"last_state": {}, "last_state_extra": {"no_devices": False}}}
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_no_adb_command(self):
         with patch("salt.utils.path.which") as mock:
             mock.return_value = None
@@ -405,6 +408,7 @@ class ADBBeaconTestCase(TestCase, LoaderModuleMockMixin):
                 ret, [{"device": "HTC", "state": "device", "tag": "device"}]
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_device_repeat_multi(self):
         config = [{"states": ["offline"], "battery_low": 35}]
 

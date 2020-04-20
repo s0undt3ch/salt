@@ -5,6 +5,8 @@ unit tests for the libvirt_events engine
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.engines.libvirt_events as libvirt_events
 
@@ -55,6 +57,7 @@ class EngineLibvirtEventTestCase(TestCase, LoaderModuleMockMixin):
     @patch(
         "salt.engines.libvirt_events.libvirt", VIR_PREFIX_FOO=0, VIR_PREFIX_BAR_FOO=1
     )
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_libvirt_enum_string_underscores(self, libvirt_mock):
         """
         Make sure the libvirt enum value to string works reliably and items
@@ -129,6 +132,7 @@ class EngineLibvirtEventTestCase(TestCase, LoaderModuleMockMixin):
             register = libvirt_events.REGISTER_FUNCTIONS[obj]
             assert getattr(mock_cnx, register).call_count == count
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_event_skipped(self):
         """
         Test that events are skipped if their ID isn't defined in the libvirt
@@ -159,6 +163,7 @@ class EngineLibvirtEventTestCase(TestCase, LoaderModuleMockMixin):
         # Network events should have been skipped
         mock_cnx.networkEventRegisterAny.assert_not_called()
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_event_filtered(self):
         """
         Test that events are skipped if their ID isn't defined in the libvirt

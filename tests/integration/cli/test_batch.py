@@ -106,6 +106,7 @@ class BatchTest(ShellCase):
         # We expect retcode to be non-zero
         self.assertNotEqual(0, retcode)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_batch_state_stopping_after_error(self):
         """
         Test that a failed state stops the batch run

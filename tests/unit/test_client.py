@@ -6,6 +6,7 @@
 # Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import salt.utils.platform
 
 # Import Salt libs
@@ -210,6 +211,7 @@ class LocalClientTestCase(TestCase, SaltClientTestCaseMixin):
                 )
 
     @skipIf(not salt.utils.platform.is_windows(), "Windows only test")
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_pub_win32(self):
         """
         Tests that the client raises a timeout error when using ZeroMQ's TCP

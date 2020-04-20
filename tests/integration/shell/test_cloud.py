@@ -11,6 +11,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function
 
+import pytest
+
 # Import 3rd-party libs
 # pylint: disable=import-error
 from salt.ext.six.moves import range  # pylint: disable=redefined-builtin
@@ -48,6 +50,7 @@ class SaltCloudCliTest(ShellCase, ShellCaseCommonTestsMixin):
             "\n".join(self.run_cloud("--list-providers ec2", catch_stderr=True)[1]),
         )
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_mutually_exclusive_query_options(self):
         test_options = ["--query", "--full-query", "--select-query", "--list-providers"]
         while True:
@@ -70,6 +73,7 @@ class SaltCloudCliTest(ShellCase, ShellCaseCommonTestsMixin):
                 # Only one left? Stop iterating
                 break
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_mutually_exclusive_list_options(self):
         test_options = ["--list-locations", "--list-images", "--list-sizes"]
         while True:

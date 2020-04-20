@@ -6,6 +6,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.hosts as hosts
 import salt.utils.data
@@ -291,6 +293,7 @@ class HostsTestCase(TestCase, LoaderModuleMockMixin):
             with patch.dict(hosts.__salt__, {"config.option": mock_opt}):
                 self.assertTrue(hosts.add_host("10.10.10.10", "Salt1"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_set_comment(self):
         """
         Tests return True / False when setting a comment

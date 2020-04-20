@@ -14,6 +14,7 @@ class SPMTest(ShellCase, SPMCase):
     Test spm script
     """
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_spm_help(self):
         """
         test --help argument for spm
@@ -49,6 +50,7 @@ class SPMTest(ShellCase, SPMCase):
             os.path.exists(os.path.join(config["formula_path"], "apache", "apache.sls"))
         )
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_spm_force(self):
         """
         test spm install with -f arg

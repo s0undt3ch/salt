@@ -5,6 +5,7 @@ import re
 import sys
 import textwrap
 
+import pytest
 import salt.utils.stringutils
 
 # Import 3rd-party libs
@@ -136,6 +137,7 @@ class StringutilsTestCase(TestCase):
         self.assertIsNotNone(salt.utils.stringutils.to_none("None"))
         self.assertIsNotNone(salt.utils.stringutils.to_none(0))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_is_binary(self):
         self.assertFalse(salt.utils.stringutils.is_binary(LOREM_IPSUM))
         # Also test bytestring

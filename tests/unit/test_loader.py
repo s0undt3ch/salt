@@ -21,6 +21,8 @@ import sys
 import tempfile
 import textwrap
 
+import pytest
+
 # Import Salt libs
 import salt.config
 import salt.loader
@@ -976,6 +978,7 @@ class LazyLoaderModulePackageTest(TestCase):
 
 deep_init_base = """
 from __future__ import absolute_import
+import pytest
 import {0}.top_lib
 import {0}.top_lib.mid_lib
 import {0}.top_lib.mid_lib.bot_lib
@@ -1451,6 +1454,7 @@ class LoaderLoadCachedGrainsTest(TestCase):
         self.opts["grains_cache"] = True
         self.opts["grains"] = salt.loader.grains(self.opts)
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_osrelease_info_has_correct_type(self):
         """
         Make sure osrelease_info is tuple after caching

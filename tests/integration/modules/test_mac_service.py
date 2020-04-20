@@ -123,6 +123,7 @@ class MacServiceModuleTest(ModuleCase):
         )
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_stop(self):
         """
         Test service.stop
@@ -134,6 +135,7 @@ class MacServiceModuleTest(ModuleCase):
         )
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_status(self):
         """
         Test service.status
@@ -158,6 +160,7 @@ class MacServiceModuleTest(ModuleCase):
         self.assertTrue(self.run_function("service.available", [self.SERVICE_NAME]))
         self.assertFalse(self.run_function("service.available", ["spongebob"]))
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_missing(self):
         """
         Test service.missing
@@ -201,6 +204,7 @@ class MacServiceModuleTest(ModuleCase):
         self.assertIsInstance(services, list)
         self.assertIn(self.SERVICE_NAME, services)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_get_enabled(self):
         """
         Test service.get_enabled

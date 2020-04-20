@@ -8,6 +8,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 # Import Python libs
 import logging
 
+import pytest
+
 # Import 3rd party Libs
 import salt.ext as six
 
@@ -127,6 +129,7 @@ class TLSAddTestCase(TestCase, LoaderModuleMockMixin):
         with patch.dict(tls.__salt__, {"config.option": mock_opt}):
             self.assertEqual(tls.cert_base_path(), ca_path)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_set_ca_cert_path(self):
         """
         Test for setting the cert base path
@@ -471,6 +474,7 @@ class TLSAddTestCase(TestCase, LoaderModuleMockMixin):
             )
 
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_recreate_self_signed_cert(self, ca_path):
         """
         Test creating self signed certificate when one already exists
@@ -607,6 +611,7 @@ class TLSAddTestCase(TestCase, LoaderModuleMockMixin):
             )
 
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_recreate_pkcs12(self, ca_path):
         """
         Test creating pkcs12 when it already exists
@@ -685,6 +690,7 @@ class TLSAddTestCase(TestCase, LoaderModuleMockMixin):
                 self.assertEqual(tls.get_extensions("client"), pillarval)
 
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_pyOpenSSL_version_destructive(self, ca_path):
         """
         Test extension logic with different pyOpenSSL versions

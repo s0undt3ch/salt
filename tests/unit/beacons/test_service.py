@@ -5,6 +5,8 @@ from __future__ import absolute_import
 
 from collections import namedtuple
 
+import pytest
+
 # Salt libs
 import salt.beacons.service as service_beacon
 from tests.support.mixins import LoaderModuleMockMixin
@@ -66,6 +68,7 @@ class ServiceBeaconTestCase(TestCase, LoaderModuleMockMixin):
                 ],
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_service_not_running(self):
         with patch.dict(
             service_beacon.__salt__, {"service.status": MagicMock(return_value=False)}

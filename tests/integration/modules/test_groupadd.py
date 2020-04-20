@@ -207,6 +207,7 @@ class GroupModuleTest(ModuleCase):
         group_info = self.run_function("group.info", [self._group])
         self.assertNotIn(self._user, str(group_info["members"]))
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_members(self):
         """
         Test the members function
@@ -221,6 +222,7 @@ class GroupModuleTest(ModuleCase):
         self.assertIn(self._user, str(group_info["members"]))
         self.assertIn(self._user1, str(group_info["members"]))
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_getent(self):
         """
         Test the getent function

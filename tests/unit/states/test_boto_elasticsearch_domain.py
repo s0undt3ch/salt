@@ -7,6 +7,7 @@ import logging
 import random
 import string
 
+import pytest
 import salt.loader
 import salt.states.boto_elasticsearch_domain as boto_elasticsearch_domain
 
@@ -215,6 +216,7 @@ class BotoElasticsearchDomainTestCase(
             {"new": {"AccessPolicies": {}}, "old": {"AccessPolicies": {"a": "b"}}},
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_present_with_failure(self):
         self.conn.describe_elasticsearch_domain.side_effect = not_found_error
         self.conn.describe_elasticsearch_domain_config.return_value = {
@@ -253,6 +255,7 @@ class BotoElasticsearchDomainTestCase(
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"]["new"]["domain"], None)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_absent_with_failure(self):
         self.conn.describe_elasticsearch_domain.return_value = {
             "DomainStatus": domain_ret

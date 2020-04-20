@@ -6,6 +6,7 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import salt.modules.logrotate as logrotate
 
 # Import Salt Libs
@@ -33,6 +34,7 @@ class LogrotateTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'show_conf' function tests: 1
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_show_conf(self):
         """
         Test if it show parsed configuration

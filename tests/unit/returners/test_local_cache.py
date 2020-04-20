@@ -14,6 +14,7 @@ import shutil
 import tempfile
 import time
 
+import pytest
 import salt.returners.local_cache as local_cache
 import salt.utils.files
 import salt.utils.jid
@@ -317,6 +318,7 @@ class Local_CacheTest(
             "job cache was not removed: ", self.JOB_CACHE_DIR_FILES, status="removed"
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_not_clean_new_jobs(self):
         """
         test to ensure jobs are not removed when
@@ -331,6 +333,7 @@ class Local_CacheTest(
                 "job cache was removed: ", self.JOB_CACHE_DIR_FILES, status="present"
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_empty_jid_dir(self):
         """
         test to ensure removal of empty jid dir

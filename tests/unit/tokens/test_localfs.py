@@ -6,6 +6,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+import pytest
 import salt.exceptions
 import salt.tokens.localfs
 import salt.utils.files
@@ -75,6 +76,7 @@ class TestLocalFS(TestCase):
             salt.tokens.localfs.get_token(opts=opts, tok=tok)
 
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_get_token_should_raise_SaltDeserializationError_if_token_file_is_malformed(
         self, tempdir
     ):

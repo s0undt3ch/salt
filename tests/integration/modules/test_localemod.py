@@ -45,6 +45,7 @@ class LocaleModuleTest(ModuleCase):
         self.assertTrue(ret)
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_set_locale(self):
         original_locale = self.run_function("locale.get_locale")
         locale_to_set = _find_new_locale(original_locale)

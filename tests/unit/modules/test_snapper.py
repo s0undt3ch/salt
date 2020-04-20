@@ -11,6 +11,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import sys
 
+import pytest
 import salt.modules.snapper as snapper
 from salt.exceptions import CommandExecutionError
 
@@ -484,6 +485,7 @@ class SnapperTestCase(TestCase, LoaderModuleMockMixin):
                 snapper.undo_jid(20160607130930720112), "create:1 modify:1 delete:1"
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_diff_text_file(self):
         with patch(
             "salt.modules.snapper._get_num_interval", MagicMock(return_value=(42, 43))
@@ -559,6 +561,7 @@ class SnapperTestCase(TestCase, LoaderModuleMockMixin):
                 }
                 self.assertEqual(snapper.diff(), module_ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_diff_binary_files(self):
         with patch(
             "salt.modules.snapper._get_num_interval", MagicMock(return_value=(55, 0))

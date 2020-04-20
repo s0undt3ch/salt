@@ -6,6 +6,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.lvs as lvs
 
@@ -103,6 +105,7 @@ class LvsTestCase(TestCase, LoaderModuleMockMixin):
                 ):
                     self.assertEqual(lvs.edit_server(), "stderr")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_delete_server(self):
         """
         Test for Delete the realserver from the virtual service.

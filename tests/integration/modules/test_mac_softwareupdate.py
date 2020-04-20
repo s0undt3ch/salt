@@ -92,6 +92,7 @@ class MacSoftwareUpdateModuleTest(ModuleCase):
         self.assertFalse(self.run_function("softwareupdate.schedule_enabled"))
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
     def test_update(self):
         """
         Test softwareupdate.update_all
@@ -116,6 +117,7 @@ class MacSoftwareUpdateModuleTest(ModuleCase):
             self.run_function("softwareupdate.update", ["spongebob"]),
         )
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_list_downloads(self):
         """
         Test softwareupdate.list_downloads
@@ -144,6 +146,7 @@ class MacSoftwareUpdateModuleTest(ModuleCase):
         self.assertIsInstance(self.run_function("softwareupdate.download_all"), list)
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_get_set_reset_catalog(self):
         """
         Test softwareupdate.download_all

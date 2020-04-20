@@ -5,6 +5,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import sys
 
+import pytest
+
 # Import Salt Libs
 import salt.states.macpackage as macpackage
 
@@ -243,6 +245,7 @@ class MacPackageTestCase(TestCase, LoaderModuleMockMixin):
                 assert not install_mock.called
                 self.assertEqual(out, expected)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_installed_app(self):
         """
             Test installing an APP file

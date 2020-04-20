@@ -11,6 +11,7 @@ import json
 import logging
 import sys
 
+import pytest
 import salt.ext.six as six
 import salt.utils.json as json
 from tests.support.case import ShellCase
@@ -59,6 +60,7 @@ class ProxyCallerSimpleTestCase(ShellCase):
         self.assertIn("apache", ret["local"])
         self.assertIn("redbull", ret["local"])
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_upgrade(self):
         ret = self._load_return(
             self.run_call(
@@ -78,6 +80,7 @@ class ProxyCallerSimpleTestCase(ShellCase):
         )
         self.assertIn("ntp", ret["local"])
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_service_start(self):
         ret = self._load_return(
             self.run_call(
@@ -93,6 +96,7 @@ class ProxyCallerSimpleTestCase(ShellCase):
         )
         self.assertTrue(ret)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_service_get_all(self):
         ret = self._load_return(
             self.run_call(
@@ -102,6 +106,7 @@ class ProxyCallerSimpleTestCase(ShellCase):
         )
         self.assertIn("samba", ret["local"])
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_grains_items(self):
         ret = self._load_return(
             self.run_call(

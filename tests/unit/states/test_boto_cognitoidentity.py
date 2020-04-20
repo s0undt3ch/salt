@@ -7,6 +7,8 @@ import logging
 import random
 import string
 
+import pytest
+
 # Import Salt libs
 import salt.config
 import salt.loader
@@ -444,6 +446,7 @@ class BotoCognitoIdentityTestCase(
             )
             self.assertTrue(self.conn.update_identity_pool.call_count == 0)
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_present_when_pool_name_exists(self):
         """
         Tests the successful case of updating a single instance with matching
@@ -507,6 +510,7 @@ class BotoCognitoIdentityTestCase(
         self.assertEqual(result.get("result"), True)
         self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_absent_when_removeallmatched_is_false_and_multiple_pools_matched(self):
         """
         Tests absent on when RemoveAllMatched flag is false and there are multiple matches
@@ -588,6 +592,7 @@ class BotoCognitoIdentityTestCase(
         }
         self.assertEqual(result["changes"], expected_changes)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_absent_when_multiple_pool_exists_and_removeallmatched_flag_is_true(self):
         """
         Tests absent succeeds on delete when a multiple pools matched and

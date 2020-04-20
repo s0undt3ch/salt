@@ -15,6 +15,7 @@ import shutil
 import time
 import warnings
 
+import pytest
 import salt.config
 import salt.ext.tornado.ioloop
 import salt.utils.event
@@ -326,6 +327,7 @@ class TestAsyncEventPublisher(AsyncTestCase):
 
 
 class TestEventReturn(TestCase):
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_event_return(self):
         # Once salt is py3 only, the warnings part of this test no longer applies
         evt = None

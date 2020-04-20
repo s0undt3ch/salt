@@ -73,6 +73,7 @@ class ManageTest(ShellCase):
         assert "minion" in ret["return"]
         assert "sub_minion" not in ret["return"]
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_pillar_no_tgt(self):
         """
         Test cache.pillar when no tgt is
@@ -93,6 +94,7 @@ class ManageTest(ShellCase):
         assert "minion" not in ret["return"]
         assert "sub_minion" not in ret["return"]
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_pillar_minion_tgt_type_pillar(self):
         """
         Test cache.pillar when the target exists
@@ -102,6 +104,7 @@ class ManageTest(ShellCase):
 
         assert all(x in ret["return"] for x in ["minion", "sub_minion"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mine(self):
         """
         Test cache.mine

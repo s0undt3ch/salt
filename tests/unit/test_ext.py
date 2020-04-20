@@ -8,6 +8,8 @@ import subprocess
 import sys
 import tempfile
 
+import pytest
+
 # Import Salt libs
 import salt
 import salt.ext.six
@@ -87,6 +89,7 @@ class VendorTornadoTest(TestCase):
             valid_lines.append(line)
         assert valid_lines == [], len(valid_lines)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_vendored_tornado_import_from(self):
         grep_call = salt.modules.cmdmod.run_stdout(
             cmd="bash -c 'grep -r \"from tornado\" ./salt/*'",

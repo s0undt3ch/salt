@@ -413,6 +413,7 @@ class WinSystemModuleTest(ModuleCase):
         self.assertEqual(name, ret)
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_set_computer_desc(self):
         """
         Test setting the computer description
@@ -475,6 +476,7 @@ class WinSystemModuleTest(ModuleCase):
             self.run_function("system.set_system_time", [current_time])
             self.run_function("service.start", ["w32time"])
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_get_system_date(self):
         """
         Test getting system date

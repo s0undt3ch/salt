@@ -12,6 +12,8 @@ Tests for salt.modules.zpool
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Utils
 import salt.loader
 import salt.modules.zpool as zpool
@@ -526,6 +528,7 @@ class ZpoolTestCase(TestCase, LoaderModuleMockMixin):
             self.assertEqual(ret, res)
 
     @skipIf(not salt.utils.path.which("mkfile"), "Cannot find mkfile executable")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_file_vdev_success(self):
         """
         Tests create_file_vdev when out of space
@@ -544,6 +547,7 @@ class ZpoolTestCase(TestCase, LoaderModuleMockMixin):
             self.assertEqual(ret, res)
 
     @skipIf(not salt.utils.path.which("mkfile"), "Cannot find mkfile executable")
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_create_file_vdev_nospace(self):
         """
         Tests create_file_vdev when out of space
@@ -822,6 +826,7 @@ class ZpoolTestCase(TestCase, LoaderModuleMockMixin):
             )
             self.assertEqual(ret, res)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_reopen_success(self):
         """
         Tests reopen
@@ -894,6 +899,7 @@ class ZpoolTestCase(TestCase, LoaderModuleMockMixin):
             )
             self.assertEqual(ret, res)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_history_success(self):
         """
         Tests history
@@ -935,6 +941,7 @@ class ZpoolTestCase(TestCase, LoaderModuleMockMixin):
             )
             self.assertEqual(ret, res)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_history_nopool(self):
         """
         Tests history with missing pool
@@ -952,6 +959,7 @@ class ZpoolTestCase(TestCase, LoaderModuleMockMixin):
             res = OrderedDict([("error", "cannot open 'mypool': no such pool")])
             self.assertEqual(ret, res)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_clear_success(self):
         """
         Tests clear
@@ -969,6 +977,7 @@ class ZpoolTestCase(TestCase, LoaderModuleMockMixin):
             res = OrderedDict([("cleared", True)])
             self.assertEqual(ret, res)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_clear_nopool(self):
         """
         Tests clear with missing pool
@@ -987,6 +996,7 @@ class ZpoolTestCase(TestCase, LoaderModuleMockMixin):
                 [("cleared", False), ("error", "cannot open 'mypool': no such pool")]
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_clear_nodevice(self):
         """
         Tests clear with non existign device

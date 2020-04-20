@@ -13,6 +13,7 @@ import logging
 import ssl
 import sys
 
+import pytest
 import salt.utils.vmware
 
 # Import Salt libraries
@@ -5115,6 +5116,7 @@ class DeleteVirtualMachineTestCase(TestCase):
             salt.utils.vmware.delete_vm(self.mock_vm_ref)
         self.assertEqual(exc.exception.strerror, "vmodl.RuntimeFault")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_destroy_vm_wait_for_task(self):
         mock_wait_for_task = MagicMock()
         with patch(

@@ -8,6 +8,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
+import pytest
+
 # Import Salt Libs
 import salt.states.user as user
 
@@ -227,6 +229,7 @@ class UserTestCase(TestCase, LoaderModuleMockMixin):
                 },
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_absent(self):
         """
             Test to ensure that the named user is absent

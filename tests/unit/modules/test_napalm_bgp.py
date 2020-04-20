@@ -6,6 +6,7 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import tests.support.napalm as napalm_test_support
 
 # Import Salt Testing Libs
@@ -36,6 +37,7 @@ class NapalmBgpModuleTestCase(TestCase, LoaderModuleMockMixin):
         ret = napalm_bgp.config("test_group")
         assert ret["out"] is napalm_test_support.TEST_BGP_CONFIG
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_neighbors(self):
         ret = napalm_bgp.neighbors("test_address")
         assert ret["out"] is napalm_test_support.TEST_BGP_NEIGHBORS

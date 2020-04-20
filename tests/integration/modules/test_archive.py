@@ -290,6 +290,7 @@ class ArchiveTest(ModuleCase):
         self._tear_down()
 
     @skipIf(not HAS_ZIPFILE, "Cannot find zipfile python module")
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_zip(self):
         """
         Validate using the zip function
@@ -304,6 +305,7 @@ class ArchiveTest(ModuleCase):
         self._tear_down()
 
     @skipIf(not HAS_ZIPFILE, "Cannot find zipfile python module")
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_unzip(self):
         """
         Validate using the unzip function

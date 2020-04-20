@@ -3,6 +3,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import salt libs
 import salt.modules.gem as gem
 
@@ -16,6 +18,7 @@ class TestGemModule(TestCase, LoaderModuleMockMixin):
     def setup_loader_modules(self):
         return {gem: {}}
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_gem(self):
         mock = MagicMock(return_value={"retcode": 0, "stdout": ""})
         with patch.dict(

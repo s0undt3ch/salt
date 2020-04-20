@@ -8,6 +8,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 import base64
 from contextlib import contextmanager
 
+import pytest
+
 # Import Salt Libs
 import salt.utils.stringutils
 from salt.ext import six
@@ -819,6 +821,7 @@ class KubernetesTestCase(TestCase, LoaderModuleMockMixin):
                     actual,
                 )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_namespace_absent__delete_status_phase_terminating(self):
         # This is what kubernetes 1.8.0 looks like when deleting namespaces
         namespace_data = self.make_namespace(name="salt")

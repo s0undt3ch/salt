@@ -120,6 +120,7 @@ class NetapiClientTest(TestCase):
             )
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_wheel_async(self):
         # Give this test a little breathing room
         time.sleep(3)
@@ -130,6 +131,7 @@ class NetapiClientTest(TestCase):
         self.assertIn("jid", ret)
         self.assertIn("tag", ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_wheel_unauthenticated(self):
         low = {"client": "wheel", "tgt": "*", "fun": "test.ping"}
 
@@ -155,6 +157,7 @@ class NetapiClientTest(TestCase):
 
         ret = self.netapi.run(low)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_runner_unauthenticated(self):
         low = {"client": "runner", "tgt": "*", "fun": "test.ping"}
 
@@ -198,6 +201,7 @@ class NetapiSSHClientTest(SSHCase):
         cls.post_webserver.stop()
         del cls.post_webserver
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_ssh(self):
         low = {
             "client": "ssh",
@@ -219,12 +223,14 @@ class NetapiSSHClientTest(SSHCase):
         self.assertEqual(ret["localhost"]["id"], "localhost")
         self.assertEqual(ret["localhost"]["fun"], "test.ping")
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_ssh_unauthenticated(self):
         low = {"client": "ssh", "tgt": "localhost", "fun": "test.ping"}
 
         with self.assertRaises(EauthAuthenticationError) as excinfo:
             ret = self.netapi.run(low)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_ssh_unauthenticated_raw_shell_curl(self):
 
         fun = "-o ProxyCommand curl {0}".format(self.post_web_root)
@@ -237,6 +243,7 @@ class NetapiSSHClientTest(SSHCase):
         self.assertEqual(self.post_web_handler.received_requests, [])
         self.assertEqual(ret, None)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_ssh_unauthenticated_raw_shell_touch(self):
 
         badfile = os.path.join(TMP, "badfile.txt")
@@ -250,6 +257,7 @@ class NetapiSSHClientTest(SSHCase):
         self.assertEqual(ret, None)
         self.assertFalse(os.path.exists("badfile.txt"))
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_ssh_authenticated_raw_shell_disabled(self):
 
         badfile = os.path.join(TMP, "badfile.txt")

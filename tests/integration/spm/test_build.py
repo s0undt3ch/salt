@@ -65,6 +65,7 @@ class SPMBuildTest(SPMCase, ModuleCase):
         for sls in files:
             self.assertIn(sls, " ".join(get_files))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_spm_build_exclude(self):
         """
         test spm build while excluding directory

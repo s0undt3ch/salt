@@ -144,6 +144,7 @@ class SaltUtilSyncModuleTest(ModuleCase):
         ret = self.run_function("saltutil.sync_all")
         self.assertEqual(ret, expected_return)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_sync_all_whitelist(self):
         """
         Test syncing all ModuleCase with whitelist
@@ -212,6 +213,7 @@ class SaltUtilSyncModuleTest(ModuleCase):
         )
         self.assertEqual(ret, expected_return)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_sync_all_blacklist_and_whitelist(self):
         """
         Test syncing all ModuleCase with whitelist and blacklist

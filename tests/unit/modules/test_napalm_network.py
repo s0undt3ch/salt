@@ -6,6 +6,7 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import tests.support.napalm as napalm_test_support
 
 # Import Salt Testing Libs
@@ -62,6 +63,7 @@ class NapalmNetworkModuleTestCase(TestCase, LoaderModuleMockMixin):
         ret = napalm_network.traceroute("destination.com")
         assert list(ret["out"].keys())[0] == "success"
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_ping(self):
         ret = napalm_network.ping("destination.com")
         assert list(ret["out"].keys())[0] == "success"
@@ -98,6 +100,7 @@ class NapalmNetworkModuleTestCase(TestCase, LoaderModuleMockMixin):
         ret = napalm_network.load_config(text="new config")
         assert ret["result"]
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_load_config_replace(self):
         ret = napalm_network.load_config(text="new config", replace=True)
         assert ret["result"]

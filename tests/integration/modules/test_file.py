@@ -103,6 +103,7 @@ class FileModuleTest(ModuleCase):
 
     @skipIf(salt.utils.platform.is_windows(), "No security context on Windows")
     @requires_system_grains
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_set_selinux_context(self, grains):
         if not grains.get("selinux", {}).get("enabled", False):
             self.skipTest("selinux not available")
@@ -234,10 +235,12 @@ class FileModuleTest(ModuleCase):
         )
         self.assertEqual(list(ret), ["salt://http/httpd.conf", "filehash"])
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_source_list_for_single_local_file_slash_returns_unchanged(self):
         ret = self.run_function("file.source_list", [self.myfile, "filehash", "base"])
         self.assertEqual(list(ret), [self.myfile, "filehash"])
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_source_list_for_single_local_file_proto_returns_unchanged(self):
         ret = self.run_function(
             "file.source_list", ["file://" + self.myfile, "filehash", "base"]
@@ -278,6 +281,7 @@ class FileModuleTest(ModuleCase):
             content = fp.read()
         self.assertEqual(content, "Hello" + os.linesep + "Goodbye" + os.linesep)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_file_line_duplicate_insert_before(self):
         """
         Test file.line duplicates line.
@@ -308,6 +312,7 @@ class FileModuleTest(ModuleCase):
             content = fp.read()
         self.assertEqual(content, "Hello" + os.linesep + "Goodbye" + os.linesep)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_file_line_duplicate_ensure_before(self):
         """
         Test file.line duplicates line.

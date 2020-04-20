@@ -400,6 +400,7 @@ class WinDaclRegTestCase(TestCase, LoaderModuleMockMixin):
         )
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_check_perms_test_true(self):
         """
         Test the check_perms function

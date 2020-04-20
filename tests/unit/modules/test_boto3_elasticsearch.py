@@ -11,6 +11,8 @@ import random
 import string
 import textwrap
 
+import pytest
+
 # Import Salt libs
 import salt.loader
 import salt.modules.boto3_elasticsearch as boto3_elasticsearch
@@ -403,6 +405,7 @@ class Boto3ElasticsearchTestCase(TestCase, LoaderModuleMockMixin):
                 result.get("error", ""), ERROR_MESSAGE.format(101, "add_tags")
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_remove_tags_positive(self):
         """
         Test that when removing tags is succesful, the .remove_tags method returns {'tagged': True}.
@@ -1093,6 +1096,7 @@ class Boto3ElasticsearchTestCase(TestCase, LoaderModuleMockMixin):
                 ERROR_MESSAGE.format(101, "list_elasticsearch_versions"),
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_purchase_reserved_elasticsearch_instance_offering_positive(self):
         """
         Test that when calling purchase_reserved_elasticsearch_instance_offering and it

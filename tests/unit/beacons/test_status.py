@@ -13,6 +13,8 @@
 # Python libs
 from __future__ import absolute_import
 
+import pytest
+
 # Salt libs
 import salt.config
 import salt.loader
@@ -59,6 +61,7 @@ class StatusBeaconTestCase(TestCase, LoaderModuleMockMixin):
             ret, (False, "Configuration for status beacon must be a list.")
         )
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_list_config(self):
         config = [{"time": ["all"]}]
 

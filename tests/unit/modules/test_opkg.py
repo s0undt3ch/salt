@@ -8,6 +8,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import collections
 import copy
 
+import pytest
 import salt.modules.opkg as opkg
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, patch
@@ -99,6 +100,7 @@ class OpkgTestCase(TestCase, LoaderModuleMockMixin):
         with patch.dict(opkg.__salt__, {"cmd.run_all": mock}):
             self.assertEqual(opkg.file_list("vim"), files)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_owner(self):
         """
         Test - Return the name of the package that owns the file.

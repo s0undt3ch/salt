@@ -11,6 +11,8 @@ import logging
 import os
 import shutil
 
+import pytest
+
 # Import Salt libs
 import salt.utils.files
 from salt import fileclient
@@ -391,6 +393,7 @@ class FileclientCacheTest(
                 log.debug("content = %s", content)
                 self.assertTrue(saltenv in content)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cache_file_with_alternate_cachedir_and_relative_path(self):
         """
         Ensure file is cached to correct location when an alternate cachedir is

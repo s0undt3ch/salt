@@ -8,6 +8,8 @@ import os
 import stat
 from functools import wraps
 
+import pytest
+
 # Import Salt libs
 import salt.config
 import salt.daemons.masterapi as masterapi
@@ -811,6 +813,7 @@ class RemoteFuncsTestCase(TestCase):
             )
         self.assertDictEqual(ret, dict(webserver="2001:db8::1:3"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mine_get_pre_nitrogen_compat(self):
         """
         Asserts that pre-Nitrogen API key ``expr_form`` is still accepted.
@@ -819,6 +822,7 @@ class RemoteFuncsTestCase(TestCase):
         """
         self.test_mine_get(tgt_type_key="expr_form")
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mine_get_dict_str(self, tgt_type_key="tgt_type"):
         """
         Asserts that ``mine_get`` gives the expected results when request
@@ -854,6 +858,7 @@ class RemoteFuncsTestCase(TestCase):
             ),
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mine_get_dict_list(self, tgt_type_key="tgt_type"):
         """
         Asserts that ``mine_get`` gives the expected results when request
@@ -925,6 +930,7 @@ class RemoteFuncsTestCase(TestCase):
             )
         self.assertDictEqual(ret, {"ip_addr": {"webserver": "2001:db8::1:4"}})
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mine_get_acl_rejected(self):
         """
         Asserts that ``mine_get`` gives the expected results when this is rejected

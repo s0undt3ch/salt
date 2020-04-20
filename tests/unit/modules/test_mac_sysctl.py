@@ -6,6 +6,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.mac_sysctl as mac_sysctl
 from salt.exceptions import CommandExecutionError
@@ -32,6 +34,7 @@ class DarwinSysctlTestCase(TestCase, LoaderModuleMockMixin):
         with patch.dict(mac_sysctl.__salt__, {"cmd.run": mock_cmd}):
             self.assertEqual(mac_sysctl.get("kern.ostype"), "foo")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_assign_cmd_failed(self):
         """
         Tests if the assignment was successful or not

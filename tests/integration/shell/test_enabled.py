@@ -87,6 +87,7 @@ class EnabledTest(ModuleCase):
             os.remove(state_file)
 
     @skipIf(salt.utils.platform.is_windows(), "Skip on Windows OS")
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_template_default_disabled(self):
         """
         test shell disabled output for templates (python_shell=False is the default

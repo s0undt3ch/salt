@@ -404,6 +404,7 @@ class CPModuleTest(ModuleCase):
 
     @skipIf(not salt.utils.path.which("nginx"), "nginx not installed")
     @pytest.mark.skip_if_not_root
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_cache_remote_file(self):
         """
         cp.cache_file
@@ -555,6 +556,7 @@ class CPModuleTest(ModuleCase):
         finally:
             os.unlink(tgt)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_push(self):
         log_to_xfer = os.path.join(RUNTIME_VARS.TMP, uuid.uuid4().hex)
         open(log_to_xfer, "w").close()  # pylint: disable=resource-leakage
@@ -576,5 +578,6 @@ class CPModuleTest(ModuleCase):
         finally:
             os.unlink(tgt_cache_file)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_envs(self):
         self.assertEqual(sorted(self.run_function("cp.envs")), sorted(["base", "prod"]))

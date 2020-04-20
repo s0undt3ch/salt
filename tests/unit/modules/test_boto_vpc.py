@@ -15,6 +15,8 @@ import sys
 import pkg_resources
 from pkg_resources import DistributionNotFound
 
+import pytest
+
 # Import Salt libs
 import salt.config
 import salt.loader
@@ -2256,6 +2258,7 @@ class BotoVpcRouteTablesTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
 )
 class BotoVpcPeeringConnectionsTest(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_request_vpc_peering_connection(self):
         """
         Run with 2 vpc ids and returns a message
@@ -2273,6 +2276,7 @@ class BotoVpcPeeringConnectionsTest(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         )
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_raises_error_if_both_vpc_name_and_vpc_id_are_specified(self):
         """
         Must specify only one

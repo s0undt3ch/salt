@@ -459,6 +459,7 @@ class BuildoutOnlineTestCase(Base):
         )
 
     @pytest.mark.requires_network
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_run_buildout(self):
         if salt.modules.virtualenv_mod.virtualenv_ver(self.ppy_st) >= (20, 0, 0):
             self.skipTest(
@@ -474,6 +475,7 @@ class BuildoutOnlineTestCase(Base):
         self.assertTrue("Installing b" in out)
 
     @pytest.mark.requires_network
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_buildout(self):
         if salt.modules.virtualenv_mod.virtualenv_ver(self.ppy_st) >= (20, 0, 0):
             self.skipTest(

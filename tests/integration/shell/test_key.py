@@ -247,6 +247,7 @@ class TestSaltKey(object):
             assert ret.exitcode != 0
             assert "error: The minimum value for keysize is 2048" in ret.stderr
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_keys_generation_keysize_max(self, salt_key_cli):
         with pytest.helpers.temp_directory() as tempdir:
             ret = salt_key_cli.run(

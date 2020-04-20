@@ -10,6 +10,7 @@ import logging
 import os.path
 import socket
 
+import pytest
 import salt.modules.network as network
 
 # Import Salt Libs
@@ -119,6 +120,7 @@ class NetworkTestCase(TestCase, LoaderModuleMockMixin):
                 ):
                     self.assertListEqual(network.traceroute("gentoo.org"), [])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_dig(self):
         """
         Test for Performs a DNS lookup with dig
@@ -233,6 +235,7 @@ class NetworkTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertTrue(network.mod_hostname("hostname"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_connect(self):
         """
         Test for Test connectivity to a host using a particular

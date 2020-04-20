@@ -6,6 +6,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.netscaler as netscaler
 
@@ -884,6 +886,7 @@ class NetscalerTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'server_delete' function tests: 1
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_server_delete(self):
         """
         Tests if it delete a server

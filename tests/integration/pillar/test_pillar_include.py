@@ -75,6 +75,7 @@ def pillar_items(salt_cli, create_pillar_tree):
 
 
 class TestPillarIncludeTest(object):
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_pillar_include(self, pillar_items):
         """
         Test pillar include

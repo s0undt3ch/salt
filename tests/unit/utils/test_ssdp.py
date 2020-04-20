@@ -6,6 +6,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import datetime
 
+import pytest
 import salt.utils.ssdp as ssdp
 import salt.utils.stringutils
 from salt.ext import six
@@ -573,6 +574,7 @@ class SSDPClientTestCase(TestCase, Mocks):
         assert clnt.log.info.called
         assert clnt.log.info.call_args[0][0] == "No master has been discovered."
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_discover_general_error(self):
         """
         Test discover available master on the network (erroneous found)

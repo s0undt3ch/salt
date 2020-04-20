@@ -6,6 +6,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.states.bower as bower
 from salt.exceptions import CommandExecutionError
@@ -215,6 +217,7 @@ class BowerTestCase(TestCase, LoaderModuleMockMixin):
             }
             self.assertEqual(ret, expected)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_installed_new_with_error(self):
         """
         Test if returns False when install packages fails (bower error)

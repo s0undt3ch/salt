@@ -75,6 +75,7 @@ class FirewallTest(ModuleCase):
         self.assertTrue(ret)
         self._pre_firewall_status(pre_run)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_firewall_get_rule(self):
         """
         test firewall.get_rule
@@ -87,6 +88,7 @@ class FirewallTest(ModuleCase):
             self.assertIn(check, ret[rule])
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_firewall_add_delete_rule(self):
         """
         test firewall.add_rule and delete_rule

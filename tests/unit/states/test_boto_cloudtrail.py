@@ -7,6 +7,8 @@ import logging
 import random
 import string
 
+import pytest
+
 # Import Salt libs
 import salt.config
 import salt.loader
@@ -211,6 +213,7 @@ class BotoCloudTrailTestCase(
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_present_with_failure(self):
         self.conn.get_trail_status.side_effect = [not_found_error, status_ret]
         self.conn.create_trail.side_effect = ClientError(error_content, "create_trail")
@@ -241,6 +244,7 @@ class BotoCloudTrailTestCase(
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"]["new"]["trail"], None)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_absent_with_failure(self):
         self.conn.get_trail_status.return_value = status_ret
         self.conn.delete_trail.side_effect = ClientError(error_content, "delete_trail")

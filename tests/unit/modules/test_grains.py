@@ -6,6 +6,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import copy
 import os
 
+import pytest
 import salt.modules.grains as grainsmod
 import salt.utils.dictupdate as dictupdate
 
@@ -515,6 +516,7 @@ class GrainsModuleTestCase(TestCase, LoaderModuleMockMixin):
                 grainsmod.__grains__, {"a": "aval", "b": ["l1", {"l2": "val2"}], "c": 8}
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_set_nested_list_append_dict_key(self):
         with patch.dict(
             grainsmod.__grains__, {"a": "aval", "b": ["l1", {"l2": "val2"}], "c": 8}

@@ -170,6 +170,7 @@ class MacTimezoneModuleTest(ModuleCase):
         )
         self.assertEqual(self.run_function("timezone.get_zonecode"), "WAKT")
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_list_zones(self):
         """
         Test timezone.list_zones

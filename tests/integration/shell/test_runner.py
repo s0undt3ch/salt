@@ -149,6 +149,7 @@ class TestSaltRun(object):
             )
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_salt_run_with_wrong_eauth(self, salt_run_cli):
         """
         test salt-run with wrong eauth parameter

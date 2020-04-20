@@ -519,6 +519,7 @@ class CMDModuleTest(ModuleCase):
         self.assertIn("ABC=456", out)
 
     @skipIf(not salt.utils.platform.is_windows(), "minion is not windows")
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_windows_powershell_script_args(self):
         """
         Ensure that powershell processes inline script in args

@@ -2517,6 +2517,7 @@ class TestFileState(TestCase, LoaderModuleMockMixin):
             self.assertTrue(filestate.mod_run_check_cmd(cmd, filename))
 
     @skipIf(not HAS_DATEUTIL, NO_DATEUTIL_REASON)
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_retention_schedule(self):
         """
         Test to execute the retention_schedule logic.

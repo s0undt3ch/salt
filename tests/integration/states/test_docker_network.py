@@ -298,6 +298,7 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
 
     @requires_system_grains
     @with_network()
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_present_attachable(self, net, grains):
         if grains["os_family"] == "RedHat" and grains.get("osmajorrelease", 0) <= 7:
             self.skipTest("Cannot reliably manage attachable on RHEL <= 7")
@@ -371,6 +372,7 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
     @with_network(subnet="fe3f:2180:26:1::/123")
     @with_network(subnet="10.247.197.96/27")
     @skipIf(not IPV6_ENABLED, "IPv6 not enabled")
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_present_with_custom_ipv6(self, ipv4_net, ipv6_net1, ipv6_net2):
         self.assertSaltTrueReturn(
             self.run_state(

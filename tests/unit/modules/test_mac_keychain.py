@@ -3,6 +3,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.mac_keychain as keychain
 
@@ -28,6 +30,7 @@ class KeychainTestCase(TestCase, LoaderModuleMockMixin):
                 "-k /Library/Keychains/System.keychain"
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_install_cert_extras(self):
         """
             Test installing a certificate into the macOS keychain with extras

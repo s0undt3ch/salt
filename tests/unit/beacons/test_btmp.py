@@ -6,6 +6,8 @@ from __future__ import absolute_import
 import datetime
 import logging
 
+import pytest
+
 # Salt libs
 import salt.beacons.btmp as btmp
 from salt.ext import six
@@ -108,6 +110,7 @@ class BTMPBeaconTestCase(TestCase, LoaderModuleMockMixin):
             ret, (False, "Group configuration for btmp beacon must be a dictionary.")
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_default_invalid_time_range(self):
         config = [{"defaults": {"time_range": {"start": "3pm"}}}]
 

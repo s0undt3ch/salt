@@ -5,6 +5,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.states.npm as npm
 from salt.exceptions import CommandExecutionError
@@ -70,6 +72,7 @@ class NpmTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'removed' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_removed(self):
         """
         Test to verify that the given package is not installed.

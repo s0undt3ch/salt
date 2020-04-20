@@ -13,6 +13,8 @@ import tempfile
 import textwrap
 import time
 
+import pytest
+
 # Import Salt Libs
 import salt.config
 import salt.loader
@@ -1610,6 +1612,7 @@ class TopFileMergingCase(TestCase, LoaderModuleMockMixin):
         ret = self.show_top(top_file_merging_strategy="same", state_top_saltenv="base")
         assert ret == {"base": ["base_base"]}, ret
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_merge_strategy_same_state_top_saltenv_foo(self):
         """
         Test the state_top_saltenv parameter to load states exclusively from
@@ -1620,6 +1623,7 @@ class TopFileMergingCase(TestCase, LoaderModuleMockMixin):
         ret = self.show_top(top_file_merging_strategy="same", state_top_saltenv="foo")
         assert ret == {"foo": ["foo_foo"]}, ret
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_merge_strategy_same_state_top_saltenv_baz(self):
         """
         Test the state_top_saltenv parameter to load states exclusively from

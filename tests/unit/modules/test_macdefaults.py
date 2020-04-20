@@ -3,6 +3,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.macdefaults as macdefaults
 
@@ -54,6 +56,7 @@ class MacDefaultsTestCase(TestCase, LoaderModuleMockMixin):
                 runas=None,
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_read_default(self):
         """
             Test reading a default setting

@@ -336,6 +336,7 @@ class TestJobs(cptc.BaseRestCherryPyTest):
         self.assertEqual(response.status, "200 OK")
 
     @pytest.mark.flaky(max_runs=4)
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_all_jobs(self):
         """
         test query to /jobs returns job data

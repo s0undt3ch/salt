@@ -8,6 +8,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import time
 
+import pytest
+
 # Import Salt libraries
 import salt.master
 import salt.utils.platform
@@ -790,6 +792,7 @@ class AuthACLTestCase(ModuleCase):
             self.auth_check_mock.call_args[0][0], [{"alpha_minion": ["test.ping"]}]
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_acl_simple_deny(self):
         with patch(
             "salt.auth.LoadAuth.get_auth_list",

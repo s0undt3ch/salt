@@ -138,6 +138,7 @@ class ShadowModuleTest(ModuleCase):
         # User does not exist (set_inactdays return None is user does not exist)
         self.assertFalse(self.run_function("shadow.lock_password", [self._no_user]))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_unlock_password(self):
         """
         Test shadow.lock_password
@@ -152,6 +153,7 @@ class ShadowModuleTest(ModuleCase):
         # User does not exist (set_inactdays return None is user does not exist)
         self.assertFalse(self.run_function("shadow.unlock_password", [self._no_user]))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_set_warndays(self):
         """
         Test shadow.set_warndays
@@ -182,6 +184,7 @@ class ShadowModuleTest(ModuleCase):
             self.run_function("shadow.set_date", [self._no_user, "2016-08-19"])
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_set_expire(self):
         """
         Test shadow.set_exipre
@@ -199,6 +202,7 @@ class ShadowModuleTest(ModuleCase):
             self.run_function("shadow.set_expire", [self._no_user, "2016-08-25"])
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_set_del_root_password(self):
         """
         Test set/del password for root

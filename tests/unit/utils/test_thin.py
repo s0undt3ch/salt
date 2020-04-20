@@ -423,6 +423,7 @@ class SSHThinTestCase(TestCase):
         type(str("concurrent"), (), {"__file__": "/site-packages/concurrent"}),
     )
     @patch("salt.utils.thin.log", MagicMock())
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_tops_extra_mods(self):
         """
         Test thin.get_tops to get extra-modules alongside the top directories, based on the interpreter.
@@ -623,6 +624,7 @@ class SSHThinTestCase(TestCase):
     @patch("salt.utils.thin.shutil", MagicMock())
     @patch("salt.utils.path.which", MagicMock(return_value=""))
     @patch("salt.utils.thin._get_thintar_prefix", MagicMock())
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_gen_thin_python_exist_or_not(self):
         """
         Test thin.gen_thin function if the opposite python
@@ -741,6 +743,7 @@ class SSHThinTestCase(TestCase):
     @patch("salt.utils.thin._six.PY2", False)
     @patch("salt.utils.thin.sys.version_info", _version_info(None, 3, 6))
     @patch("salt.utils.path.which", MagicMock(return_value="/usr/bin/python"))
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_gen_thin_control_files_written_py3(self):
         """
         Test thin.gen_thin function if control files are written (version, salt-call etc).

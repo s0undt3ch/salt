@@ -38,6 +38,7 @@ class StatusModuleTest(ModuleCase):
         self.assertTrue(isinstance(ret, float))
 
     @skipIf(not salt.utils.platform.is_windows(), "windows only test")
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_status_saltmem(self):
         """
         status.saltmem
@@ -66,6 +67,7 @@ class StatusModuleTest(ModuleCase):
         for x, y in six.iteritems(ret):
             self.assertIn("cmd", y)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_status_uptime(self):
         """
         status.uptime

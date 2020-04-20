@@ -102,6 +102,7 @@ class TestAuthPAM(cptc.BaseRestCherryPyTest, ModuleCase):
         )
         self.assertEqual(response.status, "200 OK")
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_good_pwd_pam_login_service(self):
         """
         Test login while specifying login service with good passwd

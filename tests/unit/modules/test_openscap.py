@@ -5,6 +5,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from subprocess import PIPE
 
+import pytest
+
 # Import salt libs
 import salt.modules.openscap as openscap
 
@@ -186,6 +188,7 @@ class OpenscapTestCase(TestCase):
                 stdout=PIPE,
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_openscap_xccdf_eval_evaluation_error(self):
         with patch(
             "salt.modules.openscap.Popen",

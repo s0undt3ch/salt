@@ -10,6 +10,7 @@ import tempfile
 
 # Import third party libs
 import jinja2.exceptions
+import pytest
 
 # Import Salt Libs
 import salt.modules.debian_ip as debian_ip
@@ -604,6 +605,7 @@ class DebianIpTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'apply_network_settings' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_apply_network_settings(self):
         """
         Test if it apply global network configuration.

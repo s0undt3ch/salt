@@ -65,6 +65,7 @@ class VirtualenvTest(ModuleCase, SaltReturnAssertsMixin):
             )
 
     @skipIf(salt.utils.platform.is_darwin(), "Test is flaky on macosx")
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_issue_2594_non_invalidated_cache(self):
         # Testing virtualenv directory
         venv_path = os.path.join(RUNTIME_VARS.TMP, "issue-2594-ve")

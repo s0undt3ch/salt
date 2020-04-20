@@ -9,6 +9,8 @@ import errno
 import logging
 import textwrap
 
+import pytest
+
 # Import Salt libs
 import salt.utils.data
 import salt.utils.files
@@ -387,6 +389,7 @@ class MockOpenTestCase(TestCase, MockOpenMixin):
                     raise
             del fh
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_read(self):
         """
         Test reading the entire file

@@ -6,6 +6,7 @@
 # Import Python Libs
 from __future__ import absolute_import, unicode_literals
 
+import pytest
 import salt.modules.zabbix as zabbix
 from salt.exceptions import SaltException
 
@@ -232,6 +233,7 @@ class ZabbixTestCase(TestCase, LoaderModuleMockMixin):
             with patch.object(zabbix, "_login", return_value=CONN_ARGS):
                 self.assertEqual(zabbix.apiinfo_version(**CONN_ARGS), module_return)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_user_create(self):
         """
         query_submitted = {"params": {"passwd": "password007", "alias": "james",

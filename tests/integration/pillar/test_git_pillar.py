@@ -2716,6 +2716,7 @@ class TestPygit2AuthenticatedHTTP(GitPillarHTTPTestBase):
     user = USERNAME
     password = PASSWORD
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_single_source(self):
         """
         Test using a single ext_pillar repo
@@ -3134,6 +3135,7 @@ class TestPygit2AuthenticatedHTTP(GitPillarHTTPTestBase):
         )
         self.assertEqual(ret, expected)
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_root_parameter(self):
         """
         Test root parameter
@@ -3298,6 +3300,7 @@ class TestPygit2AuthenticatedHTTP(GitPillarHTTPTestBase):
             },
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_root_and_mountpoint_parameters(self):
         """
         Test root and mountpoint parameters
@@ -3362,6 +3365,7 @@ class TestPygit2AuthenticatedHTTP(GitPillarHTTPTestBase):
             },
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_all_saltenvs_base(self):
         """
         Test all_saltenvs parameter with base pillarenv.
@@ -3398,6 +3402,7 @@ class TestPygit2AuthenticatedHTTP(GitPillarHTTPTestBase):
             },
         )
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_fallback(self):
         """
         Test fallback parameter.

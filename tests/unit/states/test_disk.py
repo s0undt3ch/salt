@@ -7,6 +7,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from os import path
 
+import pytest
+
 # Import Salt Libs
 import salt.states.disk as disk
 
@@ -392,6 +394,7 @@ class DiskTestCase(TestCase, LoaderModuleMockMixin):
             mock_ret,
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mount_free_relative_acceptable(self):
         mock_fs = "/"
         mock_ret = {

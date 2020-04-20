@@ -5,6 +5,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.debian_service as debian_service
 
@@ -115,6 +117,7 @@ class DebianServicesTestCase(TestCase, LoaderModuleMockMixin):
             with patch.dict(debian_service.__salt__, {"cmd.retcode": mock}):
                 self.assertFalse(debian_service.force_reload("name"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_status(self):
         """
         Test for Return the status for a service

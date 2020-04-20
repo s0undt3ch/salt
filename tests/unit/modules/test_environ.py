@@ -7,6 +7,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.environ as environ
 
@@ -67,6 +69,7 @@ class EnvironTestCase(TestCase, LoaderModuleMockMixin):
                 "HKLM", key, "key", "Test"
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_setenv(self):
         """
         Set multiple salt process environment variables from a dict.

@@ -203,6 +203,7 @@ class TestRetcode(object):
         assert "Usage" in ret.stderr
         assert "no such option: --unknown-argument" in ret.stderr
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_exit_status_correct_usage(self, salt_cli):
         """
         Ensure correct exit status when salt CLI starts correctly.

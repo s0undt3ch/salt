@@ -102,6 +102,7 @@ class SchedulerEvalTest(SchedulerTestsBase):
         ret = self.schedule.job_status(job_name)
         self.assertEqual(ret["_last_run"], run_time2)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_eval_whens(self):
         """
         verify that scheduled job runs
@@ -815,6 +816,7 @@ class SchedulerEvalTest(SchedulerTestsBase):
         self.assertEqual(ret["_last_run"], run_time)
         self.assertEqual(ret["_next_fire_time"], next_run_time)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_eval_when_splay(self):
         """
         verify that scheduled job runs

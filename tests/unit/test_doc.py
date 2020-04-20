@@ -12,6 +12,8 @@ import logging
 import os
 import re
 
+import pytest
+
 # Import Salt libs
 import salt.modules.cmdmod
 import salt.utils.files
@@ -29,6 +31,7 @@ class DocTestCase(TestCase):
     Unit test case for testing doc files and strings.
     """
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_check_for_doc_inline_markup(self):
         """
         We should not be using the ``:doc:`` inline markup option when
@@ -529,6 +532,7 @@ class DocTestCase(TestCase):
         doc_dir = ["doc", "ref", "serializers", "all"]
         self._check_doc_files(skip_module_files, module_dir, skip_doc_files, doc_dir)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_states_doc_files(self):
         """
         Ensure states have associated documentation

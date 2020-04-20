@@ -6,6 +6,7 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import salt.states.libcloud_dns as libcloud_dns
 from salt.modules.libcloud_dns import _simple_record, _simple_zone
 
@@ -71,6 +72,7 @@ class LibcloudDnsModuleTestCase(TestCase, LoaderModuleMockMixin):
             }
         }
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_present_record_exists(self):
         """
         Try and create a record that already exists

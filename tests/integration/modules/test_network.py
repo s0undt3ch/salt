@@ -52,6 +52,7 @@ class NetworkTest(ModuleCase):
             self.assertIn(out, exp_out)
 
     @skipIf(not salt.utils.platform.is_windows(), "windows only test")
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_network_nslookup(self):
         """
         network.nslookup

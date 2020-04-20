@@ -7,6 +7,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import textwrap
 
+import pytest
+
 # Import Salt Libs
 import salt.config
 import salt.loader
@@ -41,6 +43,7 @@ class BotoSqsTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'present' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_present(self):
         """
         Test to ensure the SQS queue exists.

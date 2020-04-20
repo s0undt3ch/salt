@@ -11,6 +11,8 @@ Tests for salt.states.zfs
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Utils
 import salt.loader
 import salt.states.zfs as zfs
@@ -543,6 +545,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.filesystem_present("myzpool/filesystem"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_volume_present(self):
         """
         Test if volume is present (existing volume)
@@ -752,6 +755,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(ret, zfs.snapshot_present("myzpool/filesystem@snap"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_snapshot_present_new(self):
         """
         Test if snapshot is present (new)
@@ -770,6 +774,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.snapshot_present("myzpool/filesystem@snap"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_snapshot_present_fail(self):
         """
         Test if snapshot is present (using non existing snapshot)
@@ -881,6 +886,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(ret, zfs.promoted("myzpool/filesystem"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_scheduled_snapshot_fail(self):
         """
         Test scheduled_snapshot of unknown dataset

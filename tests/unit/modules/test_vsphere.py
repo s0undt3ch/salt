@@ -9,6 +9,7 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
 import salt.modules.vsphere as vsphere
 import salt.utils.args
 import salt.utils.vmware
@@ -2440,6 +2441,7 @@ class _GetProxyTargetTestCase(TestCase, LoaderModuleMockMixin):
             patcher.start()
             self.addCleanup(patcher.stop)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_supported_proxies(self):
         supported_proxies = ["esxcluster", "esxdatacenter"]
         for proxy_type in supported_proxies:

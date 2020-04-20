@@ -6,6 +6,8 @@
 # Import Python libs
 from __future__ import absolute_import
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.mac_service as mac_service
 
@@ -63,6 +65,7 @@ class MacServiceTestCase(TestCase, LoaderModuleMockMixin):
         with patch.object(mac_service, "launchctl", MagicMock(return_value=cmd)):
             self.assertTrue(mac_service.disabled(srv_name))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_service_keep_alive_pathstate_file_rm(self):
         """
         test _always_running_service when keep_alive

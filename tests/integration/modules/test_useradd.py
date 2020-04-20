@@ -209,6 +209,7 @@ class UseraddModuleTestWindows(ModuleCase):
         # delete new user
         self.run_function("user.delete", [name, True, True])
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_user_setpassword(self):
         """
         Test setting a password

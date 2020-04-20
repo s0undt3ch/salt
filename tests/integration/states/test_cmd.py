@@ -12,6 +12,8 @@ import tempfile
 import textwrap
 import time
 
+import pytest
+
 # Import Salt libs
 import salt.utils.files
 import salt.utils.platform
@@ -136,6 +138,7 @@ class CMDRunRedirectTest(ModuleCase, SaltReturnAssertsMixin):
         ret = self.run_function("state.sls", [self.state_name])
         self.assertTrue(ret[state_key]["result"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_run_unless_multiple_cmds(self):
         """
         test cmd.run using multiple unless options where the first cmd in the
@@ -203,6 +206,7 @@ class CMDRunRedirectTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(ret[state_key]["result"])
         self.assertEqual(len(ret[state_key]["changes"]), 4)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_run_redirect(self):
         """
         test cmd.run with shell redirect
@@ -243,6 +247,7 @@ class CMDRunWatchTest(ModuleCase, SaltReturnAssertsMixin):
         os.remove(self.state_file)
         super(CMDRunWatchTest, self).tearDown()
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_run_watch(self):
         """
         test cmd.run watch

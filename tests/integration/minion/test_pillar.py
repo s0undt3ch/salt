@@ -593,6 +593,7 @@ class RefreshPillarTest(ModuleCase):
             )
         self.addCleanup(self.cleanup_pillars, top_path, pillar_path)
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_pillar_refresh_pillar_raw(self):
         """
         Validate the minion's pillar.raw call behavior for new pillars
@@ -689,6 +690,7 @@ class RefreshPillarTest(ModuleCase):
         assert key in val
         assert val[key] is True
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_pillar_refresh_pillar_ping(self):
         """
         Validate the minion's test.ping does not update pillars

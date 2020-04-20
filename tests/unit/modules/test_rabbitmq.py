@@ -6,6 +6,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.rabbitmq as rabbitmq
 from salt.exceptions import CommandExecutionError
@@ -722,6 +724,7 @@ class RabbitmqTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'enable_plugin' function tests: 1
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_enable_plugin(self):
         """
         Test if it enable a RabbitMQ plugin via the rabbitmq-plugins command.

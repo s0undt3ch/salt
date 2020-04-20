@@ -14,6 +14,8 @@ import shutil
 import tempfile
 import time
 
+import pytest
+
 # Import salt libs
 import salt.config
 import salt.loader
@@ -170,6 +172,7 @@ class ContextCacheTest(TestCase):
 
 
 class CacheDiskTestCase(TestCase):
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_everything(self):
         """
         Make sure you can instantiate, add, update, remove, expire

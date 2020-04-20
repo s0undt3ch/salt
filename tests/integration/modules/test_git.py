@@ -862,6 +862,7 @@ class GitModuleTest(ModuleCase):
     @skipIf(
         not _worktrees_supported(), "Git 2.5 or newer required for worktree support"
     )
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_worktree_add_rm(self):
         """
         This tests git.worktree_add, git.is_worktree, git.worktree_rm, and

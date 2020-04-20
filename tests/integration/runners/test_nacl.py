@@ -98,6 +98,7 @@ class NaclTest(ShellCase):
         ret = self.run_run_plus("nacl.sealedbox_decrypt", data=encrypted_data, sk=sk,)
         self.assertEqual(unencrypted_data, ret["return"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_secretbox_enc_dec(self):
         """
         Generate keys, encrypt, then decrypt.
@@ -119,6 +120,7 @@ class NaclTest(ShellCase):
         ret = self.run_run_plus("nacl.secretbox_decrypt", data=encrypted_data, sk=sk,)
         self.assertEqual(unencrypted_data, ret["return"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_enc_dec_no_pk_no_sk(self):
         """
         Store, list, fetch, then flush data

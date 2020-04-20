@@ -6,6 +6,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.monit as monit
 
@@ -30,6 +32,7 @@ class MonitTestCase(TestCase, LoaderModuleMockMixin):
         with patch.dict(monit.__salt__, {"cmd.retcode": MagicMock(return_value=False)}):
             self.assertTrue(monit.start("name"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_stop(self):
         """
         Test for Stops service via monit
@@ -51,6 +54,7 @@ class MonitTestCase(TestCase, LoaderModuleMockMixin):
         with patch.dict(monit.__salt__, {"cmd.retcode": MagicMock(return_value=False)}):
             self.assertTrue(monit.unmonitor("name"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_monitor(self):
         """
         Test for monitor service via monit

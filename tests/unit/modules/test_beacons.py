@@ -8,6 +8,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.beacons as beacons
 from salt.utils.event import SaltEvent
@@ -114,6 +116,7 @@ class BeaconsTestCase(TestCase, LoaderModuleMockMixin):
                         {"comment": comm1, "result": True},
                     )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_save(self):
         """
         Test saving beacons.
@@ -238,6 +241,7 @@ class BeaconsTestCase(TestCase, LoaderModuleMockMixin):
                         {"comment": comm1, "result": True},
                     )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_enable_beacon_module(self):
         """
         Test enabling beacons
@@ -265,6 +269,7 @@ class BeaconsTestCase(TestCase, LoaderModuleMockMixin):
                         beacons.enable(), {"comment": comm1, "result": True}
                     )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_delete_beacon_module(self):
         """
         Test deleting a beacon.

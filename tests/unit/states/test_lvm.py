@@ -5,6 +5,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.states.lvm as lvm
 
@@ -88,6 +90,7 @@ class LvmTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'vg_absent' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_vg_absent(self):
         """
         Test to remove an LVM volume group
@@ -109,6 +112,7 @@ class LvmTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'lv_present' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_lv_present(self):
         """
         Test to create a new logical volume

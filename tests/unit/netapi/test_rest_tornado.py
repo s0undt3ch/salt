@@ -8,6 +8,8 @@ import hashlib
 import os
 import shutil
 
+import pytest
+
 # Import Salt libs
 import salt.auth
 import salt.utils.event
@@ -1003,6 +1005,7 @@ class TestEventListener(AsyncTestCase):
             # check that we subscribed the event we wanted
             self.assertEqual(len(event_listener.timeout_map), 0)
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_timeout(self):
         """
         Make sure timeouts work correctly
@@ -1021,6 +1024,7 @@ class TestEventListener(AsyncTestCase):
             with self.assertRaises(saltnado.TimeoutException):
                 event_future.result()
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_clean_by_request(self):
         """
         Make sure the method clean_by_request clean up every related data in EventListener

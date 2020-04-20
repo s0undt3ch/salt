@@ -207,6 +207,7 @@ class SSHModuleTest(ModuleCase):
         ret = self.run_function("ssh.check_known_host", arg, **kwargs)
         self.assertEqual(ret, "add")
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_set_known_host(self):
         """
         ssh.set_known_host

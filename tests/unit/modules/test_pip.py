@@ -6,6 +6,7 @@ from __future__ import absolute_import
 import os
 import sys
 
+import pytest
 import salt.modules.pip as pip
 
 # Import salt libs
@@ -506,6 +507,7 @@ class PipTestCase(TestCase, LoaderModuleMockMixin):
                 expected, saltenv="base", runas=None, use_vt=False, python_shell=False,
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_install_no_download_argument_in_resulting_command(self):
         pkg = "pep8"
         mock = MagicMock(return_value={"retcode": 0, "stdout": ""})
@@ -711,6 +713,7 @@ class PipTestCase(TestCase, LoaderModuleMockMixin):
                 expected, saltenv="base", runas=None, use_vt=False, python_shell=False,
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_install_ignore_installed_argument_in_resulting_command(self):
         pkg = "pep8"
         mock = MagicMock(return_value={"retcode": 0, "stdout": ""})

@@ -7,6 +7,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.solr as solr
 
@@ -349,6 +351,7 @@ class SolrTestCase(TestCase, LoaderModuleMockMixin):
             ("signal is an invalid signal. Try: one of: start," " stop, or restart"),
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_reload_core(self):
         """
         Test to load a new core from the same configuration as

@@ -6,6 +6,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.pw_group as pw_group
 import salt.utils.platform
@@ -59,6 +61,7 @@ class PwGroupTestCase(TestCase, LoaderModuleMockMixin):
             self.assertDictEqual(pw_group.info("name"), {})
 
     @skipIf(salt.utils.platform.is_windows(), "grp not available on Windows")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_getent(self):
         """
         Tests for return info on all groups

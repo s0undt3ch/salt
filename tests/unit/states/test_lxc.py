@@ -5,6 +5,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.states.lxc as lxc
 import salt.utils.versions
@@ -113,6 +115,7 @@ class LxcTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'running' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_running(self):
         """
         Test to ensure that a container is running.

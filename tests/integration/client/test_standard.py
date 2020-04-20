@@ -140,6 +140,7 @@ class StdTest(ModuleCase):
             "Minion did not return. [No response]"
         ), ret["ghostminion"]
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_missing_minion_nodegroup(self):
         """
         test cmd with missing minion in nodegroup

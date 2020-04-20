@@ -12,6 +12,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import sys
 
+import pytest
+
 # Import salt libs
 import salt.modules.virtualenv_mod as virtualenv_mod
 from salt.exceptions import CommandExecutionError
@@ -322,6 +324,7 @@ class VirtualenvTestCase(TestCase, LoaderModuleMockMixin):
                 ["virtualenv", "--clear", "/tmp/foo"], runas=None, python_shell=False
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_upgrade_argument(self):
         # We test for pyvenv only because with virtualenv this is un
         # unsupported option.

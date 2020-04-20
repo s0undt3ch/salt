@@ -248,6 +248,7 @@ class ArchiveTest(ModuleCase, SaltReturnAssertsMixin):
 
         self._check_extracted(self.untar_file)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_local_archive_extracted_with_source_hash(self):
         """
         test archive.extracted with local file and valid hash
@@ -307,6 +308,7 @@ class ArchiveTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertSaltTrueReturn(ret)
         self._check_extracted(os.path.join(ARCHIVE_DIR, self.untar_file))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_local_archive_extracted_with_skip_files_list_verify(self):
         """
         test archive.extracted with local file and skip_files_list_verify set to True

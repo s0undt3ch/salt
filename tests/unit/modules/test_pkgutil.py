@@ -6,6 +6,8 @@
 # Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.pkgutil as pkgutil
 import salt.utils.pkg
@@ -243,6 +245,7 @@ class PkgutilTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'purge' function tests: 1
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_purge(self):
         """
         Test if it package purges are not supported,

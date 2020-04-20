@@ -240,6 +240,7 @@ class VaultTestCaseCurrent(ModuleCase, ShellCase):
         self.assertEqual(get_output, "bar")
 
     @pytest.mark.flaky(max_runs=4)
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_sdb_runner_kv2(self):
         set_output = self.run_run(
             "sdb.set sdb://sdbvault/secret/test/test_sdb_runner/foo bar"
@@ -251,6 +252,7 @@ class VaultTestCaseCurrent(ModuleCase, ShellCase):
         self.assertEqual(get_output, ["bar"])
 
     @pytest.mark.flaky(max_runs=4)
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_config_kv2(self):
         set_output = self.run_function(
             "sdb.set", uri="sdb://sdbvault/secret/test/test_pillar_sdb/foo", value="bar"

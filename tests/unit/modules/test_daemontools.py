@@ -8,6 +8,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.daemontools as daemontools
 from salt.exceptions import CommandExecutionError
@@ -60,6 +62,7 @@ class DaemontoolsTestCase(TestCase, LoaderModuleMockMixin):
             with patch.dict(daemontools.__salt__, {"cmd.retcode": mock}):
                 self.assertTrue(daemontools.term("name"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_reload_(self):
         """
         Test for Wrapper for term()

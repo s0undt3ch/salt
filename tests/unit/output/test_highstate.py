@@ -6,6 +6,7 @@ unittests for highstate outputter
 # Import Python Libs
 from __future__ import absolute_import
 
+import pytest
 import salt.output.highstate as highstate
 
 # Import Salt Libs
@@ -110,6 +111,7 @@ class JsonTestCase(TestCase, LoaderModuleMockMixin):
         self.assertIn("Total states run:     1", ret)
         self.assertIn("                  file2", ret)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_output_comment_is_not_unicode(self):
         entry = None
         for key in (

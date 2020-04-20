@@ -24,6 +24,7 @@ MAX_NPM_VERSION = "5.0.0"
 class NpmStateTest(ModuleCase, SaltReturnAssertsMixin):
     @pytest.mark.requires_network
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_npm_installed_removed(self):
         """
         Basic test to determine if NPM module was successfully installed and
@@ -71,6 +72,7 @@ class NpmStateTest(ModuleCase, SaltReturnAssertsMixin):
 
     @pytest.mark.requires_network
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_npm_installed_pkgs(self):
         """
         Basic test to determine if NPM module successfully installs multiple
@@ -85,6 +87,7 @@ class NpmStateTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertSaltTrueReturn(ret)
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_npm_cache_clean(self):
         """
         Basic test to determine if NPM successfully cleans its cached packages.

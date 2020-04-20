@@ -187,6 +187,7 @@ class FileserverTest(ShellCase):
         self.assertIsInstance(ret["return"], dict)
         self.assertTrue("dest_sym" in ret["return"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_update(self):
         """
         fileserver.update

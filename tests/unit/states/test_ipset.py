@@ -5,6 +5,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.states.ipset as ipset
 
@@ -347,6 +349,7 @@ class IpsetAbsentTestCase(TestCase, LoaderModuleMockMixin):
         }
         self._runner(ret, test=True, check=True)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_del_fails(self):
         ret = {
             "name": self.fake_name,

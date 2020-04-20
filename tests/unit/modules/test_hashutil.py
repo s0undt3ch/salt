@@ -5,6 +5,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+import pytest
+
 # Import Salt libs
 import salt.config
 import salt.loader
@@ -50,20 +52,24 @@ class HashutilTestCase(ModuleCase):
         ret = self.hashutil["hashutil.sha256_digest"](self.the_string)
         self.assertEqual(ret, self.the_string_sha256)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_sha512_digest(self):
         ret = self.hashutil["hashutil.sha512_digest"](self.the_string)
         self.assertEqual(ret, self.the_string_sha512)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_hmac_signature(self):
         ret = self.hashutil["hashutil.hmac_signature"](
             self.the_string, "shared secret", self.the_string_hmac
         )
         self.assertTrue(ret)
 
+    @pytest.mark.slow_test(seconds=0.1)  # Test takes >0.01 and <=0.1 seconds
     def test_hmac_compute(self):
         ret = self.hashutil["hashutil.hmac_compute"](self.the_string, "shared secret")
         self.assertEqual(ret, self.the_string_hmac_compute)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_github_signature(self):
         ret = self.hashutil["hashutil.github_signature"](
             self.the_string, "shared secret", self.the_string_github

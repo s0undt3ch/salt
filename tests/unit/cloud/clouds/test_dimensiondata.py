@@ -9,6 +9,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 from salt.cloud.clouds import dimensiondata
 from salt.exceptions import SaltCloudSystemExit
@@ -156,6 +158,7 @@ class DimensionDataTestCase(ExtendedTestCase, LoaderModuleMockMixin):
         p = dimensiondata.get_configured_provider()
         self.assertNotEqual(p, None)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_query_node_data_filter_preferred_ip_addresses(self):
         """
         Test if query node data is filtering out unpreferred IP addresses.

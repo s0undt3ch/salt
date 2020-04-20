@@ -6,6 +6,8 @@
 # Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.aliases as aliases
 from salt.exceptions import SaltInvocationError
@@ -115,6 +117,7 @@ class AliasesTestCase(TestCase, LoaderModuleMockMixin):
         """
         self.assertRaises(SaltInvocationError, aliases.has_target, "foo", "")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_has_target_mult(self):
         """
         Tests return of multiple targets to one alias

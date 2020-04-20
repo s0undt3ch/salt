@@ -13,6 +13,7 @@ from __future__ import absolute_import
 import shutil
 import tempfile
 
+import pytest
 import salt.exceptions
 
 # Import salt libs
@@ -590,6 +591,7 @@ class PillarTestCase(TestCase):
                 pillar.render_pillar({"base": ["foo.sls"]}), ({"foo": "bar"}, [])
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_topfile_order(self):
         opts = {
             "optimization_order": [0, 1, 2],
@@ -739,6 +741,7 @@ generic:
         }
 
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_include(self, tempdir):
         opts = {
             "optimization_order": [0, 1, 2],

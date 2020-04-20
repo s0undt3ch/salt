@@ -134,6 +134,7 @@ class MinionBlackoutTestCase(ModuleCase):
         ret = self.run_function("test.ping")
         self.assertEqual(ret, True)
 
+    @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
     def test_blackout_whitelist(self):
         """
         Test that minion blackout whitelist works
@@ -156,6 +157,7 @@ class MinionBlackoutTestCase(ModuleCase):
         self.assertTrue(isinstance(fib_ret, list))
         self.assertEqual(fib_ret[0], 13)
 
+    @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
     def test_blackout_nonwhitelist(self):
         """
         Test that minion refuses to run non-whitelisted functions during

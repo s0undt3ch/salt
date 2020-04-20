@@ -14,6 +14,7 @@ import re
 import shutil
 import tempfile
 
+import pytest
 import salt.config
 import salt.modules.config as config
 import salt.modules.virt as virt
@@ -1271,6 +1272,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
                 )
                 self.assertEqual(mock_chmod.call_args[0][0], expected_disk_path)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_update(self):
         """
         Test virt.update()
@@ -2032,6 +2034,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
     @patch("salt.modules.virt.stop", return_value=True)
     @patch("salt.modules.virt.undefine")
     @patch("os.remove")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_purge_removable(self, mock_remove, mock_undefine, mock_stop):
         """
         Test virt.purge(removables=True)
@@ -3433,6 +3436,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         self.assertEqual("5900", graphics["port"])
         self.assertEqual("0.0.0.0", graphics["listen"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_pool_update(self):
         """
         Test the pool_update function
@@ -3649,6 +3653,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         self.mock_conn.storagePoolDefineXML.assert_called_once_with(expected_xml)
         mock_secret.setValue.assert_called_once_with(b"secret")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_volume_infos(self):
         """
         Test virt.volume_infos
@@ -3960,6 +3965,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
                 },
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_volume_delete(self):
         """
         Test virt.volume_delete
@@ -4062,6 +4068,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         )
 
     @patch("salt.modules.virt.get_hypervisor", return_value="kvm")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_pool_capabilities_computed(self, mock_get_hypervisor):
         """
         Test virt.pool_capabilities where libvirt doesn't have the pool-capabilities feature

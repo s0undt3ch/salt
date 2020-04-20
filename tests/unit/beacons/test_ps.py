@@ -3,6 +3,8 @@
 # Python libs
 from __future__ import absolute_import
 
+import pytest
+
 # Salt libs
 import salt.beacons.ps as ps
 from tests.support.mixins import LoaderModuleMockMixin
@@ -64,6 +66,7 @@ class PSBeaconTestCase(TestCase, LoaderModuleMockMixin):
             ret = ps.beacon(config)
             self.assertEqual(ret, [{"salt-master": "Running"}])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_ps_not_running(self):
         with patch(
             "salt.utils.psutil_compat.process_iter", **PATCH_OPTS

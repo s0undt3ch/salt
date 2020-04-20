@@ -177,6 +177,7 @@ class ScheduleTestCase(SchedulerTestsBase):
 
     # modify_job tests
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_modify_job(self):
         """
         Tests modifying a job in the scheduler
@@ -380,6 +381,7 @@ class ScheduleTestCase(SchedulerTestsBase):
             > self.schedule.opts["schedule"]["testjob"]["_next_fire_time"]
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_handle_func_schedule_minion_blackout(self):
         """
         Tests eval if the schedule from pillar is not a dictionary

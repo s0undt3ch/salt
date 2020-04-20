@@ -138,6 +138,7 @@ class GemModuleTest(ModuleCase):
         self.run_function("gem.uninstall", [self.OLD_GEM])
         self.assertFalse(self.run_function("gem.list", [self.OLD_GEM]))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_update_system(self):
         """
         gem.update_system

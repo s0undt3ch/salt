@@ -6,6 +6,8 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.ipset as ipset
 
@@ -228,6 +230,7 @@ comment support",
                 self.assertTrue(ipset.check("set", "192.168.0.4-192.168.0.5"))
                 self.assertFalse(ipset.check("set", "192.168.0.4-192.168.0.5"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_test(self):
         """
         Test for Test if an entry is in the specified set.

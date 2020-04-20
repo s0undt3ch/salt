@@ -10,6 +10,7 @@ import os
 import shutil
 import tempfile
 
+import pytest
 import salt.pillar.file_tree as file_tree
 
 # Import Salt Libs
@@ -140,6 +141,7 @@ class FileTreePillarTestCase(TestCase, LoaderModuleMockMixin):
                 mypillar = file_tree.ext_pillar(MINION_ID, None, "..")
                 self.assertEqual(PARENT_PILLAR_CONTENT, mypillar)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_no_pillarenv(self):
         "confirm that file_tree yells when pillarenv is missing for a relative path"
         with patch(

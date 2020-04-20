@@ -11,6 +11,7 @@ import textwrap
 import uuid
 
 import jinja2
+import pytest
 
 # Import Salt libs
 import salt.config
@@ -227,7 +228,7 @@ class StateTests(TestCase):
 
     def test_salt_data(self):
         File.managed(
-            "/usr/local/bin/pydmesg", require=File("/usr/local/bin"), **pydmesg_kwargs
+            "/usr/local/bin/pydmesg", require=File("/usr/l180l/bin"), **pydmesg_kwargs
         )
 
         self.assertEqual(Registry.states["/usr/local/bin/pydmesg"], pydmesg_expected)
@@ -462,6 +463,7 @@ class RendererTests(RendererMixin, StateTests, MapBuilder):
         )
 
 
+@pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
 class MapTests(RendererMixin, TestCase, MapBuilder):
     maxDiff = None
 
@@ -551,6 +553,7 @@ class MapTests(RendererMixin, TestCase, MapBuilder):
         ret = self.samba_with_grains(template, self.ubuntu_grains)
         self.assert_not_equal(ret, *self.ubuntu_attrs)
 
+    # @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
     def test_map_with_priority(self):
         """
         With declarative ordering, the debian service name would override the

@@ -49,6 +49,7 @@ class NetworkTest(ModuleCase, SaltReturnAssertsMixin):
             ret[state_key]["comment"], "Interface dummy0 routes are set to be added."
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_system(self):
         """
         network.system

@@ -9,6 +9,8 @@ import os
 import random
 import string
 
+import pytest
+
 # Import Salt libs
 import salt.config
 import salt.loader
@@ -1949,6 +1951,7 @@ class BotoApiGatewayUsagePlanAssociationTestCase(
             self.assertIn("changes", result)
             self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_usage_plan_association_present_success(self, *args):
         """
         Tests successful case for adding usage plan associations to a given api stage
@@ -1989,6 +1992,7 @@ class BotoApiGatewayUsagePlanAssociationTestCase(
                 },
             )
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_usage_plan_association_present_if_value_error_is_thrown(self, *args):
         """
         Tests correct error processing for the case when IOError is raised while trying to set usage plan associations
@@ -2012,6 +2016,7 @@ class BotoApiGatewayUsagePlanAssociationTestCase(
             self.assertIn("changes", result)
             self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_usage_plan_association_present_if_io_error_is_thrown(self, *args):
         """
         Tests correct error processing for the case when IOError is raised while trying to set usage plan associations
@@ -2203,6 +2208,7 @@ class BotoApiGatewayUsagePlanAssociationTestCase(
             self.assertIn("changes", result)
             self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_usage_plan_association_absent_success(self, *args):
         """
         Tests successful case of disaccosiation the usage plan from api stages
@@ -2244,6 +2250,7 @@ class BotoApiGatewayUsagePlanAssociationTestCase(
                 },
             )
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_usage_plan_association_absent_if_ValueError_is_raised(self, *args):
         """
         Tests correct error processing for the case where ValueError is raised while trying to remove plan associations
@@ -2267,6 +2274,7 @@ class BotoApiGatewayUsagePlanAssociationTestCase(
             self.assertIn("changes", result)
             self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_usage_plan_association_absent_if_IOError_is_raised(self, *args):
         """
         Tests correct error processing for the case where IOError exception is raised while trying to remove plan associations

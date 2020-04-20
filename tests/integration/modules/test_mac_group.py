@@ -104,6 +104,7 @@ class MacGroupModuleTest(ModuleCase):
         group_info = self.run_function("group.info", [ADD_GROUP])
         self.assertNotIn(ADD_USER, "".join(group_info["members"]))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mac_members(self):
         """
         Test replacing members of a group
@@ -126,6 +127,7 @@ class MacGroupModuleTest(ModuleCase):
         self.assertIn(REP_USER_GROUP, six.text_type(group_info["members"]))
         self.assertNotIn(ADD_USER, six.text_type(group_info["members"]))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mac_getent(self):
         """
         Test returning info on all groups

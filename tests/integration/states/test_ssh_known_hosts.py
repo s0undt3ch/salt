@@ -105,6 +105,7 @@ class SSHKnownHostsStateTest(ModuleCase, SaltReturnAssertsMixin):
                 "Salt return '{0}' is in ('', None,".format(ret) + " {})"
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_present_fail(self):
         # save something wrong
         ret = self.run_state(
@@ -116,6 +117,7 @@ class SSHKnownHostsStateTest(ModuleCase, SaltReturnAssertsMixin):
         )
         self.assertSaltFalseReturn(ret)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_absent(self):
         """
         ssh_known_hosts.absent

@@ -8,6 +8,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+import pytest
+
 # Import Salt Libs
 import salt.config
 import salt.states.winrepo as winrepo
@@ -105,6 +107,7 @@ class WinrepoTestCase(TestCase, LoaderModuleMockMixin):
             ret = winrepo.genrepo("salt")
             self.assertDictEqual(ret, expected)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_genrepo_no_dir_force(self):
         """
         Test genrepo when the dir does not exist and force=True

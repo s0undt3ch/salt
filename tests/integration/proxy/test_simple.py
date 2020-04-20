@@ -6,6 +6,8 @@ Simple Smoke Tests for Connected Proxy Minion
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Testing libs
 from tests.support.case import ModuleCase
 
@@ -84,6 +86,7 @@ class ProxyMinionSimpleTestCase(ModuleCase):
         for key, value in ret.items():
             self.assertTrue(value["result"])
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_state_highstate(self):
         ret = self.run_function("state.highstate", minion_tgt="proxytest")
         for key, value in ret.items():

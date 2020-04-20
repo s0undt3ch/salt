@@ -5081,6 +5081,7 @@ class WinFileTest(ModuleCase):
         with salt.utils.files.fopen(WIN_TEST_FILE, "r") as fp_:
             self.assertTrue(fp_.read().startswith("#Only"))
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_file_replace(self):
         """
         Test file.replace on Windows
@@ -5091,6 +5092,7 @@ class WinFileTest(ModuleCase):
         with salt.utils.files.fopen(WIN_TEST_FILE, "r") as fp_:
             self.assertIn("testing", fp_.read())
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_file_absent(self):
         """
         Test file.absent on Windows

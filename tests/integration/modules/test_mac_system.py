@@ -243,6 +243,7 @@ class MacSystemComputerNameTest(ModuleCase):
     # investigate
     # @skipIf(salt.utils.platform.is_darwin() and six.PY3, 'This test hangs on OS X on Py3.  Skipping until #53566 is merged.')
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_get_set_computer_name(self):
         """
         Test system.get_computer_name

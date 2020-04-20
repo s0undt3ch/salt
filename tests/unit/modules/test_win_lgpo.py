@@ -905,6 +905,7 @@ class WinLGPOGetPointAndPrintENTestCase(TestCase, LoaderModuleMockMixin):
         }
         self.assertDictEqual(result, expected)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_point_and_print_enabled_full_names_hierarchical(self):
         result = self._get_policy_adm_setting(
             policy_name="Point and Print Restrictions",
@@ -961,6 +962,7 @@ class WinLGPOGetPolicyFromPolicyResources(TestCase, LoaderModuleMockMixin):
         if self.adml_data is None:
             self.adml_data = win_lgpo._get_policy_resources(language="en-US")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test__getAdmlPresentationRefId(self):
         ref_id = "LetAppsAccessAccountInfo_Enum"
         expected = "Default for all apps"

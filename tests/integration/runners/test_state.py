@@ -604,6 +604,7 @@ class OrchEventTest(ShellCase):
             del listener
             signal.alarm(0)
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_orchestration_with_pillar_dot_items(self):
         """
         Test to confirm when using a state file that includes other state file, if
@@ -703,6 +704,7 @@ class OrchEventTest(ShellCase):
             del listener
             signal.alarm(0)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_orchestration_onchanges_and_prereq(self):
         """
         Test to confirm that the parallel state requisite works in orch

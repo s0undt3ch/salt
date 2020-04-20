@@ -5,6 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+import pytest
 import salt.modules.file as file_
 import salt.modules.heat as heat
 import salt.modules.win_file as win_file
@@ -100,6 +101,7 @@ class HeatTestCase(TestCase, LoaderModuleMockMixin):
                 "salt.modules.file.check_perms", win_file.check_perms
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_heat_create_stack(self):
         """
         Test salt.modules.heat.create_stack method

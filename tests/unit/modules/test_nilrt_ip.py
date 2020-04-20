@@ -3,6 +3,8 @@
 # Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
+import pytest
+
 # Import Salt Libs
 import salt.modules.nilrt_ip as nilrt_ip
 
@@ -20,6 +22,7 @@ class NilrtIPTestCase(TestCase, LoaderModuleMockMixin):
     def setup_loader_modules(self):
         return {nilrt_ip: {"__grains__": {"lsb_distrib_id": "not_nilrt"}}}
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_change_state_down_state(self):
         """
         Tests _change_state when not connected

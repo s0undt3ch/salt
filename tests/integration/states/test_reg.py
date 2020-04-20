@@ -151,6 +151,7 @@ class RegTest(ModuleCase, SaltReturnAssertsMixin):
         }
         self.assertEqual(ret, expected)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_present_reg_sz_unicode_value_name(self):
         """
         Testing reg.present with REG_SZ and a unicode value name
@@ -232,6 +233,7 @@ class RegTest(ModuleCase, SaltReturnAssertsMixin):
         }
         self.assertEqual(ret, expected)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_present_reg_multi_sz(self):
         """
         Testing reg.present with REG_MULTI_SZ
@@ -272,6 +274,7 @@ class RegTest(ModuleCase, SaltReturnAssertsMixin):
         }
         self.assertEqual(ret, expected)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_present_32_bit(self):
         """
         Testing reg.present with REG_SZ using 32bit registry

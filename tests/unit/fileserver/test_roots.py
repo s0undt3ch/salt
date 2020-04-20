@@ -10,6 +10,7 @@ import copy
 import os
 import tempfile
 
+import pytest
 import salt.fileclient
 
 # Import Salt libs
@@ -167,6 +168,7 @@ class RootsTest(TestCase, AdaptedConfigurationTestCaseMixin, LoaderModuleMockMix
         self.assertIn("empty_dir", ret)
         self.assertIn(UNICODE_DIRNAME, ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_symlink_list(self):
         orig_file_roots = self.opts["file_roots"]
         try:
@@ -178,6 +180,7 @@ class RootsTest(TestCase, AdaptedConfigurationTestCaseMixin, LoaderModuleMockMix
             if self.test_symlink_list_file_roots:
                 self.opts["file_roots"] = orig_file_roots
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_dynamic_file_roots(self):
         dyn_root_dir = tempfile.mkdtemp(dir=RUNTIME_VARS.TMP)
         top_sls = os.path.join(dyn_root_dir, "top.sls")
