@@ -61,7 +61,6 @@ class ScheduleTestCase(TestCase):
 
     # delete_job tests
 
-    @skipIf(True, "SLOWTEST skip")
     def test_delete_job_exists(self):
         """
         Tests ensuring the job exists and deleting it
@@ -71,7 +70,6 @@ class ScheduleTestCase(TestCase):
         self.schedule.delete_job("foo")
         self.assertNotIn("foo", self.schedule.opts["schedule"])
 
-    @skipIf(True, "SLOWTEST skip")
     def test_delete_job_in_pillar(self):
         """
         Tests ignoring deletion job from pillar
@@ -83,7 +81,6 @@ class ScheduleTestCase(TestCase):
         self.schedule.delete_job("foo")
         self.assertIn("foo", self.schedule.opts["pillar"]["schedule"])
 
-    @skipIf(True, "SLOWTEST skip")
     def test_delete_job_intervals(self):
         """
         Tests removing job from intervals
@@ -93,7 +90,6 @@ class ScheduleTestCase(TestCase):
         self.schedule.delete_job("foo")
         self.assertNotIn("foo", self.schedule.intervals)
 
-    @skipIf(True, "SLOWTEST skip")
     def test_delete_job_prefix(self):
         """
         Tests ensuring jobs exists and deleting them by prefix
@@ -110,7 +106,6 @@ class ScheduleTestCase(TestCase):
         self.schedule.delete_job_prefix("fooba")
         self.assertEqual(self.schedule.opts, ret)
 
-    @skipIf(True, "SLOWTEST skip")
     def test_delete_job_prefix_in_pillar(self):
         """
         Tests ignoring deletion jobs by prefix from pillar
@@ -143,7 +138,6 @@ class ScheduleTestCase(TestCase):
         data = {"key1": "value1", "key2": "value2"}
         self.assertRaises(ValueError, Schedule.add_job, self.schedule, data)
 
-    @skipIf(True, "SLOWTEST skip")
     def test_add_job(self):
         """
         Tests adding a job to the schedule
@@ -167,7 +161,6 @@ class ScheduleTestCase(TestCase):
 
     # enable_job tests
 
-    @skipIf(True, "SLOWTEST skip")
     def test_enable_job(self):
         """
         Tests enabling a job
@@ -176,7 +169,6 @@ class ScheduleTestCase(TestCase):
         Schedule.enable_job(self.schedule, "name")
         self.assertTrue(self.schedule.opts["schedule"]["name"]["enabled"])
 
-    @skipIf(True, "SLOWTEST skip")
     def test_enable_job_pillar(self):
         """
         Tests ignoring enable a job from pillar
@@ -189,7 +181,6 @@ class ScheduleTestCase(TestCase):
 
     # disable_job tests
 
-    @skipIf(True, "SLOWTEST skip")
     def test_disable_job(self):
         """
         Tests disabling a job
@@ -200,7 +191,6 @@ class ScheduleTestCase(TestCase):
         Schedule.disable_job(self.schedule, "name")
         self.assertFalse(self.schedule.opts["schedule"]["name"]["enabled"])
 
-    @skipIf(True, "SLOWTEST skip")
     def test_disable_job_pillar(self):
         """
         Tests ignoring disable a job in pillar
@@ -213,7 +203,6 @@ class ScheduleTestCase(TestCase):
 
     # modify_job tests
 
-    @skipIf(True, "SLOWTEST skip")
     def test_modify_job(self):
         """
         Tests modifying a job in the scheduler
@@ -252,7 +241,6 @@ class ScheduleTestCase(TestCase):
 
     # enable_schedule tests
 
-    @skipIf(True, "SLOWTEST skip")
     def test_enable_schedule(self):
         """
         Tests enabling the scheduler
@@ -268,7 +256,6 @@ class ScheduleTestCase(TestCase):
 
     # disable_schedule tests
 
-    @skipIf(True, "SLOWTEST skip")
     def test_disable_schedule(self):
         """
         Tests disabling the scheduler
@@ -419,7 +406,6 @@ class ScheduleTestCase(TestCase):
             > self.schedule.opts["schedule"]["testjob"]["_next_fire_time"]
         )
 
-    @skipIf(True, "SLOWTEST skip")
     def test_handle_func_schedule_minion_blackout(self):
         """
         Tests eval if the schedule from pillar is not a dictionary

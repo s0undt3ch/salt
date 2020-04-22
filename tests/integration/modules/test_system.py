@@ -182,7 +182,6 @@ class SystemModuleTest(ModuleCase):
         else:
             self.run_function("file.remove", ["/etc/machine-info"])
 
-    @skipIf(True, "SLOWTEST skip")
     def test_get_system_date_time(self):
         """
         Test we are able to get the correct time
@@ -193,7 +192,6 @@ class SystemModuleTest(ModuleCase):
         msg = "Difference in times is too large. Now: {0} Fake: {1}".format(t1, t2)
         self.assertTrue(self._same_times(t1, t2, seconds_diff=2), msg=msg)
 
-    @skipIf(True, "SLOWTEST skip")
     def test_get_system_date_time_utc(self):
         """
         Test we are able to get the correct time with utc
@@ -206,7 +204,6 @@ class SystemModuleTest(ModuleCase):
 
     @destructiveTest
     @skip_if_not_root
-    @skipIf(True, "SLOWTEST skip")
     def test_set_system_date_time(self):
         """
         Test changing the system clock. We are only able to set it up to a
@@ -225,7 +222,6 @@ class SystemModuleTest(ModuleCase):
 
     @destructiveTest
     @skip_if_not_root
-    @skipIf(True, "SLOWTEST skip")
     def test_set_system_date_time_utc(self):
         """
         Test changing the system clock. We are only able to set it up to a
@@ -245,7 +241,6 @@ class SystemModuleTest(ModuleCase):
 
     @destructiveTest
     @skip_if_not_root
-    @skipIf(True, "SLOWTEST skip")
     def test_set_system_date_time_utcoffset_east(self):
         """
         Test changing the system clock. We are only able to set it up to a
@@ -267,7 +262,6 @@ class SystemModuleTest(ModuleCase):
 
     @destructiveTest
     @skip_if_not_root
-    @skipIf(True, "SLOWTEST skip")
     def test_set_system_date_time_utcoffset_west(self):
         """
         Test changing the system clock. We are only able to set it up to a
@@ -290,7 +284,6 @@ class SystemModuleTest(ModuleCase):
     @flaky
     @destructiveTest
     @skip_if_not_root
-    @skipIf(True, "SLOWTEST skip")
     def test_set_system_time(self):
         """
         Test setting the system time without adjusting the date.
@@ -311,7 +304,6 @@ class SystemModuleTest(ModuleCase):
 
     @destructiveTest
     @skip_if_not_root
-    @skipIf(True, "SLOWTEST skip")
     def test_set_system_date(self):
         """
         Test setting the system date without adjusting the time.
@@ -333,7 +325,6 @@ class SystemModuleTest(ModuleCase):
         self._test_hwclock_sync()
 
     @skip_if_not_root
-    @skipIf(True, "SLOWTEST skip")
     def test_get_computer_desc(self):
         """
         Test getting the system hostname
@@ -354,8 +345,6 @@ class SystemModuleTest(ModuleCase):
 
     @destructiveTest
     @skip_if_not_root
-    @skipIf(True, "SLOWTEST skip")
-    @skipIf(True, "SLOWTEST skip")
     def test_set_computer_desc(self):
         """
         Test setting the computer description
@@ -370,7 +359,6 @@ class SystemModuleTest(ModuleCase):
 
     @destructiveTest
     @skip_if_not_root
-    @skipIf(True, "SLOWTEST skip")
     def test_set_computer_desc_multiline(self):
         """
         Test setting the computer description with a multiline string with tabs
@@ -394,7 +382,6 @@ class SystemModuleTest(ModuleCase):
         self.assertIn(desc, computer_desc)
 
     @skip_if_not_root
-    @skipIf(True, "SLOWTEST skip")
     def test_has_hwclock(self):
         """
         Verify platform has a settable hardware clock, if possible.
@@ -423,7 +410,6 @@ class WinSystemModuleTest(ModuleCase):
         if subprocess.call("w32tm /resync", shell=True) != 0:
             log.error("Re-syncing time failed")
 
-    @skipIf(True, "SLOWTEST skip")
     def test_get_computer_name(self):
         """
         Test getting the computer name
@@ -437,8 +423,6 @@ class WinSystemModuleTest(ModuleCase):
         self.assertEqual(name, ret)
 
     @destructiveTest
-    @skipIf(True, "SLOWTEST skip")
-    @skipIf(True, "SLOWTEST skip")
     def test_set_computer_desc(self):
         """
         Test setting the computer description
@@ -480,7 +464,6 @@ class WinSystemModuleTest(ModuleCase):
 
     @skipIf(True, "WAR ROOM 7/18/2019, unit test?")
     @destructiveTest
-    @skipIf(True, "SLOWTEST skip")
     def test_set_system_time(self):
         """
         Test setting the system time
@@ -502,7 +485,6 @@ class WinSystemModuleTest(ModuleCase):
             self.run_function("system.set_system_time", [current_time])
             self.run_function("service.start", ["w32time"])
 
-    @skipIf(True, "SLOWTEST skip")
     def test_get_system_date(self):
         """
         Test getting system date
@@ -513,7 +495,6 @@ class WinSystemModuleTest(ModuleCase):
 
     @skipIf(True, "WAR ROOM 7/18/2019, unit test?")
     @destructiveTest
-    @skipIf(True, "SLOWTEST skip")
     def test_set_system_date(self):
         """
         Test setting system date

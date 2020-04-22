@@ -206,7 +206,6 @@ class DockerTestCase(TestCase, LoaderModuleMockMixin):
                 all=True, filters={"label": "KEY"}
             )
 
-    @skipIf(True, "SLOWTEST skip")
     def test_check_mine_cache_is_refreshed_on_container_change_event(self):
         """
         Every command that might modify docker containers state.
@@ -897,7 +896,6 @@ class DockerTestCase(TestCase, LoaderModuleMockMixin):
             ret,
         )
 
-    @skipIf(True, "SLOWTEST skip")
     def test_call_success(self):
         """
         test module calling inside containers
