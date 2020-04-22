@@ -174,6 +174,7 @@ class CoreGrainsTestCase(TestCase, LoaderModuleMockMixin):
         self.assertEqual(os_release, {})
 
     @skipIf(not salt.utils.platform.is_windows(), "System is not Windows")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test__windows_platform_data(self):
         grains = core._windows_platform_data()
         keys = [
@@ -466,6 +467,7 @@ class CoreGrainsTestCase(TestCase, LoaderModuleMockMixin):
         self._run_suse_os_grains_tests(_os_release_map, expectation)
 
     @skipIf(not salt.utils.platform.is_linux(), "System is not Linux")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_suse_os_grains_sles11sp4(self):
         """
         Test if OS grains are parsed correctly in SLES 11 SP4
@@ -616,6 +618,7 @@ class CoreGrainsTestCase(TestCase, LoaderModuleMockMixin):
         self._run_os_grains_tests("debian-7", _os_release_map, expectation)
 
     @skipIf(not salt.utils.platform.is_linux(), "System is not Linux")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_debian_8_os_grains(self):
         """
         Test if OS grains are parsed correctly in Debian 8 "jessie"
@@ -1562,6 +1565,7 @@ class CoreGrainsTestCase(TestCase, LoaderModuleMockMixin):
             # change back to original directory
             os.chdir(cwd)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_virtual_set_virtual_grain(self):
         osdata = {}
 
@@ -1588,6 +1592,7 @@ class CoreGrainsTestCase(TestCase, LoaderModuleMockMixin):
 
         self.assertIn("virtual", virtual_grains)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_virtual_has_virtual_grain(self):
         osdata = {"virtual": "something"}
 

@@ -7,8 +7,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
-import pytest
-
 # import salt libs
 import salt.utils.files
 
@@ -38,7 +36,6 @@ class SSHPreFlightTest(SSHCase):
         with salt.utils.files.fopen(self.data["ssh_pre_flight"], "w") as fp_:
             fp_.write("touch {0}".format(self.test_script))
 
-    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_ssh_pre_flight(self):
         """
         test ssh when ssh_pre_flight is set
@@ -49,7 +46,6 @@ class SSHPreFlightTest(SSHCase):
 
         assert os.path.exists(self.test_script)
 
-    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_ssh_run_pre_flight(self):
         """
         test ssh when --pre-flight is passed to salt-ssh

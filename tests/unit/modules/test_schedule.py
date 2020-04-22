@@ -43,6 +43,7 @@ class ScheduleTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'purge' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_purge(self):
         """
         Test if it purge all the jobs currently scheduled on the minion.
@@ -62,6 +63,7 @@ class ScheduleTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'delete' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_delete(self):
         """
         Test if it delete a job from the minion's schedule.
@@ -135,6 +137,7 @@ class ScheduleTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'add' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_add(self):
         """
         Test if it add a job to the schedule.
@@ -183,6 +186,7 @@ class ScheduleTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'run_job' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_run_job(self):
         """
         Test if it run a scheduled job on the minion immediately.
@@ -201,6 +205,7 @@ class ScheduleTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'enable_job' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_enable_job(self):
         """
         Test if it enable a job in the minion's schedule.
@@ -217,6 +222,7 @@ class ScheduleTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'disable_job' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_disable_job(self):
         """
         Test if it disable a job in the minion's schedule.
@@ -365,6 +371,7 @@ class ScheduleTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'copy' function tests: 1
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_copy(self):
         """
         Test if it copy scheduled job to another minion or minions.

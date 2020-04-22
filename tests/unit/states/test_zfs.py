@@ -49,6 +49,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
 
         return zfs_obj
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_filesystem_absent_nofs(self):
         """
         Test if filesystem is absent (non existing filesystem)
@@ -66,6 +67,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(ret, zfs.filesystem_absent("myzpool/filesystem"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_filesystem_absent_removed(self):
         """
         Test if filesystem is absent
@@ -84,6 +86,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.filesystem_absent("myzpool/filesystem"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_filesystem_absent_fail(self):
         """
         Test if filesystem is absent (with snapshots)
@@ -124,6 +127,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.filesystem_absent("myzpool/filesystem"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_volume_absent_novol(self):
         """
         Test if volume is absent (non existing volume)
@@ -141,6 +145,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(ret, zfs.volume_absent("myzpool/volume"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_volume_absent_removed(self):
         """
         Test if volume is absent
@@ -159,6 +164,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.volume_absent("myzpool/volume"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_volume_absent_fail(self):
         """
         Test if volume is absent (with snapshots)
@@ -199,6 +205,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.volume_absent("myzpool/volume"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_snapshot_absent_nosnap(self):
         """
         Test if snapshot is absent (non existing snapshot)
@@ -216,6 +223,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(ret, zfs.snapshot_absent("myzpool/filesystem@snap"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_snapshot_absent_removed(self):
         """
         Test if snapshot is absent
@@ -234,6 +242,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.snapshot_absent("myzpool/filesystem@snap"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_snapshot_absent_fail(self):
         """
         Test if snapshot is absent (with snapshots)
@@ -262,6 +271,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.snapshot_absent("myzpool/filesystem@snap"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_bookmark_absent_nobook(self):
         """
         Test if bookmark is absent (non existing bookmark)
@@ -279,6 +289,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(ret, zfs.bookmark_absent("myzpool/filesystem#book"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_bookmark_absent_removed(self):
         """
         Test if bookmark is absent
@@ -297,6 +308,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.bookmark_absent("myzpool/filesystem#book"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_hold_absent_nohold(self):
         """
         Test if hold is absent (non existing hold)
@@ -314,6 +326,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(ret, zfs.hold_absent("myhold", "myzpool/filesystem@snap"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_hold_absent_removed(self):
         """
         Test if hold is absent
@@ -336,6 +349,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.hold_absent("myhold", "myzpool/filesystem@snap"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_hold_absent_fail(self):
         """
         Test if hold is absent (non existing snapshot)
@@ -362,6 +376,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(ret, zfs.hold_absent("myhold", "myzpool/filesystem@snap"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_hold_present(self):
         """
         Test if hold is present (hold already present)
@@ -381,6 +396,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(ret, zfs.hold_present("myhold", "myzpool/filesystem@snap"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_hold_present_new(self):
         """
         Test if hold is present (new)
@@ -399,6 +415,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.hold_present("myhold", "myzpool/filesystem@snap"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_hold_present_fail(self):
         """
         Test if hold is present (using non existing snapshot)
@@ -427,6 +444,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.hold_present("myhold", "myzpool/filesystem@snap"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_filesystem_present(self):
         """
         Test if filesystem is present (existing filesystem)
@@ -459,6 +477,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.filesystem_present("myzpool/filesystem"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_filesystem_present_new(self):
         """
         Test if filesystem is present (non existing filesystem)
@@ -477,6 +496,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.filesystem_present("myzpool/filesystem"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_filesystem_present_update(self):
         """
         Test if filesystem is present (non existing filesystem)
@@ -517,6 +537,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 ),
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_filesystem_present_fail(self):
         """
         Test if filesystem is present (non existing pool)
@@ -580,6 +601,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 ret, zfs.volume_present("myzpool/volume", volume_size="1G")
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_volume_present_new(self):
         """
         Test if volume is present (non existing volume)
@@ -600,6 +622,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 ret, zfs.volume_present("myzpool/volume", volume_size="1G")
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_volume_present_update(self):
         """
         Test if volume is present (non existing volume)
@@ -642,6 +665,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 ),
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_volume_present_fail(self):
         """
         Test if volume is present (non existing pool)
@@ -669,6 +693,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 ret, zfs.volume_present("myzpool/volume", volume_size="1G")
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_bookmark_present(self):
         """
         Test if bookmark is present (bookmark already present)
@@ -688,6 +713,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 ret, zfs.bookmark_present("mybookmark", "myzpool/filesystem@snap")
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_bookmark_present_new(self):
         """
         Test if bookmark is present (new)
@@ -708,6 +734,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 ret, zfs.bookmark_present("mybookmark", "myzpool/filesystem@snap")
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_bookmark_present_fail(self):
         """
         Test if bookmark is present (using non existing snapshot)
@@ -738,6 +765,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 ret, zfs.bookmark_present("mybookmark", "myzpool/filesystem@snap")
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_snapshot_present(self):
         """
         Test if snapshot is present (snapshot already present)
@@ -803,6 +831,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.snapshot_present("myzpool/filesystem@snap"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_propmoted(self):
         """
         Test promotion of clone (already promoted)
@@ -830,6 +859,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ), patch.dict(zfs.__utils__, self.utils_patch):
             self.assertEqual(ret, zfs.promoted("myzpool/filesystem"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_propmoted_clone(self):
         """
         Test promotion of clone
@@ -869,6 +899,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(ret, zfs.promoted("myzpool/filesystem"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_propmoted_fail(self):
         """
         Test promotion of clone (unknown dataset)

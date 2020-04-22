@@ -183,6 +183,7 @@ class BotoLambdaFunctionTestCase(BotoLambdaTestCaseBase, BotoLambdaTestCaseMixin
 
         self.assertTrue(func_exists_result["exists"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_function_exists_and_a_function_does_not_exist_the_function_exists_method_returns_false(
         self,
     ):
@@ -260,6 +261,7 @@ class BotoLambdaFunctionTestCase(BotoLambdaTestCaseBase, BotoLambdaTestCaseMixin
 
         self.assertTrue(lambda_creation_result["created"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_that_when_creating_a_function_without_code_raises_a_salt_invocation_error(
         self,
     ):
@@ -308,6 +310,7 @@ class BotoLambdaFunctionTestCase(BotoLambdaTestCaseBase, BotoLambdaTestCaseMixin
                         **conn_parameters
                     )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_a_function_fails_the_create_function_method_returns_error(
         self,
     ):
@@ -416,6 +419,7 @@ class BotoLambdaFunctionTestCase(BotoLambdaTestCaseBase, BotoLambdaTestCaseMixin
         )
         self.assertTrue("error" in result)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_updating_a_function_succeeds_the_update_function_method_returns_true(
         self,
     ):
@@ -666,6 +670,7 @@ class BotoLambdaAliasTestCase(BotoLambdaTestCaseBase, BotoLambdaTestCaseMixin):
         )
         self.assertFalse(result["deleted"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_an_alias_exists_and_the_alias_exists_the_alias_exists_method_returns_true(
         self,
     ):

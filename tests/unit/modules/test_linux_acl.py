@@ -69,6 +69,7 @@ class LinuxAclTestCase(TestCase, LoaderModuleMockMixin):
             "getfacl --absolute-names " + self.quoted_file, python_shell=False
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_getfacl_w_multiple_args(self):
         linux_acl.getfacl(*self.files)
         self.cmdrun.assert_called_once_with(

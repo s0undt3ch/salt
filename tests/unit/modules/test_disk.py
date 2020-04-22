@@ -207,7 +207,6 @@ class DiskTestCase(TestCase, LoaderModuleMockMixin):
             disk.wipe("/dev/sda")
             mock.assert_called_once_with("wipefs -a /dev/sda", python_shell=False)
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_tune(self):
         mock = MagicMock(
             return_value="712971264\n512\n512\n512\n0\n0\n88\n712971264\n365041287168\n512\n512"

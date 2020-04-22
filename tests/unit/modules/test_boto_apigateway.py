@@ -262,6 +262,7 @@ class BotoApiGatewayTestCase(BotoApiGatewayTestCaseBase, BotoApiGatewayTestCaseM
         api_exists_result = boto_apigateway.api_exists(name="myapi", **conn_parameters)
         self.assertTrue(api_exists_result["exists"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_rest_api_exists_and_no_rest_api_exists_the_api_exists_method_returns_false(
         self,
     ):
@@ -857,6 +858,7 @@ class BotoApiGatewayTestCase(BotoApiGatewayTestCaseBase, BotoApiGatewayTestCaseM
             result.get("error").get("message"), error_message.format("update_api_key")
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_associating_stages_to_an_api_key_that_exists_the_associate_api_key_stagekeys_method_returns_true(
         self,
     ):
@@ -1083,6 +1085,7 @@ class BotoApiGatewayTestCase(BotoApiGatewayTestCaseBase, BotoApiGatewayTestCaseM
             error_message.format("create_deployment"),
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_deleting_an_api_deployment_that_exists_the_delete_api_deployment_method_returns_true(
         self,
     ):
@@ -1842,6 +1845,7 @@ class BotoApiGatewayTestCase(BotoApiGatewayTestCaseBase, BotoApiGatewayTestCaseM
         )
         self.assertTrue(result.get("created"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_an_api_method_and_resource_does_not_exist_the_create_api_method_method_returns_false(
         self,
     ):

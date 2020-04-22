@@ -618,7 +618,6 @@ class GetDefaultStoragePolicyOfDatastoreTestCase(TestCase):
             "Not enough permissions. Required privilege: " "Fake privilege",
         )
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_query_default_requirement_profile_raises_vim_fault(self):
         exc = vim.fault.VimFault()
         exc.msg = "VimFault msg"

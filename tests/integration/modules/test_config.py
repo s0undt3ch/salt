@@ -29,12 +29,14 @@ class ConfigTest(ModuleCase):
         self.assertTrue(self.run_function("config.valid_fileproto", ["swift://"]))
         self.assertFalse(self.run_function("config.valid_fileproto", ["cheese://"]))
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_backup_mode(self):
         """
         test config.backup_mode
         """
         self.assertEqual(self.run_function("config.backup_mode", ["minion"]), "minion")
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_manage_mode(self):
         """
         test config.manage_mode

@@ -125,6 +125,7 @@ class SSDPBaseTestCase(TestCase, Mocks):
         for key, value in zip(v_keys, v_vals):
             assert base.DEFAULTS[key] == value
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_base_self_ip(self):
         """
         Test getting self IP method.
@@ -341,6 +342,7 @@ class SSDPFactoryTestCase(TestCase, Mocks):
             ] == "{}:E:Timestamp is too old".format(signature)
             assert "Received outdated package" in factory.log.debug.call_args[0][0]
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_datagram_signature_correct_timestamp_reply(self):
         """
         Test if datagram processing sends out correct reply within 20 seconds.

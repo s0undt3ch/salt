@@ -527,6 +527,7 @@ class GrainsTestCase(TestCase, LoaderModuleMockMixin):
             self.assertEqual(grains.__grains__, {"a": "aval"})
             self.assertGrainFileContent("a: aval\n")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_absent_unset(self):
         # Unset a grain
         with self.setGrains({"a": "aval", "foo": "bar"}):
@@ -637,6 +638,7 @@ class GrainsTestCase(TestCase, LoaderModuleMockMixin):
                 "a: aval\n" + "foo:\n" + "- order\n" + "- is: null\n" + "- correct\n"
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_absent_delete(self):
         # Delete a grain
         with self.setGrains({"a": "aval", "foo": "bar"}):

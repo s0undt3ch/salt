@@ -38,6 +38,7 @@ class TestSaltKey(object):
     Test salt-key script
     """
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_remove_key(self, salt_master, salt_key_cli):
         """
         test salt-key -d usage
@@ -94,6 +95,8 @@ class TestSaltKey(object):
                 os.unlink(key)
 
     @pytest.mark.parametrize("key_type", ("acc", "pre", "den", "un", "rej"))
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_list_accepted_args(self, salt_key_cli, key_type):
         """
         test salt-key -l for accepted arguments
@@ -107,6 +110,7 @@ class TestSaltKey(object):
         assert ret.exitcode != 0
         assert "error:" in ret.stderr
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_list_all(self, salt_key_cli):
         """
         test salt-key -L
@@ -121,6 +125,7 @@ class TestSaltKey(object):
         }
         assert ret.json == expected
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_list_all_yaml_out(self, salt_key_cli):
         """
         test salt-key -L --out=yaml
@@ -136,6 +141,7 @@ class TestSaltKey(object):
         }
         assert output == expected
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_list_all_raw_out(self, salt_key_cli):
         """
         test salt-key -L --out=raw
@@ -163,6 +169,7 @@ class TestSaltKey(object):
     @pytest.mark.skip_if_not_root
     @pytest.mark.destructive_test
     @pytest.mark.skip_on_windows(reason="PAM is not supported on Windows")
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_list_acc_eauth(self, salt_key_cli, saltdev_account):
         """
         test salt-key -l with eauth
@@ -177,6 +184,7 @@ class TestSaltKey(object):
     @pytest.mark.skip_if_not_root
     @pytest.mark.destructive_test
     @pytest.mark.skip_on_windows(reason="PAM is not supported on Windows")
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_list_acc_eauth_bad_creds(self, salt_key_cli, saltdev_account):
         """
         test salt-key -l with eauth and bad creds
@@ -198,6 +206,7 @@ class TestSaltKey(object):
             )
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_list_acc_wrong_eauth(self, salt_key_cli):
         """
         test salt-key -l with wrong eauth
@@ -218,6 +227,7 @@ class TestSaltKey(object):
             ret.stdout.replace("\r\n", "\n"),
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_list_un(self, salt_key_cli):
         """
         test salt-key -l un
@@ -227,6 +237,7 @@ class TestSaltKey(object):
         expected = {"minions_pre": []}
         assert ret.json == expected
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_keys_generation(self, salt_key_cli):
         with pytest.helpers.temp_directory() as tempdir:
             ret = salt_key_cli.run("--gen-keys", "minibar", "--gen-keys-dir", tempdir)
@@ -239,6 +250,7 @@ class TestSaltKey(object):
                 for filename in os.listdir(tempdir):
                     os.chmod(os.path.join(tempdir, filename), 0o700)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_keys_generation_keysize_min(self, salt_key_cli):
         with pytest.helpers.temp_directory() as tempdir:
             ret = salt_key_cli.run(

@@ -322,6 +322,7 @@ class TimezoneModuleTestCase(TestCase, LoaderModuleMockMixin):
     @patch("os.path.exists", MagicMock(return_value=True))
     @patch("os.unlink", MagicMock())
     @patch("os.symlink", MagicMock())
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_hwclock_solaris(self):
         """
         Test get hwclock on Solaris
@@ -408,6 +409,7 @@ class TimezoneModuleTestCase(TestCase, LoaderModuleMockMixin):
     @patch("os.unlink", MagicMock())
     @patch("os.symlink", MagicMock())
     @patch("salt.modules.timezone.get_zone", MagicMock(return_value="TEST_TIMEZONE"))
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_set_hwclock_arch(self):
         """
         Test set hwclock on arch

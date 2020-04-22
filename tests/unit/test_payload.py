@@ -258,6 +258,7 @@ class SREQTestCase(TestCase):
         return salt.payload.SREQ("tcp://127.0.0.1:{0}".format(SREQTestCase.port))
 
     @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_send_auto(self):
         """
         Test creation, send/rect
@@ -318,6 +319,7 @@ class SREQTestCase(TestCase):
         # swallows exceptions, we have to call destroy directly
         sreq.destroy()
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_raw_vs_encoding_none(self):
         """
         Test that we handle the new raw parameter in 5.0.2 correctly based on

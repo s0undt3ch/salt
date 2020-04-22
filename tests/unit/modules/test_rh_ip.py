@@ -42,6 +42,7 @@ class RhipTestCase(TestCase, LoaderModuleMockMixin):
         msg = rh_ip._error_msg_network("fnord", values)
         self.assertTrue(msg.endswith("[1|True|False|no-kaboom]"), msg)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_build_bond(self):
         """
         Test to create a bond script in /etc/modprobe.d with the passed

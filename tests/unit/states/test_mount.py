@@ -28,6 +28,7 @@ class MountTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'mounted' function tests: 1
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_mounted(self):
         """
         Test to verify that a device is mounted.

@@ -208,6 +208,7 @@ class ZfsUtilsTestCase(TestCase):
         self.assertEqual(zfs.from_numeric(42), 42)
         self.assertEqual(zfs.from_numeric(zfs.from_numeric(42)), 42)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_from_numeric_none(self):
         """
         Test from_numeric with 'none'

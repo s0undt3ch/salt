@@ -75,6 +75,7 @@ class FreezerTestCase(TestCase, LoaderModuleMockMixin):
 
     @patch("salt.modules.freezer.status")
     @patch("os.makedirs")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_freeze_fails_already_frozen(self, makedirs, status):
         """
         Test to freeze a current installation
@@ -112,6 +113,7 @@ class FreezerTestCase(TestCase, LoaderModuleMockMixin):
     @patch("salt.modules.freezer.fopen")
     @patch("salt.modules.freezer.status")
     @patch("os.makedirs")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_freeze_success_new_state(self, makedirs, status, fopen, dump):
         """
         Test to freeze a current installation

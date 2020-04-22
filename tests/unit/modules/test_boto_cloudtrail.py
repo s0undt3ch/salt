@@ -257,6 +257,7 @@ class BotoCloudTrailTestCase(BotoCloudTrailTestCaseBase, BotoCloudTrailTestCaseM
 
         self.assertFalse(result["trail"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_describing_trail_on_client_error_it_returns_error(self):
         """
         Tests describing parameters failure
@@ -277,6 +278,7 @@ class BotoCloudTrailTestCase(BotoCloudTrailTestCaseBase, BotoCloudTrailTestCaseM
 
         self.assertTrue(result["trail"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_getting_status_it_returns_the_dict_of_properties_returns_false(
         self,
     ):
@@ -309,6 +311,7 @@ class BotoCloudTrailTestCase(BotoCloudTrailTestCaseBase, BotoCloudTrailTestCaseM
 
         self.assertTrue(result["trails"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_listing_trail_fails_the_list_trail_method_returns_false(self):
         """
         tests False no trail listed.

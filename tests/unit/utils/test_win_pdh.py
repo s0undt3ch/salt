@@ -34,6 +34,7 @@ class WinPdhTestCase(TestCase):
         for item in known_instances:
             self.assertTrue(item in instances)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_build_counter_list(self):
         counter_list = [
             ("Memory", None, "Available Bytes"),
@@ -61,6 +62,7 @@ class WinPdhTestCase(TestCase):
         ]
         self.assertEqual(resulting_paths, expected_paths)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_get_all_counters(self):
         results = win_pdh.get_all_counters("Processor")
         known_counters = [
@@ -75,6 +77,7 @@ class WinPdhTestCase(TestCase):
         for item in known_counters:
             self.assertTrue(item in results)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_get_counters(self):
         counter_list = [
@@ -97,7 +100,6 @@ class WinPdhTestCase(TestCase):
         for item in expected_counters:
             self.assertTrue(item in results)
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_counter(self):
         results = win_pdh.get_counter("Processor", "*", "% Processor Time")
         self.assertTrue("\\Processor(*)\\% Processor Time" in results)

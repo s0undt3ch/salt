@@ -399,7 +399,6 @@ class LocalemodTestCase(TestCase, LoaderModuleMockMixin):
     @patch("salt.modules.localemod.dbus", True)
     @patch("salt.utils.systemd.booted", MagicMock(return_value=True))
     @patch("salt.modules.localemod._localectl_set", MagicMock())
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_set_locale_with_systemd_and_dbus(self):
         """
         Test setting current system locale with systemd and dbus available.

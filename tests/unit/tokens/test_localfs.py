@@ -63,6 +63,7 @@ class TestLocalFS(TestCase):
         self.assertDictEqual(self.expected_data, actual_data)
 
     @with_tempdir()
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_get_token_should_raise_SaltDeserializationError_if_token_file_is_empty(
         self, tempdir
     ):

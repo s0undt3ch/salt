@@ -92,7 +92,6 @@ class SSHGrainsTest(SSHCase):
     Depend on proper environment set by SSHCase class
     """
 
-    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_grains_id(self):
         """
         Test salt-ssh grains id work for localhost.

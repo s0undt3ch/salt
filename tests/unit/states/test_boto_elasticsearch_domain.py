@@ -173,6 +173,7 @@ class BotoElasticsearchDomainTestCase(
     TestCase for salt.modules.boto_elasticsearch_domain state.module
     """
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_present_when_domain_does_not_exist(self):
         """
         Tests present on a domain that does not exist.
@@ -193,6 +194,7 @@ class BotoElasticsearchDomainTestCase(
             result["changes"]["new"]["domain"]["ElasticsearchClusterConfig"], None
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_present_when_domain_exists(self):
         self.conn.describe_elasticsearch_domain.return_value = {
             "DomainStatus": domain_ret
@@ -231,6 +233,7 @@ class BotoElasticsearchDomainTestCase(
         self.assertFalse(result["result"])
         self.assertTrue("An error occurred" in result["comment"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_absent_when_domain_does_not_exist(self):
         """
         Tests absent on a domain that does not exist.
@@ -242,6 +245,7 @@ class BotoElasticsearchDomainTestCase(
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_absent_when_domain_exists(self):
         self.conn.describe_elasticsearch_domain.return_value = {
             "DomainStatus": domain_ret

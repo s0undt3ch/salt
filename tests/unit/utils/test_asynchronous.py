@@ -50,6 +50,7 @@ class TestSyncWrapper(AsyncTestCase):
         ret = yield hb.sleep()
         self.assertFalse(ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_basic_wrap(self):
         """
         Test that we can wrap an asynchronous caller.
@@ -58,6 +59,7 @@ class TestSyncWrapper(AsyncTestCase):
         ret = sync.sleep()
         self.assertTrue(ret)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_double(self):
         """
         Test when the asynchronous wrapper object itself creates a wrap of another thing

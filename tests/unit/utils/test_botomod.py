@@ -204,6 +204,7 @@ class BotoUtilsGetConnTestCase(BotoUtilsTestCaseBase):
         self.assertTrue(conn in botomod.__context__.values())
 
     @mock_ec2
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_conn_is_cache_with_profile(self):
         conn = botomod.get_connection(service, profile=conn_parameters)
         self.assertTrue(conn in botomod.__context__.values())

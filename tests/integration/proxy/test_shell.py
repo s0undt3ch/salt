@@ -33,6 +33,7 @@ class ProxyCallerSimpleTestCase(ShellCase):
             log.warning("Failed to JSON decode: '%s'", ret)
             six.reraise(*sys.exc_info())
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_can_it_ping(self):
         """
         Ensure the proxy can ping
@@ -45,6 +46,7 @@ class ProxyCallerSimpleTestCase(ShellCase):
         )
         self.assertEqual(ret["local"], True)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_list_pkgs(self):
         """
         Package test 1, really just tests that the virtual function capability
@@ -71,6 +73,7 @@ class ProxyCallerSimpleTestCase(ShellCase):
         self.assertEqual(ret["local"]["coreutils"]["new"], "2.0")
         self.assertEqual(ret["local"]["redbull"]["new"], "1000.99")
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_service_list(self):
         ret = self._load_return(
             self.run_call(

@@ -178,6 +178,7 @@ class BotoCloudTrailTestCase(
     TestCase for salt.modules.boto_cloudtrail state.module
     """
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_present_when_trail_does_not_exist(self):
         """
         Tests present on a trail that does not exist.
@@ -197,6 +198,7 @@ class BotoCloudTrailTestCase(
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"]["new"]["trail"]["Name"], trail_ret["Name"])
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_present_when_trail_exists(self):
         self.conn.get_trail_status.return_value = status_ret
         self.conn.create_trail.return_value = trail_ret
@@ -229,6 +231,7 @@ class BotoCloudTrailTestCase(
         self.assertFalse(result["result"])
         self.assertTrue("An error occurred" in result["comment"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_absent_when_trail_does_not_exist(self):
         """
         Tests absent on a trail that does not exist.
@@ -238,6 +241,7 @@ class BotoCloudTrailTestCase(
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_absent_when_trail_exists(self):
         self.conn.get_trail_status.return_value = status_ret
         result = self.salt_states["boto_cloudtrail.absent"]("test", trail_ret["Name"])

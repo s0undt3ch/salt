@@ -547,6 +547,7 @@ class Boto3ElasticsearchTestCase(TestCase, LoaderModuleMockMixin):
             )
             self.assertEqual(result, {"result": True})
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_delete_elasticsearch_service_role_error(self):
         """
         Test that when calling delete_elasticsearch_service_role and boto3 returns
@@ -621,6 +622,7 @@ class Boto3ElasticsearchTestCase(TestCase, LoaderModuleMockMixin):
                 {"result": True, "response": [DOMAIN_RET]},
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_describe_elasticsearch_domains_error(self):
         """
         Test that when calling describe_elasticsearch_domains and boto3 returns
@@ -684,6 +686,7 @@ class Boto3ElasticsearchTestCase(TestCase, LoaderModuleMockMixin):
                 {"result": True, "response": ret_val["LimitsByRole"]},
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_describe_elasticsearch_instance_type_limits_error(self):
         """
         Test that when calling describe_elasticsearch_instance_type_limits and boto3 returns

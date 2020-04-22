@@ -189,6 +189,7 @@ class TestBaseSaltAPIHandler(SaltnadoTestCase):
         urls = [("/", StubHandler), ("/(.*)", StubHandler)]
         return self.build_tornado_app(urls)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_accept_content_type(self):
         """
         Test the base handler's accept picking
@@ -235,6 +236,7 @@ class TestBaseSaltAPIHandler(SaltnadoTestCase):
         )
         self.assertEqual(type(salt.utils.yaml.safe_load(response.body)), dict)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_token(self):
         """
         Test that the token is returned correctly
@@ -265,6 +267,7 @@ class TestBaseSaltAPIHandler(SaltnadoTestCase):
         token = salt.utils.json.loads(response.body)["token"]
         self.assertEqual(token, "foo")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_deserialize(self):
         """
         Send various encoded forms of lowstates (and bad ones) to make sure we
@@ -367,6 +370,7 @@ class TestBaseSaltAPIHandler(SaltnadoTestCase):
             valid_lowstate, salt.utils.json.loads(response.body)["lowstate"]
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_lowstate(self):
         """
         Test transformations low data of the function _get_lowstate
@@ -473,6 +477,7 @@ class TestBaseSaltAPIHandler(SaltnadoTestCase):
             valid_lowstate, salt.utils.json.loads(response.body)["lowstate"]
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cors_origin_wildcard(self):
         """
         Check that endpoints returns Access-Control-Allow-Origin
@@ -482,6 +487,7 @@ class TestBaseSaltAPIHandler(SaltnadoTestCase):
         headers = self.fetch("/").headers
         self.assertEqual(headers["Access-Control-Allow-Origin"], "*")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cors_origin_single(self):
         """
         Check that endpoints returns the Access-Control-Allow-Origin when
@@ -497,6 +503,7 @@ class TestBaseSaltAPIHandler(SaltnadoTestCase):
         headers = self.fetch("/", headers={"Origin": "http://example2.foo"}).headers
         self.assertEqual(headers.get("Access-Control-Allow-Origin"), None)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cors_origin_multiple(self):
         """
         Check that endpoints returns the Access-Control-Allow-Origin when
@@ -512,6 +519,7 @@ class TestBaseSaltAPIHandler(SaltnadoTestCase):
         headers = self.fetch("/", headers={"Origin": "http://example2.foo"}).headers
         self.assertEqual(headers.get("Access-Control-Allow-Origin"), None)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cors_preflight_request(self):
         """
         Check that preflight request contains right headers
@@ -534,6 +542,7 @@ class TestBaseSaltAPIHandler(SaltnadoTestCase):
 
         self.assertEqual(response.code, 204)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cors_origin_url_with_arguments(self):
         """
         Check that preflight requests works with url with components
@@ -562,6 +571,7 @@ class TestWebhookSaltHandler(SaltnadoTestCase):
         ]
         return self.build_tornado_app(urls)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_hook_can_handle_get_parameters(self):
         with patch("salt.utils.event.get_event") as get_event:
             with patch.dict(self._app.mod_opts, {"webhook_disable_auth": True}):
@@ -597,6 +607,7 @@ class TestSaltAuthHandler(SaltnadoTestCase):
         urls = [("/login", saltnado.SaltAuthHandler)]
         return self.build_tornado_app(urls)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get(self):
         """
         We don't allow gets, so assert we get 401s
@@ -604,6 +615,7 @@ class TestSaltAuthHandler(SaltnadoTestCase):
         response = self.fetch("/login")
         self.assertEqual(response.code, 401)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_login(self):
         """
         Test valid logins
@@ -677,6 +689,7 @@ class TestSaltAuthHandler(SaltnadoTestCase):
         self.assertEqual(response_obj["user"], self.auth_creds_dict["username"])
         self.assertEqual(response_obj["eauth"], self.auth_creds_dict["eauth"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_login_missing_password(self):
         """
         Test logins with bad/missing passwords
@@ -695,6 +708,7 @@ class TestSaltAuthHandler(SaltnadoTestCase):
 
         self.assertEqual(response.code, 400)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_login_bad_creds(self):
         """
         Test logins with bad/missing passwords
@@ -716,6 +730,7 @@ class TestSaltAuthHandler(SaltnadoTestCase):
 
         self.assertEqual(response.code, 401)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_login_invalid_data_structure(self):
         """
         Test logins with either list or string JSON payload
@@ -753,6 +768,7 @@ class TestSaltRunHandler(SaltnadoTestCase):
         urls = [("/run", saltnado.RunSaltAPIHandler)]
         return self.build_tornado_app(urls)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_authentication_exception_consistency(self):
         """
         Test consistency of authentication exception of each clients.
@@ -791,6 +807,7 @@ class TestWebsocketSaltAPIHandler(SaltnadoTestCase):
         return rest_tornado.get_application(opts)
 
     @gen_test
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_websocket_handler_upgrade_to_websocket(self):
         response = yield self.http_client.fetch(
             self.get_url("/login"),
@@ -811,6 +828,7 @@ class TestWebsocketSaltAPIHandler(SaltnadoTestCase):
         ws.close()
 
     @gen_test
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_websocket_handler_bad_token(self):
         """
         A bad token should returns a 401 during a websocket connect
@@ -829,6 +847,7 @@ class TestWebsocketSaltAPIHandler(SaltnadoTestCase):
             self.assertEqual(error.code, 401)
 
     @gen_test
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_websocket_handler_cors_origin_wildcard(self):
         self._app.mod_opts["cors_origin"] = "*"
 
@@ -851,6 +870,7 @@ class TestWebsocketSaltAPIHandler(SaltnadoTestCase):
         ws.close()
 
     @gen_test
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cors_origin_single(self):
         self._app.mod_opts["cors_origin"] = "http://example.com"
 
@@ -883,6 +903,7 @@ class TestWebsocketSaltAPIHandler(SaltnadoTestCase):
             self.assertEqual(error.code, 403)
 
     @gen_test
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cors_origin_multiple(self):
         self._app.mod_opts["cors_origin"] = ["http://example.com", "http://foo.bar"]
 
@@ -962,6 +983,7 @@ class TestEventListener(AsyncTestCase):
         self.addCleanup(shutil.rmtree, self.sock_dir, ignore_errors=True)
         super(TestEventListener, self).setUp()
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_simple(self):
         """
         Test getting a few events
@@ -985,6 +1007,7 @@ class TestEventListener(AsyncTestCase):
             self.assertEqual(event_future.result()["tag"], "evt1")
             self.assertEqual(event_future.result()["data"]["data"], "foo1")
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_set_event_handler(self):
         """
         Test subscribing events using set_event_handler

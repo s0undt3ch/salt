@@ -44,6 +44,7 @@ class ProxyMinionTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         finally:
             proxy_minion.destroy()
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_handle_decoded_payload_metaproxy_called(self):
         """
         Tests that when the _handle_decoded_payload function is called, _metaproxy_call is also called.

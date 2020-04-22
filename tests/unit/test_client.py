@@ -25,6 +25,7 @@ from tests.support.unit import TestCase, skipIf
 
 
 class LocalClientTestCase(TestCase, SaltClientTestCaseMixin):
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_job_result_return_success(self):
         """
         Should return the `expected_return`, since there is a job with the right jid.
@@ -40,6 +41,7 @@ class LocalClientTestCase(TestCase, SaltClientTestCaseMixin):
         val = next(ret)
         self.assertEqual(val, expected_return)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_job_result_return_failure(self):
         """
         We are _not_ getting a job return, because the jid is different. Instead we should
@@ -61,6 +63,7 @@ class LocalClientTestCase(TestCase, SaltClientTestCaseMixin):
         with self.assertRaises(StopIteration):
             next(ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_local_client(self):
         local_client = client.LocalClient(mopts=self.get_temp_config("master"))
         self.assertIsInstance(

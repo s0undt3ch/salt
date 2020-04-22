@@ -831,6 +831,7 @@ class SaltKeyOptionParserTestCase(ParserBase, TestCase):
 
     # log level configuration tests
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_log_level_cli(self):
         """
         Tests that console log level option is not recognized

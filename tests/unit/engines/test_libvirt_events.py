@@ -83,6 +83,7 @@ class EngineLibvirtEventTestCase(TestCase, LoaderModuleMockMixin):
         assert libvirt_events._get_domain_event_detail(4, 2) == ("unknown", "unknown")
 
     @patch("salt.engines.libvirt_events.libvirt", VIR_NETWORK_EVENT_ID_LIFECYCLE=1000)
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_event_register(self, mock_libvirt):
         """
         Test that the libvirt_events engine actually registers events catch them and cleans

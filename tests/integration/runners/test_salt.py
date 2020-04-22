@@ -16,6 +16,7 @@ class SaltRunnerTest(ShellCase):
     Test the salt runner
     """
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_salt_cmd(self):
         """
         test return values of salt.cmd

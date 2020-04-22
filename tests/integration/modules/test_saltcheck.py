@@ -16,6 +16,7 @@ class SaltcheckModuleTest(ModuleCase):
     Test the saltcheck module
     """
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_saltcheck_run(self):
         """
         saltcheck.run_test
@@ -29,6 +30,7 @@ class SaltcheckModuleTest(ModuleCase):
         ret = self.run_function("saltcheck.run_test", test=saltcheck_test)
         self.assertDictContainsSubset({"status": "Pass"}, ret)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_saltcheck_state(self):
         """
         saltcheck.run_state_tests
@@ -50,6 +52,7 @@ class SaltcheckModuleTest(ModuleCase):
         for top_state_dict in ret:
             self.assertIn(list(top_state_dict)[0], expected_top_states)
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_saltcheck_checkall(self):
         """
         Validate saltcheck.run_state_tests check_all for the default saltenv of base.

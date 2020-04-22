@@ -80,6 +80,7 @@ class MacTimezoneModuleTest(ModuleCase):
             "Invalid Date/Time Format: 13/12/2014",
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_get_time(self):
         """
         Test timezone.get_time

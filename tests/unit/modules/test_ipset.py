@@ -63,6 +63,7 @@ class IpsetTestCase(TestCase, LoaderModuleMockMixin):
             with patch.dict(ipset.__salt__, {"cmd.run": mock}):
                 self.assertTrue(ipset.delete_set("set", "family"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_rename_set(self):
         """
         Test for Delete ipset set.

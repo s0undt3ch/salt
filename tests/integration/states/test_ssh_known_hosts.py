@@ -34,6 +34,7 @@ class SSHKnownHostsStateTest(ModuleCase, SaltReturnAssertsMixin):
             os.remove(self.known_hosts)
         super(SSHKnownHostsStateTest, self).tearDown()
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_present(self):
         """
         ssh_known_hosts.present

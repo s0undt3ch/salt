@@ -16,6 +16,7 @@ class ManageTest(ShellCase):
     Test the manage runner
     """
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_active(self):
         """
         jobs.active
@@ -24,6 +25,7 @@ class ManageTest(ShellCase):
         self.assertEqual(ret["return"], {})
         self.assertEqual(ret["out"], [])
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_lookup_jid(self):
         """
         jobs.lookup_jid
@@ -32,6 +34,7 @@ class ManageTest(ShellCase):
         self.assertEqual(ret["return"], {})
         self.assertEqual(ret["out"], [])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_lookup_jid_invalid(self):
         """
         jobs.lookup_jid

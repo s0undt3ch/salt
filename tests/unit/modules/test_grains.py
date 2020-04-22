@@ -296,6 +296,7 @@ class GrainsModuleTestCase(TestCase, LoaderModuleMockMixin):
             self.assertEqual(res, {"a": {"b": [{"b1": "bval1"}, "d"]}})
             self.assertEqual(grainsmod.__grains__, {"a": {"b": [{"b1": "bval1"}, "d"]}})
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_append_to_an_element_of_a_list(self):
         # Append to an element in a list
         # It currently fails silently

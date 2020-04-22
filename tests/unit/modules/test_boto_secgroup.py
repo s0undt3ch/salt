@@ -175,6 +175,7 @@ class BotoSecgroupTestCase(TestCase, LoaderModuleMockMixin):
         "Disabled for 3.7+ pending https://github.com/spulec/moto/issues/1706.",
     )
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_ec2_classic(self):
         """
         Test of creation of an EC2-Classic security group. The test ensures
@@ -199,6 +200,7 @@ class BotoSecgroupTestCase(TestCase, LoaderModuleMockMixin):
         "Disabled for 3.7+ pending https://github.com/spulec/moto/issues/1706.",
     )
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_ec2_vpc(self):
         """
         test of creation of an EC2-VPC security group. The test ensures that a
@@ -338,6 +340,7 @@ class BotoSecgroupTestCase(TestCase, LoaderModuleMockMixin):
         "Disabled for 3.7+ pending https://github.com/spulec/moto/issues/1706.",
     )
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_exists_true_name_classic(self):
         """
         tests 'true' existence of a group in EC2-Classic when given name
@@ -357,6 +360,7 @@ class BotoSecgroupTestCase(TestCase, LoaderModuleMockMixin):
         "Disabled for 3.7+ pending https://github.com/spulec/moto/issues/1706.",
     )
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_exists_false_name_classic(self):
         pass
 
@@ -384,6 +388,7 @@ class BotoSecgroupTestCase(TestCase, LoaderModuleMockMixin):
         "Disabled for 3.7+ pending https://github.com/spulec/moto/issues/1706.",
     )
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_exists_false_name_vpc(self):
         """
         tests 'false' existence of a group in vpc when given name and vpc_id
@@ -430,6 +435,7 @@ class BotoSecgroupTestCase(TestCase, LoaderModuleMockMixin):
         "Disabled for 3.7+ pending https://github.com/spulec/moto/issues/1706.",
     )
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_delete_group_ec2_classic(self):
         """
         test deletion of a group in EC2-Classic. Test does the following:

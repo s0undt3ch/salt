@@ -8,8 +8,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
-import pytest
-
 # Import Salt Libs
 import salt.states.archive as archive
 import salt.utils.platform
@@ -54,7 +52,6 @@ class ArchiveTestCase(TestCase, LoaderModuleMockMixin):
             }
         }
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_extracted_tar(self):
         """
         archive.extracted tar options

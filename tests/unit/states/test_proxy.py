@@ -3,8 +3,6 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
-import pytest
-
 # Import Salt Libs
 import salt.states.proxy as proxy
 
@@ -22,7 +20,6 @@ class ProxyTestCase(TestCase, LoaderModuleMockMixin):
     def setup_loader_modules(self):
         return {proxy: {}}
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_set_proxy_macos(self):
         """
             Test to make sure we can set the proxy settings on macOS

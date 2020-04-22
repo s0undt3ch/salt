@@ -49,6 +49,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
 
         return zfs_obj
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_exists_success(self):
         """
         Tests successful return of exists function
@@ -65,6 +66,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertTrue(zfs.exists("myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_exists_failure_not_exists(self):
         """
         Tests unsuccessful return of exists function if dataset does not exist
@@ -79,6 +81,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertFalse(zfs.exists("myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_exists_failure_invalid_name(self):
         """
         Tests unsuccessful return of exists function if dataset name is invalid
@@ -93,6 +96,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertFalse(zfs.exists("myzpool/"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_success(self):
         """
         Tests successful return of create function on ZFS file system creation
@@ -108,6 +112,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.create("myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_success_with_create_parent(self):
         """
         Tests successful return of create function when ``create_parent=True``
@@ -125,6 +130,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 res, zfs.create("myzpool/mydataset/mysubdataset", create_parent=True)
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_create_success_with_properties(self):
         """
         Tests successful return of create function on ZFS file system creation (with properties)
@@ -146,6 +152,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 ),
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_create_error_missing_dataset(self):
         """
         Tests unsuccessful return of create function if dataset name is missing
@@ -166,6 +173,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.create("myzpool"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_create_error_trailing_slash(self):
         """
         Tests unsuccessful return of create function if trailing slash in name is present
@@ -186,6 +194,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.create("myzpool/"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_error_no_such_pool(self):
         """
         Tests unsuccessful return of create function if the pool is not present
@@ -206,6 +215,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.create("myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_create_error_missing_parent(self):
         """
         Tests unsuccessful return of create function if the parent datasets do not exist
@@ -231,6 +241,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.create("myzpool/mydataset/mysubdataset"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_destroy_success(self):
         """
         Tests successful return of destroy function on ZFS file system destruction
@@ -246,6 +257,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.destroy("myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_destroy_error_not_exists(self):
         """
         Tests failure return of destroy function on ZFS file system destruction
@@ -266,6 +278,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.destroy("myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_destroy_error_has_children(self):
         """
         Tests failure return of destroy function on ZFS file system destruction
@@ -301,6 +314,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.destroy("myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_rename_success(self):
         """
         Tests successful return of rename function
@@ -316,6 +330,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.rename("myzpool/mydataset", "myzpool/newdataset"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_rename_error_not_exists(self):
         """
         Tests failure return of rename function
@@ -336,6 +351,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.rename("myzpool/mydataset", "myzpool/newdataset"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_list_success(self):
         """
         Tests zfs list
@@ -365,6 +381,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.list_("myzpool"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_list_parsable_success(self):
         """
         Tests zfs list with parsable set to False
@@ -394,6 +411,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.list_("myzpool", parsable=False))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_list_custom_success(self):
         """
         Tests zfs list
@@ -425,6 +443,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 res, zfs.list_("myzpool", properties="canmount,used,avail,compression")
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_list_custom_parsable_success(self):
         """
         Tests zfs list
@@ -461,6 +480,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 ),
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_list_error_no_dataset(self):
         """
         Tests zfs list
@@ -476,6 +496,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.list_("myzpool"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_list_mount_success(self):
         """
         Tests zfs list_mount
@@ -495,6 +516,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.list_mount())
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mount_success(self):
         """
         Tests zfs mount of filesystem
@@ -510,6 +532,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.mount("myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mount_failure(self):
         """
         Tests zfs mount of already mounted filesystem
@@ -533,6 +556,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.mount("myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_unmount_success(self):
         """
         Tests zfs unmount of filesystem
@@ -548,6 +572,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.unmount("myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_unmount_failure(self):
         """
         Tests zfs unmount of already mounted filesystem
@@ -568,6 +593,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.unmount("myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_inherit_success(self):
         """
         Tests zfs inherit of compression property
@@ -580,6 +606,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.inherit("compression", "myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_inherit_failure(self):
         """
         Tests zfs inherit of canmount
@@ -602,6 +629,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.inherit("canmount", "myzpool/mydataset"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_diff(self):
         """
         Tests zfs diff
@@ -629,6 +657,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 res, zfs.diff("myzpool/mydataset@yesterday", "myzpool/mydataset")
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_diff_parsed_time(self):
         """
         Tests zfs diff
@@ -669,6 +698,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 res, zfs.diff("myzpool/data@yesterday", "myzpool/data", parsable=False)
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_rollback_success(self):
         """
         Tests zfs rollback success
@@ -681,6 +711,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.rollback("myzpool/mydataset@yesterday"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_rollback_failure(self):
         """
         Tests zfs rollback failure
@@ -714,6 +745,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.rollback("myzpool/mydataset@yesterday"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_clone_success(self):
         """
         Tests zfs clone success
@@ -728,6 +760,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 res, zfs.clone("myzpool/mydataset@yesterday", "myzpool/yesterday")
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_clone_failure(self):
         """
         Tests zfs clone failure
@@ -756,6 +789,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 zfs.clone("myzpool/mydataset@yesterday", "myzpool/archive/yesterday"),
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_promote_success(self):
         """
         Tests zfs promote success
@@ -768,6 +802,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.promote("myzpool/yesterday"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_promote_failure(self):
         """
         Tests zfs promote failure
@@ -793,6 +828,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.promote("myzpool/yesterday"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_bookmark_success(self):
         """
         Tests zfs bookmark success
@@ -811,6 +847,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                     ),
                 )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_holds_success(self):
         """
         Tests zfs holds success
@@ -833,6 +870,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.holds("myzpool/mydataset@baseline"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_holds_failure(self):
         """
         Tests zfs holds failure
@@ -857,6 +895,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.holds("myzpool/mydataset@baseline"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_hold_success(self):
         """
         Tests zfs hold success
@@ -876,6 +915,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 ),
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_hold_failure(self):
         """
         Tests zfs hold failure
@@ -901,6 +941,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.hold("important", "myzpool/mydataset@baseline"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_release_success(self):
         """
         Tests zfs release success
@@ -920,6 +961,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 ),
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_release_failure(self):
         """
         Tests zfs release failure
@@ -947,6 +989,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
                 res, zfs.release("important", "myzpool/mydataset@baseline")
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_snapshot_success(self):
         """
         Tests zfs snapshot success
@@ -959,6 +1002,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.snapshot("myzpool/mydataset@baseline"))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_snapshot_failure(self):
         """
         Tests zfs snapshot failure
@@ -984,6 +1028,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.snapshot("myzpool/mydataset@baseline"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_snapshot_failure2(self):
         """
         Tests zfs snapshot failure
@@ -1006,6 +1051,7 @@ class ZfsTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(res, zfs.snapshot("myzpool/mydataset@baseline"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_set_success(self):
         """
         Tests zfs set success

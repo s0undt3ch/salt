@@ -115,6 +115,7 @@ class VirtualenvTestCase(TestCase, LoaderModuleMockMixin):
                     handler.messages,
                 )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_issue_6031_multiple_extra_search_dirs(self):
         extra_search_dirs = ["/tmp/bar-1", "/tmp/bar-2", "/tmp/bar-3"]
 

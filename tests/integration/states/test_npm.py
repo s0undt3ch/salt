@@ -40,6 +40,7 @@ class NpmStateTest(ModuleCase, SaltReturnAssertsMixin):
     @skipIf(salt.utils.platform.is_darwin(), "TODO this test hangs on mac.")
     @pytest.mark.requires_network
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_npm_install_url_referenced_package(self):
         """
         Determine if URL-referenced NPM module can be successfully installed.

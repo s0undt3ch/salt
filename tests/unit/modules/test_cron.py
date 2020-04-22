@@ -269,6 +269,7 @@ class CronTestCase(TestCase, LoaderModuleMockMixin):
                 "* * * * * ls",
             )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test__issue10959(self):
         """
         handle multi old style crontabs

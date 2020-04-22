@@ -31,6 +31,7 @@ class VirtualenvModuleTest(ModuleCase):
         self.venv_test_dir = tempfile.mkdtemp(dir=RUNTIME_VARS.TMP)
         self.venv_dir = os.path.join(self.venv_test_dir, "venv")
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_create_defaults(self):
         """
         virtualenv.managed

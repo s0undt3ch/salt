@@ -107,6 +107,7 @@ class DimensionDataTestCase(ExtendedTestCase, LoaderModuleMockMixin):
             SaltCloudSystemExit, dimensiondata.avail_locations, call="action"
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_avail_sizes_call(self):
         """
         Tests that a SaltCloudSystemExit is raised when trying to call avail_sizes

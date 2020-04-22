@@ -304,6 +304,7 @@ class RedismodTestCase(TestCase, LoaderModuleMockMixin):
         """
         self.assertEqual(redismod.config_set("name", "value"), "A")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_dbsize(self):
         """
         Test to return the number of keys in the selected database

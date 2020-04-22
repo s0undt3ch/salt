@@ -25,6 +25,7 @@ class BrewModuleTest(ModuleCase):
     Integration tests for the brew module
     """
 
+    @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
     def test_brew_install(self):
         """
         Tests the installation of packages
@@ -41,6 +42,7 @@ class BrewModuleTest(ModuleCase):
             self.run_function("pkg.remove", [ADD_PKG])
             raise
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_remove(self):
         """
         Tests the removal of packages
@@ -109,6 +111,7 @@ class BrewModuleTest(ModuleCase):
             self.run_function("pkg.remove", [ADD_PKG])
             raise
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_latest_version(self):
         """
         Test pkg.latest_version:

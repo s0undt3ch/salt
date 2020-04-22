@@ -36,6 +36,7 @@ class CMDTest(ModuleCase, SaltReturnAssertsMixin):
     def setUpClass(cls):
         cls.__cmd = "dir" if salt.utils.platform.is_windows() else "ls"
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_run_simple(self):
         """
         cmd.run
@@ -43,6 +44,7 @@ class CMDTest(ModuleCase, SaltReturnAssertsMixin):
         ret = self.run_state("cmd.run", name=self.__cmd, cwd=tempfile.gettempdir())
         self.assertSaltTrueReturn(ret)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_run_output_loglevel(self):
         """
         cmd.run with output_loglevel=quiet
@@ -55,6 +57,7 @@ class CMDTest(ModuleCase, SaltReturnAssertsMixin):
         )
         self.assertSaltTrueReturn(ret)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_test_run_simple(self):
         """
         cmd.run test interface
@@ -64,6 +67,7 @@ class CMDTest(ModuleCase, SaltReturnAssertsMixin):
         )
         self.assertSaltNoneReturn(ret)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_run_hide_output(self):
         """
         cmd.run with output hidden
@@ -115,6 +119,7 @@ class CMDRunRedirectTest(ModuleCase, SaltReturnAssertsMixin):
                 pass
         super(CMDRunRedirectTest, self).tearDown()
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_run_unless(self):
         """
         test cmd.run unless
@@ -157,6 +162,7 @@ class CMDRunRedirectTest(ModuleCase, SaltReturnAssertsMixin):
             'Command "echo "hello"" run',
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_run_creates_exists(self):
         """
         test cmd.run creates already there
@@ -181,6 +187,7 @@ class CMDRunRedirectTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(ret[state_key]["result"])
         self.assertEqual(len(ret[state_key]["changes"]), 0)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_run_creates_new(self):
         """
         test cmd.run creates not there

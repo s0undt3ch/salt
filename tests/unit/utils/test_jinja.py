@@ -171,6 +171,7 @@ class TestSaltCacheLoader(TestCase):
         jinja = Environment(loader=loader)
         return loader._file_client, jinja
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_import(self):
         """
         You can import and use macros from other files
@@ -1359,6 +1360,7 @@ class TestCustomExtensions(TestCase):
         self.assertEqual(rendered, "16777216")
 
     @pytest.mark.flaky(max_runs=4)
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_http_query(self):
         """
         Test the `http_query` Jinja filter.
@@ -1693,6 +1695,7 @@ class TestDotNotationLookup(ModuleCase):
     def render(self, tmpl_str, context=None):
         return self.jinja(tmpl_str, context=context or {}, argline="-s").read()
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_normlookup(self):
         """
         Sanity-check the normal dictionary-lookup syntax for our stub function
@@ -1703,6 +1706,7 @@ class TestDotNotationLookup(ModuleCase):
             ret = self.render(tmpl_str)
         self.assertEqual(ret, "Hello, True.")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_dotlookup(self):
         """
         Check calling a stub function using awesome dot-notation

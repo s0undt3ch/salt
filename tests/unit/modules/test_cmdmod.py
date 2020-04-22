@@ -108,6 +108,7 @@ class CMDMODTestCase(TestCase, LoaderModuleMockMixin):
             CommandExecutionError, cmdmod._render_cmd, "boo", "bar", "baz"
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_check_loglevel_bad_level(self):
         """
         Tests return of providing an invalid loglevel option
@@ -142,6 +143,7 @@ class CMDMODTestCase(TestCase, LoaderModuleMockMixin):
         ret = {"foo": None, "bar": None}
         self.assertEqual(ret, cmdmod._parse_env(["foo", "bar"]))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_parse_env_dict(self):
         """
         Test the return of an env that is not a dict

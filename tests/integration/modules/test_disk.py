@@ -29,6 +29,7 @@ class DiskModuleVirtualizationTest(ModuleCase):
         if os.path.isfile("/etc/mtab"):
             shutil.move("/etc/mtab", "/tmp/mtab")
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_no_mtab(self):
         ret = self.run_function("disk.usage")
         self.assertDictEqual(ret, {})

@@ -26,6 +26,7 @@ class MineTest(ModuleCase, ShellCase):
             self.tgt = "*"
         self.wait_for_all_jobs()
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_get(self):
         """
         test mine.get and mine.update
@@ -36,6 +37,7 @@ class MineTest(ModuleCase, ShellCase):
         # mine.update will return True
         self.assertTrue(self.run_function("mine.get", ["minion", "test.ping"]))
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_get_allow_tgt(self):
         """
         test mine.get and mine.update using allow_tgt
@@ -54,6 +56,8 @@ class MineTest(ModuleCase, ShellCase):
         min_ret = self.run_call("mine.get {0} test.arg".format(self.tgt))
         assert "            - isn't" not in min_ret
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_send_allow_tgt(self):
         """
         test mine.send with allow_tgt set
@@ -77,6 +81,7 @@ class MineTest(ModuleCase, ShellCase):
         # ensure we did not get the mine_name mine function for minion
         assert "            - one" not in min_ret
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_send_allow_tgt_compound(self):
         """
         test mine.send with allow_tgt set

@@ -49,6 +49,7 @@ class RendererTests(TestCase, RendererMixin, LoaderModuleMockMixin):
         return {yamlex: {}}
 
     @skipIf(not yamlex.available, SKIP_MESSAGE % "yamlex")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_basic(self):
         sls_obj = self.render(basic_template)
         assert sls_obj == {"foo": "bar"}, sls_obj

@@ -37,6 +37,7 @@ class EtcdModTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'get_' function tests: 1
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get(self):
         """
         Test if it get a value from etcd, by direct path
@@ -113,7 +114,6 @@ class EtcdModTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'ls_' function tests: 1
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_ls(self):
         """
         Test if it return all keys and dirs inside a specific path

@@ -411,6 +411,7 @@ class TestReactor(TestCase, AdaptedConfigurationTestCaseMixin):
         del cls.reactor
         del cls.render_pipe
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_list_reactors(self):
         """
         Ensure that list_reactors() returns the correct list of reactor SLS
@@ -423,6 +424,7 @@ class TestReactor(TestCase, AdaptedConfigurationTestCaseMixin):
                     self.reactor.list_reactors(tag), self.reaction_map[tag]
                 )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_reactions(self):
         """
         Ensure that the correct reactions are built from the configured SLS

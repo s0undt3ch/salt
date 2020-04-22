@@ -51,6 +51,7 @@ class SaltmodTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'state' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_state(self):
         """
         Test to invoke a state run on a given target
@@ -197,6 +198,7 @@ class SaltmodTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'function' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_function(self):
         """
         Test to execute a single module function on a remote

@@ -47,7 +47,6 @@ class VenafiTest(ShellCase):
     """
 
     @with_random_name
-    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_request(self, name):
         cn = "{0}.example.com".format(name)
 
@@ -89,7 +88,6 @@ class VenafiTest(ShellCase):
         assert pkey_public_key_pem == cert_public_key_pem
 
     @with_random_name
-    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_sign(self, name):
 
         csr_pem = """-----BEGIN CERTIFICATE REQUEST-----

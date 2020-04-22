@@ -278,6 +278,7 @@ class NetworkTestCase(TestCase):
                 )
                 raise _e_
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_dns_check(self):
         hosts = [
             {

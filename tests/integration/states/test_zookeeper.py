@@ -74,6 +74,7 @@ class ZookeeperTestCase(ModuleCase, SaltReturnAssertsMixin):
         )
         self.assertSaltTrueReturn(ret)
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_zookeeper_absent(self):
         self.run_state(
             "zookeeper.present", name="/test/name", value="testuser", makepath=True,

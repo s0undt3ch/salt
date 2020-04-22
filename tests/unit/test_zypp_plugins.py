@@ -10,7 +10,6 @@ import imp
 import os
 import sys
 
-import pytest
 from tests.support.mock import MagicMock, patch
 
 # Import Salt Testing Libs
@@ -44,7 +43,6 @@ class ZyppPluginsTestCase(TestCase):
         not os.path.exists(ZYPPNOTIFY_FILE),
         "Required file '{}' does not exist.".format(ZYPPNOTIFY_FILE),
     )
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_drift_detector(self):
         """
         Test drift detector for a correct cookie file.

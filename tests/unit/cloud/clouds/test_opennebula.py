@@ -42,6 +42,7 @@ class OpenNebulaTestCase(TestCase, LoaderModuleMockMixin):
             }
         }
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_avail_images_action(self):
         """
         Tests that a SaltCloudSystemExit error is raised when trying to call
@@ -563,6 +564,7 @@ class OpenNebulaTestCase(TestCase, LoaderModuleMockMixin):
         """
         self.assertRaises(SaltCloudSystemExit, opennebula.image_allocate, "function")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_image_allocate_no_path_or_data(self):
         """
         Tests that a SaltCloudSystemExit is raised when neither the path nor data args
@@ -980,6 +982,7 @@ class OpenNebulaTestCase(TestCase, LoaderModuleMockMixin):
         """
         self.assertRaises(SaltCloudSystemExit, opennebula.template_clone, "foo")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_template_clone_no_name(self):
         """
         Tests that a SaltCloudSystemExit is raised when the name arg is missing.

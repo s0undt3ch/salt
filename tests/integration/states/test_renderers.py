@@ -18,6 +18,7 @@ class TestJinjaRenderer(ModuleCase):
     Validate that ordering works correctly
     """
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_dot_notation(self):
         """
         Test the Jinja dot-notation syntax for calling execution modules

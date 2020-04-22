@@ -43,6 +43,7 @@ class CacheDictTestCase(TestCase):
         del cd["foo"]
         self.assertNotIn("foo", cd)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_ttl(self):
         cd = cache.CacheDict(0.1)
         cd["foo"] = "bar"

@@ -29,6 +29,7 @@ class MacUserModuleTest(ModuleCase):
     Integration tests for the mac_user module
     """
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_mac_user_add(self):
         """
         Tests the add function
@@ -41,6 +42,7 @@ class MacUserModuleTest(ModuleCase):
             self.run_function("user.delete", [ADD_USER])
             raise
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mac_user_delete(self):
         """
         Tests the delete function
@@ -78,6 +80,7 @@ class MacUserModuleTest(ModuleCase):
             self.run_function("user.delete", [PRIMARY_GROUP_USER])
             raise
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_mac_user_changes(self):
         """
         Tests mac_user functions that change user properties

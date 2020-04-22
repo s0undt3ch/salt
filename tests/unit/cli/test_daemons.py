@@ -254,6 +254,7 @@ class DaemonsStarterTestCase(TestCase, SaltClientTestCaseMixin):
         self.assertTrue(m_parent.recv())
         p_.join()
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_master_daemon_hash_type_verified(self):
         """
         Verify if Master is verifying hash_type config option.
@@ -262,6 +263,7 @@ class DaemonsStarterTestCase(TestCase, SaltClientTestCaseMixin):
         """
         self._multiproc_exec_test(_master_exec_test)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_minion_daemon_hash_type_verified(self):
         """
         Verify if Minion is verifying hash_type config option.
@@ -270,6 +272,7 @@ class DaemonsStarterTestCase(TestCase, SaltClientTestCaseMixin):
         """
         self._multiproc_exec_test(_minion_exec_test)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_proxy_minion_daemon_hash_type_verified(self):
         """
         Verify if ProxyMinion is verifying hash_type config option.

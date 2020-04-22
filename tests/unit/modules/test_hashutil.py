@@ -36,18 +36,22 @@ class HashutilTestCase(ModuleCase):
         )
         self.hashutil = salt.loader.raw_mod(minion_opts, "hashutil", None)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_base64_encodestring(self):
         ret = self.hashutil["hashutil.base64_encodestring"](self.the_string)
         self.assertEqual(ret, self.the_string_base64)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_base64_decodestring(self):
         ret = self.hashutil["hashutil.base64_decodestring"](self.the_string_base64)
         self.assertEqual(ret, self.the_string)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_md5_digest(self):
         ret = self.hashutil["hashutil.md5_digest"](self.the_string)
         self.assertEqual(ret, self.the_string_md5)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_sha256_digest(self):
         ret = self.hashutil["hashutil.sha256_digest"](self.the_string)
         self.assertEqual(ret, self.the_string_sha256)

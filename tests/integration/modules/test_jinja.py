@@ -33,12 +33,14 @@ class TestModulesJinja(ModuleCase):
         else:
             return path
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_import_json(self):
         json_file = "osarchmap.json"
         ret = self.run_function("jinja.import_json", [self._path(json_file)])
         with salt.utils.files.fopen(self._path(json_file, absolute=True)) as fh_:
             self.assertDictEqual(salt.utils.json.load(fh_), ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_import_yaml(self):
         yaml_file = "defaults.yaml"
         ret = self.run_function("jinja.import_yaml", [self._path(yaml_file)])

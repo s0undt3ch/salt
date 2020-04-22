@@ -39,6 +39,7 @@ class MacKeychainModuleTest(ModuleCase):
         if self.cert_alias in certs_list:
             self.run_function("keychain.uninstall", [self.cert_alias])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_mac_keychain_install(self):
         """
         Tests that attempts to install a certificate

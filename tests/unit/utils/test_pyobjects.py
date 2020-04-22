@@ -178,6 +178,7 @@ class MapBuilder(object):
         return ret
 
 
+@pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
 class StateTests(TestCase):
     def setUp(self):
         Registry.empty()
@@ -264,6 +265,7 @@ class StateTests(TestCase):
         )
 
 
+@pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
 class RendererMixin(object):
     """
     This is a mixin that adds a ``.render()`` method to render a template
@@ -325,7 +327,9 @@ class RendererMixin(object):
         )
 
 
+@pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
 class RendererTests(RendererMixin, StateTests, MapBuilder):
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_basic(self):
         ret = self.render(basic_template)
         self.assertEqual(
@@ -347,16 +351,19 @@ class RendererTests(RendererMixin, StateTests, MapBuilder):
         )
         self.assertEqual(Registry.states, OrderedDict())
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_invalid_function(self):
         def _test():
             self.render(invalid_template)
 
         self.assertRaises(InvalidFunction, _test)
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_include(self):
         ret = self.render(include_template)
         self.assertEqual(ret, OrderedDict([("include", ["http"])]))
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_extend(self):
         ret = self.render(
             extend_template, {"grains": {"os_family": "Debian", "os": "Debian"}}
@@ -385,6 +392,7 @@ class RendererTests(RendererMixin, StateTests, MapBuilder):
             ),
         )
 
+    @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
     def test_sls_imports(self):
         def render_and_assert(template):
             ret = self.render(
@@ -411,6 +419,7 @@ class RendererTests(RendererMixin, StateTests, MapBuilder):
         self.write_template_file("recursive_map.sls", recursive_map_template)
         render_and_assert(recursive_import_template)
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_import_scope(self):
         self.write_template_file("map.sls", self.build_map())
         self.write_template_file("recursive_map.sls", recursive_map_template)
@@ -423,15 +432,18 @@ class RendererTests(RendererMixin, StateTests, MapBuilder):
 
         self.assertRaises(NameError, do_render)
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_random_password(self):
         """Test for https://github.com/saltstack/salt/issues/21796"""
         ret = self.render(random_password_template)
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_import_random_password(self):
         """Import test for https://github.com/saltstack/salt/issues/21796"""
         self.write_template_file("password.sls", random_password_template)
         ret = self.render(random_password_import_template)
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_requisite_implicit_list(self):
         """Ensure that the implicit list characteristic works as expected"""
         ret = self.render(
@@ -463,7 +475,7 @@ class RendererTests(RendererMixin, StateTests, MapBuilder):
         )
 
 
-@pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
+@pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
 class MapTests(RendererMixin, TestCase, MapBuilder):
     maxDiff = None
 
@@ -510,6 +522,7 @@ class MapTests(RendererMixin, TestCase, MapBuilder):
         else:
             raise AssertionError("both dicts are equal")
 
+    @pytest.mark.slow_test(seconds=480)  # Test takes >240 and <=480 seconds
     def test_map(self):
         """
         Test declarative ordering
@@ -554,6 +567,7 @@ class MapTests(RendererMixin, TestCase, MapBuilder):
         self.assert_not_equal(ret, *self.ubuntu_attrs)
 
     # @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
+    @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
     def test_map_with_priority(self):
         """
         With declarative ordering, the debian service name would override the
@@ -581,6 +595,7 @@ class MapTests(RendererMixin, TestCase, MapBuilder):
         self.assert_equal(ret, *self.centos_attrs)
 
 
+@pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
 class SaltObjectTests(TestCase):
     def test_salt_object(self):
         def attr_fail():

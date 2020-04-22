@@ -149,6 +149,7 @@ class BotoElbTestCase(TestCase, LoaderModuleMockMixin):
         sys.version_info > (3, 6),
         "Disabled for 3.7+ pending https://github.com/spulec/moto/issues/1706.",
     )
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_register_instances_valid_id_result_true(self):
         """
         tests that given a valid instance id and valid ELB that
@@ -200,6 +201,7 @@ class BotoElbTestCase(TestCase, LoaderModuleMockMixin):
         sys.version_info > (3, 6),
         "Disabled for 3.7+ pending https://github.com/spulec/moto/issues/1706.",
     )
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_deregister_instances_valid_id_result_true(self):
         """
         tests that given an valid id the boto_elb deregister_instances method

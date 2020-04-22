@@ -57,6 +57,7 @@ class AssistiveTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertFalse(assistive.installed("foo"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_enable_assistive(self):
         """
         Test enabling a bundle ID as being allowed to run with assistive access

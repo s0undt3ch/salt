@@ -142,6 +142,7 @@ class FileClientTest(
         with self.assertRaises(NotImplementedError):
             self.file_client.get_file(None)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_file_client(self):
         minion_opts = self.get_temp_config("minion")
         minion_opts["file_client"] = "remote"
@@ -220,6 +221,7 @@ class FileclientCacheTest(
         # Create the CACHE_ROOT
         _new_dir(self.CACHE_ROOT)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cache_dir(self):
         """
         Ensure entire directory is cached to correct location
@@ -258,6 +260,7 @@ class FileclientCacheTest(
                     self.assertTrue(SUBDIR in content)
                     self.assertTrue(saltenv in content)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cache_dir_with_alternate_cachedir_and_absolute_path(self):
         """
         Ensure entire directory is cached to correct location when an alternate
@@ -294,6 +297,7 @@ class FileclientCacheTest(
                     self.assertTrue(SUBDIR in content)
                     self.assertTrue(saltenv in content)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cache_dir_with_alternate_cachedir_and_relative_path(self):
         """
         Ensure entire directory is cached to correct location when an alternate
@@ -335,6 +339,7 @@ class FileclientCacheTest(
                     self.assertTrue(SUBDIR in content)
                     self.assertTrue(saltenv in content)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cache_file(self):
         """
         Ensure file is cached to correct location
@@ -364,6 +369,7 @@ class FileclientCacheTest(
                 log.debug("content = %s", content)
                 self.assertTrue(saltenv in content)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cache_file_with_alternate_cachedir_and_absolute_path(self):
         """
         Ensure file is cached to correct location when an alternate cachedir is

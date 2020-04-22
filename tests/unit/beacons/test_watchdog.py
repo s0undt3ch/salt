@@ -67,11 +67,13 @@ class IWatchdogBeaconTestCase(TestCase, LoaderModuleMockMixin):
         ret = watchdog.validate(config)
         self.assertEqual(ret, (True, "Valid beacon configuration"))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_empty_config(self):
         config = [{}]
         ret = watchdog.beacon(config)
         self.assertEqual(ret, [])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_file_create(self):
         path = os.path.join(self.tmpdir, "tmpfile")
 
@@ -86,6 +88,7 @@ class IWatchdogBeaconTestCase(TestCase, LoaderModuleMockMixin):
         self.assertEqual(ret[0]["path"], path)
         self.assertEqual(ret[0]["change"], "created")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_file_modified(self):
         path = os.path.join(self.tmpdir, "tmpfile")
         # Create triggers a modify event along with the create event in Py3
@@ -116,6 +119,7 @@ class IWatchdogBeaconTestCase(TestCase, LoaderModuleMockMixin):
         # Check results of the for loop to validate modified
         self.assertTrue(modified)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_file_deleted(self):
         path = os.path.join(self.tmpdir, "tmpfile")
         create(path)
@@ -131,6 +135,7 @@ class IWatchdogBeaconTestCase(TestCase, LoaderModuleMockMixin):
         self.assertEqual(ret[0]["path"], path)
         self.assertEqual(ret[0]["change"], "deleted")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_file_moved(self):
         path = os.path.join(self.tmpdir, "tmpfile")
         create(path)
@@ -146,6 +151,7 @@ class IWatchdogBeaconTestCase(TestCase, LoaderModuleMockMixin):
         self.assertEqual(ret[0]["path"], path)
         self.assertEqual(ret[0]["change"], "moved")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_file_create_in_directory(self):
         config = [{"directories": {self.tmpdir: {"mask": ["create"]}}}]
         self.assertValid(config)

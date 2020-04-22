@@ -815,6 +815,7 @@ class NeutronTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'remove_gateway_router' function tests: 1
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_remove_gateway_router(self):
         """
         Test if it removes an external network gateway from the specified router

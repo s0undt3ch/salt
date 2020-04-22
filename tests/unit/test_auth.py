@@ -55,6 +55,7 @@ class LoadAuthTestCase(TestCase):
             self.addCleanup(patcher.stop)
         self.lauth = auth.LoadAuth({})  # Load with empty opts
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_tok_with_broken_file_will_remove_bad_token(self):
         fake_get_token = MagicMock(side_effect=SaltDeserializationError("hi"))
         patch_opts = patch.dict(self.lauth.opts, {"eauth_tokens": "testfs"})
@@ -109,6 +110,7 @@ class LoadAuthTestCase(TestCase):
             mock_rm_token.assert_not_called()
             assert expected_token is actual_token, "Token was not returned"
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_load_name(self):
         valid_eauth_load = {
             "username": "test_user",
@@ -256,6 +258,7 @@ class MasterACLTestCase(ModuleCase):
         self.addCleanup(delattr, self, "valid_clear_load")
 
     @skipIf(salt.utils.platform.is_windows(), "PAM eauth not available on Windows")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_master_publish_name(self):
         """
         Test to ensure a simple name can auth against a given function.
@@ -278,6 +281,7 @@ class MasterACLTestCase(ModuleCase):
                 self.fire_event_mock.call_args[0][0]["fun"], "sys.doc"
             )  # If sys.doc were to fire, this would match
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_master_publish_group(self):
         """
         Tests to ensure test_group can access test.echo but *not* sys.doc
@@ -303,6 +307,7 @@ class MasterACLTestCase(ModuleCase):
             # Did we fire it?
             self.assertNotEqual(self.fire_event_mock.call_args[0][0]["fun"], "sys.doc")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_master_publish_some_minions(self):
         """
         Tests to ensure we can only target minions for which we
@@ -316,6 +321,7 @@ class MasterACLTestCase(ModuleCase):
         self.clear.publish(self.valid_clear_load)
         self.assertEqual(self.fire_event_mock.mock_calls, [])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_master_not_user_glob_all(self):
         """
         Test to ensure that we DO NOT access to a given
@@ -338,6 +344,7 @@ class MasterACLTestCase(ModuleCase):
         self.assertEqual(self.fire_event_mock.mock_calls, [])
 
     @skipIf(salt.utils.platform.is_windows(), "PAM eauth not available on Windows")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_master_minion_glob(self):
         """
         Test to ensure we can allow access to a given
@@ -374,6 +381,7 @@ class MasterACLTestCase(ModuleCase):
             "Did not fire {0} for minion glob".format(requested_function),
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_master_function_glob(self):
         """
         Test to ensure that we can allow access to a given
@@ -387,6 +395,7 @@ class MasterACLTestCase(ModuleCase):
         # Unimplemented
 
     @skipIf(salt.utils.platform.is_windows(), "PAM eauth not available on Windows")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_args_empty_spec(self):
         """
         Test simple arg restriction allowed.
@@ -413,6 +422,7 @@ class MasterACLTestCase(ModuleCase):
             self.assertEqual(self.fire_event_mock.call_args[0][0]["fun"], "test.empty")
 
     @skipIf(salt.utils.platform.is_windows(), "PAM eauth not available on Windows")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_args_simple_match(self):
         """
         Test simple arg restriction allowed.
@@ -442,6 +452,7 @@ class MasterACLTestCase(ModuleCase):
             self.assertEqual(self.fire_event_mock.call_args[0][0]["fun"], "test.echo")
 
     @skipIf(salt.utils.platform.is_windows(), "PAM eauth not available on Windows")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_args_more_args(self):
         """
         Test simple arg restriction allowed to pass unlisted args.
@@ -476,6 +487,7 @@ class MasterACLTestCase(ModuleCase):
             self.clear.publish(self.valid_clear_load)
             self.assertEqual(self.fire_event_mock.call_args[0][0]["fun"], "test.echo")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_args_simple_forbidden(self):
         """
         Test simple arg restriction forbidden.
@@ -518,6 +530,7 @@ class MasterACLTestCase(ModuleCase):
             self.assertEqual(self.fire_event_mock.mock_calls, [])
 
     @skipIf(salt.utils.platform.is_windows(), "PAM eauth not available on Windows")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_args_kwargs_match(self):
         """
         Test simple kwargs restriction allowed.
@@ -552,6 +565,7 @@ class MasterACLTestCase(ModuleCase):
             self.clear.publish(self.valid_clear_load)
             self.assertEqual(self.fire_event_mock.call_args[0][0]["fun"], "test.echo")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_args_kwargs_mismatch(self):
         """
         Test simple kwargs restriction allowed.
@@ -610,6 +624,7 @@ class MasterACLTestCase(ModuleCase):
             self.assertEqual(self.fire_event_mock.mock_calls, [])
 
     @skipIf(salt.utils.platform.is_windows(), "PAM eauth not available on Windows")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_args_mixed_match(self):
         """
         Test mixed args and kwargs restriction allowed.
@@ -653,6 +668,7 @@ class MasterACLTestCase(ModuleCase):
                 self.fire_event_mock.call_args[0][0]["fun"], "my_mod.some_func"
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_args_mixed_mismatch(self):
         """
         Test mixed args and kwargs restriction forbidden.
@@ -786,6 +802,7 @@ class AuthACLTestCase(ModuleCase):
         self.addCleanup(delattr, self, "valid_clear_load")
 
     @skipIf(salt.utils.platform.is_windows(), "PAM eauth not available on Windows")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_acl_simple_allow(self):
         self.clear.publish(self.valid_clear_load)
         self.assertEqual(

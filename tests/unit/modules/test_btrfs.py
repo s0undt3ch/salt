@@ -151,6 +151,7 @@ class BtrfsTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'mkfs' function tests: 3
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_mkfs(self):
         """
         Test if it create a file system on the specified device.

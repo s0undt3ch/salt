@@ -71,6 +71,7 @@ class PkgrepoTest(ModuleCase, SaltReturnAssertsMixin):
 
     @pytest.mark.requires_salt_states("pkgrepo.absent", "pkgrepo.managed")
     @requires_system_grains
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_pkgrepo_03_with_comments(self, grains):
         """
         Test adding a repo with comments

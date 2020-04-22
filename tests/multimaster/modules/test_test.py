@@ -19,12 +19,14 @@ class TestModuleTest(MultimasterModuleCase, AdaptedConfigurationTestCaseMixin):
     Validate the test module
     """
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_ping(self):
         """
         test.ping
         """
         self.assertEqual(self.run_function_all_masters("test.ping"), [True] * 2)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_echo(self):
         """
         test.echo
@@ -33,6 +35,7 @@ class TestModuleTest(MultimasterModuleCase, AdaptedConfigurationTestCaseMixin):
             self.run_function_all_masters("test.echo", ["text"]), ["text"] * 2
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_version(self):
         """
         test.version
@@ -42,12 +45,14 @@ class TestModuleTest(MultimasterModuleCase, AdaptedConfigurationTestCaseMixin):
             [salt.version.__saltstack_version__.string] * 2,
         )
 
+    @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
     def test_conf_test(self):
         """
         test.conf_test
         """
         self.assertEqual(self.run_function_all_masters("test.conf_test"), ["baz"] * 2)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_get_opts(self):
         """
         test.get_opts
@@ -57,12 +62,14 @@ class TestModuleTest(MultimasterModuleCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(ret[0]["cachedir"], opts["cachedir"])
         self.assertEqual(ret[1]["cachedir"], opts["cachedir"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_cross_test(self):
         """
         test.cross_test
         """
         self.assertTrue(self.run_function_all_masters("test.cross_test", ["test.ping"]))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_fib(self):
         """
         test.fib

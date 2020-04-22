@@ -292,6 +292,7 @@ class SSHThinTestCase(TestCase):
         assert thin._get_ext_namespaces(cfg).get("ns") == (2, 7,)
         assert isinstance(thin._get_ext_namespaces(cfg).get("ns"), tuple)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_get_ext_namespaces_failure(self):
         """
         Test thin._get_ext_namespaces function raises an exception

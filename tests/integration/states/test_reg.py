@@ -36,6 +36,7 @@ class RegTest(ModuleCase, SaltReturnAssertsMixin):
         reg.delete_key_recursive(hive="HKLM", key=FAKE_KEY)
         reg.delete_key_recursive(hive="HKLM", key=FAKE_KEY, use_32bit_registry=True)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_present_reg_sz(self):
         """
         Testing reg.present with REG_SZ
@@ -75,6 +76,7 @@ class RegTest(ModuleCase, SaltReturnAssertsMixin):
         }
         self.assertEqual(ret, expected)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_present_reg_sz_unicode_value(self):
         """
         Testing reg.present with REG_SZ and a unicode value
@@ -114,6 +116,7 @@ class RegTest(ModuleCase, SaltReturnAssertsMixin):
         }
         self.assertEqual(ret, expected)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_present_reg_sz_unicode_default_value(self):
         """
         Testing reg.present with REG_SZ and a unicode default value
@@ -192,6 +195,7 @@ class RegTest(ModuleCase, SaltReturnAssertsMixin):
         }
         self.assertEqual(ret, expected)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_present_reg_binary(self):
         """
         Testing reg.present with REG_BINARY

@@ -151,6 +151,7 @@ class SaltVersionTestCase(TestCase):
 
     @patch("salt.version.SaltStackVersion.LNAMES", {"oxygen": (2018, 3)})
     @patch("salt.version.SaltStackVersion", MagicMock(return_value="2018.3.2"))
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_greater_than_with_equal_codename(self):
         """
         Test that when an equal codename is passed in, the function returns False.

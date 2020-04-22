@@ -168,6 +168,7 @@ class DebianIpTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'build_interface' function tests: 1
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_build_interface(self):
         """
         Test if it builds an interface script for a network interface.

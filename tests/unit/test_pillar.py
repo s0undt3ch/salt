@@ -64,6 +64,7 @@ class PillarTestCase(TestCase):
             except AttributeError:
                 continue
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_pillarenv_from_saltenv(self):
         with patch("salt.pillar.compile_template") as compile_template:
             opts = {
@@ -84,6 +85,7 @@ class PillarTestCase(TestCase):
             self.assertEqual(pillar.opts["saltenv"], "dev")
             self.assertEqual(pillar.opts["pillarenv"], "dev")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_ext_pillar_no_extra_minion_data_val_dict(self):
         opts = {
             "optimization_order": [0, 1, 2],
@@ -164,6 +166,7 @@ class PillarTestCase(TestCase):
             "mocked-minion", "fake_pillar", "foo"
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_ext_pillar_no_extra_minion_data_val_elem(self):
         opts = {
             "optimization_order": [0, 1, 2],
@@ -329,6 +332,7 @@ class PillarTestCase(TestCase):
             "mocked-minion", "fake_pillar", "bar", extra_minion_data={"fake_key": "foo"}
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_ext_pillar_first(self):
         """
         test when using ext_pillar and ext_pillar_first
@@ -378,6 +382,7 @@ class PillarTestCase(TestCase):
         finally:
             shutil.rmtree(tempdir, ignore_errors=True)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_dynamic_pillarenv(self):
         opts = {
             "optimization_order": [0, 1, 2],
@@ -398,6 +403,7 @@ class PillarTestCase(TestCase):
             {"base": ["/srv/pillar/base"], "dev": ["/srv/pillar/__env__"]},
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_ignored_dynamic_pillarenv(self):
         opts = {
             "optimization_order": [0, 1, 2],
@@ -416,6 +422,7 @@ class PillarTestCase(TestCase):
         self.assertEqual(pillar.opts["pillar_roots"], {"base": ["/srv/pillar/base"]})
 
     @patch("salt.fileclient.Client.list_states")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_malformed_pillar_sls(self, mock_list_states):
         with patch("salt.pillar.compile_template") as compile_template:
             opts = {
@@ -528,6 +535,8 @@ class PillarTestCase(TestCase):
                 ({"foo": "bar", "nested": {"level": {"foo": "bar2"}}}, []),
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_includes_override_sls(self):
         opts = {
             "optimization_order": [0, 1, 2],
@@ -741,7 +750,6 @@ generic:
         }
 
     @with_tempdir()
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_include(self, tempdir):
         opts = {
             "optimization_order": [0, 1, 2],

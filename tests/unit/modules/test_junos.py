@@ -272,6 +272,7 @@ class Test_Junos_Module(TestCase, LoaderModuleMockMixin, XMLEqualityMixin):
             ret["out"] = True
             self.assertEqual(junos.facts_refresh(), ret)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_facts_refresh_exception(self):
         with patch("jnpr.junos.device.Device.facts_refresh") as mock_facts_refresh:
             mock_facts_refresh.side_effect = self.raise_exception
@@ -635,6 +636,7 @@ class Test_Junos_Module(TestCase, LoaderModuleMockMixin, XMLEqualityMixin):
             ret["out"] = False
             self.assertEqual(junos.rollback(), ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_rollback_with_id(self):
         with patch(
             "jnpr.junos.utils.config.Config.commit_check"
@@ -836,6 +838,7 @@ class Test_Junos_Module(TestCase, LoaderModuleMockMixin, XMLEqualityMixin):
             ret["out"] = False
             self.assertEqual(junos.rollback(), ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_rollback_commit_check_fails(self):
         with patch(
             "jnpr.junos.utils.config.Config.commit_check"
@@ -980,6 +983,7 @@ class Test_Junos_Module(TestCase, LoaderModuleMockMixin, XMLEqualityMixin):
             self.assertEqual(junos.shutdown(**args), ret)
             assert mock_reboot.called
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_shutdown_with_poweroff_args(self):
         with patch("salt.modules.junos.SW.poweroff") as mock_poweroff:
             ret = dict()
@@ -1219,6 +1223,7 @@ class Test_Junos_Module(TestCase, LoaderModuleMockMixin, XMLEqualityMixin):
                 path="test/path/config", format="set", merge=False
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_install_config_overwrite(self):
         with patch("jnpr.junos.utils.config.Config.commit") as mock_commit, patch(
             "jnpr.junos.utils.config.Config.commit_check"
@@ -1262,6 +1267,7 @@ class Test_Junos_Module(TestCase, LoaderModuleMockMixin, XMLEqualityMixin):
                 path="test/path/config", format="xml", overwrite=True
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_install_config_overwrite_false(self):
         with patch("jnpr.junos.utils.config.Config.commit") as mock_commit, patch(
             "jnpr.junos.utils.config.Config.commit_check"
@@ -1303,6 +1309,7 @@ class Test_Junos_Module(TestCase, LoaderModuleMockMixin, XMLEqualityMixin):
                 path="test/path/config", format="text", merge=True
             )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_install_config_load_causes_exception(self):
         with patch("jnpr.junos.utils.config.Config.diff") as mock_diff, patch(
             "jnpr.junos.utils.config.Config.load"
@@ -1425,6 +1432,7 @@ class Test_Junos_Module(TestCase, LoaderModuleMockMixin, XMLEqualityMixin):
             self.assertEqual(junos.install_config("actual/path/config", **args), ret)
             mock_fopen.assert_called_with("copy/config/here", "w")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_install_config_commit_params(self):
         with patch("jnpr.junos.utils.config.Config.commit") as mock_commit, patch(
             "jnpr.junos.utils.config.Config.commit_check"
@@ -1626,6 +1634,7 @@ class Test_Junos_Module(TestCase, LoaderModuleMockMixin, XMLEqualityMixin):
             ret["out"] = False
             self.assertEqual(junos.install_os("path"), ret)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_install_os_with_reboot_raises_exception(self):
         with patch("jnpr.junos.utils.sw.SW.install") as mock_install, patch(
             "jnpr.junos.utils.sw.SW.reboot"

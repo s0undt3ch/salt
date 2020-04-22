@@ -53,6 +53,7 @@ class PipStateTest(TestCase, SaltReturnAssertsMixin, LoaderModuleMockMixin):
             }
         }
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_install_requirements_parsing(self):
         log.debug("Real pip version is %s", pip.__version__)
         mock = MagicMock(return_value={"retcode": 0, "stdout": ""})

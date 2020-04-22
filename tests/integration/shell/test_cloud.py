@@ -38,12 +38,14 @@ class SaltCloudCliTest(ShellCase, ShellCaseCommonTestsMixin):
 
     _call_binary_ = "salt-cloud"
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_function_arguments(self):
         self.assertIn(
             "error: --function expects two arguments: " "<function-name> <provider>",
             "\n".join(self.run_cloud("--function show_image -h", catch_stderr=True)[1]),
         )
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_list_providers_accepts_no_arguments(self):
         self.assertIn(
             "error: '--list-providers' does not accept any " "arguments",

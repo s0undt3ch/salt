@@ -120,6 +120,7 @@ class MinionBlackoutTestCase(ModuleCase):
         self.wait_for_all_jobs()
         log.info("Exited minion blackout.")
 
+    @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
     def test_blackout(self):
         """
         Test that basic minion blackout functionality works

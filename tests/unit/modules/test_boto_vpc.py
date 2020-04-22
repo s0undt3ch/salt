@@ -355,6 +355,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
     """
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_vpc_exists_by_id_and_a_vpc_exists_the_vpc_exists_method_returns_true(
         self,
     ):
@@ -368,6 +369,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(vpc_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_vpc_exists_by_id_and_a_vpc_does_not_exist_the_vpc_exists_method_returns_false(
         self,
     ):
@@ -381,6 +383,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertFalse(vpc_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_vpc_exists_by_name_and_a_vpc_exists_the_vpc_exists_method_returns_true(
         self,
     ):
@@ -394,6 +397,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(vpc_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_vpc_exists_by_name_and_a_vpc_does_not_exist_the_vpc_exists_method_returns_false(
         self,
     ):
@@ -407,6 +411,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertFalse(vpc_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_vpc_exists_by_tags_and_a_vpc_exists_the_vpc_exists_method_returns_true(
         self,
     ):
@@ -422,6 +427,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(vpc_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_vpc_exists_by_tags_and_a_vpc_does_not_exist_the_vpc_exists_method_returns_false(
         self,
     ):
@@ -437,6 +443,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertFalse(vpc_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_vpc_exists_by_cidr_and_a_vpc_exists_the_vpc_exists_method_returns_true(
         self,
     ):
@@ -450,6 +457,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(vpc_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_vpc_exists_by_cidr_and_a_vpc_does_not_exist_the_vpc_exists_method_returns_false(
         self,
     ):
@@ -463,6 +471,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertFalse(vpc_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_vpc_exists_but_providing_no_filters_the_vpc_exists_method_raises_a_salt_invocation_error(
         self,
     ):
@@ -478,6 +487,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
             boto_vpc.exists(**conn_parameters)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_vpc_id_method_when_filtering_by_name(self):
         """
         Tests getting vpc id when filtering by name
@@ -489,6 +499,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertEqual(vpc.id, get_id_result["id"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_vpc_id_method_when_filtering_by_invalid_name(self):
         """
         Tests getting vpc id when filtering by invalid name
@@ -500,6 +511,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertEqual(get_id_result["id"], None)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_vpc_id_method_when_filtering_by_cidr(self):
         """
         Tests getting vpc id when filtering by cidr
@@ -511,6 +523,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertEqual(vpc.id, get_id_result["id"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_vpc_id_method_when_filtering_by_invalid_cidr(self):
         """
         Tests getting vpc id when filtering by invalid cidr
@@ -522,6 +535,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertEqual(get_id_result["id"], None)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_vpc_id_method_when_filtering_by_tags(self):
         """
         Tests getting vpc id when filtering by tags
@@ -533,6 +547,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertEqual(vpc.id, get_id_result["id"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_vpc_id_method_when_filtering_by_invalid_tags(self):
         """
         Tests getting vpc id when filtering by invalid tags
@@ -546,6 +561,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertEqual(get_id_result["id"], None)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_vpc_id_method_when_not_providing_filters_raises_a_salt_invocation_error(
         self,
     ):
@@ -559,6 +575,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
             boto_vpc.get_id(**conn_parameters)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_vpc_id_method_when_more_than_one_vpc_is_matched_raises_a_salt_command_execution_error(
         self,
     ):
@@ -574,6 +591,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
             boto_vpc.get_id(cidr="10.0.0.0/24", **conn_parameters)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_a_vpc_succeeds_the_create_vpc_method_returns_true(self):
         """
         tests True VPC created.
@@ -583,6 +601,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(vpc_creation_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_a_vpc_and_specifying_a_vpc_name_succeeds_the_create_vpc_method_returns_true(
         self,
     ):
@@ -596,6 +615,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(vpc_creation_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_a_vpc_and_specifying_tags_succeeds_the_create_vpc_method_returns_true(
         self,
     ):
@@ -623,6 +643,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
             self.assertTrue("error" in vpc_creation_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_deleting_an_existing_vpc_the_delete_vpc_method_returns_true(
         self,
     ):
@@ -636,6 +657,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(vpc_deletion_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_deleting_a_non_existent_vpc_the_delete_vpc_method_returns_false(
         self,
     ):
@@ -647,6 +669,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertFalse(delete_vpc_result["deleted"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_describing_vpc_by_id_it_returns_the_dict_of_properties_returns_true(
         self,
     ):
@@ -678,6 +701,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertEqual(describe_vpc, {"vpc": vpc_properties})
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_describing_vpc_by_id_it_returns_the_dict_of_properties_returns_false(
         self,
     ):
@@ -706,6 +730,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
             self.assertTrue("error" in describe_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_describing_vpc_but_providing_no_vpc_id_the_describe_method_raises_a_salt_invocation_error(
         self,
     ):
@@ -737,6 +762,7 @@ class BotoVpcTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
 )
 class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_subnet_association_single_subnet(self):
         """
         tests that given multiple subnet ids in the same VPC that the VPC ID is
@@ -751,6 +777,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertEqual(vpc.id, subnet_association["vpc_id"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_subnet_association_multiple_subnets_same_vpc(self):
         """
         tests that given multiple subnet ids in the same VPC that the VPC ID is
@@ -765,6 +792,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertEqual(vpc.id, subnet_association["vpc_id"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_get_subnet_association_multiple_subnets_different_vpc(self):
         """
         tests that given multiple subnet ids in different VPCs that False is
@@ -780,6 +808,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertEqual(set(subnet_association["vpc_ids"]), set([vpc_a.id, vpc_b.id]))
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_a_subnet_succeeds_the_create_subnet_method_returns_true(
         self,
     ):
@@ -796,6 +825,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue("id" in subnet_creation_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_a_subnet_and_specifying_a_name_succeeds_the_create_subnet_method_returns_true(
         self,
     ):
@@ -811,6 +841,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(subnet_creation_result["created"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_a_subnet_and_specifying_tags_succeeds_the_create_subnet_method_returns_true(
         self,
     ):
@@ -845,6 +876,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
             self.assertTrue("error" in subnet_creation_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_deleting_an_existing_subnet_the_delete_subnet_method_returns_true(
         self,
     ):
@@ -861,6 +893,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(subnet_deletion_result["deleted"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_deleting_a_non_existent_subnet_the_delete_vpc_method_returns_false(
         self,
     ):
@@ -873,6 +906,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue("error" in delete_subnet_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_subnet_exists_by_id_the_subnet_exists_method_returns_true(
         self,
     ):
@@ -889,6 +923,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(subnet_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_a_subnet_does_not_exist_the_subnet_exists_method_returns_false(
         self,
     ):
@@ -900,6 +935,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertFalse(subnet_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_subnet_exists_by_name_the_subnet_exists_method_returns_true(
         self,
     ):
@@ -914,6 +950,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(subnet_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_subnet_exists_by_name_the_subnet_does_not_exist_the_subnet_method_returns_false(
         self,
     ):
@@ -928,6 +965,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertFalse(subnet_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_subnet_exists_by_tags_the_subnet_exists_method_returns_true(
         self,
     ):
@@ -944,6 +982,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(subnet_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_checking_if_a_subnet_exists_by_tags_the_subnet_does_not_exist_the_subnet_method_returns_false(
         self,
     ):
@@ -992,6 +1031,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         )
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_describe_subnet_by_id_for_non_existent_subnet_returns_none(self):
         """
         Tests describing a non-existent subnet by id.
@@ -1023,6 +1063,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         )
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_describe_subnet_by_name_for_non_existent_subnet_returns_none(self):
         """
         Tests describing a non-existent subnet by id.
@@ -1081,6 +1122,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         )
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_subnet_passes_availability_zone(self):
         """
         Tests that the availability_zone kwarg is passed on to _create_resource
@@ -1110,6 +1152,7 @@ class BotoVpcSubnetsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
 )
 class BotoVpcInternetGatewayTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_an_internet_gateway_the_create_internet_gateway_method_returns_true(
         self,
     ):
@@ -1123,6 +1166,7 @@ class BotoVpcInternetGatewayTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(igw_creation_result.get("created"))
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_an_internet_gateway_with_non_existent_vpc_the_create_internet_gateway_method_returns_an_error(
         self,
     ):
@@ -1136,6 +1180,7 @@ class BotoVpcInternetGatewayTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue("error" in igw_creation_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_an_internet_gateway_with_vpc_name_specified_the_create_internet_gateway_method_returns_true(
         self,
     ):
@@ -1152,6 +1197,7 @@ class BotoVpcInternetGatewayTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(igw_creation_result.get("created"))
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_an_internet_gateway_with_vpc_id_specified_the_create_internet_gateway_method_returns_true(
         self,
     ):
@@ -1183,6 +1229,7 @@ class BotoVpcInternetGatewayTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
 )
 class BotoVpcNatGatewayTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_an_nat_gateway_the_create_nat_gateway_method_returns_true(
         self,
     ):
@@ -1200,6 +1247,7 @@ class BotoVpcNatGatewayTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(ngw_creation_result.get("created"))
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_an_nat_gateway_with_non_existent_subnet_the_create_nat_gateway_method_returns_an_error(
         self,
     ):
@@ -1216,6 +1264,7 @@ class BotoVpcNatGatewayTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue("error" in ngw_creation_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_an_nat_gateway_with_subnet_name_specified_the_create_nat_gateway_method_returns_true(
         self,
     ):
@@ -1306,6 +1355,7 @@ class BotoVpcCustomerGatewayTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
 )
 class BotoVpcDHCPOptionsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_dhcp_options_succeeds_the_create_dhcp_options_method_returns_true(
         self,
     ):
@@ -1333,6 +1383,7 @@ class BotoVpcDHCPOptionsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(dhcp_options_creation_result["created"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_dhcp_options_and_specifying_tags_succeeds_the_create_dhcp_options_method_returns_true(
         self,
     ):
@@ -1363,6 +1414,7 @@ class BotoVpcDHCPOptionsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
             self.assertTrue("error" in r)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_associating_an_existing_dhcp_options_set_to_an_existing_vpc_the_associate_dhcp_options_method_returns_true(
         self,
     ):
@@ -1379,6 +1431,7 @@ class BotoVpcDHCPOptionsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(dhcp_options_association_result["associated"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_associating_a_non_existent_dhcp_options_set_to_an_existing_vpc_the_associate_dhcp_options_method_returns_error(
         self,
     ):
@@ -1394,6 +1447,7 @@ class BotoVpcDHCPOptionsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue("error" in dhcp_options_association_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_associating_an_existing_dhcp_options_set_to_a_non_existent_vpc_the_associate_dhcp_options_method_returns_false(
         self,
     ):
@@ -1409,6 +1463,7 @@ class BotoVpcDHCPOptionsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue("error" in dhcp_options_association_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_dhcp_options_set_to_an_existing_vpc_succeeds_the_associate_new_dhcp_options_method_returns_true(
         self,
     ):
@@ -1462,6 +1517,7 @@ class BotoVpcDHCPOptionsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
             self.assertTrue("error" in r)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_dhcp_options_set_to_a_non_existent_vpc_the_dhcp_options_the_associate_new_dhcp_options_method_returns_false(
         self,
     ):
@@ -1473,6 +1529,7 @@ class BotoVpcDHCPOptionsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue("error" in r)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_dhcp_options_exists_the_dhcp_options_exists_method_returns_true(
         self,
     ):
@@ -1488,6 +1545,7 @@ class BotoVpcDHCPOptionsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(dhcp_options_exists_result["exists"])
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_dhcp_options_do_not_exist_the_dhcp_options_exists_method_returns_false(
         self,
     ):
@@ -1527,6 +1585,7 @@ class BotoVpcDHCPOptionsTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
 )
 class BotoVpcNetworkACLTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_network_acl_for_an_existing_vpc_the_create_network_acl_method_returns_true(
         self,
     ):
@@ -1542,6 +1601,7 @@ class BotoVpcNetworkACLTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(network_acl_creation_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_network_acl_for_an_existing_vpc_and_specifying_a_name_the_create_network_acl_method_returns_true(
         self,
     ):
@@ -1557,6 +1617,7 @@ class BotoVpcNetworkACLTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(network_acl_creation_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_network_acl_for_an_existing_vpc_and_specifying_tags_the_create_network_acl_method_returns_true(
         self,
     ):
@@ -1572,6 +1633,7 @@ class BotoVpcNetworkACLTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(network_acl_creation_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_network_acl_for_a_non_existent_vpc_the_create_network_acl_method_returns_an_error(
         self,
     ):
@@ -1605,6 +1667,7 @@ class BotoVpcNetworkACLTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertFalse(network_acl_creation_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_deleting_an_existing_network_acl_the_delete_network_acl_method_returns_true(
         self,
     ):
@@ -1621,6 +1684,7 @@ class BotoVpcNetworkACLTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(network_acl_deletion_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_deleting_a_non_existent_network_acl_the_delete_network_acl_method_returns_an_error(
         self,
     ):
@@ -1634,6 +1698,7 @@ class BotoVpcNetworkACLTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue("error" in network_acl_deletion_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_a_network_acl_exists_the_network_acl_exists_method_returns_true(
         self,
     ):
@@ -1650,6 +1715,7 @@ class BotoVpcNetworkACLTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(network_acl_deletion_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_a_network_acl_does_not_exist_the_network_acl_exists_method_returns_false(
         self,
     ):
@@ -1791,6 +1857,7 @@ class BotoVpcNetworkACLTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertTrue(network_acl_association_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_associating_a_non_existent_network_acl_to_an_existing_subnet_the_associate_network_acl_method_returns_an_error(
         self,
     ):
@@ -1891,6 +1958,7 @@ class BotoVpcNetworkACLTestCase(BotoVpcTestCaseBase, BotoVpcTestCaseMixin):
         self.assertFalse(network_acl_creation_and_association_result)
 
     @mock_ec2_deprecated
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_a_network_acl_to_a_non_existent_vpc_the_associate_new_network_acl_to_subnet_method_returns_an_error(
         self,
     ):

@@ -17,6 +17,7 @@ class StdTest(ModuleCase):
     def setUp(self):
         self.TIMEOUT = 600 if salt.utils.platform.is_windows() else 10
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_cli(self):
         """
         Test cli function
@@ -29,6 +30,7 @@ class StdTest(ModuleCase):
             self.assertEqual(data["args"], ["foo", "bar", "baz"])
             self.assertEqual(data["kwargs"]["qux"], "quux")
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_iter(self):
         """
         test cmd_iter
@@ -41,6 +43,7 @@ class StdTest(ModuleCase):
             self.assertEqual(data["args"], ["foo", "bar", "baz"])
             self.assertEqual(data["kwargs"]["qux"], "quux")
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_iter_no_block(self):
         """
         test cmd_iter_no_block
@@ -55,6 +58,7 @@ class StdTest(ModuleCase):
             self.assertEqual(data["args"], ["foo", "bar", "baz"])
             self.assertEqual(data["kwargs"]["qux"], "quux")
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_full_returns(self):
         """
         test cmd_iter

@@ -1102,6 +1102,7 @@ class TestFileState(TestCase, LoaderModuleMockMixin):
                 actual_contents = mock_manage.call_args[0][14]
                 self.assertEqual(actual_contents, expected_contents)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_managed(self):
         """
         Test to manage a given file, this function allows for a file to be

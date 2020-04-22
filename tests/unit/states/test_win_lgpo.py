@@ -124,6 +124,7 @@ class WinLGPOPolicyElementNames(TestCase, LoaderModuleMockMixin):
         with patch.dict(win_lgpo.__opts__, {"test": False}):
             win_lgpo.set_(name="nc_state", computer_policy=computer_policy)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_current_element_naming_style(self):
         computer_policy = {
             "Point and Print Restrictions": {
@@ -260,6 +261,7 @@ class WinLGPOPolicyElementNamesTestTrue(TestCase, LoaderModuleMockMixin):
                 win_lgpo.set_(name="nc_state", computer_policy=computer_policy)
             self.configured = True
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_current_element_naming_style(self):
         computer_policy = {
             "Point and Print Restrictions": {

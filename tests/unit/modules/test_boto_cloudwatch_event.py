@@ -288,6 +288,7 @@ class BotoCloudWatchEventTestCase(
         )
         self.assertIsNone(result["failures"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_putting_targets_fails_the_put_targets_method_returns_error(self):
         """
         tests False when thing type not created

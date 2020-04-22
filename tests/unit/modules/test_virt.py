@@ -232,6 +232,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         self.assertEqual(root.find("devices/serial").attrib["type"], "pty")
         self.assertEqual(root.find("devices/console").attrib["type"], "pty")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_gen_xml_for_telnet_console(self):
         """
         Test virt._gen_xml() telnet console
@@ -861,6 +862,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         # kvm mac address shoud start with 52:54:00
         self.assertTrue("mac address='52:54:00" in xml_data)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_diff_disks(self):
         """
         Test virt._diff_disks()
@@ -1272,7 +1274,6 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
                 )
                 self.assertEqual(mock_chmod.call_args[0][0], expected_disk_path)
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_update(self):
         """
         Test virt.update()
@@ -1785,6 +1786,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         self.assertEqual(setxml.find("os").find("loader"), None)
         self.assertEqual(setxml.find("os").find("nvram"), None)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_mixed_dict_and_list_as_profile_objects(self):
         """
         Test virt._nic_profile with mixed dictionaries and lists as input.
@@ -2654,6 +2656,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         actual = virt.list_networks()
         self.assertEqual(names, actual)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_network_info(self):
         """
         Test virt.network_info()
@@ -3122,6 +3125,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
             pool,
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_pool_info_notarget(self):
         """
         Test virt.pool_info()
@@ -3179,6 +3183,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         pool = virt.pool_info("foo")
         self.assertEqual({}, pool)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_pool_info_all(self):
         """
         Test virt.pool_info()
@@ -3278,6 +3283,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         isxen_mock.return_value = True
         self.assertEqual("xen", virt.get_hypervisor())
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_pool_delete(self):
         """
         Test virt.pool_delete function
@@ -3297,6 +3303,7 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
             self.mock_libvirt.VIR_STORAGE_POOL_DELETE_NORMAL
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_full_info(self):
         """
         Test virt.full_info
@@ -3436,7 +3443,6 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         self.assertEqual("5900", graphics["port"])
         self.assertEqual("0.0.0.0", graphics["listen"])
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_pool_update(self):
         """
         Test the pool_update function
@@ -3653,7 +3659,6 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         self.mock_conn.storagePoolDefineXML.assert_called_once_with(expected_xml)
         mock_secret.setValue.assert_called_once_with(b"secret")
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_volume_infos(self):
         """
         Test virt.volume_infos
@@ -3965,7 +3970,6 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
                 },
             )
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_volume_delete(self):
         """
         Test virt.volume_delete
@@ -4068,7 +4072,6 @@ class VirtTestCase(TestCase, LoaderModuleMockMixin):
         )
 
     @patch("salt.modules.virt.get_hypervisor", return_value="kvm")
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_pool_capabilities_computed(self, mock_get_hypervisor):
         """
         Test virt.pool_capabilities where libvirt doesn't have the pool-capabilities feature

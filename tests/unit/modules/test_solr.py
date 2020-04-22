@@ -237,6 +237,7 @@ class SolrTestCase(TestCase, LoaderModuleMockMixin):
                     ):
                         self.assertDictEqual(solr.replication_details(), tempdict1)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_backup(self):
         """
         Test to tell solr make a backup.

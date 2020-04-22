@@ -68,6 +68,7 @@ class WinTimezoneTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'get_offset' function tests: 1
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_get_offset(self):
         """
         Test if it get current numeric timezone offset from UCT (i.e. +0530)

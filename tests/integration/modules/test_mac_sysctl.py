@@ -46,6 +46,7 @@ class DarwinSysctlModuleTest(ModuleCase):
                 raise CommandExecutionError(msg.format(CONFIG))
             os.remove(CONFIG)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_assign(self):
         """
         Tests assigning a single sysctl parameter
@@ -82,6 +83,7 @@ class DarwinSysctlModuleTest(ModuleCase):
             os.remove(CONFIG)
             raise
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_persist_already_set(self):
         """
         Tests assigning a sysctl value that is already set in sysctl.conf file

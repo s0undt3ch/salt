@@ -76,6 +76,7 @@ class SSHPasswordTests(ShellCase):
 
 
 class SSHRosterDefaults(TestCase):
+    @pytest.mark.slow_test(seconds=0.1)  # Test takes >0.01 and <=0.1 seconds
     def test_roster_defaults_flat(self):
         """
         Test Roster Defaults on the flat roster

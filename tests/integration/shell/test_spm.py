@@ -24,6 +24,7 @@ class SPMTest(ShellCase, SPMCase):
         for arg in expected_args:
             self.assertIn(arg, "".join(output))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_spm_bad_arg(self):
         """
         test correct output when bad argument passed
@@ -33,6 +34,7 @@ class SPMTest(ShellCase, SPMCase):
         for arg in expected_args:
             self.assertIn(arg, "".join(output))
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_spm_assume_yes(self):
         """
         test spm install with -y arg

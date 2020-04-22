@@ -291,7 +291,6 @@ class AptPkgTestCase(TestCase, LoaderModuleMockMixin):
             ):
                 self.assertRaises(CommandExecutionError, aptpkg.refresh_db, **kwargs)
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_autoremove(self):
         """
         Test - Remove packages not required by another package.

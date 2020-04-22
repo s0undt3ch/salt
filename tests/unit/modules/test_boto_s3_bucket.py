@@ -244,6 +244,7 @@ class BotoS3BucketTestCase(BotoS3BucketTestCaseBase, BotoS3BucketTestCaseMixin):
             result.get("error", {}).get("message"), error_message.format("head_bucket")
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_a_bucket_succeeds_the_create_bucket_method_returns_true(
         self,
     ):
@@ -257,6 +258,7 @@ class BotoS3BucketTestCase(BotoS3BucketTestCaseBase, BotoS3BucketTestCaseMixin):
 
         self.assertTrue(result["created"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_creating_a_bucket_fails_the_create_bucket_method_returns_error(
         self,
     ):
@@ -309,6 +311,7 @@ class BotoS3BucketTestCase(BotoS3BucketTestCaseBase, BotoS3BucketTestCaseMixin):
 
         self.assertTrue(result["bucket"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_describing_bucket_it_returns_the_dict_of_properties_returns_false(
         self,
     ):
@@ -330,6 +333,7 @@ class BotoS3BucketTestCase(BotoS3BucketTestCaseBase, BotoS3BucketTestCaseMixin):
         result = boto_s3_bucket.describe(Bucket="mybucket", **conn_parameters)
         self.assertTrue("error" in result)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_listing_buckets_succeeds_the_list_buckets_method_returns_true(
         self,
     ):
@@ -341,6 +345,7 @@ class BotoS3BucketTestCase(BotoS3BucketTestCaseBase, BotoS3BucketTestCaseMixin):
 
         self.assertTrue(result["Buckets"])
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_listing_bucket_fails_the_list_bucket_method_returns_false(self):
         """
         tests False no bucket listed.
@@ -408,6 +413,7 @@ class BotoS3BucketTestCase(BotoS3BucketTestCaseBase, BotoS3BucketTestCaseMixin):
             error_message.format("put_bucket_cors"),
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_putting_lifecycle_configuration_succeeds_the_put_lifecycle_configuration_method_returns_true(
         self,
     ):
@@ -711,6 +717,7 @@ class BotoS3BucketTestCase(BotoS3BucketTestCaseBase, BotoS3BucketTestCaseMixin):
             error_message.format("delete_bucket_lifecycle_configuration"),
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_that_when_deleting_policy_succeeds_the_delete_policy_method_returns_true(
         self,
     ):

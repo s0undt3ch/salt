@@ -91,6 +91,7 @@ class ServiceTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(start_service)
         self.check_service_status(self.running)
 
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_service_dead(self):
         """
         test service.dead state module

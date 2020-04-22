@@ -89,6 +89,7 @@ class WinrepoTestCase(TestCase, LoaderModuleMockMixin):
                 expected.update({"changes": {"winrepo": []}})
                 self.assertDictEqual(winrepo.genrepo("salt", True), expected)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_genrepo_no_dir(self):
         """
         Test genrepo when the dir does not exist

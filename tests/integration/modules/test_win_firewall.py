@@ -28,6 +28,7 @@ class FirewallTest(ModuleCase):
                     self.assertTrue(self.run_function("firewall.disable", profile=net))
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_firewall_get_config(self):
         """
         test firewall.get_config
@@ -42,6 +43,7 @@ class FirewallTest(ModuleCase):
         self._pre_firewall_status(pre_run)
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_firewall_disable(self):
         """
         test firewall.disable
@@ -59,6 +61,7 @@ class FirewallTest(ModuleCase):
         self._pre_firewall_status(pre_run)
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_firewall_enable(self):
         """
         test firewall.enable

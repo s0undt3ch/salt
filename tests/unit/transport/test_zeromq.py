@@ -152,6 +152,7 @@ class ClearReqTestCases(BaseZMQReqCase, ReqChannelMixin):
         """
         raise salt.ext.tornado.gen.Return((payload, {"fun": "send_clear"}))
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_master_uri_override(self):
         """
         ensure master_uri kwarg is respected
@@ -195,6 +196,8 @@ class AESReqTestCases(BaseZMQReqCase, ReqChannelMixin):
     # WARNING: This test will fail randomly on any system with > 1 CPU core!!!
     #
     #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_badload(self):
         """
         Test a variety of bad requests, make sure that we get some sort of error
@@ -516,6 +519,7 @@ class PubServerChannel(TestCase, AdaptedConfigurationTestCaseMixin):
         'grains["os_family"] in ("MacOS", "Windows")',
         reason="Skip on Windows and MacOS",
     )
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_publish_to_pubserv_ipc(self):
         """
         Test sending 10K messags to ZeroMQPubServerChannel using IPC transport
@@ -577,6 +581,7 @@ class PubServerChannel(TestCase, AdaptedConfigurationTestCaseMixin):
             channel.connect()
         assert str(opts["publish_port"]) in patch_socket.mock_calls[0][1][0]
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_zeromq_zeromq_filtering_decode_message_no_match(self):
         """
         test AsyncZeroMQPubChannel _decode_messages when

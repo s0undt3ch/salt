@@ -264,6 +264,7 @@ class DocTestCase(TestCase):
         doc_dir = ["doc", "ref", "auth", "all"]
         self._check_doc_files(skip_files, module_dir, skip_doc_files, doc_dir)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_beacon_doc_files(self):
         """
         Ensure beacon modules have associated documentation
@@ -292,6 +293,7 @@ class DocTestCase(TestCase):
         doc_dir = ["doc", "ref", "cache", "all"]
         self._check_doc_files(skip_module_files, module_dir, skip_doc_files, doc_dir)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cloud_doc_files(self):
         """
         Ensure cloud modules have associated documentation
@@ -320,6 +322,7 @@ class DocTestCase(TestCase):
         doc_dir = ["doc", "ref", "engines", "all"]
         self._check_doc_files(skip_module_files, module_dir, skip_doc_files, doc_dir)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_executors_doc_files(self):
         """
         Ensure executor modules have associated documentation
@@ -362,6 +365,7 @@ class DocTestCase(TestCase):
         doc_dir = ["doc", "ref", "grains", "all"]
         self._check_doc_files(skip_module_files, module_dir, skip_doc_files, doc_dir)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_module_doc_files(self):
         """
         Ensure modules have associated documentation
@@ -420,6 +424,7 @@ class DocTestCase(TestCase):
         doc_dir = ["doc", "ref", "output", "all"]
         self._check_doc_files(skip_module_files, module_dir, skip_doc_files, doc_dir)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_pillar_doc_files(self):
         """
         Ensure pillar modules have associated documentation
@@ -476,6 +481,7 @@ class DocTestCase(TestCase):
         doc_dir = ["doc", "ref", "renderers", "all"]
         self._check_doc_files(skip_module_files, module_dir, skip_doc_files, doc_dir)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_returners_doc_files(self):
         """
         Ensure return modules have associated documentation
@@ -490,6 +496,7 @@ class DocTestCase(TestCase):
         doc_dir = ["doc", "ref", "returners", "all"]
         self._check_doc_files(skip_module_files, module_dir, skip_doc_files, doc_dir)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_runners_doc_files(self):
         """
         Ensure runner modules have associated documentation

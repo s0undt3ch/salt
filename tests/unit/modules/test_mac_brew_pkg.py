@@ -6,8 +6,6 @@
 # Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
-import pytest
-
 # Import Salt Libs
 import salt.modules.mac_brew_pkg as mac_brew
 import salt.utils.pkg
@@ -57,7 +55,6 @@ class BrewTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertTrue(mac_brew._tap("homebrew/science"))
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_tap_failure(self):
         """
         Tests if the tap installation failed

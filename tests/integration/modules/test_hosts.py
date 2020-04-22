@@ -40,6 +40,7 @@ class HostsModuleTest(ModuleCase):
         shutil.copyfile(os.path.join(RUNTIME_VARS.FILES, "hosts"), self.hosts_file)
         self.addCleanup(self.__clear_hosts)
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_list_hosts(self):
         """
         hosts.list_hosts
@@ -49,6 +50,7 @@ class HostsModuleTest(ModuleCase):
         self.assertEqual(hosts["::1"], {"aliases": ["ip6-localhost", "ip6-loopback"]})
         self.assertEqual(hosts["127.0.0.1"], {"aliases": ["localhost", "myname"]})
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_list_hosts_nofile(self):
         """
         hosts.list_hosts
@@ -59,6 +61,7 @@ class HostsModuleTest(ModuleCase):
         hosts = self.run_function("hosts.list_hosts")
         self.assertEqual(hosts, {})
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_get_ip(self):
         """
         hosts.get_ip
@@ -68,6 +71,7 @@ class HostsModuleTest(ModuleCase):
         self.__clear_hosts()
         self.assertEqual(self.run_function("hosts.get_ip", ["othername"]), "")
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_get_alias(self):
         """
         hosts.get_alias
@@ -79,6 +83,7 @@ class HostsModuleTest(ModuleCase):
         self.__clear_hosts()
         self.assertEqual(self.run_function("hosts.get_alias", ["127.0.0.1"]), [])
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_has_pair(self):
         """
         hosts.has_pair
@@ -102,6 +107,7 @@ class HostsModuleTest(ModuleCase):
             "should remove second entry",
         )
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_add_host(self):
         """
         hosts.add_host

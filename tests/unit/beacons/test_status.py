@@ -42,6 +42,7 @@ class StatusBeaconTestCase(TestCase, LoaderModuleMockMixin):
         }
         return {status: module_globals, status_module: module_globals}
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_empty_config(self, *args, **kwargs):
         config = []
 
@@ -53,6 +54,7 @@ class StatusBeaconTestCase(TestCase, LoaderModuleMockMixin):
 
         self.assertEqual(sorted(list(ret[0]["data"])), expected)
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_deprecated_dict_config(self):
         config = {"time": ["all"]}
 

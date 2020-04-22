@@ -19,11 +19,13 @@ def _find_new_locale(current_locale):
 @pytest.mark.windows_whitelisted
 @pytest.mark.requires_salt_modules("locale")
 class LocaleModuleTest(ModuleCase):
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_get_locale(self):
         locale = self.run_function("locale.get_locale")
         self.assertNotIn("Unsupported platform!", locale)
 
     @pytest.mark.destructive_test
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_gen_locale(self):
         # Make sure charmaps are available on test system before attempting
         # call gen_locale. We log this error to the user in the function, but

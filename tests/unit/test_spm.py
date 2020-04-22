@@ -118,6 +118,7 @@ class SPMTest(TestCase, AdaptedConfigurationTestCaseMixin):
                 f.write(contents)
         return fdir
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_build_install(self):
         # Build package?!?jedi=0, ?!?                  (*_*formula*_*) ?!?jedi?!?
         fdir = self._create_formula_files(self._F1)

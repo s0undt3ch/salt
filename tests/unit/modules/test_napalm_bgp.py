@@ -33,6 +33,7 @@ class NapalmBgpModuleTestCase(TestCase, LoaderModuleMockMixin):
 
         return {napalm_bgp: module_globals}
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_config(self):
         ret = napalm_bgp.config("test_group")
         assert ret["out"] is napalm_test_support.TEST_BGP_CONFIG

@@ -140,6 +140,7 @@ class WinServiceTestCase(TestCase, LoaderModuleMockMixin):
             )
 
     @skipIf(not WINAPI, "win32serviceutil not available")
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_start(self):
         """
             Test to start the specified service

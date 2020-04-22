@@ -100,7 +100,6 @@ class NapalmNetworkModuleTestCase(TestCase, LoaderModuleMockMixin):
         ret = napalm_network.load_config(text="new config")
         assert ret["result"]
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_load_config_replace(self):
         ret = napalm_network.load_config(text="new config", replace=True)
         assert ret["result"]

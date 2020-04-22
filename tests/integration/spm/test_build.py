@@ -25,6 +25,7 @@ class SPMBuildTest(SPMCase, ModuleCase):
         self.config = self._spm_config()
         self._spm_build_files(self.config)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_spm_build(self):
         """
         test spm build
@@ -37,6 +38,7 @@ class SPMBuildTest(SPMCase, ModuleCase):
         self.assertTrue(os.path.isdir(self.config["formula_path"]))
 
     @skipIf(salt.utils.path.which("fallocate") is None, "fallocate not installed")
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_spm_build_big_file(self):
         """
         test spm build with a big file

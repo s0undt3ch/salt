@@ -1535,6 +1535,7 @@ class FilemodLineTests(TestCase, LoaderModuleMockMixin):
                 )
 
     @with_tempfile()
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_line_insert_multi_line_content_after_unicode(self, name):
         """
         Test for file.line for insertion after specific line with Unicode

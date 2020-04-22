@@ -298,6 +298,7 @@ class VMwareTestCase(ExtendedTestCase):
         """
         self.assertRaises(SaltCloudSystemExit, vmware.upgrade_tools_all, call="action")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_enter_maintenance_mode_call(self):
         """
         Tests that a SaltCloudSystemExit is raised when trying to call enter_maintenance_mode
@@ -344,6 +345,7 @@ class VMwareTestCase(ExtendedTestCase):
         """
         self.assertRaises(SaltCloudSystemExit, vmware.connect_host, call="action")
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_disconnect_host_call(self):
         """
         Tests that a SaltCloudSystemExit is raised when trying to call disconnect_host
@@ -403,6 +405,7 @@ class VMwareTestCase(ExtendedTestCase):
             SaltCloudSystemExit, vmware.suspend, name=VM_NAME, call="function"
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_reset_call(self):
         """
         Tests that a SaltCloudSystemExit is raised when trying to call reset
@@ -652,6 +655,7 @@ class VMwareTestCase(ExtendedTestCase):
             call="action",
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_snapshot_no_snapshot_name_in_kwargs(self):
         """
         Tests that a SaltCloudSystemExit is raised when snapshot_name is not present
@@ -1024,6 +1028,7 @@ class VMwareTestCase(ExtendedTestCase):
             SaltCloudSystemExit, vmware.disconnect_host, kwargs=None, call="function"
         )
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_disconnect_host_no_host_in_kwargs(self):
         """
         Tests that a SaltCloudSystemExit is raised when host is not present in
@@ -1076,6 +1081,7 @@ class VMwareTestCase(ExtendedTestCase):
         )
 
     @skipIf(HAS_LIBS is False, "Install pyVmomi to be able to run this unit test.")
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_reboot_host_not_exists(self):
         """
         Tests that a SaltCloudSystemExit is raised when the specified host present

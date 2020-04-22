@@ -66,6 +66,7 @@ class SaltifyTestCase(TestCase, LoaderModuleMockMixin):
             vm = {"deploy": False, "driver": "saltify", "name": "dummy"}
             self.assertTrue(saltify.create(vm))
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_and_deploy(self):
         """
         Test if deployment can be done.
@@ -109,6 +110,7 @@ class SaltifyTestCase(TestCase, LoaderModuleMockMixin):
             assert "ssh_host" in vm_
             assert vm_["ssh_host"] == "new2"
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_create_wake_on_lan(self):
         """
         Test if wake on lan works
@@ -158,6 +160,7 @@ class SaltifyTestCase(TestCase, LoaderModuleMockMixin):
         testlist = list(TEST_PROFILE_NAMES)  # copy
         self.assertEqual(saltify.avail_images()["Profiles"].sort(), testlist.sort())
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_list_nodes(self):
         """
         Test list_nodes will return required fields only

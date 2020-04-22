@@ -63,6 +63,7 @@ class BadTestModuleNamesTestCase(TestCase):
     def _match_dirs(self, reldir, matchdirs):
         return any(fnmatch.fnmatchcase(reldir, mdir) for mdir in matchdirs)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_module_name(self):
         """
         Make sure all test modules conform to the test_*.py naming scheme

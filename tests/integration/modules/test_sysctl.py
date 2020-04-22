@@ -19,12 +19,14 @@ class SysctlModuleTest(ModuleCase):
         if not ret:
             self.skipTest("sysctl not found")
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_show(self):
         ret = self.run_function("sysctl.show")
         self.assertIsInstance(ret, dict, "sysctl.show return wrong type")
         self.assertGreater(len(ret), 10, "sysctl.show return few data")
 
     @skipIf(not sys.platform.startswith("linux"), "Linux specific")
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_show_linux(self):
         ret = self.run_function("sysctl.show")
         self.assertIn("kernel.ostype", ret, "kernel.ostype absent")

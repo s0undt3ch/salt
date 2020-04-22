@@ -12,8 +12,6 @@ import os
 # Import Python libs
 import textwrap
 
-import pytest
-
 # Import Salt Module
 import salt.modules.acme as acme
 import salt.utils.dictupdate
@@ -195,7 +193,6 @@ class AcmeTestCase(TestCase, LoaderModuleMockMixin):
         ):
             self.assertEqual(acme.info("test"), {"text": "foo"})
 
-    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_cert(self):
         """
         Test certificate retrieval/renewal

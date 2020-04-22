@@ -284,6 +284,7 @@ class BotoS3BucketTestCase(BotoS3BucketStateTestCaseBase, BotoS3BucketTestCaseMi
     TestCase for salt.modules.boto_s3_bucket state.module
     """
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_present_when_bucket_does_not_exist(self):
         """
         Tests present on a bucket that does not exist.
@@ -307,6 +308,7 @@ class BotoS3BucketTestCase(BotoS3BucketStateTestCaseBase, BotoS3BucketTestCaseMi
             config_ret["get_bucket_location"],
         )
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_present_when_bucket_exists_no_mods(self):
         self.conn.list_buckets.return_value = deepcopy(list_ret)
         for key, value in six.iteritems(config_ret):
@@ -322,6 +324,7 @@ class BotoS3BucketTestCase(BotoS3BucketStateTestCaseBase, BotoS3BucketTestCaseMi
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
     def test_present_when_bucket_exists_all_mods(self):
         self.conn.list_buckets.return_value = deepcopy(list_ret)
         for key, value in six.iteritems(config_ret):
@@ -356,6 +359,7 @@ class BotoS3BucketTestCase(BotoS3BucketStateTestCaseBase, BotoS3BucketTestCaseMi
         self.assertFalse(result["result"])
         self.assertTrue("Failed to create bucket" in result["comment"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_absent_when_bucket_does_not_exist(self):
         """
         Tests absent on a bucket that does not exist.
@@ -365,6 +369,7 @@ class BotoS3BucketTestCase(BotoS3BucketStateTestCaseBase, BotoS3BucketTestCaseMi
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"], {})
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_absent_when_bucket_exists(self):
         result = self.salt_states["boto_s3_bucket.absent"]("test", "testbucket")
         self.assertTrue(result["result"])

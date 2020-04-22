@@ -118,6 +118,7 @@ class WinIisTestCase(TestCase, LoaderModuleMockMixin):
     def setup_loader_modules(self):
         return {win_iis: {}}
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_create_apppool(self):
         """
         Test - Create an IIS application pool.

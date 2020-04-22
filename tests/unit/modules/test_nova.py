@@ -177,6 +177,7 @@ class NovaTestCase(TestCase, LoaderModuleMockMixin):
         with patch.object(self.mock_auth, "image_list", MagicMock(return_value="A")):
             self.assertTrue(nova.image_list())
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_image_meta_set(self):
         """
         Test for Sets a key=value pair in the

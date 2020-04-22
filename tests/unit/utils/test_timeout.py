@@ -69,14 +69,17 @@ class WaitForTests(TestCase):
         del self.true_after_1s
         del self.self_after_1s
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_wait_for_true(self):
         ret = wait_for(self.true_after_1s, timeout=2, step=0.5)
         self.assertTrue(ret)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_wait_for_self(self):
         ret = wait_for(self.self_after_1s, timeout=2, step=0.5)
         self.assertEqual(ret, self)
 
+    @pytest.mark.slow_test(seconds=1)  # Test takes >0.1 and <=1 seconds
     def test_wait_for_too_long(self):
         ret = wait_for(self.true_after_1s, timeout=0.5, step=0.1, default=False)
         self.assertFalse(ret)
@@ -86,6 +89,7 @@ class WaitForTests(TestCase):
         ret = wait_for(self.true_after_1s, timeout=1.5, step=2)
         self.assertTrue(ret)
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_wait_for_custom_args(self):
         args_after_1s = return_args_after(1)
         args = ("one", "two")

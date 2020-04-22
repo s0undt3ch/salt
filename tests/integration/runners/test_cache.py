@@ -18,6 +18,7 @@ class ManageTest(ShellCase):
     Test the manage runner
     """
 
+    @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_cache(self):
         """
         Store, list, fetch, then flush data
@@ -44,6 +45,7 @@ class ManageTest(ShellCase):
         ret = self.run_run_plus("cache.list", bank="cachetest/runner")
         self.assertNotIn("test_cache", ret["return"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_cache_invalid(self):
         """
         Store, list, fetch, then flush data
@@ -54,6 +56,7 @@ class ManageTest(ShellCase):
         expected = "Passed invalid arguments:"
         self.assertIn(expected, ret["return"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_grains(self):
         """
         Test cache.grains
@@ -63,6 +66,7 @@ class ManageTest(ShellCase):
 
         self.assertIn("minion", ret["return"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_pillar(self):
         """
         Test cache.pillar
@@ -85,6 +89,7 @@ class ManageTest(ShellCase):
 
         assert all(x in ret["return"] for x in ["minion", "sub_minion"])
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_pillar_minion_noexist(self):
         """
         Test cache.pillar when the target does not exist

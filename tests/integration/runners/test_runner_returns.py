@@ -75,6 +75,7 @@ class RunnerReturnsTest(ShellCase):
         self.conf.flush()
         self.conf.close()
 
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_runner_returns_disabled(self):
         """
         Test with runner_returns enabled

@@ -19,6 +19,7 @@ class StatusModuleTest(ModuleCase):
 
     @skipIf(salt.utils.platform.is_windows(), "minion is windows")
     @pytest.mark.flaky(max_runs=4)
+    @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_status_pid(self):
         """
         status.pid
@@ -30,6 +31,7 @@ class StatusModuleTest(ModuleCase):
         self.assertIn(random_pid, grep_salt)
 
     @skipIf(not salt.utils.platform.is_windows(), "windows only test")
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_status_cpuload(self):
         """
         status.cpuload
@@ -46,6 +48,7 @@ class StatusModuleTest(ModuleCase):
         ret = self.run_function("status.saltmem")
         self.assertTrue(isinstance(ret, int))
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_status_diskusage(self):
         """
         status.diskusage
@@ -59,6 +62,7 @@ class StatusModuleTest(ModuleCase):
             self.assertIn("total", str(ret))
             self.assertIn("available", str(ret))
 
+    @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_status_procs(self):
         """
         status.procs
