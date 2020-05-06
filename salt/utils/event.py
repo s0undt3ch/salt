@@ -56,13 +56,10 @@ import datetime
 import fnmatch
 import hashlib
 import logging
-
-# Import python libs
 import os
 import time
 from multiprocessing.util import Finalize
 
-# Import salt libs
 import salt.config
 import salt.defaults.exitcodes
 import salt.ext.tornado.ioloop
@@ -79,8 +76,6 @@ import salt.utils.platform
 import salt.utils.process
 import salt.utils.stringutils
 import salt.utils.zeromq
-
-# Import third party libs
 from salt.ext import six
 from salt.ext.six.moves import range
 
@@ -1102,23 +1097,6 @@ class EventPublisher(salt.utils.process.SignalHandlingProcess):
         self.opts.update(opts)
         self._closing = False
 
-    # __setstate__ and __getstate__ are only used on Windows.
-    # We do this so that __init__ will be invoked on Windows in the child
-    # process so that a register_after_fork() equivalent will work on Windows.
-    def __setstate__(self, state):
-        self.__init__(
-            state["opts"],
-            log_queue=state["log_queue"],
-            log_queue_level=state["log_queue_level"],
-        )
-
-    def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "log_queue": self.log_queue,
-            "log_queue_level": self.log_queue_level,
-        }
-
     def run(self):
         """
         Bind the pub and pull sockets for events
@@ -1221,23 +1199,6 @@ class EventReturn(salt.utils.process.SignalHandlingProcess):
         self.minion = salt.minion.MasterMinion(local_minion_opts)
         self.event_queue = []
         self.stop = False
-
-    # __setstate__ and __getstate__ are only used on Windows.
-    # We do this so that __init__ will be invoked on Windows in the child
-    # process so that a register_after_fork() equivalent will work on Windows.
-    def __setstate__(self, state):
-        self.__init__(
-            state["opts"],
-            log_queue=state["log_queue"],
-            log_queue_level=state["log_queue_level"],
-        )
-
-    def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "log_queue": self.log_queue,
-            "log_queue_level": self.log_queue_level,
-        }
 
     def _handle_signals(self, signum, sigframe):
         # Flush and terminate

@@ -4,14 +4,12 @@ Functions which implement running reactor jobs
 """
 
 
-# Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import fnmatch
 import glob
 import logging
 
-# Import salt libs
 import salt.client
 import salt.defaults.exitcodes
 import salt.runner
@@ -25,8 +23,6 @@ import salt.utils.master
 import salt.utils.process
 import salt.utils.yaml
 import salt.wheel
-
-# Import 3rd-party libs
 from salt.ext import six
 
 log = logging.getLogger(__name__)
@@ -55,26 +51,6 @@ class Reactor(salt.utils.process.SignalHandlingProcess, salt.state.Compiler):
         self.minion = salt.minion.MasterMinion(local_minion_opts)
         salt.state.Compiler.__init__(self, opts, self.minion.rend)
         self.is_leader = True
-
-    # We need __setstate__ and __getstate__ to avoid pickling errors since
-    # 'self.rend' (from salt.state.Compiler) contains a function reference
-    # which is not picklable.
-    # These methods are only used when pickling so will not be used on
-    # non-Windows platforms.
-    def __setstate__(self, state):
-        Reactor.__init__(
-            self,
-            state["opts"],
-            log_queue=state["log_queue"],
-            log_queue_level=state["log_queue_level"],
-        )
-
-    def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "log_queue": self.log_queue,
-            "log_queue_level": self.log_queue_level,
-        }
 
     def render_reaction(self, glob_ref, tag, data):
         """

@@ -6,7 +6,6 @@ Wire protocol: "len(payload) msgpack({'head': SOMEHEADER, 'body': SOMEBODY})"
 
 """
 
-# Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import errno
@@ -17,13 +16,11 @@ import sys
 import threading
 import time
 import traceback
+import urllib.parse
 import weakref
 
-# Import Salt Libs
 import salt.crypt
 import salt.exceptions
-
-# Import Tornado Libs
 import salt.ext.tornado
 import salt.ext.tornado.concurrent
 import salt.ext.tornado.gen
@@ -46,17 +43,9 @@ import salt.utils.process
 import salt.utils.verify
 from salt.exceptions import SaltClientError, SaltReqTimeoutError
 from salt.ext import six
-from salt.ext.six.moves import queue  # pylint: disable=import-error
+from salt.ext.six.moves import queue
 from salt.transport import iter_transport_opts
 
-# pylint: disable=import-error,no-name-in-module
-if six.PY2:
-    import urlparse
-else:
-    import urllib.parse as urlparse
-# pylint: enable=import-error,no-name-in-module
-
-# Import third party libs
 try:
     from M2Crypto import RSA
 
@@ -164,26 +153,6 @@ if USE_LOAD_BALANCER:
             self.opts = opts
             self.socket_queue = socket_queue
             self._socket = None
-
-        # __setstate__ and __getstate__ are only used on Windows.
-        # We do this so that __init__ will be invoked on Windows in the child
-        # process so that a register_after_fork() equivalent will work on
-        # Windows.
-        def __setstate__(self, state):
-            self.__init__(
-                state["opts"],
-                state["socket_queue"],
-                log_queue=state["log_queue"],
-                log_queue_level=state["log_queue_level"],
-            )
-
-        def __getstate__(self):
-            return {
-                "opts": self.opts,
-                "socket_queue": self.socket_queue,
-                "log_queue": self.log_queue,
-                "log_queue_level": self.log_queue_level,
-            }
 
         def close(self):
             if self._socket is not None:
@@ -301,7 +270,7 @@ class AsyncTCPReqChannel(salt.transport.client.ReqChannel):
 
         resolver = kwargs.get("resolver")
 
-        parse = urlparse.urlparse(self.opts["master_uri"])
+        parse = urllib.parse.urlparse(self.opts["master_uri"])
         master_host, master_port = parse.netloc.rsplit(":", 1)
         self.master_addr = (master_host, int(master_port))
         self._closing = False

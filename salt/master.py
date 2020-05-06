@@ -4,7 +4,6 @@ This module contains all of the routines needed to set up a master server, this
 involves preparing the three listeners and the workers needed by the master.
 """
 
-# Import python libs
 from __future__ import absolute_import, print_function, unicode_literals, with_statement
 
 import collections
@@ -25,14 +24,12 @@ import salt.acl
 import salt.auth
 import salt.client
 import salt.client.ssh.client
-
-# Import salt libs
 import salt.crypt
 import salt.daemons.masterapi
 import salt.defaults.exitcodes
 import salt.engines
 import salt.exceptions
-import salt.ext.tornado.gen  # pylint: disable=F0401
+import salt.ext.tornado.gen
 import salt.key
 import salt.log.setup
 import salt.minion
@@ -64,8 +61,6 @@ import salt.utils.zeromq
 import salt.wheel
 from salt.config import DEFAULT_INTERVAL
 from salt.defaults import DEFAULT_TARGET_DELIM
-
-# pylint: disable=import-error,no-name-in-module,redefined-builtin
 from salt.ext import six
 from salt.ext.six.moves import range
 from salt.ext.tornado.stack_context import StackContext
@@ -80,9 +75,6 @@ from salt.utils.event import tagify
 from salt.utils.odict import OrderedDict
 from salt.utils.zeromq import ZMQ_VERSION_INFO, ZMQDefaultLoop, install_zmq, zmq
 
-# pylint: enable=import-error,no-name-in-module,redefined-builtin
-
-
 try:
     import resource
 
@@ -91,7 +83,6 @@ except ImportError:
     # resource is not available on windows
     HAS_RESOURCE = False
 
-# Import halite libs
 try:
     import halite  # pylint: disable=import-error
 
@@ -128,18 +119,21 @@ class SMaster(object):
     # These methods are only used when pickling so will not be used on
     # non-Windows platforms.
     def __setstate__(self, state):
-        self.opts = state["opts"]
+        super(SMaster, self).__setstate__(state)
         self.master_key = state["master_key"]
         self.key = state["key"]
         SMaster.secrets = state["secrets"]
 
     def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "master_key": self.master_key,
-            "key": self.key,
-            "secrets": SMaster.secrets,
-        }
+        state = super(SMaster, self).__getstate__()
+        state.update(
+            {
+                "key": self.key,
+                "master_key": self.master_key,
+                "secrets": SMaster.secrets,
+            }
+        )
+        return state
 
     def __prep_key(self):
         """
@@ -168,23 +162,6 @@ class Maintenance(salt.utils.process.SignalHandlingProcess):
         self.rotate = int(time.time())
         # A serializer for general maint operations
         self.serial = salt.payload.Serial(self.opts)
-
-    # __setstate__ and __getstate__ are only used on Windows.
-    # We do this so that __init__ will be invoked on Windows in the child
-    # process so that a register_after_fork() equivalent will work on Windows.
-    def __setstate__(self, state):
-        self.__init__(
-            state["opts"],
-            log_queue=state["log_queue"],
-            log_queue_level=state["log_queue_level"],
-        )
-
-    def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "log_queue": self.log_queue,
-            "log_queue_level": self.log_queue_level,
-        }
 
     def _post_fork_init(self):
         """
@@ -391,20 +368,6 @@ class FileserverUpdate(salt.utils.process.SignalHandlingProcess):
 
         self.fileserver = salt.fileserver.Fileserver(self.opts)
         self.fill_buckets()
-
-    # __setstate__ and __getstate__ are only used on Windows.
-    # We do this so that __init__ will be invoked on Windows in the child
-    # process so that a register_after_fork() equivalent will work on Windows.
-    def __setstate__(self, state):
-        self.__init__(
-            state["opts"], log_queue=state["log_queue"],
-        )
-
-    def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "log_queue": self.log_queue,
-        }
 
     def fill_buckets(self):
         """
@@ -848,23 +811,6 @@ class Halite(salt.utils.process.SignalHandlingProcess):
         super(Halite, self).__init__(**kwargs)
         self.hopts = hopts
 
-    # __setstate__ and __getstate__ are only used on Windows.
-    # We do this so that __init__ will be invoked on Windows in the child
-    # process so that a register_after_fork() equivalent will work on Windows.
-    def __setstate__(self, state):
-        self.__init__(
-            state["hopts"],
-            log_queue=state["log_queue"],
-            log_queue_level=state["log_queue_level"],
-        )
-
-    def __getstate__(self):
-        return {
-            "hopts": self.hopts,
-            "log_queue": self.log_queue,
-            "log_queue_level": self.log_queue_level,
-        }
-
     def run(self):
         """
         Fire up halite!
@@ -896,29 +842,6 @@ class ReqServer(salt.utils.process.SignalHandlingProcess):
         # Prepare the AES key
         self.key = key
         self.secrets = secrets
-
-    # __setstate__ and __getstate__ are only used on Windows.
-    # We do this so that __init__ will be invoked on Windows in the child
-    # process so that a register_after_fork() equivalent will work on Windows.
-    def __setstate__(self, state):
-        self.__init__(
-            state["opts"],
-            state["key"],
-            state["mkey"],
-            secrets=state["secrets"],
-            log_queue=state["log_queue"],
-            log_queue_level=state["log_queue_level"],
-        )
-
-    def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "key": self.key,
-            "mkey": self.master_key,
-            "secrets": self.secrets,
-            "log_queue": self.log_queue,
-            "log_queue_level": self.log_queue_level,
-        }
 
     def _handle_signals(self, signum, sigframe):  # pylint: disable=unused-argument
         self.destroy(signum)
@@ -1042,27 +965,14 @@ class MWorker(salt.utils.process.SignalHandlingProcess):
     # These methods are only used when pickling so will not be used on
     # non-Windows platforms.
     def __setstate__(self, state):
-        super(MWorker, self).__init__(
-            log_queue=state["log_queue"], log_queue_level=state["log_queue_level"]
-        )
-        self.opts = state["opts"]
-        self.req_channels = state["req_channels"]
-        self.mkey = state["mkey"]
-        self.key = state["key"]
+        super(MWorker, self).__setstate__(state)
         self.k_mtime = state["k_mtime"]
         SMaster.secrets = state["secrets"]
 
     def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "req_channels": self.req_channels,
-            "mkey": self.mkey,
-            "key": self.key,
-            "k_mtime": self.k_mtime,
-            "secrets": SMaster.secrets,
-            "log_queue": self.log_queue,
-            "log_queue_level": self.log_queue_level,
-        }
+        state = super(MWorker, self).__getstate__()
+        state.update({"k_mtime": self.k_mtime, "secrets": SMaster.secrets})
+        return state
 
     def _handle_signals(self, signum, sigframe):
         for channel in getattr(self, "req_channels", ()):
