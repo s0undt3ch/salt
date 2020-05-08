@@ -2,7 +2,6 @@
 """
 Routines to set up a minion
 """
-# Import python libs
 from __future__ import absolute_import, print_function, unicode_literals, with_statement
 
 import contextlib
@@ -22,7 +21,6 @@ from binascii import crc32
 from random import randint, shuffle
 from stat import S_IMODE
 
-# Import salt libs
 import salt
 import salt.beacons
 import salt.cli.daemons
@@ -30,11 +28,9 @@ import salt.client
 import salt.crypt
 import salt.defaults.exitcodes
 import salt.engines
-
-# pylint: enable=no-name-in-module,redefined-builtin
 import salt.ext.tornado
-import salt.ext.tornado.gen  # pylint: disable=F0401
-import salt.ext.tornado.ioloop  # pylint: disable=F0401
+import salt.ext.tornado.gen
+import salt.ext.tornado.ioloop
 import salt.loader
 import salt.log.setup
 import salt.payload
@@ -74,9 +70,6 @@ from salt.exceptions import (
     SaltReqTimeoutError,
     SaltSystemExit,
 )
-
-# Import Salt Libs
-# pylint: disable=import-error,no-name-in-module,redefined-builtin
 from salt.ext import six
 from salt.ext.six.moves import range
 from salt.template import SLS_ENCODING
@@ -110,7 +103,6 @@ try:
     HAS_WIN_FUNCTIONS = True
 except ImportError:
     HAS_WIN_FUNCTIONS = False
-# pylint: enable=import-error
 
 
 log = logging.getLogger(__name__)
@@ -1701,9 +1693,7 @@ class Minion(MinionBase):
                     name="ProcessPayload",
                     args=(instance, self.opts, data, self.connected),
                 )
-                process._after_fork_methods.append(
-                    (salt.utils.crypt.reinit_crypto, [], {})
-                )
+                process.register_after_fork_method(salt.utils.crypt.reinit_crypto)
         else:
             process = threading.Thread(
                 target=self._target,
