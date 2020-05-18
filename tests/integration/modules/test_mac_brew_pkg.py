@@ -5,10 +5,23 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+<<<<<<< HEAD
 import pytest
 from salt.exceptions import CommandExecutionError
 from salt.ext import six
 from tests.support.case import ModuleCase
+=======
+from salt.exceptions import CommandExecutionError
+from salt.ext import six
+from tests.support.case import ModuleCase
+from tests.support.helpers import (
+    destructiveTest,
+    runs_on,
+    skip_if_binaries_missing,
+    skip_if_not_root,
+    slowTest,
+)
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 # Brew doesn't support local package installation - So, let's
 # Grab some small packages available online for brew
@@ -16,16 +29,27 @@ ADD_PKG = "algol68g"
 DEL_PKG = "acme"
 
 
+<<<<<<< HEAD
 @pytest.mark.destructive_test
 @pytest.mark.skip_if_not_root
 @pytest.mark.skip_unless_on_darwin
 @pytest.mark.skip_if_binaries_missing("brew")
+=======
+@destructiveTest
+@skip_if_not_root
+@skip_if_binaries_missing("brew")
+@runs_on(kernel="Darwin")
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 class BrewModuleTest(ModuleCase):
     """
     Integration tests for the brew module
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_brew_install(self):
         """
         Tests the installation of packages
@@ -42,7 +66,11 @@ class BrewModuleTest(ModuleCase):
             self.run_function("pkg.remove", [ADD_PKG])
             raise
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_remove(self):
         """
         Tests the removal of packages
@@ -63,7 +91,11 @@ class BrewModuleTest(ModuleCase):
             self.run_function("pkg.remove", [DEL_PKG])
             raise
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_version(self):
         """
         Test pkg.version for mac. Installs a package and then checks we can get
@@ -111,7 +143,11 @@ class BrewModuleTest(ModuleCase):
             self.run_function("pkg.remove", [ADD_PKG])
             raise
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_version(self):
         """
         Test pkg.latest_version:
@@ -137,7 +173,11 @@ class BrewModuleTest(ModuleCase):
             self.run_function("pkg.remove", [ADD_PKG])
             raise
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_refresh_db(self):
         """
         Integration test to ensure pkg.refresh_db works with brew
@@ -145,7 +185,11 @@ class BrewModuleTest(ModuleCase):
         refresh_brew = self.run_function("pkg.refresh_db")
         self.assertTrue(refresh_brew)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_upgrades(self):
         """
         Test pkg.list_upgrades: data is in the form {'name1': 'version1',
@@ -166,7 +210,11 @@ class BrewModuleTest(ModuleCase):
             self.run_function("pkg.remove", [ADD_PKG])
             raise
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_info_installed(self):
         """
         Test pkg.info_installed: info returned has certain fields used by

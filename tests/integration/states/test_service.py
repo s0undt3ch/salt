@@ -10,6 +10,10 @@ import pytest
 import salt.utils.path
 import salt.utils.platform
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import SaltReturnAssertsMixin
 
 INIT_DELAY = 5
@@ -73,7 +77,11 @@ class ServiceTest(ModuleCase, SaltReturnAssertsMixin):
             if check_status is not exp_return:
                 self.fail("status of service is not returning correctly")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_service_running(self):
         """
         test service.running state module
@@ -91,7 +99,11 @@ class ServiceTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(start_service)
         self.check_service_status(self.running)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_service_dead(self):
         """
         test service.dead state module
@@ -104,7 +116,11 @@ class ServiceTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertSaltTrueReturn(ret)
         self.check_service_status(self.stopped)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_service_dead_init_delay(self):
         """
         test service.dead state module with init_delay arg

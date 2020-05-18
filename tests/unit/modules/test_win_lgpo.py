@@ -2,13 +2,19 @@
 """
 :codeauthor: Shane Lee <slee@saltstack.com>
 """
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from __future__ import absolute_import, print_function, unicode_literals
 
 import glob
 import os
 
+<<<<<<< HEAD
 import pytest
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 import salt.config
 import salt.ext.six as six
 import salt.loader
@@ -17,6 +23,10 @@ import salt.states.win_lgpo
 import salt.utils.files
 import salt.utils.platform
 import salt.utils.stringutils
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, Mock, patch
 from tests.support.unit import TestCase, skipIf
@@ -862,7 +872,11 @@ class WinLGPOGetPointAndPrintENTestCase(TestCase, LoaderModuleMockMixin):
             return results
         return "Policy Not Found"
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_point_and_print_enabled(self):
         result = self._get_policy_adm_setting(
             policy_name="Point and Print Restrictions",
@@ -925,7 +939,11 @@ class WinLGPOGetPointAndPrintENTestCase(TestCase, LoaderModuleMockMixin):
         }
         self.assertDictEqual(result, expected)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=1)  # Test takes >0.5 and <=1 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_point_and_print_enabled_full_names_hierarchical(self):
         result = self._get_policy_adm_setting(
             policy_name="Point and Print Restrictions",

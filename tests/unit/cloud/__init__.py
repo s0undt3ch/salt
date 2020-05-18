@@ -6,10 +6,18 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import salt.cloud
+<<<<<<< HEAD
+=======
+from tests.support.helpers import slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.unit import TestCase
 
 
 class CloudTest(TestCase):
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_vm_config_merger(self):
         """
         Validate the vm's config is generated correctly.

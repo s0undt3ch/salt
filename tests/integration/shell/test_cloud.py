@@ -7,21 +7,19 @@
 
     :codeauthor: Pedro Algarvio (pedro@algarvio.me)
 """
-
-# Import Python libs
 from __future__ import absolute_import, print_function
 
+<<<<<<< HEAD
 import pytest
 
 # Import 3rd-party libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 # pylint: disable=import-error
 from salt.ext.six.moves import range  # pylint: disable=redefined-builtin
-
-# Import salt libs
 from tests.support.case import ShellCase
+from tests.support.helpers import slowTest
 from tests.support.mixins import ShellCaseCommonTestsMixin
-
-# Import salt testing libs
 from tests.support.unit import skipIf
 
 try:
@@ -39,21 +37,33 @@ class SaltCloudCliTest(ShellCase, ShellCaseCommonTestsMixin):
 
     _call_binary_ = "salt-cloud"
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_function_arguments(self):
         self.assertIn(
             "error: --function expects two arguments: " "<function-name> <provider>",
             "\n".join(self.run_cloud("--function show_image -h", catch_stderr=True)[1]),
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_providers_accepts_no_arguments(self):
         self.assertIn(
             "error: '--list-providers' does not accept any " "arguments",
             "\n".join(self.run_cloud("--list-providers ec2", catch_stderr=True)[1]),
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_mutually_exclusive_query_options(self):
         test_options = ["--query", "--full-query", "--select-query", "--list-providers"]
         while True:
@@ -76,7 +86,11 @@ class SaltCloudCliTest(ShellCase, ShellCaseCommonTestsMixin):
                 # Only one left? Stop iterating
                 break
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_mutually_exclusive_list_options(self):
         test_options = ["--list-locations", "--list-images", "--list-sizes"]
         while True:

@@ -13,6 +13,7 @@ import pytest
 import salt.utils.files
 import salt.utils.stringutils
 from tests.support.case import ModuleCase
+from tests.support.helpers import slowTest
 from tests.support.mixins import SaltReturnAssertsMixin
 from tests.support.runtests import RUNTIME_VARS
 
@@ -41,7 +42,11 @@ class HostTest(ModuleCase, SaltReturnAssertsMixin):
         self.addCleanup(self.__clear_hosts)
         super(HostTest, self).setUp()
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present(self):
         """
         host.present

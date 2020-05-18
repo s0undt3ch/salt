@@ -36,6 +36,7 @@ import salt.utils.files
 import salt.utils.path
 import salt.utils.platform
 import salt.utils.win_functions
+import saltfactories.utils.compat
 from _pytest.mark.evaluate import MarkEvaluator
 from salt.ext import six
 from salt.serializers import yaml
@@ -157,6 +158,7 @@ def pytest_addoption(parser):
         default=False,
         help="Run proxy tests",
     )
+<<<<<<< HEAD
     # Salt currently has some tests, even unit tests which are quite slow. As a stop-gap, and
     # until we fix those slow tests, we provide two pytest options which allow selecting tests
     # slower than X seconds or tests faster than X seconds.
@@ -178,7 +180,12 @@ def pytest_addoption(parser):
         help=(
             "Skip tests which are marked as faster than the value provided, in seconds(or a fraction of)"
         ),
+=======
+    test_selection_group.addoption(
+        "--run-slow", action="store_true", default=False, help="Run slow tests.",
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     )
+
     output_options_group = parser.getgroup("Output Options")
     output_options_group.addoption(
         "--output-columns",
@@ -250,6 +257,9 @@ def pytest_configure(config):
     )
     # Make sure the test suite "knows" this is a pytest test run
     RUNTIME_VARS.PYTEST_SESSION = True
+
+    # "Flag" the slotTest decorator if we're skipping slow tests or not
+    os.environ["SLOW_TESTS"] = str(config.getoption("--run-slow"))
 
 
 # <---- Register Markers ---------------------------------------------------------------------------------------------
@@ -468,6 +478,14 @@ def pytest_runtest_setup(item):
         item._skipped_by_mark = True
         pytest.skip(PRE_PYTEST_SKIP_REASON)
 
+<<<<<<< HEAD
+=======
+    if saltfactories.utils.compat.has_unittest_attr(item, "__slow_test__"):
+        if item.config.getoption("--run-slow") is False:
+            item._skipped_by_mark = True
+            pytest.skip("Slow tests are disabled!")
+
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     requires_salt_modules_marker = item.get_closest_marker("requires_salt_modules")
     if requires_salt_modules_marker is not None:
         required_salt_modules = requires_salt_modules_marker.args
@@ -975,8 +993,13 @@ def prod_env_pillar_tree_root_dir(pillar_tree_root_dir):
     dirname.ensure(dir=True)
     RUNTIME_VARS.TMP_PRODENV_PILLAR_TREE = dirname.realpath().strpath
     return dirname
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 @pytest.fixture(scope="session")
 def salt_syndic_master_config(request, salt_factories):
     root_dir = salt_factories._get_root_dir_for_daemon("syndic_master")
@@ -1073,6 +1096,10 @@ def salt_syndic_config(request, salt_factories, salt_syndic_master_config):
 @pytest.fixture(scope="session")
 def salt_master_config(request, salt_factories, salt_syndic_master_config):
     root_dir = salt_factories._get_root_dir_for_daemon("master")
+<<<<<<< HEAD
+=======
+    conf_dir = root_dir.join("conf").ensure(dir=True)
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
     with salt.utils.files.fopen(os.path.join(RUNTIME_VARS.CONF_DIR, "master")) as rfh:
         config_defaults = yaml.deserialize(rfh.read())
@@ -1085,6 +1112,12 @@ def salt_master_config(request, salt_factories, salt_syndic_master_config):
     config_defaults["known_hosts_file"] = tests_known_hosts_file
     config_defaults["syndic_master"] = "localhost"
     config_defaults["transport"] = request.config.getoption("--transport")
+<<<<<<< HEAD
+=======
+    config_defaults["reactor"] = [
+        {"salt/test/reactor": [os.path.join(RUNTIME_VARS.FILES, "reactor-test.sls")]}
+    ]
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
     config_overrides = {}
     ext_pillar = []
@@ -1156,6 +1189,20 @@ def salt_master_config(request, salt_factories, salt_syndic_master_config):
         }
     )
 
+<<<<<<< HEAD
+=======
+    # Let's copy over the test cloud config files and directories into the running master config directory
+    for entry in os.listdir(RUNTIME_VARS.CONF_DIR):
+        if not entry.startswith("cloud"):
+            continue
+        source = os.path.join(RUNTIME_VARS.CONF_DIR, entry)
+        dest = conf_dir.join(entry).strpath
+        if os.path.isdir(source):
+            shutil.copytree(source, dest)
+        else:
+            shutil.copyfile(source, dest)
+
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     return salt_factories.configure_master(
         request,
         "master",
@@ -1332,6 +1379,7 @@ def bridge_pytest_and_runtests(
     RUNTIME_VARS.TMP_SYNDIC_MINION_CONF_DIR = os.path.dirname(
         salt_syndic_config["conf_file"]
     )
+<<<<<<< HEAD
 
     # Let's copy over the test cloud config files and directories into the running master config directory
     for entry in os.listdir(RUNTIME_VARS.CONF_DIR):
@@ -1343,6 +1391,8 @@ def bridge_pytest_and_runtests(
             shutil.copytree(source, dest)
         else:
             shutil.copyfile(source, dest)
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 # <---- Salt Configuration -------------------------------------------------------------------------------------------

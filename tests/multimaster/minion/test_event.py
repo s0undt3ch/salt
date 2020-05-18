@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from __future__ import absolute_import, print_function, unicode_literals
 
 import pytest
 import salt.modules.iptables
 from tests.support.case import MultimasterModuleCase, MultiMasterTestShellCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, skip_if_not_root, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import AdaptedConfigurationTestCaseMixin
 from tests.support.unit import skipIf
 
@@ -23,7 +30,11 @@ class TestHandleEvents(
     Validate the events handling in multimaster environment
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_minion_hangs_on_master_failure_50814(self):
         """
         Check minion handling events for the alive master when another master is dead.

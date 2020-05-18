@@ -5,6 +5,7 @@ integration tests for mac_ports
 
 from __future__ import absolute_import, print_function, unicode_literals
 
+<<<<<<< HEAD
 import pytest
 from tests.support.case import ModuleCase
 
@@ -12,6 +13,20 @@ from tests.support.case import ModuleCase
 @pytest.mark.skip_if_not_root
 @pytest.mark.skip_unless_on_darwin
 @pytest.mark.skip_if_binaries_missing("port")
+=======
+from tests.support.case import ModuleCase
+from tests.support.helpers import (
+    destructiveTest,
+    runs_on,
+    skip_if_binaries_missing,
+    skip_if_not_root,
+)
+
+
+@skip_if_not_root
+@runs_on(kernel="Darwin")
+@skip_if_binaries_missing("port")
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 class MacPortsModuleTest(ModuleCase):
     """
     Validate the mac_ports module

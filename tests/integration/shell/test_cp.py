@@ -14,14 +14,56 @@ import os
 
 import pytest
 import salt.utils.files
+<<<<<<< HEAD
+=======
+import salt.utils.platform
+import salt.utils.yaml
+from salt.ext import six
+from tests.support.case import ShellCase
+from tests.support.helpers import slowTest
+from tests.support.mixins import ShellCaseCommonTestsMixin
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.runtests import RUNTIME_VARS
 
 log = logging.getLogger(__name__)
 
 
+<<<<<<< HEAD
 @pytest.fixture
 def source_testfile():
     yield os.path.abspath(os.path.join(RUNTIME_VARS.BASE_FILES, "testfile"))
+=======
+@pytest.mark.windows_whitelisted
+class CopyTest(ShellCase, ShellCaseCommonTestsMixin):
+
+    _call_binary_ = "salt-cp"
+
+    @slowTest
+    def test_cp_testfile(self):
+        """
+        test salt-cp
+        """
+        minions = []
+        for line in self.run_salt('--out yaml "*" test.ping'):
+            if not line:
+                continue
+            data = salt.utils.yaml.safe_load(line)
+            minions.extend(data.keys())
+
+        self.assertNotEqual(minions, [])
+
+        testfile = os.path.abspath(
+            os.path.join(
+                os.path.dirname(os.path.dirname(__file__)),
+                "files",
+                "file",
+                "base",
+                "testfile",
+            )
+        )
+        with salt.utils.files.fopen(testfile, "r") as fh_:
+            testfile_contents = fh_.read()
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 @pytest.fixture

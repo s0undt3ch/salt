@@ -17,6 +17,10 @@ from cryptography.x509.oid import NameOID
 from salt.ext.six import text_type
 from salt.ext.six.moves import range
 from tests.support.case import ShellCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 def _random_name(prefix=""):
@@ -47,6 +51,10 @@ class VenafiTest(ShellCase):
     """
 
     @with_random_name
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_request(self, name):
         cn = "{0}.example.com".format(name)
 
@@ -88,6 +96,10 @@ class VenafiTest(ShellCase):
         assert pkey_public_key_pem == cert_public_key_pem
 
     @with_random_name
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_sign(self, name):
 
         csr_pem = """-----BEGIN CERTIFICATE REQUEST-----

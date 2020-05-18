@@ -1,16 +1,11 @@
 # -*- coding: utf-8 -*-
-
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import pytest
 import salt.config
-
-# Import salt libs
 import salt.version
-
-# Import Salt Testing libs
 from tests.support.case import MultimasterModuleCase
+from tests.support.helpers import slowTest
 from tests.support.mixins import AdaptedConfigurationTestCaseMixin
 
 
@@ -78,7 +73,11 @@ class TestModuleTest(MultimasterModuleCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(ret[0][0], 6765)
         self.assertEqual(ret[1][0], 6765)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=1)  # Test takes >0.5 and <=1 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_collatz(self):
         """
         test.collatz

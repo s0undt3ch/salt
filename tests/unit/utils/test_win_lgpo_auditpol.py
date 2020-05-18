@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-
-# Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import random
 
+<<<<<<< HEAD
 import pytest
 
 # Import Salt Libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 import salt.modules.cmdmod
 import salt.utils.platform
 import salt.utils.win_lgpo_auditpol as win_lgpo_auditpol
-
-# Import Salt Testing Libs
+from tests.support.helpers import slowTest
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, patch
 from tests.support.unit import TestCase, skipIf
@@ -41,7 +41,11 @@ class WinLgpoAuditpolTestCase(TestCase, LoaderModuleMockMixin):
             KeyError, win_lgpo_auditpol.get_settings, category="Fake Category"
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_setting(self):
         names = win_lgpo_auditpol._get_valid_names()
         for name in names:

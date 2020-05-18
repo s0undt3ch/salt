@@ -2,21 +2,26 @@
 """
     :codeauthor: Eric Radman <ericshane@eradman.com>
 """
-
-# Import Python libs
 from __future__ import absolute_import
 
 import os
 
+<<<<<<< HEAD
 import pytest
 
 # Import Salt libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 import salt.cloud
 import salt.config
+from tests.support.helpers import slowTest
 from tests.support.mock import MagicMock, patch
 from tests.support.runtests import RUNTIME_VARS
+<<<<<<< HEAD
 
 # Import Salt Testing libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.unit import TestCase
 
 EXAMPLE_PROVIDERS = {
@@ -105,7 +110,11 @@ class MapConfTest(TestCase):
     Validate evaluation of salt-cloud map configuration
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_cloud_map_merge_conf(self):
         """
         Ensure that nested values can be selectivly overridden in a map file

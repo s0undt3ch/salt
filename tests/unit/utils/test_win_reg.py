@@ -731,7 +731,16 @@ class WinFunctionsTestCase(TestCase):
         result = win_reg.cast_vdata(vdata=vdata, vtype="REG_SZ")
         self.assertTrue(isinstance(result, six.text_type))
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
+=======
+        vdata = None
+        result = win_reg.cast_vdata(vdata=vdata, vtype="REG_SZ")
+        self.assertTrue(isinstance(result, six.text_type))
+        self.assertEqual(result, "")
+
+    @destructiveTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_delete_value(self):
         """
         Test the delete_value function

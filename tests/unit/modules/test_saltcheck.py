@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """Unit test for saltcheck execution module"""
-
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os.path
@@ -10,8 +8,7 @@ import pytest
 import salt.config
 import salt.modules.saltcheck as saltcheck
 import salt.syspaths as syspaths
-
-# Import Salt Testing Libs
+from tests.support.helpers import slowTest
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, patch
 from tests.support.unit import TestCase
@@ -34,7 +31,11 @@ class SaltcheckTestCase(TestCase, LoaderModuleMockMixin):
         self.addCleanup(patcher.stop)
         return {saltcheck: {"__opts__": local_opts}}
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_call_salt_command(self):
         """test simple test.echo module"""
         with patch.dict(
@@ -51,7 +52,11 @@ class SaltcheckTestCase(TestCase, LoaderModuleMockMixin):
             )
             self.assertEqual(returned, "hello")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_call_salt_command2(self):
         """test simple test.echo module again"""
         with patch.dict(
@@ -497,7 +502,11 @@ class SaltcheckTestCase(TestCase, LoaderModuleMockMixin):
             mybool = sc_instance._SaltCheck__assert_not_empty("")
             self.assertNotEqual(mybool, "Pass")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_run_test_1(self):
         """test"""
         with patch.dict(

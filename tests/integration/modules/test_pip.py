@@ -19,7 +19,7 @@ import salt.utils.path
 import salt.utils.platform
 from salt.modules.virtualenv_mod import KNOWN_BINARY_NAMES
 from tests.support.case import ModuleCase
-from tests.support.helpers import patched_environ
+from tests.support.helpers import patched_environ, slowTest
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.unit import skipIf
 
@@ -111,7 +111,11 @@ class PipModuleTest(ModuleCase):
 
         return expect.issubset(set(success_for))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_issue_2087_missing_pip(self):
         # Let's create the testing virtualenv
         self._create_virtualenv(self.venv_dir)
@@ -143,7 +147,11 @@ class PipModuleTest(ModuleCase):
                 ret,
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_requirements_as_list_of_chains__cwd_set__absolute_file_path(self):
         self._create_virtualenv(self.venv_dir)
 
@@ -189,7 +197,11 @@ class PipModuleTest(ModuleCase):
                 )
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_requirements_as_list_of_chains__cwd_not_set__absolute_file_path(self):
         self._create_virtualenv(self.venv_dir)
 
@@ -233,7 +245,11 @@ class PipModuleTest(ModuleCase):
                 )
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_requirements_as_list__absolute_file_path(self):
         self._create_virtualenv(self.venv_dir)
 
@@ -269,7 +285,11 @@ class PipModuleTest(ModuleCase):
                 )
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_requirements_as_list__non_absolute_file_path(self):
         self._create_virtualenv(self.venv_dir)
 
@@ -314,7 +334,11 @@ class PipModuleTest(ModuleCase):
                 )
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_chained_requirements__absolute_file_path(self):
         self._create_virtualenv(self.venv_dir)
 
@@ -348,7 +372,11 @@ class PipModuleTest(ModuleCase):
                 )
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_chained_requirements__non_absolute_file_path(self):
         self._create_virtualenv(self.venv_dir)
 
@@ -389,7 +417,11 @@ class PipModuleTest(ModuleCase):
                 )
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_issue_4805_nested_requirements(self):
         self._create_virtualenv(self.venv_dir)
 
@@ -427,7 +459,11 @@ class PipModuleTest(ModuleCase):
                 )
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pip_uninstall(self):
         # Let's create the testing virtualenv
         self._create_virtualenv(self.venv_dir)
@@ -470,7 +506,11 @@ class PipModuleTest(ModuleCase):
                 )
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pip_install_upgrade(self):
         # Create the testing virtualenv
         self._create_virtualenv(self.venv_dir)
@@ -537,7 +577,11 @@ class PipModuleTest(ModuleCase):
                 )
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pip_install_multiple_editables(self):
         editables = [
             "git+https://github.com/jek/blinker.git#egg=Blinker",
@@ -572,7 +616,11 @@ class PipModuleTest(ModuleCase):
                 )
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pip_install_multiple_editables_and_pkgs(self):
         editables = [
             "git+https://github.com/jek/blinker.git#egg=Blinker",

@@ -7,6 +7,10 @@ from __future__ import absolute_import
 
 import pytest
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 @pytest.mark.windows_whitelisted
@@ -15,7 +19,11 @@ class ConfigTest(ModuleCase):
     Test config routines
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_valid_file_proto(self):
         """
         test config.valid_file_proto
@@ -29,14 +37,22 @@ class ConfigTest(ModuleCase):
         self.assertTrue(self.run_function("config.valid_fileproto", ["swift://"]))
         self.assertFalse(self.run_function("config.valid_fileproto", ["cheese://"]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_backup_mode(self):
         """
         test config.backup_mode
         """
         self.assertEqual(self.run_function("config.backup_mode", ["minion"]), "minion")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_manage_mode(self):
         """
         test config.manage_mode
@@ -53,7 +69,11 @@ class ConfigTest(ModuleCase):
         self.assertEqual(self.run_function("config.manage_mode", ["1775"]), "1775")
         self.assertEqual(self.run_function("config.manage_mode", ["0"]), "0000")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_option(self):
         """
         test config.option
@@ -66,7 +86,11 @@ class ConfigTest(ModuleCase):
         # pillar conf opt
         self.assertEqual(self.run_function("config.option", ["ext_spam"]), "eggs")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get(self):
         """
         Test option.get

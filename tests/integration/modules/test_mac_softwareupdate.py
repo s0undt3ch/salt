@@ -2,6 +2,7 @@
 """
 integration tests for mac_softwareupdate
 """
+<<<<<<< HEAD
 
 from __future__ import absolute_import, print_function, unicode_literals
 
@@ -12,6 +13,23 @@ from tests.support.case import ModuleCase
 @pytest.mark.skip_if_not_root
 @pytest.mark.skip_unless_on_darwin
 @pytest.mark.skip_if_binaries_missing("softwareupdate")
+=======
+from __future__ import absolute_import, print_function, unicode_literals
+
+from tests.support.case import ModuleCase
+from tests.support.helpers import (
+    destructiveTest,
+    runs_on,
+    skip_if_binaries_missing,
+    skip_if_not_root,
+    slowTest,
+)
+
+
+@skip_if_not_root
+@runs_on(kernel="Darwin")
+@skip_if_binaries_missing("softwareupdate")
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 class MacSoftwareUpdateModuleTest(ModuleCase):
     """
     Validate the mac_softwareupdate module
@@ -50,7 +68,11 @@ class MacSoftwareUpdateModuleTest(ModuleCase):
 
         super(MacSoftwareUpdateModuleTest, self).tearDown()
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_available(self):
         """
         Test softwareupdate.list_available
@@ -59,8 +81,13 @@ class MacSoftwareUpdateModuleTest(ModuleCase):
         # is the correct type, dict
         self.assertIsInstance(self.run_function("softwareupdate.list_available"), dict)
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_ignore(self):
         """
         Test softwareupdate.ignore
@@ -79,8 +106,13 @@ class MacSoftwareUpdateModuleTest(ModuleCase):
         self.assertIn("spongebob", self.run_function("softwareupdate.list_ignored"))
         self.assertIn("squidward", self.run_function("softwareupdate.list_ignored"))
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_schedule(self):
         """
         Test softwareupdate.schedule_enable
@@ -94,8 +126,13 @@ class MacSoftwareUpdateModuleTest(ModuleCase):
         self.assertTrue(self.run_function("softwareupdate.schedule_enable", [False]))
         self.assertFalse(self.run_function("softwareupdate.schedule_enabled"))
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_update(self):
         """
         Test softwareupdate.update_all
@@ -120,15 +157,24 @@ class MacSoftwareUpdateModuleTest(ModuleCase):
             self.run_function("softwareupdate.update", ["spongebob"]),
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_downloads(self):
         """
         Test softwareupdate.list_downloads
         """
         self.assertIsInstance(self.run_function("softwareupdate.list_downloads"), list)
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_download(self):
         """
         Test softwareupdate.download
@@ -142,16 +188,26 @@ class MacSoftwareUpdateModuleTest(ModuleCase):
             self.run_function("softwareupdate.download", ["spongebob"]),
         )
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_download_all(self):
         """
         Test softwareupdate.download_all
         """
         self.assertIsInstance(self.run_function("softwareupdate.download_all"), list)
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_set_reset_catalog(self):
         """
         Test softwareupdate.download_all

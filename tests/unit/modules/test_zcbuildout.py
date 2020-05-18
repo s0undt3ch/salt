@@ -18,7 +18,11 @@ import salt.utils.platform
 from salt.ext import six
 from salt.ext.six.moves.urllib.error import URLError
 from salt.ext.six.moves.urllib.request import urlopen
+<<<<<<< HEAD
 from tests.support.helpers import patched_environ
+=======
+from tests.support.helpers import patched_environ, requires_network, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.unit import TestCase, skipIf
@@ -136,7 +140,11 @@ class Base(TestCase, LoaderModuleMockMixin):
 @pytest.mark.requires_network
 @pytest.mark.skip_if_binaries_missing("tar")
 class BuildoutTestCase(Base):
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=0.5)  # Test takes >0.1 and <=0.5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_onlyif_unless(self):
         b_dir = os.path.join(self.tdir, "b")
         ret = buildout.buildout(b_dir, onlyif=RUNTIME_VARS.SHELL_FALSE_PATH)
@@ -146,7 +154,11 @@ class BuildoutTestCase(Base):
         self.assertTrue(ret["comment"] == "unless condition is true")
         self.assertTrue(ret["status"] is True)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=0.5)  # Test takes >0.1 and <=0.5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_salt_callback(self):
         @buildout._salt_callback
         def callback1(a, b=1):
@@ -203,7 +215,11 @@ class BuildoutTestCase(Base):
             self.assertTrue(0 == len(buildout.LOG.by_level[l]))
         # pylint: enable=invalid-sequence-index
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_bootstrap_url(self):
         for path in [
             os.path.join(self.tdir, "var/ver/1/dumppicked"),
@@ -227,7 +243,11 @@ class BuildoutTestCase(Base):
                 "b2 url for {0}".format(path),
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_buildout_ver(self):
         for path in [
             os.path.join(self.tdir, "var/ver/1/dumppicked"),
@@ -247,7 +267,11 @@ class BuildoutTestCase(Base):
                 2, buildout._get_buildout_ver(path), "2 for {0}".format(path)
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_bootstrap_content(self):
         self.assertEqual(
             "",
@@ -262,7 +286,11 @@ class BuildoutTestCase(Base):
             buildout._get_bootstrap_content(os.path.join(self.tdir, "var", "tb", "2")),
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=0.5)  # Test takes >0.1 and <=0.5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_logger_clean(self):
         buildout.LOG.clear()
         # nothing in there
@@ -280,7 +308,11 @@ class BuildoutTestCase(Base):
             not in [len(buildout.LOG.by_level[a]) > 0 for a in buildout.LOG.by_level]
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=0.5)  # Test takes >0.1 and <=0.5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_logger_loggers(self):
         buildout.LOG.clear()
         # nothing in there
@@ -292,7 +324,11 @@ class BuildoutTestCase(Base):
             self.assertEqual(buildout.LOG.by_level[i][0], "foo")
             self.assertEqual(buildout.LOG.by_level[i][-1], "moo")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test__find_cfgs(self):
         result = sorted(
             [a.replace(self.root, "") for a in buildout._find_cfgs(self.root)]
@@ -458,7 +494,11 @@ class BuildoutOnlineTestCase(Base):
             or ("setuptools>=0.7" in comment)
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_run_buildout(self):
         if salt.modules.virtualenv_mod.virtualenv_ver(self.ppy_st) >= (20, 0, 0):
             self.skipTest(
@@ -473,7 +513,11 @@ class BuildoutOnlineTestCase(Base):
         self.assertTrue("Installing a" in out)
         self.assertTrue("Installing b" in out)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_buildout(self):
         if salt.modules.virtualenv_mod.virtualenv_ver(self.ppy_st) >= (20, 0, 0):
             self.skipTest(

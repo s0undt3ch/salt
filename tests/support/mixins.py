@@ -22,7 +22,6 @@ import sys
 import tempfile
 import time
 import types
-from collections import OrderedDict
 
 import salt.config
 import salt.exceptions
@@ -44,12 +43,17 @@ from tests.support.mock import patch
 from tests.support.paths import CODE_DIR
 from tests.support.runtests import RUNTIME_VARS
 
+try:
+    from salt.utils.odict import OrderedDict
+except ImportError:
+    from collections import OrderedDict
+
 log = logging.getLogger(__name__)
 
 
 class CheckShellBinaryNameAndVersionMixin(object):
     """
-    Simple class mix-in to subclass in companion to :class:`ShellTestCase<tests.support.case.ShellTestCase>` which
+    Simple class mix-in to subclass in companion to :class:`ShellCase<tests.support.case.ShellCase>` which
     adds a test case to verify proper version report from Salt's CLI tools.
     """
 

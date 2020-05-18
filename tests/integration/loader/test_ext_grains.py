@@ -15,7 +15,11 @@ import pytest
 import salt.config
 import salt.loader
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
 from tests.support.helpers import PYTEST_MIGRATION_SKIP_REASON
+=======
+from tests.support.helpers import slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.unit import skipIf
 
@@ -31,8 +35,12 @@ class LoaderGrainsTest(ModuleCase):
     #    self.opts['disable_modules'] = ['pillar']
     #    self.opts['grains'] = grains(self.opts)
 
+<<<<<<< HEAD
     @pytest.mark.skip_on_windows(reason=PYTEST_MIGRATION_SKIP_REASON)
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_grains_overwrite(self):
         # Force a grains sync
         self.run_function("saltutil.sync_grains")

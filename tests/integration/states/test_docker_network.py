@@ -18,7 +18,11 @@ import salt.utils.path
 from salt.exceptions import CommandExecutionError
 from tests.support.case import ModuleCase
 from tests.support.docker import random_name, with_network
+<<<<<<< HEAD
 from tests.support.helpers import requires_system_grains
+=======
+from tests.support.helpers import destructiveTest, requires_system_grains, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import SaltReturnAssertsMixin
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.unit import skipIf
@@ -106,7 +110,12 @@ def container_name(func):
     return wrapper
 
 
+<<<<<<< HEAD
 @pytest.mark.destructive_test
+=======
+@slowTest
+@destructiveTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 @skipIf(not salt.utils.path.which("dockerd"), "Docker not installed")
 @pytest.mark.slow_test(seconds=10)  # The whole test class needs to run.
 class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
@@ -128,7 +137,7 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
         output = process.communicate()[0]
         log.debug("Output from %s:\n%s", " ".join(cmd), output)
 
-        if process.returncode != 0 and "No such image" not in output:
+        if process.returncode != 0 and "No such image" not in str(output):
             raise Exception("Failed to destroy image")
 
     def run_state(self, function, **kwargs):
@@ -137,6 +146,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
         return ret
 
     @with_network(create=False)
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_absent(self, net):
         self.assertSaltTrueReturn(
             self.run_state("docker_network.present", name=net.name)
@@ -150,6 +163,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
 
     @container_name
     @with_network(create=False)
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_absent_with_disconnected_container(self, net, container_name):
         self.assertSaltTrueReturn(
             self.run_state(
@@ -166,6 +183,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
         self.assertEqual(ret["comment"], "Removed network '{0}'".format(net.name))
 
     @with_network(create=False)
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_absent_when_not_present(self, net):
         ret = self.run_state("docker_network.absent", name=net.name)
         self.assertSaltTrueReturn(ret)
@@ -176,6 +197,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
         )
 
     @with_network(create=False)
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present(self, net):
         ret = self.run_state("docker_network.present", name=net.name)
         self.assertSaltTrueReturn(ret)
@@ -191,6 +216,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
 
     @container_name
     @with_network(create=False)
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_with_containers(self, net, container_name):
         ret = self.run_state(
             "docker_network.present", name=net.name, containers=[container_name]
@@ -245,6 +274,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
 
     @container_name
     @with_network(create=False)
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_with_reconnect(self, net, container_name):
         """
         Test reconnecting with containers not passed to state
@@ -253,6 +286,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
 
     @container_name
     @with_network(create=False)
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_with_no_reconnect(self, net, container_name):
         """
         Test reconnecting with containers not passed to state
@@ -260,6 +297,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
         self._test_present_reconnect(net, container_name, reconnect=False)
 
     @with_network()
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_internal(self, net):
         self.assertSaltTrueReturn(
             self.run_state("docker_network.present", name=net.name, internal=True,)
@@ -268,6 +309,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
         self.assertIs(net_info["Internal"], True)
 
     @with_network()
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_labels(self, net):
         # Test a mix of different ways of specifying labels
         self.assertSaltTrueReturn(
@@ -285,6 +330,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
     @with_network(subnet="fe3f:2180:26:1::/123")
     @with_network(subnet="10.247.197.96/27")
     @skipIf(not IPV6_ENABLED, "IPv6 not enabled")
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_enable_ipv6(self, net1, net2):
         self.assertSaltTrueReturn(
             self.run_state(
@@ -299,6 +348,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
 
     @requires_system_grains
     @with_network()
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_attachable(self, net, grains):
         if grains["os_family"] == "RedHat" and grains.get("osmajorrelease", 0) <= 7:
             self.skipTest("Cannot reliably manage attachable on RHEL <= 7")
@@ -329,6 +382,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
 
     @with_network(subnet="10.247.197.128/27")
     @with_network(subnet="10.247.197.96/27")
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_with_custom_ipv4(self, net1, net2):
         # First run will test passing the IPAM arguments individually
         self.assertSaltTrueReturn(
@@ -372,6 +429,10 @@ class DockerNetworkTestCase(ModuleCase, SaltReturnAssertsMixin):
     @with_network(subnet="fe3f:2180:26:1::/123")
     @with_network(subnet="10.247.197.96/27")
     @skipIf(not IPV6_ENABLED, "IPv6 not enabled")
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_with_custom_ipv6(self, ipv4_net, ipv6_net1, ipv6_net2):
         self.assertSaltTrueReturn(
             self.run_state(

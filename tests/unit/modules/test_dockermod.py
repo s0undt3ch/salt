@@ -2,22 +2,22 @@
 """
 Unit tests for the docker module
 """
-
-# Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
+<<<<<<< HEAD
 import pytest
 
 # Import Salt Libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 import salt.config
 import salt.loader
 import salt.modules.dockermod as docker_mod
 from salt.exceptions import CommandExecutionError, SaltInvocationError
 from salt.ext.six.moves import range
-
-# Import Salt Testing Libs
+from tests.support.helpers import slowTest
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, Mock, call, patch
 from tests.support.unit import TestCase, skipIf
@@ -266,7 +266,11 @@ class DockerTestCase(TestCase, LoaderModuleMockMixin):
                 all=True, filters={"label": "KEY"}
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_check_mine_cache_is_refreshed_on_container_change_event(self):
         """
         Every command that might modify docker containers state.
@@ -957,7 +961,11 @@ class DockerTestCase(TestCase, LoaderModuleMockMixin):
             ret,
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_call_success(self):
         """
         test module calling inside containers

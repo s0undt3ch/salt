@@ -5,6 +5,11 @@ from __future__ import absolute_import
 import pytest
 import salt.utils.platform
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, flaky, slowTest
+from tests.support.unit import skipIf
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 @pytest.mark.flaky(max_runs=4)
@@ -17,8 +22,13 @@ class NTPTest(ModuleCase):
     Validate windows ntp module
     """
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_ntp_set_servers(self):
         """
         test ntp get and set servers

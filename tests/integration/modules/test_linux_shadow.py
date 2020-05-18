@@ -12,7 +12,17 @@ import salt.modules.linux_shadow
 import salt.utils.files
 import salt.utils.platform
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
 from tests.support.helpers import random_string
+=======
+from tests.support.helpers import (
+    destructiveTest,
+    flaky,
+    random_string,
+    skip_if_not_root,
+    slowTest,
+)
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.unit import skipIf
 
 
@@ -33,8 +43,13 @@ class ShadowModuleTest(ModuleCase):
         self._test_user = random_string("tu-", uppercase=False)
         self._password = salt.modules.linux_shadow.gen_password("Password1234")
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_info(self):
         """
         Test shadow.info
@@ -50,7 +65,12 @@ class ShadowModuleTest(ModuleCase):
         ret = self.run_function("shadow.info", [self._no_user])
         self.assertEqual(ret["name"], "")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_del_password(self):
         """
         Test shadow.del_password
@@ -67,7 +87,12 @@ class ShadowModuleTest(ModuleCase):
         # User does not exist
         self.assertFalse(self.run_function("shadow.del_password", [self._no_user]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_set_password(self):
         """
         Test shadow.set_password
@@ -85,7 +110,12 @@ class ShadowModuleTest(ModuleCase):
             self.run_function("shadow.set_password", [self._no_user, self._password])
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_set_inactdays(self):
         """
         Test shadow.set_inactdays
@@ -101,7 +131,12 @@ class ShadowModuleTest(ModuleCase):
         # User does not exist (set_inactdays return None is user does not exist)
         self.assertFalse(self.run_function("shadow.set_inactdays", [self._no_user, 12]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_set_maxdays(self):
         """
         Test shadow.set_maxdays
@@ -115,7 +150,12 @@ class ShadowModuleTest(ModuleCase):
         # User does not exist (set_inactdays return None is user does not exist)
         self.assertFalse(self.run_function("shadow.set_maxdays", [self._no_user, 12]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_set_mindays(self):
         """
         Test shadow.set_mindays
@@ -129,8 +169,14 @@ class ShadowModuleTest(ModuleCase):
         # User does not exist (set_inactdays return None is user does not exist)
         self.assertFalse(self.run_function("shadow.set_mindays", [self._no_user, 12]))
 
+<<<<<<< HEAD
     @pytest.mark.flaky(max_runs=4)
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @flaky
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_lock_password(self):
         """
         Test shadow.lock_password
@@ -145,7 +191,12 @@ class ShadowModuleTest(ModuleCase):
         # User does not exist (set_inactdays return None is user does not exist)
         self.assertFalse(self.run_function("shadow.lock_password", [self._no_user]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_unlock_password(self):
         """
         Test shadow.lock_password
@@ -160,7 +211,12 @@ class ShadowModuleTest(ModuleCase):
         # User does not exist (set_inactdays return None is user does not exist)
         self.assertFalse(self.run_function("shadow.unlock_password", [self._no_user]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_set_warndays(self):
         """
         Test shadow.set_warndays
@@ -174,7 +230,12 @@ class ShadowModuleTest(ModuleCase):
         # User does not exist (set_inactdays return None is user does not exist)
         self.assertFalse(self.run_function("shadow.set_warndays", [self._no_user, 12]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_set_date(self):
         """
         Test shadow.set_date
@@ -192,7 +253,12 @@ class ShadowModuleTest(ModuleCase):
             self.run_function("shadow.set_date", [self._no_user, "2016-08-19"])
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_set_expire(self):
         """
         Test shadow.set_exipre
@@ -210,7 +276,12 @@ class ShadowModuleTest(ModuleCase):
             self.run_function("shadow.set_expire", [self._no_user, "2016-08-25"])
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_set_del_root_password(self):
         """
         Test set/del password for root

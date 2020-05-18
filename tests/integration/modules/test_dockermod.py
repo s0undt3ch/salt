@@ -2,17 +2,27 @@
 """
 Integration tests for the docker_container states
 """
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from __future__ import absolute_import, print_function, unicode_literals
 
 import random
 import string
 import sys
 
+<<<<<<< HEAD
 import pytest
 import salt.utils.path
 from salt.ext.six.moves import range
 from tests.support.case import ModuleCase
+=======
+import salt.utils.path
+from salt.ext.six.moves import range  # pylint: disable=import-error,redefined-builtin
+from tests.support.case import ModuleCase
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import SaltReturnAssertsMixin
 from tests.support.unit import skipIf
 
@@ -60,7 +70,11 @@ class DockerCallTestCase(ModuleCase, SaltReturnAssertsMixin):
         delattr(self, "random_name")
         delattr(self, "image_tag")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_docker_call(self):
         """
         check that docker.call works, and works with a container not running as root
@@ -68,7 +82,11 @@ class DockerCallTestCase(ModuleCase, SaltReturnAssertsMixin):
         ret = self.run_function("docker.call", [self.random_name, "test.ping"])
         assert ret is True
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_docker_sls(self):
         """
         check that docker.sls works, and works with a container not running as root
@@ -76,7 +94,11 @@ class DockerCallTestCase(ModuleCase, SaltReturnAssertsMixin):
         ret = self.run_function("docker.apply", [self.random_name, "core"])
         self.assertSaltTrueReturn(ret)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_docker_highstate(self):
         """
         check that docker.highstate works, and works with a container not running as root

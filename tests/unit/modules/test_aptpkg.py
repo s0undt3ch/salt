@@ -9,6 +9,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import copy
+import logging
 import textwrap
 
 import pytest
@@ -17,7 +18,19 @@ from salt.exceptions import CommandExecutionError, SaltInvocationError
 from salt.ext import six
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, Mock, patch
+<<<<<<< HEAD
 from tests.support.unit import TestCase
+=======
+from tests.support.unit import TestCase, skipIf
+
+try:
+    import pytest
+except ImportError:
+    pytest = None
+
+log = logging.getLogger(__name__)
+
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 APT_KEY_LIST = r"""
 pub:-:1024:17:46181433FBB75451:1104433784:::-:::scSC:
@@ -141,6 +154,18 @@ Reading state information...
 """
 
 UNINSTALL = {"tmux": {"new": six.text_type(), "old": "1.8-5"}}
+INSTALL = {"tmux": {"new": "1.8-5", "old": six.text_type()}}
+
+
+class MockSourceEntry(object):
+    def __init__(self, uri, source_type, line, invalid):
+        self.uri = uri
+        self.type = source_type
+        self.line = line
+        self.invalid = invalid
+
+    def mysplit(self, line):
+        return line.split()
 
 
 class AptPkgTestCase(TestCase, LoaderModuleMockMixin):
@@ -149,7 +174,7 @@ class AptPkgTestCase(TestCase, LoaderModuleMockMixin):
     """
 
     def setup_loader_modules(self):
-        return {aptpkg: {}}
+        return {aptpkg: {"__grains__": {}}}
 
     def test_version(self):
         """
@@ -309,6 +334,15 @@ class AptPkgTestCase(TestCase, LoaderModuleMockMixin):
                 assert aptpkg.autoremove(list_only=True) == []
                 assert aptpkg.autoremove(list_only=True, purge=True) == []
 
+    def test_install(self):
+        """
+        Test - Install packages.
+        """
+        with patch("salt.modules.aptpkg.install", MagicMock(return_value=INSTALL)):
+            self.assertEqual(aptpkg.install(name="tmux"), INSTALL)
+            kwargs = {"force_conf_new": True}
+            self.assertEqual(aptpkg.install(name="tmux", **kwargs), INSTALL)
+
     def test_remove(self):
         """
         Test - Remove packages.
@@ -340,6 +374,8 @@ class AptPkgTestCase(TestCase, LoaderModuleMockMixin):
                 }
                 with patch.multiple(aptpkg, **patch_kwargs):
                     self.assertEqual(aptpkg.upgrade(), dict())
+                    kwargs = {"force_conf_new": True}
+                    self.assertEqual(aptpkg.upgrade(**kwargs), dict())
 
     def test_upgrade_downloadonly(self):
         """
@@ -585,6 +621,55 @@ class AptPkgTestCase(TestCase, LoaderModuleMockMixin):
             list_downloaded = aptpkg.list_downloaded()
             self.assertEqual(len(list_downloaded), 1)
             self.assertDictEqual(list_downloaded, DOWNLOADED_RET)
+
+    def test__skip_source(self):
+        """
+        Test __skip_source.
+        :return:
+        """
+        # Valid source
+        source_type = "deb"
+        source_uri = "http://cdn-aws.deb.debian.org/debian"
+        source_line = "deb http://cdn-aws.deb.debian.org/debian stretch main\n"
+
+        mock_source = MockSourceEntry(source_uri, source_type, source_line, False)
+
+        ret = aptpkg._skip_source(mock_source)
+        self.assertFalse(ret)
+
+        # Invalid source type
+        source_type = "ded"
+        source_uri = "http://cdn-aws.deb.debian.org/debian"
+        source_line = "deb http://cdn-aws.deb.debian.org/debian stretch main\n"
+
+        mock_source = MockSourceEntry(source_uri, source_type, source_line, True)
+
+        ret = aptpkg._skip_source(mock_source)
+        self.assertTrue(ret)
+
+        # Invalid source type , not skipped
+        source_type = "deb"
+        source_uri = "http://cdn-aws.deb.debian.org/debian"
+        source_line = "deb [http://cdn-aws.deb.debian.org/debian] stretch main\n"
+
+        mock_source = MockSourceEntry(source_uri, source_type, source_line, True)
+
+        ret = aptpkg._skip_source(mock_source)
+        self.assertFalse(ret)
+
+    def test_normalize_name(self):
+        """
+        Test that package is normalized only when it should be
+        """
+        with patch.dict(aptpkg.__grains__, {"osarch": "amd64"}):
+            result = aptpkg.normalize_name("foo")
+            assert result == "foo", result
+            result = aptpkg.normalize_name("foo:amd64")
+            assert result == "foo", result
+            result = aptpkg.normalize_name("foo:any")
+            assert result == "foo", result
+            result = aptpkg.normalize_name("foo:i386")
+            assert result == "foo:i386", result
 
 
 class AptUtilsTestCase(TestCase, LoaderModuleMockMixin):

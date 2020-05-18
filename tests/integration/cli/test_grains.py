@@ -20,6 +20,10 @@ import os
 import pytest
 import salt.utils.files
 from tests.support.case import ShellCase, SSHCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import flaky, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 log = logging.getLogger(__name__)
 
@@ -31,7 +35,11 @@ class GrainsTargetingTest(ShellCase):
     Integration tests for targeting with grains.
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_grains_targeting_os_running(self):
         """
         Tests running "salt -G 'os:<system-os>' test.ping and minions both return True
@@ -46,7 +54,11 @@ class GrainsTargetingTest(ShellCase):
         ret = self.run_salt('-G "os:{0}" test.ping'.format(os_grain))
         self.assertEqual(sorted(ret), sorted(test_ret))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_grains_targeting_minion_id_running(self):
         """
         Tests return of each running test minion targeting with minion id grain
@@ -57,8 +69,13 @@ class GrainsTargetingTest(ShellCase):
         sub_minion = self.run_salt('-G "id:sub_minion" test.ping')
         self.assertEqual(sorted(sub_minion), sorted(["sub_minion:", "    True"]))
 
+<<<<<<< HEAD
     @pytest.mark.flaky(max_runs=4)
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @flaky
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_grains_targeting_disconnected(self):
         """
         Tests return of minion using grains targeting on a disconnected minion.
@@ -92,6 +109,10 @@ class SSHGrainsTest(SSHCase):
     Depend on proper environment set by SSHCase class
     """
 
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_grains_id(self):
         """
         Test salt-ssh grains id work for localhost.

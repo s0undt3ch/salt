@@ -8,7 +8,11 @@ import pytest
 import salt.utils.files
 import salt.utils.yaml
 from tests.support.case import ShellCase
+<<<<<<< HEAD
 from tests.support.helpers import dedent
+=======
+from tests.support.helpers import dedent, flaky, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import ShellCaseCommonTestsMixin
 from tests.support.unit import skipIf
 
@@ -25,9 +29,15 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
     Test salt matchers
     """
 
+    RUN_TIMEOUT = 300
+
     _call_binary_ = "salt"
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list(self):
         """
         test salt -L matcher
@@ -43,7 +53,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
 
     # compound matcher tests: 12
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_compound_min_with_grain(self):
         """
         test salt compound matcher
@@ -52,52 +66,85 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         assert minion_in_returns("minion", data) is True
         assert minion_in_returns("sub_minion", data) is False
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_compound_and_not_grain(self):
         data = self.run_salt('-C "min* and not G@test_grain:foo" test.ping')
         assert minion_in_returns("minion", data) is True
         assert minion_in_returns("sub_minion", data) is False
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_compound_not_grain(self):
         data = self.run_salt('-C "min* not G@test_grain:foo" test.ping')
         assert minion_in_returns("minion", data) is True
         assert minion_in_returns("sub_minion", data) is False
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_compound_pcre_grain_and_grain(self):
         match = "P@test_grain:^cheese$ and * and G@test_grain:cheese"
         data = self.run_salt('-t 1 -C "{0}" test.ping'.format(match))
         assert minion_in_returns("minion", data) is True
         assert minion_in_returns("sub_minion", data) is False
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_compound_list_and_pcre_minion(self):
         match = "L@sub_minion and E@.*"
         data = self.run_salt('-t 1 -C "{0}" test.ping'.format(match))
         assert minion_in_returns("sub_minion", data) is True
         assert minion_in_returns("minion", data) is False
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_compound_not_sub_minion(self):
         data = self.run_salt('-C "not sub_minion" test.ping')
         assert minion_in_returns("minion", data) is True
         assert minion_in_returns("sub_minion", data) is False
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_compound_all_and_not_grains(self):
         data = self.run_salt('-C "* and ( not G@test_grain:cheese )" test.ping')
         assert minion_in_returns("minion", data) is False
         assert minion_in_returns("sub_minion", data) is True
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_compound_grain_regex(self):
         data = self.run_salt('-C "G%@planets%merc*" test.ping')
         assert minion_in_returns("minion", data) is True
         assert minion_in_returns("sub_minion", data) is False
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_compound_pcre_grain_regex(self):
+=======
+    @slowTest
+    def test_coumpound_pcre_grain_regex(self):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         data = self.run_salt('-C "P%@planets%^(mercury|saturn)$" test.ping')
         assert minion_in_returns("minion", data) is True
         assert minion_in_returns("sub_minion", data) is True
@@ -130,7 +177,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         self.assertTrue(minion_in_returns("minion", data))
         self.assertFalse(minion_in_returns("sub_minion", data))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_nodegroup(self):
         """
         test salt nodegroup matcher
@@ -162,7 +213,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         self.assertTrue(minion_in_returns("minion", data))
         self.assertTrue(minion_in_returns("sub_minion", data))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_nodegroup_list(self):
         data = self.run_salt("-N list_group test.ping")
         self.assertTrue(minion_in_returns("minion", data))
@@ -180,7 +235,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         self.assertTrue(minion_in_returns("minion", data))
         self.assertFalse(minion_in_returns("sub_minion", data))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_glob(self):
         """
         test salt glob matcher
@@ -194,7 +253,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         self.assertIn("minion", data)
         self.assertIn("sub_minion", data)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_regex(self):
         """
         test salt regex matcher
@@ -208,7 +271,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         self.assertIn("minion", data)
         self.assertIn("sub_minion", data)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_grain(self):
         """
         test salt grain matcher
@@ -281,7 +348,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         self.assertIn("minion:", data)
         self.assertIn("sub_minion", data)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_regrain(self):
         """
         test salt grain matcher
@@ -295,7 +366,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         self.assertIn("sub_minion", data)
         self.assertNotIn("minion", data.replace("sub_minion", "stub"))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pillar(self):
         """
         test pillar matcher
@@ -326,7 +401,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         self.assertIn("minion", data)
         self.assertIn("sub_minion", data)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_repillar(self):
         """
         test salt pillar PCRE matcher
@@ -340,7 +419,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         self.assertIn("sub_minion", data)
         self.assertIn("minion", data.replace("sub_minion", "stub"))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_ipcidr(self):
         subnets_data = self.run_salt('--out yaml "*" network.subnets')
         yaml_data = salt.utils.yaml.safe_load("\n".join(subnets_data))
@@ -353,7 +436,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         self.assertIn("minion", data)
         self.assertIn("sub_minion", data)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_static(self):
         """
         test salt static call
@@ -362,7 +449,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         data = "\n".join(data)
         self.assertIn("minion", data)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_salt_documentation(self):
         """
         Test to see if we're supporting --doc
@@ -389,7 +480,11 @@ class MatchTest(ShellCase, ShellCaseCommonTestsMixin):
         )
         self.assertIn(expect_to_find, stdout, msg=error_msg)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_salt_documentation_too_many_arguments(self):
         """
         Test to see if passing additional arguments shows an error

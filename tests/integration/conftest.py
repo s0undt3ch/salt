@@ -64,6 +64,10 @@ def bridge_pytest_and_runtests(
     # salt_syndic,
     salt_master,
     salt_minion,
+<<<<<<< HEAD
+=======
+    salt_sub_minion,
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 ):
 
     yield

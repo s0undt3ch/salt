@@ -8,6 +8,10 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import pytest
 from tests.support.case import ShellCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 @pytest.mark.windows_whitelisted
@@ -16,7 +20,11 @@ class SaltRunnerTest(ShellCase):
     Test the salt runner
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_salt_cmd(self):
         """
         test return values of salt.cmd
@@ -28,7 +36,11 @@ class SaltRunnerTest(ShellCase):
         self.assertEqual(out_ret, "True")
         self.assertTrue(return_ret)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_salt_cmd_invalid(self):
         """
         test return values of salt.cmd invalid parameters

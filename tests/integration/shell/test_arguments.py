@@ -8,12 +8,20 @@ from __future__ import absolute_import
 import pytest
 import salt.utils.args
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import requires_salt_modules, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 @pytest.mark.windows_whitelisted
 @pytest.mark.requires_salt_modules("test.ping", "test.arg")
 class ArgumentTestCase(ModuleCase):
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_unsupported_kwarg(self):
         """
         Test passing a non-supported keyword argument. The relevant code that
@@ -25,7 +33,11 @@ class ArgumentTestCase(ModuleCase):
             self.run_function("test.ping", foo="bar"),
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_kwarg_name_containing_dashes(self):
         """
         Tests the arg parser to ensure that kwargs with dashes in the arg name
@@ -42,7 +54,11 @@ class ArgumentTestCase(ModuleCase):
             "baz",
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_argument_containing_pound_sign(self):
         """
         Tests the argument parsing to ensure that a CLI argument with a pound

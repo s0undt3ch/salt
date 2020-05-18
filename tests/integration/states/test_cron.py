@@ -3,19 +3,19 @@
 """
 Tests for the cron state
 """
-
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
+<<<<<<< HEAD
 import pytest
 
 # Import Salt libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 import salt.utils.platform
-
-# Import Salt Testing libs
 from tests.support.case import ModuleCase
+from tests.support.helpers import slowTest
 from tests.support.unit import skipIf
 
 log = logging.getLogger(__name__)
@@ -43,7 +43,11 @@ class CronTest(ModuleCase):
         # Delete user
         self.run_state("user.absent", name="test_cron_user")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_managed(self):
         """
         file.managed

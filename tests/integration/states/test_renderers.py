@@ -9,6 +9,10 @@ import pytest
 import salt.utils.platform
 from salt.ext import six
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import flaky, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.unit import skipIf
 
 
@@ -18,7 +22,11 @@ class TestJinjaRenderer(ModuleCase):
     Validate that ordering works correctly
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_dot_notation(self):
         """
         Test the Jinja dot-notation syntax for calling execution modules
@@ -31,7 +39,11 @@ class TestJinjaRenderer(ModuleCase):
     @skipIf(
         salt.utils.platform.is_darwin() and six.PY2, "This test hangs on OS X on Py2"
     )
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_salt_contains_function(self):
         """
         Test if we are able to check if a function exists inside the "salt"

@@ -9,6 +9,10 @@ import pytest
 import salt.utils.path
 from salt.ext.tornado.httpclient import HTTPClient
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.unit import skipIf
 
 
@@ -57,7 +61,11 @@ class GemModuleTest(ModuleCase):
 
         self.addCleanup(uninstall_gem)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_install_uninstall(self):
         """
         gem.install
@@ -70,7 +78,11 @@ class GemModuleTest(ModuleCase):
         self.run_function("gem.uninstall", [self.GEM])
         self.assertFalse(self.run_function("gem.list", [self.GEM]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_install_version(self):
         """
         gem.install rake version=11.1.2
@@ -83,7 +95,11 @@ class GemModuleTest(ModuleCase):
         self.run_function("gem.uninstall", [self.GEM])
         self.assertFalse(self.run_function("gem.list", [self.GEM]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list(self):
         """
         gem.list
@@ -99,7 +115,11 @@ class GemModuleTest(ModuleCase):
 
         self.run_function("gem.uninstall", [" ".join(self.GEM_LIST)])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_upgrades(self):
         """
         gem.list_upgrades
@@ -112,7 +132,11 @@ class GemModuleTest(ModuleCase):
 
         self.run_function("gem.uninstall", [self.OLD_GEM])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_sources_add_remove(self):
         """
         gem.sources_add
@@ -128,7 +152,11 @@ class GemModuleTest(ModuleCase):
         sources_list = self.run_function("gem.sources_list")
         self.assertNotIn(source, sources_list)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_update(self):
         """
         gem.update
@@ -144,7 +172,11 @@ class GemModuleTest(ModuleCase):
         self.run_function("gem.uninstall", [self.OLD_GEM])
         self.assertFalse(self.run_function("gem.list", [self.OLD_GEM]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_update_system(self):
         """
         gem.update_system

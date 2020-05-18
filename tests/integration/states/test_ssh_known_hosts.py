@@ -12,6 +12,10 @@ import sys
 import pytest
 from salt.ext import six
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import skip_if_binaries_missing, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import SaltReturnAssertsMixin
 from tests.support.runtests import RUNTIME_VARS
 
@@ -34,7 +38,11 @@ class SSHKnownHostsStateTest(ModuleCase, SaltReturnAssertsMixin):
             os.remove(self.known_hosts)
         super(SSHKnownHostsStateTest, self).tearDown()
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present(self):
         """
         ssh_known_hosts.present
@@ -106,7 +114,11 @@ class SSHKnownHostsStateTest(ModuleCase, SaltReturnAssertsMixin):
                 "Salt return '{0}' is in ('', None,".format(ret) + " {})"
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_fail(self):
         # save something wrong
         ret = self.run_state(
@@ -118,7 +130,11 @@ class SSHKnownHostsStateTest(ModuleCase, SaltReturnAssertsMixin):
         )
         self.assertSaltFalseReturn(ret)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_absent(self):
         """
         ssh_known_hosts.absent

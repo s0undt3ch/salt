@@ -11,6 +11,12 @@ import salt.loader
 import salt.states.win_lgpo as win_lgpo
 import salt.utils.platform
 import salt.utils.stringutils
+<<<<<<< HEAD
+=======
+
+# Import Salt Testing Libs
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import patch
 from tests.support.unit import TestCase, skipIf
@@ -124,7 +130,11 @@ class WinLGPOPolicyElementNames(TestCase, LoaderModuleMockMixin):
         with patch.dict(win_lgpo.__opts__, {"test": False}):
             win_lgpo.set_(name="nc_state", computer_policy=computer_policy)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_current_element_naming_style(self):
         computer_policy = {
             "Point and Print Restrictions": {
@@ -153,7 +163,11 @@ class WinLGPOPolicyElementNames(TestCase, LoaderModuleMockMixin):
             result["changes"]["new"]["Computer Configuration"], expected
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_old_element_naming_style(self):
         computer_policy = {
             "Point and Print Restrictions": {
@@ -193,7 +207,11 @@ class WinLGPOPolicyElementNames(TestCase, LoaderModuleMockMixin):
         )
         self.assertEqual(result["comment"], expected)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_invalid_elements(self):
         computer_policy = {
             "Point and Print Restrictions": {
@@ -261,7 +279,11 @@ class WinLGPOPolicyElementNamesTestTrue(TestCase, LoaderModuleMockMixin):
                 win_lgpo.set_(name="nc_state", computer_policy=computer_policy)
             self.configured = True
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_current_element_naming_style(self):
         computer_policy = {
             "Point and Print Restrictions": {
@@ -283,7 +305,11 @@ class WinLGPOPolicyElementNamesTestTrue(TestCase, LoaderModuleMockMixin):
         self.assertTrue(result["result"])
         self.assertEqual(result["comment"], expected["comment"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_old_element_naming_style(self):
         computer_policy = {
             "Point and Print Restrictions": {
@@ -309,7 +335,11 @@ class WinLGPOPolicyElementNamesTestTrue(TestCase, LoaderModuleMockMixin):
         self.assertTrue(result["result"])
         self.assertEqual(result["comment"], expected["comment"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=1)  # Test takes >0.5 and <=1 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_invalid_elements(self):
         computer_policy = {
             "Point and Print Restrictions": {

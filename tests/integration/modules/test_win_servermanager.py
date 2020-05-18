@@ -5,6 +5,7 @@ from __future__ import absolute_import
 import pytest
 import salt.utils.platform
 from tests.support.case import ModuleCase
+from tests.support.helpers import slowTest
 from tests.support.unit import skipIf
 
 
@@ -15,7 +16,11 @@ class WinServermanagerTest(ModuleCase):
     Test for salt.modules.win_servermanager
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_available(self):
         """
         Test list available features to install

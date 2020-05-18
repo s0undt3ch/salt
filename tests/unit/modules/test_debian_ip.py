@@ -2,25 +2,31 @@
 """
     :codeauthor: Jayesh Kariya <jayeshk@saltstack.com>
 """
-
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import tempfile
-from collections import OrderedDict as odict
 
-# Import third party libs
 import jinja2.exceptions
+<<<<<<< HEAD
 import pytest
 
 # Import Salt Libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 import salt.modules.debian_ip as debian_ip
-import salt.utils
 
 # Import Salt Testing Libs
+import salt.utils.files
+import salt.utils.platform
+from tests.support.helpers import slowTest
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, patch
 from tests.support.unit import TestCase, skipIf
+
+try:
+    from salt.utils.odict import OrderedDict as odict
+except ImportError:
+    from collections import OrderedDict as odict
 
 # Big pile of interface data for unit tests
 #   To skip, search for 'DebianIpTestCase'
@@ -1054,7 +1060,11 @@ class DebianIpTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'apply_network_settings' function tests: 1
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_apply_network_settings(self):
         """
         Test if it apply global network configuration.

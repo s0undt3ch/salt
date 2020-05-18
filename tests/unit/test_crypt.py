@@ -1,6 +1,4 @@
 # coding: utf-8
-
-# python libs
 from __future__ import absolute_import
 
 import os
@@ -10,15 +8,11 @@ import tempfile
 import pytest
 import salt.utils.files
 from salt import crypt
-
-# salt libs
 from salt.ext import six
+from tests.support.helpers import slowTest
 from tests.support.mock import MagicMock, MockCall, mock_open, patch
-
-# salt testing libs
 from tests.support.unit import TestCase, skipIf
 
-# third-party libs
 try:
     import M2Crypto
 
@@ -103,7 +97,11 @@ SIG = (
 @skipIf(not HAS_PYCRYPTO_RSA, "pycrypto >= 2.6 is not available")
 @skipIf(HAS_M2, "m2crypto is used by salt.crypt if installed")
 class CryptTestCase(TestCase):
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_gen_keys(self):
         open_priv_wb = MockCall("/keydir{0}keyname.pem".format(os.sep), "wb+")
         open_pub_wb = MockCall("/keydir{0}keyname.pub".format(os.sep), "wb+")
@@ -133,7 +131,11 @@ class CryptTestCase(TestCase):
     @patch("os.chmod", MagicMock())
     @patch("os.chown", MagicMock(), create=True)
     @patch("os.access", MagicMock(return_value=True))
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_gen_keys_with_passphrase(self):
         key_path = os.path.join(os.sep, "keydir")
         open_priv_wb = MockCall(os.path.join(key_path, "keyname.pem"), "wb+")
@@ -183,7 +185,11 @@ class M2CryptTestCase(TestCase):
     @patch("os.umask", MagicMock())
     @patch("os.chmod", MagicMock())
     @patch("os.access", MagicMock(return_value=True))
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=0.5)  # Test takes >0.1 and <=0.5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_gen_keys(self):
         with patch("M2Crypto.RSA.RSA.save_pem", MagicMock()) as save_pem:
             with patch("M2Crypto.RSA.RSA.save_pub_key", MagicMock()) as save_pub:
@@ -211,7 +217,11 @@ class M2CryptTestCase(TestCase):
     @patch("os.chmod", MagicMock())
     @patch("os.chown", MagicMock())
     @patch("os.access", MagicMock(return_value=True))
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=0.5)  # Test takes >0.1 and <=0.5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_gen_keys_with_passphrase(self):
         with patch("M2Crypto.RSA.RSA.save_pem", MagicMock()) as save_pem:
             with patch("M2Crypto.RSA.RSA.save_pub_key", MagicMock()) as save_pub:

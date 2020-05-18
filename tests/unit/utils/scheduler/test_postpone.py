@@ -5,7 +5,12 @@ from __future__ import absolute_import
 import datetime
 import logging
 
+<<<<<<< HEAD
 import pytest
+=======
+from tests.support.helpers import slowTest
+from tests.support.unit import skipIf
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.unit.utils.scheduler.base import SchedulerTestsBase
 
 try:
@@ -31,7 +36,15 @@ class SchedulerPostponeTest(SchedulerTestsBase):
         super(SchedulerPostponeTest, self).setUp()
         self.schedule.opts["loop_interval"] = 1
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    def tearDown(self):
+        self.schedule.reset()
+        super(SchedulerPostponeTest, self).tearDown()
+
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_postpone(self):
         """
         verify that scheduled job is postponed until the specified time.

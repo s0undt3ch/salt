@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
-# Import Salt Libs
 import salt.utils.platform
-
-# Import Salt Testing Libs
 from tests.support.case import SSHCase
+from tests.support.helpers import slowTest
 from tests.support.unit import skipIf
 
 
@@ -17,6 +13,10 @@ class SSHRawTest(SSHCase):
     testing salt-ssh with raw calls
     """
 
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_ssh_raw(self):
         """
         test salt-ssh with -r argument

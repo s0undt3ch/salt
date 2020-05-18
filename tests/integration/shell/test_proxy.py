@@ -12,9 +12,17 @@ import logging
 import time
 
 import pytest
+<<<<<<< HEAD
 import salt.defaults.exitcodes
 from saltfactories.exceptions import ProcessNotStarted
 from tests.support.helpers import PRE_PYTEST_SKIP_REASON
+=======
+import salt.utils.platform
+import tests.integration.utils
+from tests.integration.utils import testprogram
+from tests.support.helpers import slowTest
+from tests.support.unit import skipIf
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 log = logging.getLogger(__name__)
 
@@ -41,10 +49,15 @@ class TestProxyMinion:
     Various integration tests for the salt-proxy executable.
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_exit_status_no_proxyid(
         self, request, salt_factories, shell_tests_salt_proxy_minion_config
     ):
+=======
+    @slowTest
+    def test_exit_status_no_proxyid(self):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         """
         Ensure correct exit status when --proxyid argument is missing.
         """
@@ -56,6 +69,7 @@ class TestProxyMinion:
                 max_start_attempts=1,
                 include_proxyid_cli_flag=False,
             )
+<<<<<<< HEAD
         assert exc.value.exitcode == salt.defaults.exitcodes.EX_USAGE, exc.value
         assert "Usage" in exc.value.stderr, exc.value
         assert "error: salt-proxy requires --proxyid" in exc.value.stderr, exc.value
@@ -65,6 +79,19 @@ class TestProxyMinion:
     def test_exit_status_unknown_user(
         self, request, salt_factories, shell_tests_salt_proxy_minion_config
     ):
+=======
+        finally:
+            # Although the start-up should fail, call shutdown() to set the
+            # internal _shutdown flag and avoid the registered atexit calls to
+            # cause timeout exceptions and respective traceback
+            proxy.shutdown()
+
+    # Hangs on Windows. You can add a timeout to the proxy.run command, but then
+    # it just times out.
+    @skipIf(salt.utils.platform.is_windows(), "Test hangs on Windows")
+    @slowTest
+    def test_exit_status_unknown_user(self):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         """
         Ensure correct exit status when the proxy is configured to run as an
         unknown user.
@@ -76,6 +103,7 @@ class TestProxyMinion:
                 master_id=shell_tests_salt_proxy_minion_config["id"],
                 max_start_attempts=1,
             )
+<<<<<<< HEAD
 
         assert exc.value.exitcode == salt.defaults.exitcodes.EX_NOUSER, exc.value
         assert "The user is not available." in exc.value.stderr, exc.value
@@ -84,6 +112,16 @@ class TestProxyMinion:
     def test_exit_status_unknown_argument(
         self, request, salt_factories, shell_tests_salt_proxy_minion_config, tempdir
     ):
+=======
+        finally:
+            # Although the start-up should fail, call shutdown() to set the
+            # internal _shutdown flag and avoid the registered atexit calls to
+            # cause timeout exceptions and respective traceback
+            proxy.shutdown()
+
+    @slowTest
+    def test_exit_status_unknown_argument(self):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         """
         Ensure correct exit status when an unknown argument is passed to
         salt-proxy.
@@ -99,6 +137,7 @@ class TestProxyMinion:
                 base_script_args=["--unknown-argument"],
                 config_defaults={"root_dir": root_dir},
             )
+<<<<<<< HEAD
         assert exc.value.exitcode == salt.defaults.exitcodes.EX_USAGE, exc.value
         assert "Usage" in exc.value.stderr, exc.value
         assert "no such option: --unknown-argument" in exc.value.stderr, exc.value
@@ -108,6 +147,19 @@ class TestProxyMinion:
     def test_exit_status_correct_usage(
         self, request, salt_factories, shell_tests_salt_master
     ):
+=======
+        finally:
+            # Although the start-up should fail, call shutdown() to set the
+            # internal _shutdown flag and avoid the registered atexit calls to
+            # cause timeout exceptions and respective traceback
+            proxy.shutdown()
+
+    # Hangs on Windows. You can add a timeout to the proxy.run command, but then
+    # it just times out.
+    @skipIf(salt.utils.platform.is_windows(), "Test hangs on Windows")
+    @slowTest
+    def test_exit_status_correct_usage(self):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         """
         Ensure correct exit status when salt-proxy starts correctly.
 

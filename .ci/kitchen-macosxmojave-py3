@@ -9,8 +9,12 @@ runTestSuite(
     golden_images_branch: 'master',
     jenkins_slave_label: 'kitchen-slave-mac',
     kitchen_platforms_file: '/var/jenkins/workspace/pre-golden-nox-platforms.yml',
+<<<<<<< HEAD
     kitchen_verifier_file: '/var/jenkins/workspace/nox-verifier.yml',
     nox_env_name: 'pytest-zeromq',
+=======
+    nox_env_name: 'runtests-zeromq',
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     nox_passthrough_opts: '--ssh-tests',
     python_version: 'py3',
     //splits: ['unit', 'integration', 'multimaster'],

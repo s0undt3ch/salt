@@ -6,6 +6,10 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import pytest
 from tests.support.case import ShellCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 @pytest.mark.windows_whitelisted
@@ -15,7 +19,11 @@ class ManageTest(ShellCase):
     Test the manage runner
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_up(self):
         """
         manage.up
@@ -26,7 +34,11 @@ class ManageTest(ShellCase):
         self.assertTrue(any("- minion" in out for out in ret["out"]))
         self.assertTrue(any("- sub_minion" in out for out in ret["out"]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_down(self):
         """
         manage.down

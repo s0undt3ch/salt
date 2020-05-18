@@ -9,7 +9,17 @@ import salt.utils.stringutils
 from salt.ext import six
 from salt.ext.six.moves import range
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
 from tests.support.helpers import random_string
+=======
+from tests.support.helpers import (
+    destructiveTest,
+    random_string,
+    runs_on,
+    skip_if_not_root,
+    slowTest,
+)
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.unit import skipIf
 
 if not salt.utils.platform.is_windows():
@@ -19,7 +29,11 @@ if not salt.utils.platform.is_windows():
 @pytest.mark.skip_if_not_root
 @pytest.mark.destructive_test
 @pytest.mark.windows_whitelisted
+<<<<<<< HEAD
 @pytest.mark.skip_unless_on_platforms(linux=True, windows=True)
+=======
+@runs_on(kernel=("Linux", "Windows"))
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 class GroupModuleTest(ModuleCase):
     """
     Validate the linux group system module
@@ -91,8 +105,13 @@ class GroupModuleTest(ModuleCase):
             if gid not in busy_gids:
                 return gid
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_add(self):
         """
         Test the add group function
@@ -107,7 +126,11 @@ class GroupModuleTest(ModuleCase):
 
     @pytest.mark.destructive_test
     @skipIf(salt.utils.platform.is_windows(), "Skip on Windows")
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_add_system_group(self):
         """
         Test the add group function with system=True
@@ -125,7 +148,11 @@ class GroupModuleTest(ModuleCase):
 
     @pytest.mark.destructive_test
     @skipIf(salt.utils.platform.is_windows(), "Skip on Windows")
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_add_system_group_gid(self):
         """
         Test the add group function with system=True and a specific gid
@@ -141,8 +168,13 @@ class GroupModuleTest(ModuleCase):
         # try adding the group again
         self.assertFalse(self.run_function("group.add", [self._group, gid]))
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_delete(self):
         """
         Test the delete group function
@@ -155,7 +187,11 @@ class GroupModuleTest(ModuleCase):
         # group does not exist
         self.assertFalse(self.run_function("group.delete", [self._no_group]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_info(self):
         """
         Test the info group function
@@ -170,7 +206,11 @@ class GroupModuleTest(ModuleCase):
         self.assertIn(self._user, str(group_info["members"]))
 
     @skipIf(salt.utils.platform.is_windows(), "gid test skipped on windows")
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_chgid(self):
         """
         Test the change gid function
@@ -180,7 +220,11 @@ class GroupModuleTest(ModuleCase):
         group_info = self.run_function("group.info", [self._group])
         self.assertEqual(group_info["gid"], self._new_gid)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_adduser(self):
         """
         Test the add user to group function
@@ -203,7 +247,11 @@ class GroupModuleTest(ModuleCase):
             self.run_function("group.adduser", [self._no_group, self._no_user])
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_deluser(self):
         """
         Test the delete user from group function
@@ -215,7 +263,11 @@ class GroupModuleTest(ModuleCase):
         group_info = self.run_function("group.info", [self._group])
         self.assertNotIn(self._user, str(group_info["members"]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_members(self):
         """
         Test the members function
@@ -230,7 +282,11 @@ class GroupModuleTest(ModuleCase):
         self.assertIn(self._user, str(group_info["members"]))
         self.assertIn(self._user1, str(group_info["members"]))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_getent(self):
         """
         Test the getent function

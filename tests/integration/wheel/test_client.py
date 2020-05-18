@@ -6,6 +6,7 @@ import pytest
 import salt.auth
 import salt.utils.platform
 import salt.wheel
+from tests.support.helpers import slowTest
 from tests.support.mixins import AdaptedConfigurationTestCaseMixin
 from tests.support.unit import TestCase, skipIf
 
@@ -28,7 +29,11 @@ class WheelModuleTest(TestCase, AdaptedConfigurationTestCaseMixin):
     def tearDown(self):
         del self.wheel
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_master_call(self):
         """
         Test executing master_call with lowdata
@@ -65,7 +70,11 @@ class WheelModuleTest(TestCase, AdaptedConfigurationTestCaseMixin):
             }
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_cmd_sync(self):
         low = {
             "client": "wheel",
@@ -93,7 +102,11 @@ class WheelModuleTest(TestCase, AdaptedConfigurationTestCaseMixin):
 
         self.wheel.cmd_async(low)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_cmd_sync_w_arg(self):
         low = {
             "fun": "key.finger",

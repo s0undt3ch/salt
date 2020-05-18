@@ -6,8 +6,6 @@
     tests.unit.payload_test
     ~~~~~~~~~~~~~~~~~~~~~~~
 """
-
-# Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import copy
@@ -20,16 +18,11 @@ import time
 import pytest
 import salt.exceptions
 import salt.payload
-
-# Import 3rd-party libs
 import zmq
 from salt.ext import six
-
-# Import Salt libs
 from salt.utils import immutabletypes
 from salt.utils.odict import OrderedDict
-
-# Import Salt Testing libs
+from tests.support.helpers import slowTest
 from tests.support.unit import TestCase, skipIf
 
 log = logging.getLogger(__name__)
@@ -257,7 +250,11 @@ class SREQTestCase(TestCase):
     def get_sreq(self):
         return salt.payload.SREQ("tcp://127.0.0.1:{0}".format(SREQTestCase.port))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=0.5)  # Test takes >0.1 and <=0.5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_send_auto(self):
         """
         Test creation, send/rect

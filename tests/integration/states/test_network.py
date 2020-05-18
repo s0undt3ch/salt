@@ -9,6 +9,10 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import pytest
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import SaltReturnAssertsMixin
 
 
@@ -25,7 +29,11 @@ class NetworkTest(ModuleCase, SaltReturnAssertsMixin):
                 "Network state only supported on RedHat and Debian based systems"
             )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_managed(self):
         """
         network.managed
@@ -37,7 +45,11 @@ class NetworkTest(ModuleCase, SaltReturnAssertsMixin):
             "Interface dummy0 is set to be added.", ret[state_key]["comment"]
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_routes(self):
         """
         network.routes
@@ -51,7 +63,11 @@ class NetworkTest(ModuleCase, SaltReturnAssertsMixin):
             ret[state_key]["comment"], "Interface dummy0 routes are set to be added."
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_system(self):
         """
         network.system

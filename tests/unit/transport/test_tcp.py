@@ -2,7 +2,10 @@
 """
     :codeauthor: Thomas Jackson <jacksontj.89@gmail.com>
 """
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
@@ -28,6 +31,10 @@ from salt.transport.tcp import (
     TCPPubServerChannel,
 )
 from saltfactories.utils.ports import get_unused_localhost_port
+<<<<<<< HEAD
+=======
+from tests.support.helpers import flaky, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import AdaptedConfigurationTestCaseMixin
 from tests.support.mock import MagicMock, patch
 from tests.support.unit import TestCase, skipIf
@@ -156,9 +163,14 @@ class AESReqTestCases(BaseTCPReqCase, ReqChannelMixin):
 
     # TODO: make failed returns have a specific framing so we can raise the same exception
     # on encrypted channels
+<<<<<<< HEAD
     @pytest.mark.flaky(max_runs=4)
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @flaky
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_badload(self):
         """
         Test a variety of bad requests, make sure that we get some sort of error
@@ -262,7 +274,11 @@ class BaseTCPPubCase(AsyncTestCase, AdaptedConfigurationTestCaseMixin):
 
 
 class AsyncTCPPubChannelTest(AsyncTestCase, AdaptedConfigurationTestCaseMixin):
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_connect_publish_port(self):
         """
         test when publish_port is not 4506

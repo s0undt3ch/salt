@@ -13,6 +13,10 @@ import salt.utils.path
 import salt.utils.platform
 from salt.utils.versions import LooseVersion
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, requires_network, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import SaltReturnAssertsMixin
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.unit import skipIf
@@ -22,9 +26,15 @@ MAX_NPM_VERSION = "5.0.0"
 
 @skipIf(salt.utils.path.which("npm") is None, "npm not installed")
 class NpmStateTest(ModuleCase, SaltReturnAssertsMixin):
+<<<<<<< HEAD
     @pytest.mark.requires_network
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @requires_network()
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_npm_installed_removed(self):
         """
         Basic test to determine if NPM module was successfully installed and
@@ -38,9 +48,15 @@ class NpmStateTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertSaltTrueReturn(ret)
 
     @skipIf(salt.utils.platform.is_darwin(), "TODO this test hangs on mac.")
+<<<<<<< HEAD
     @pytest.mark.requires_network
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @requires_network()
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_npm_install_url_referenced_package(self):
         """
         Determine if URL-referenced NPM module can be successfully installed.
@@ -71,9 +87,15 @@ class NpmStateTest(ModuleCase, SaltReturnAssertsMixin):
         if npm_dir is not None:
             self.run_state("file.absent", name=npm_dir)
 
+<<<<<<< HEAD
     @pytest.mark.requires_network
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @requires_network()
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_npm_installed_pkgs(self):
         """
         Basic test to determine if NPM module successfully installs multiple
@@ -87,8 +109,13 @@ class NpmStateTest(ModuleCase, SaltReturnAssertsMixin):
         )
         self.assertSaltTrueReturn(ret)
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_npm_cache_clean(self):
         """
         Basic test to determine if NPM successfully cleans its cached packages.

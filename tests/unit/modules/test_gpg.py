@@ -15,6 +15,10 @@ import pytest
 import salt.modules.gpg as gpg
 import salt.utils.files
 import salt.utils.platform
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, patch
 from tests.support.runtests import RUNTIME_VARS
@@ -437,7 +441,11 @@ class GpgTestCase(TestCase, LoaderModuleMockMixin):
                     self.assertEqual(ret, _expected_result)
 
     @skipIf(not HAS_GPG, "GPG Module Unavailable")
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_gpg_import_pub_key(self):
         config_user = MagicMock(return_value="salt")
         user_info = MagicMock(
@@ -449,7 +457,11 @@ class GpgTestCase(TestCase, LoaderModuleMockMixin):
                 self.assertEqual(ret["res"], True)
 
     @skipIf(not HAS_GPG, "GPG Module Unavailable")
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_gpg_import_priv_key(self):
         config_user = MagicMock(return_value="salt")
         user_info = MagicMock(
@@ -461,7 +473,11 @@ class GpgTestCase(TestCase, LoaderModuleMockMixin):
                 self.assertEqual(ret["res"], True)
 
     @skipIf(not HAS_GPG, "GPG Module Unavailable")
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_gpg_sign(self):
         config_user = MagicMock(return_value="salt")
         user_info = MagicMock(

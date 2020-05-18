@@ -9,20 +9,25 @@
 
     Status beacon test cases
 """
-
-# Python libs
 from __future__ import absolute_import
 
+<<<<<<< HEAD
 import pytest
 
 # Salt libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 import salt.config
 import salt.loader
 import salt.modules.status as status_module
 from salt.beacons import status
+from tests.support.helpers import slowTest
 from tests.support.mixins import LoaderModuleMockMixin
+<<<<<<< HEAD
 
 # Salt testing libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.unit import TestCase
 
 
@@ -42,7 +47,11 @@ class StatusBeaconTestCase(TestCase, LoaderModuleMockMixin):
         }
         return {status: module_globals, status_module: module_globals}
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_empty_config(self, *args, **kwargs):
         config = []
 
@@ -54,7 +63,11 @@ class StatusBeaconTestCase(TestCase, LoaderModuleMockMixin):
 
         self.assertEqual(sorted(list(ret[0]["data"])), expected)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_deprecated_dict_config(self):
         config = {"time": ["all"]}
 
@@ -63,7 +76,11 @@ class StatusBeaconTestCase(TestCase, LoaderModuleMockMixin):
             ret, (False, "Configuration for status beacon must be a list.")
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_config(self):
         config = [{"time": ["all"]}]
 

@@ -2,6 +2,7 @@
 """
 Integration tests for the mac_desktop execution module.
 """
+<<<<<<< HEAD
 
 from __future__ import absolute_import, print_function, unicode_literals
 
@@ -13,12 +14,27 @@ from tests.support.case import ModuleCase
 @pytest.mark.destructive_test
 @pytest.mark.skip_if_not_root
 @pytest.mark.skip_unless_on_darwin
+=======
+from __future__ import absolute_import, print_function, unicode_literals
+
+from salt.ext import six
+from tests.support.case import ModuleCase
+from tests.support.helpers import destructiveTest, runs_on, skip_if_not_root, slowTest
+
+
+@destructiveTest
+@skip_if_not_root
+@runs_on(kernel="Darwin")
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 class MacDesktopTestCase(ModuleCase):
     """
     Integration tests for the mac_desktop module.
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=0.5)  # Test takes >0.1 and <=0.5 seconds
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_output_volume(self):
         """
         Tests the return of get_output_volume.
@@ -26,7 +42,11 @@ class MacDesktopTestCase(ModuleCase):
         ret = self.run_function("desktop.get_output_volume")
         self.assertIsNotNone(ret)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_set_output_volume(self):
         """
         Tests the return of set_output_volume.
@@ -58,7 +78,11 @@ class MacDesktopTestCase(ModuleCase):
         """
         self.assertTrue(self.run_function("desktop.lock"))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_say(self):
         """
         Tests the return of the say function.

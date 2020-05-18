@@ -2,25 +2,26 @@
 """
     :codeauthor: Jayesh Kariya <jayeshk@saltstack.com>
 """
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 import tempfile
 import time
 
+<<<<<<< HEAD
 import pytest
 
 # Import Salt Libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 import salt.config
 import salt.loader
 import salt.states.saltmod as saltmod
 import salt.utils.event
 import salt.utils.jid
+from tests.support.helpers import slowTest
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, patch
-
-# Import Salt Testing Libs
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.unit import TestCase
 
@@ -51,7 +52,11 @@ class SaltmodTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'state' function tests: 1
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_state(self):
         """
         Test to invoke a state run on a given target
@@ -198,7 +203,11 @@ class SaltmodTestCase(TestCase, LoaderModuleMockMixin):
 
     # 'function' function tests: 1
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_function(self):
         """
         Test to execute a single module function on a remote
@@ -323,7 +332,11 @@ class SaltmodTestCase(TestCase, LoaderModuleMockMixin):
         with patch.dict(saltmod.__salt__, {"saltutil.wheel": wheel_mock}):
             self.assertDictEqual(saltmod.wheel(name), ret)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_state_ssh(self):
         """
         Test saltmod passes roster to saltutil.cmd

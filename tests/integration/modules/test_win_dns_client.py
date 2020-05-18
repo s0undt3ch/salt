@@ -5,6 +5,10 @@ from __future__ import absolute_import
 import pytest
 import salt.utils.platform
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.unit import skipIf
 
 
@@ -15,8 +19,13 @@ class WinDNSTest(ModuleCase):
     Test for salt.modules.win_dns_client
     """
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_add_remove_dns(self):
         """
         Test add and removing a dns server

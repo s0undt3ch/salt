@@ -14,8 +14,12 @@ import signal
 import pytest
 import salt.utils.event
 import salt.utils.reactor
+<<<<<<< HEAD
 from tests.support.case import ShellTestCase
 from tests.support.helpers import PYTEST_MIGRATION_PR_JAM_SKIP_REASON
+=======
+from tests.support.case import ShellCase
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import SaltMinionEventAssertsMixin
 from tests.support.unit import skipIf
 
@@ -26,7 +30,7 @@ class TimeoutException(Exception):
 
 @pytest.mark.skipif(reason=PYTEST_MIGRATION_PR_JAM_SKIP_REASON)
 @pytest.mark.windows_whitelisted
-class ReactorTest(SaltMinionEventAssertsMixin, ShellTestCase):
+class ReactorTest(SaltMinionEventAssertsMixin, ShellCase):
     """
     Test Salt's reactor system
     """

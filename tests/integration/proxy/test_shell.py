@@ -11,10 +11,17 @@ import json
 import logging
 import sys
 
+<<<<<<< HEAD
 import pytest
 import salt.ext.six as six
 import salt.utils.json as json
 from tests.support.case import ShellCase
+=======
+import salt.ext.six as six
+import salt.utils.json as json
+from tests.support.case import ShellCase
+from tests.support.helpers import slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.runtests import RUNTIME_VARS
 
 log = logging.getLogger(__name__)
@@ -25,6 +32,8 @@ class ProxyCallerSimpleTestCase(ShellCase):
     Test salt-call --proxyid <proxyid> commands
     """
 
+    RUN_TIMEOUT = 300
+
     @staticmethod
     def _load_return(ret):
         try:
@@ -33,7 +42,11 @@ class ProxyCallerSimpleTestCase(ShellCase):
             log.warning("Failed to JSON decode: '%s'", ret)
             six.reraise(*sys.exc_info())
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_can_it_ping(self):
         """
         Ensure the proxy can ping
@@ -46,7 +59,11 @@ class ProxyCallerSimpleTestCase(ShellCase):
         )
         self.assertEqual(ret["local"], True)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_pkgs(self):
         """
         Package test 1, really just tests that the virtual function capability
@@ -62,7 +79,11 @@ class ProxyCallerSimpleTestCase(ShellCase):
         self.assertIn("apache", ret["local"])
         self.assertIn("redbull", ret["local"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_upgrade(self):
         ret = self._load_return(
             self.run_call(
@@ -73,7 +94,11 @@ class ProxyCallerSimpleTestCase(ShellCase):
         self.assertEqual(ret["local"]["coreutils"]["new"], "2.0")
         self.assertEqual(ret["local"]["redbull"]["new"], "1000.99")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_service_list(self):
         ret = self._load_return(
             self.run_call(
@@ -83,7 +108,11 @@ class ProxyCallerSimpleTestCase(ShellCase):
         )
         self.assertIn("ntp", ret["local"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_service_start(self):
         ret = self._load_return(
             self.run_call(
@@ -99,7 +128,11 @@ class ProxyCallerSimpleTestCase(ShellCase):
         )
         self.assertTrue(ret)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_service_get_all(self):
         ret = self._load_return(
             self.run_call(
@@ -109,7 +142,11 @@ class ProxyCallerSimpleTestCase(ShellCase):
         )
         self.assertIn("samba", ret["local"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_grains_items(self):
         ret = self._load_return(
             self.run_call(

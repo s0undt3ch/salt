@@ -12,7 +12,17 @@ import salt.ext.six as six
 import salt.utils.files
 from salt.exceptions import CommandExecutionError
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
 from tests.support.helpers import random_string
+=======
+from tests.support.helpers import (
+    destructiveTest,
+    random_string,
+    runs_on,
+    skip_if_not_root,
+    slowTest,
+)
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 # Create user strings for tests
 ADD_USER = random_string("RS-", lowercase=False)
@@ -21,15 +31,34 @@ PRIMARY_GROUP_USER = random_string("RS-", lowercase=False)
 CHANGE_USER = random_string("RS-", lowercase=False)
 
 
+<<<<<<< HEAD
 @pytest.mark.destructive_test
 @pytest.mark.skip_if_not_root
 @pytest.mark.skip_unless_on_darwin
+=======
+@destructiveTest
+@skip_if_not_root
+@runs_on(kernel="Darwin")
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 class MacUserModuleTest(ModuleCase):
     """
     Integration tests for the mac_user module
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    def setUp(self):
+        """
+        Sets up test requirements
+        """
+        super(MacUserModuleTest, self).setUp()
+        os_grain = self.run_function("grains.item", ["kernel"])
+        if os_grain["kernel"] not in "Darwin":
+            self.skipTest("Test not applicable to '{kernel}' kernel".format(**os_grain))
+
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_mac_user_add(self):
         """
         Tests the add function
@@ -42,7 +71,11 @@ class MacUserModuleTest(ModuleCase):
             self.run_function("user.delete", [ADD_USER])
             raise
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_mac_user_delete(self):
         """
         Tests the delete function
@@ -57,7 +90,11 @@ class MacUserModuleTest(ModuleCase):
         ret = self.run_function("user.delete", [DEL_USER])
         self.assertTrue(ret)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_mac_user_primary_group(self):
         """
         Tests the primary_group function
@@ -80,7 +117,11 @@ class MacUserModuleTest(ModuleCase):
             self.run_function("user.delete", [PRIMARY_GROUP_USER])
             raise
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_mac_user_changes(self):
         """
         Tests mac_user functions that change user properties
@@ -125,7 +166,11 @@ class MacUserModuleTest(ModuleCase):
             self.run_function("user.delete", [CHANGE_USER])
             raise
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_mac_user_enable_auto_login(self):
         """
         Tests mac_user functions that enable auto login
@@ -178,7 +223,11 @@ class MacUserModuleTest(ModuleCase):
             if self.run_function("user.get_auto_login"):
                 raise Exception("Failed to disable auto login")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_mac_user_disable_auto_login(self):
         """
         Tests mac_user functions that disable auto login

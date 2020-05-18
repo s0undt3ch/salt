@@ -10,6 +10,12 @@ import salt.modules.virtualenv_mod
 import salt.modules.zcbuildout as modbuildout
 import salt.states.zcbuildout as buildout
 import salt.utils.path
+<<<<<<< HEAD
+=======
+
+# Import Salt Testing libs
+from tests.support.helpers import requires_network, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.unit import skipIf
 from tests.unit.modules.test_zcbuildout import KNOWN_VIRTUALENV_BINARY_NAMES, Base
@@ -47,7 +53,11 @@ class BuildoutTestCase(Base):
         self.assertFalse("Log summary:" in cret["comment"], cret["comment"])
         self.assertTrue(cret["result"], cret["comment"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_error(self):
         b_dir = os.path.join(self.tdir, "e")
         ret = buildout.installed(b_dir, python=self.py_st)
@@ -56,7 +66,11 @@ class BuildoutTestCase(Base):
         )
         self.assertFalse(ret["result"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_installed(self):
         if salt.modules.virtualenv_mod.virtualenv_ver(self.ppy_st) >= (20, 0, 0):
             self.skipTest(

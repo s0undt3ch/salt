@@ -17,6 +17,7 @@ import salt.states.boto_iot as boto_iot
 # Import 3rd-party libs
 from salt.ext.six.moves import range  # pylint: disable=import-error,redefined-builtin
 from salt.utils.versions import LooseVersion
+from tests.support.helpers import slowTest
 
 # Import Salt Testing libs
 from tests.support.mixins import LoaderModuleMockMixin
@@ -274,7 +275,11 @@ class BotoIoTThingTypeTestCase(BotoIoTStateTestCaseBase, BotoIoTTestCaseMixin):
         self.assertTrue(result["result"])
         self.assertEqual(result["changes"], {})
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=1)  # Test takes >0.5 and <=1 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_absent_when_thing_type_exists(self):
         """
         Tests absent on a thing type

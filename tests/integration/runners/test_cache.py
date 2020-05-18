@@ -8,17 +8,29 @@ import logging
 
 import pytest
 from tests.support.case import ShellCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 log = logging.getLogger(__name__)
 
 
+<<<<<<< HEAD
 @pytest.mark.usefixtures("salt_sub_minion")
 class ManageTest(ShellCase):
+=======
+class CacheTest(ShellCase):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     """
-    Test the manage runner
+    Test the cache runner.
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_cache(self):
         """
         Store, list, fetch, then flush data
@@ -45,7 +57,11 @@ class ManageTest(ShellCase):
         ret = self.run_run_plus("cache.list", bank="cachetest/runner")
         self.assertNotIn("test_cache", ret["return"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_cache_invalid(self):
         """
         Store, list, fetch, then flush data
@@ -56,7 +72,11 @@ class ManageTest(ShellCase):
         expected = "Passed invalid arguments:"
         self.assertIn(expected, ret["return"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_grains(self):
         """
         Test cache.grains
@@ -66,7 +86,11 @@ class ManageTest(ShellCase):
 
         self.assertIn("minion", ret["return"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pillar(self):
         """
         Test cache.pillar
@@ -77,7 +101,11 @@ class ManageTest(ShellCase):
         assert "minion" in ret["return"]
         assert "sub_minion" not in ret["return"]
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pillar_no_tgt(self):
         """
         Test cache.pillar when no tgt is
@@ -89,7 +117,11 @@ class ManageTest(ShellCase):
 
         assert all(x in ret["return"] for x in ["minion", "sub_minion"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pillar_minion_noexist(self):
         """
         Test cache.pillar when the target does not exist
@@ -99,7 +131,11 @@ class ManageTest(ShellCase):
         assert "minion" not in ret["return"]
         assert "sub_minion" not in ret["return"]
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pillar_minion_tgt_type_pillar(self):
         """
         Test cache.pillar when the target exists
@@ -109,7 +145,11 @@ class ManageTest(ShellCase):
 
         assert all(x in ret["return"] for x in ["minion", "sub_minion"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_mine(self):
         """
         Test cache.mine

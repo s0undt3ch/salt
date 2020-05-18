@@ -2,11 +2,15 @@
 """
 integration tests for mac_xattr
 """
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 
+<<<<<<< HEAD
 import pytest
 from tests.support.case import ModuleCase
 from tests.support.runtests import RUNTIME_VARS
@@ -14,6 +18,15 @@ from tests.support.runtests import RUNTIME_VARS
 
 @pytest.mark.skip_unless_on_darwin
 @pytest.mark.skip_if_binaries_missing("xattr")
+=======
+from tests.support.case import ModuleCase
+from tests.support.helpers import runs_on, skip_if_binaries_missing, slowTest
+from tests.support.runtests import RUNTIME_VARS
+
+
+@runs_on(kernel="Darwin")
+@skip_if_binaries_missing("xattr")
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 class MacXattrModuleTest(ModuleCase):
     """
     Validate the mac_xattr module
@@ -37,7 +50,11 @@ class MacXattrModuleTest(ModuleCase):
         if os.path.exists(self.test_file):
             os.remove(self.test_file)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_no_xattr(self):
         """
         Make sure there are no attributes
@@ -54,7 +71,11 @@ class MacXattrModuleTest(ModuleCase):
             "ERROR: File not found: {0}".format(self.no_file),
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_write(self):
         """
         Write an attribute
@@ -87,7 +108,11 @@ class MacXattrModuleTest(ModuleCase):
             "ERROR: File not found: {0}".format(self.no_file),
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_read(self):
         """
         Test xattr.read
@@ -120,7 +145,11 @@ class MacXattrModuleTest(ModuleCase):
             "ERROR: Attribute not found: patrick",
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_delete(self):
         """
         Test xattr.delete
@@ -164,7 +193,11 @@ class MacXattrModuleTest(ModuleCase):
             "ERROR: Attribute not found: patrick",
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_clear(self):
         """
         Test xattr.clear

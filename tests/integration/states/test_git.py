@@ -2,21 +2,23 @@
 """
 Tests for the Git state
 """
-
-# Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import functools
 import inspect
+import logging
 import os
 import shutil
 import socket
 import string
 import tempfile
 
+<<<<<<< HEAD
 import pytest
 
 # Import salt libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 import salt.utils.files
 import salt.utils.path
 from salt.ext.six.moves.urllib.parse import (  # pylint: disable=no-name-in-module
@@ -24,10 +26,8 @@ from salt.ext.six.moves.urllib.parse import (  # pylint: disable=no-name-in-modu
 )
 from salt.utils.versions import LooseVersion as _LooseVersion
 from tests.support.case import ModuleCase
-from tests.support.helpers import with_tempdir
+from tests.support.helpers import TstSuiteLoggingHandler, slowTest, with_tempdir
 from tests.support.mixins import SaltReturnAssertsMixin
-
-# Import Salt Testing libs
 from tests.support.runtests import RUNTIME_VARS
 
 TEST_REPO = "https://github.com/saltstack/salt-test-repo.git"
@@ -169,7 +169,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         return self.run_function("git.rev_parse", [cwd, "HEAD"])
 
     @with_tempdir(create=False)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest(self, target):
         """
         git.latest
@@ -179,7 +183,27 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(os.path.isdir(os.path.join(target, ".git")))
 
     @with_tempdir(create=False)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+    def test_latest_config_get_regexp_retcode(self, target):
+        """
+        git.latest
+        """
+
+        log_format = "[%(levelname)-8s] %(jid)s %(message)s"
+        self.handler = TstSuiteLoggingHandler(format=log_format, level=logging.DEBUG)
+        ret_code_err = "failed with return code: 1"
+        with self.handler:
+            ret = self.run_state("git.latest", name=TEST_REPO, target=target)
+            self.assertSaltTrueReturn(ret)
+            self.assertTrue(os.path.isdir(os.path.join(target, ".git")))
+            assert any(ret_code_err in s for s in self.handler.messages) is False, False
+
+    @with_tempdir(create=False)
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_with_rev_and_submodules(self, target):
         """
         git.latest
@@ -191,7 +215,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(os.path.isdir(os.path.join(target, ".git")))
 
     @with_tempdir(create=False)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_failure(self, target):
         """
         git.latest
@@ -207,7 +235,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertFalse(os.path.isdir(os.path.join(target, ".git")))
 
     @with_tempdir()
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_empty_dir(self, target):
         """
         git.latest
@@ -219,7 +251,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(os.path.isdir(os.path.join(target, ".git")))
 
     @with_tempdir(create=False)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_unless_no_cwd_issue_6800(self, target):
         """
         cwd=target was being passed to _run_check which blew up if
@@ -237,7 +273,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(os.path.isdir(os.path.join(target, ".git")))
 
     @with_tempdir(create=False)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_numeric_rev(self, target):
         """
         git.latest with numeric revision
@@ -254,7 +294,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(os.path.isdir(os.path.join(target, ".git")))
 
     @with_tempdir(create=False)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_with_local_changes(self, target):
         """
         Ensure that we fail the state when there are local changes and succeed
@@ -296,7 +340,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
 
     @with_git_mirror(TEST_REPO)
     @uses_git_opts
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_fast_forward(self, mirror_url, admin_dir, clone_dir):
         """
         Test running git.latest state a second time after changes have been
@@ -367,7 +415,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(hint in comment)
 
     @uses_git_opts
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_changed_local_branch_rev_head(self):
         """
         Test for presence of hint in failure message when the local branch has
@@ -383,7 +435,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         )
 
     @uses_git_opts
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_changed_local_branch_rev_develop(self):
         """
         Test for presence of hint in failure message when the local branch has
@@ -398,7 +454,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
     @uses_git_opts
     @with_tempdir(create=False)
     @with_tempdir()
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_updated_remote_rev(self, name, target):
         """
         Ensure that we don't exit early when checking for a fast-forward
@@ -436,7 +496,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertSaltTrueReturn(ret)
 
     @with_tempdir(create=False)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_depth(self, target):
         """
         Test running git.latest state using the "depth" argument to limit the
@@ -463,7 +527,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
 
     @with_git_mirror(TEST_REPO)
     @uses_git_opts
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_sync_tags(self, mirror_url, admin_dir, clone_dir):
         """
         Test that a removed tag is properly reported as such and removed in the
@@ -519,7 +587,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         assert ret["changes"] == expected_changes, ret["changes"]
 
     @with_tempdir(create=False)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_cloned(self, target):
         """
         Test git.cloned state
@@ -553,7 +625,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         assert ret["comment"] == "Repository already exists at {0}".format(target)
 
     @with_tempdir(create=False)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_cloned_with_branch(self, target):
         """
         Test git.cloned state with branch provided
@@ -652,8 +728,13 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
 
     @with_tempdir(create=False)
     @ensure_min_git(min_version="1.7.10")
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_cloned_with_nonexistent_branch(self, target):
+=======
+    @slowTest
+    def test_cloned_with_nonexistant_branch(self, target):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         """
         Test git.cloned state with a nonexistent branch provided
         """
@@ -681,7 +762,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         assert "not found in upstream origin" in ret["comment"]
 
     @with_tempdir(create=False)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present(self, name):
         """
         git.present
@@ -691,7 +776,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(os.path.isfile(os.path.join(name, "HEAD")))
 
     @with_tempdir()
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_failure(self, name):
         """
         git.present
@@ -706,7 +795,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertFalse(os.path.isfile(os.path.join(name, "HEAD")))
 
     @with_tempdir()
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_empty_dir(self, name):
         """
         git.present
@@ -716,7 +809,11 @@ class GitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(os.path.isfile(os.path.join(name, "HEAD")))
 
     @with_tempdir()
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_config_set_value_with_space_character(self, name):
         """
         git.config
@@ -780,7 +877,11 @@ class LocalRepoGitTest(ModuleCase, SaltReturnAssertsMixin):
         with salt.utils.files.fopen(os.path.join(self.target, "foo"), "a") as fp_:
             fp_.write("Local changes!\n")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_force_reset_remote_changes(self):
         """
         This tests that an otherwise fast-forward change with local chanegs
@@ -832,7 +933,11 @@ class LocalRepoGitTest(ModuleCase, SaltReturnAssertsMixin):
         )
         self.assertEqual(ret["changes"], {})
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_force_reset_true_fast_forward(self):
         """
         This tests that an otherwise fast-forward change with local chanegs
@@ -873,7 +978,11 @@ class LocalRepoGitTest(ModuleCase, SaltReturnAssertsMixin):
         assert "Repository was hard-reset" in ret["comment"]
         assert "forced update" in ret["changes"]
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_latest_force_reset_true_non_fast_forward(self):
         """
         This tests that a non fast-forward change with divergent commits fails
@@ -921,7 +1030,11 @@ class LocalRepoGitTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertIn("forced update", ret["changes"])
         self.assertIn("revision", ret["changes"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_renamed_default_branch(self):
         """
         Test the case where the remote branch has been removed

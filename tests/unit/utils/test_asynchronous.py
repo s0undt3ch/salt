@@ -1,15 +1,15 @@
 # coding: utf-8
-
-# Import Python Libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import pytest
 import salt.ext.tornado.gen
-
-# Import 3rd-party libs
 import salt.ext.tornado.testing
 import salt.utils.asynchronous as asynchronous
 from salt.ext.tornado.testing import AsyncTestCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 class HelperA(object):
@@ -37,7 +37,11 @@ class HelperB(object):
 
 class TestSyncWrapper(AsyncTestCase):
     @salt.ext.tornado.testing.gen_test
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_helpers(self):
         """
         Test that the helper classes do what we expect within a regular asynchronous env
@@ -59,7 +63,11 @@ class TestSyncWrapper(AsyncTestCase):
         ret = sync.sleep()
         self.assertTrue(ret)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_double(self):
         """
         Test when the asynchronous wrapper object itself creates a wrap of another thing
@@ -71,7 +79,11 @@ class TestSyncWrapper(AsyncTestCase):
         ret = sync.sleep()
         self.assertFalse(ret)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_double_sameloop(self):
         """
         Test asynchronous wrappers initiated from the same IOLoop, to ensure that

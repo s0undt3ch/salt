@@ -9,6 +9,10 @@ import shutil
 
 import pytest
 from tests.support.case import SPMCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 @pytest.mark.destructive_test
@@ -22,7 +26,11 @@ class SPMFilesTest(SPMCase):
         self.config = self._spm_config()
         self._spm_build_files(self.config)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_spm_files(self):
         """
         test spm files

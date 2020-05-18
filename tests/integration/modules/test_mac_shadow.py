@@ -7,17 +7,35 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import datetime
 
+<<<<<<< HEAD
 import pytest
 from tests.support.case import ModuleCase
 from tests.support.helpers import random_string
+=======
+from tests.support.case import ModuleCase
+from tests.support.helpers import (
+    destructiveTest,
+    random_string,
+    runs_on,
+    skip_if_binaries_missing,
+    skip_if_not_root,
+    slowTest,
+)
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 TEST_USER = random_string("RS-", lowercase=False)
 NO_USER = random_string("RS-", lowercase=False)
 
 
+<<<<<<< HEAD
 @pytest.mark.skip_if_not_root
 @pytest.mark.skip_unless_on_darwin
 @pytest.mark.skip_if_binaries_missing("dscl", "pwpolicy")
+=======
+@skip_if_not_root
+@runs_on(kernel="Darwin")
+@skip_if_binaries_missing("dscl", "pwpolicy")
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 class MacShadowModuleTest(ModuleCase):
     """
     Validate the mac_shadow module
@@ -35,7 +53,11 @@ class MacShadowModuleTest(ModuleCase):
         """
         self.run_function("user.delete", [TEST_USER])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_info(self):
         """
         Test shadow.info
@@ -48,8 +70,13 @@ class MacShadowModuleTest(ModuleCase):
         ret = self.run_function("shadow.info", [NO_USER])
         self.assertEqual(ret["name"], "")
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_account_created(self):
         """
         Test shadow.get_account_created
@@ -66,8 +93,13 @@ class MacShadowModuleTest(ModuleCase):
             "ERROR: User not found: {0}".format(NO_USER),
         )
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_last_change(self):
         """
         Test shadow.get_last_change
@@ -84,8 +116,13 @@ class MacShadowModuleTest(ModuleCase):
             "ERROR: User not found: {0}".format(NO_USER),
         )
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_login_failed_last(self):
         """
         Test shadow.get_login_failed_last
@@ -102,8 +139,13 @@ class MacShadowModuleTest(ModuleCase):
             "ERROR: User not found: {0}".format(NO_USER),
         )
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_login_failed_count(self):
         """
         Test shadow.get_login_failed_count
@@ -119,8 +161,13 @@ class MacShadowModuleTest(ModuleCase):
             "ERROR: User not found: {0}".format(NO_USER),
         )
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_set_maxdays(self):
         """
         Test shadow.get_maxdays
@@ -140,8 +187,13 @@ class MacShadowModuleTest(ModuleCase):
             "ERROR: User not found: {0}".format(NO_USER),
         )
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_set_change(self):
         """
         Test shadow.get_change
@@ -165,8 +217,13 @@ class MacShadowModuleTest(ModuleCase):
             "ERROR: User not found: {0}".format(NO_USER),
         )
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_set_expire(self):
         """
         Test shadow.get_expire
@@ -190,8 +247,13 @@ class MacShadowModuleTest(ModuleCase):
             "ERROR: User not found: {0}".format(NO_USER),
         )
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_del_password(self):
         """
         Test shadow.del_password
@@ -206,8 +268,13 @@ class MacShadowModuleTest(ModuleCase):
             "ERROR: User not found: {0}".format(NO_USER),
         )
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_set_password(self):
         """
         Test shadow.set_password

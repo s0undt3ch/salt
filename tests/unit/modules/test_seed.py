@@ -2,7 +2,6 @@
 """
     :codeauthor: Jayesh Kariya <jayeshk@saltstack.com>
 """
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
@@ -11,12 +10,9 @@ import uuid
 
 import pytest
 import salt.modules.seed as seed
-
-# Import Salt Libs
 import salt.utils.files
 import salt.utils.odict
-
-# Import Salt Testing Libs
+from tests.support.helpers import slowTest
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, patch
 from tests.support.unit import TestCase
@@ -30,7 +26,11 @@ class SeedTestCase(TestCase, LoaderModuleMockMixin):
     def setup_loader_modules(self):
         return {seed: {}}
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_mkconfig_odict(self):
         with patch.dict(seed.__opts__, {"master": "foo"}):
             ddd = salt.utils.odict.OrderedDict()

@@ -5,6 +5,10 @@ from __future__ import absolute_import, print_function, unicode_literals
 import pytest
 from salt.ext import six
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 @pytest.mark.windows_whitelisted
@@ -13,7 +17,11 @@ class SysModuleTest(ModuleCase):
     Validate the sys module
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_valid_docs(self):
         """
         Make sure no functions are exposed that don't have valid docstrings

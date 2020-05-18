@@ -29,17 +29,23 @@ import textwrap
 import threading
 import time
 import types
+from contextlib import contextmanager
 
 import pytest
 import salt.ext.tornado.ioloop
 import salt.ext.tornado.web
 import salt.utils.files
 import salt.utils.platform
+import salt.utils.pycrypto
 import salt.utils.stringutils
 import salt.utils.versions
 from salt.ext import six
 from salt.ext.six.moves import builtins, range
 from saltfactories.utils.ports import get_unused_localhost_port
+<<<<<<< HEAD
+=======
+from saltfactories.utils.processes.bases import ProcessResult
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mock import patch
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.sminion import create_sminion
@@ -92,6 +98,192 @@ def no_symlinks():
     return not HAS_SYMLINKS
 
 
+<<<<<<< HEAD
+=======
+def destructiveTest(caller):
+    """
+    Mark a test case as a destructive test for example adding or removing users
+    from your system.
+
+    .. code-block:: python
+
+        class MyTestCase(TestCase):
+
+            @destructiveTest
+            def test_create_user(self):
+                pass
+    """
+    # Late import
+    from tests.support.runtests import RUNTIME_VARS
+
+    if RUNTIME_VARS.PYTEST_SESSION:
+        setattr(caller, "__destructive_test__", True)
+
+    if os.environ.get("DESTRUCTIVE_TESTS", "False").lower() == "false":
+        reason = "Destructive tests are disabled"
+
+        if not isinstance(caller, type):
+
+            @functools.wraps(caller)
+            def skip_wrapper(*args, **kwargs):
+                raise SkipTest(reason)
+
+            caller = skip_wrapper
+
+        caller.__unittest_skip__ = True
+        caller.__unittest_skip_why__ = reason
+
+    return caller
+
+
+def expensiveTest(caller):
+    """
+    Mark a test case as an expensive test, for example, a test which can cost
+    money(Salt's cloud provider tests).
+
+    .. code-block:: python
+
+        class MyTestCase(TestCase):
+
+            @expensiveTest
+            def test_create_user(self):
+                pass
+    """
+    # Late import
+    from tests.support.runtests import RUNTIME_VARS
+
+    if RUNTIME_VARS.PYTEST_SESSION:
+        setattr(caller, "__expensive_test__", True)
+
+    if os.environ.get("EXPENSIVE_TESTS", "False").lower() == "false":
+        reason = "Expensive tests are disabled"
+
+        if not isinstance(caller, type):
+
+            @functools.wraps(caller)
+            def skip_wrapper(*args, **kwargs):
+                raise SkipTest(reason)
+
+            caller = skip_wrapper
+
+        caller.__unittest_skip__ = True
+        caller.__unittest_skip_why__ = reason
+
+    return caller
+
+
+def slowTest(caller):
+    """
+    Mark a test case as a slow test.
+    .. code-block:: python
+        class MyTestCase(TestCase):
+            @slowTest
+            def test_that_takes_much_time(self):
+                pass
+    """
+    # Late import
+    from tests.support.runtests import RUNTIME_VARS
+
+    if RUNTIME_VARS.PYTEST_SESSION:
+        setattr(caller, "__slow_test__", True)
+
+    if os.environ.get("SLOW_TESTS", "False").lower() == "false":
+        reason = "Slow tests are disabled"
+
+        if not isinstance(caller, type):
+
+            @functools.wraps(caller)
+            def skip_wrapper(*args, **kwargs):
+                raise SkipTest(reason)
+
+            caller = skip_wrapper
+
+        caller.__unittest_skip__ = True
+        caller.__unittest_skip_why__ = reason
+    return caller
+
+
+def flaky(caller=None, condition=True, attempts=4):
+    """
+    Mark a test as flaky. The test will attempt to run five times,
+    looking for a successful run. After an immediate second try,
+    it will use an exponential backoff starting with one second.
+
+    .. code-block:: python
+
+        class MyTestCase(TestCase):
+
+        @flaky
+        def test_sometimes_works(self):
+            pass
+    """
+    if caller is None:
+        return functools.partial(flaky, condition=condition, attempts=attempts)
+
+    if isinstance(condition, bool) and condition is False:
+        # Don't even decorate
+        return caller
+    elif callable(condition):
+        if condition() is False:
+            # Don't even decorate
+            return caller
+
+    if inspect.isclass(caller):
+        attrs = [n for n in dir(caller) if n.startswith("test_")]
+        for attrname in attrs:
+            try:
+                function = getattr(caller, attrname)
+                if not inspect.isfunction(function) and not inspect.ismethod(function):
+                    continue
+                setattr(
+                    caller,
+                    attrname,
+                    flaky(caller=function, condition=condition, attempts=attempts),
+                )
+            except Exception as exc:  # pylint: disable=broad-except
+                log.exception(exc)
+                continue
+        return caller
+
+    @functools.wraps(caller)
+    def wrap(cls):
+        for attempt in range(0, attempts):
+            try:
+                if attempt > 0:
+                    # Run through setUp again
+                    # We only run it after the first iteration(>0) because the regular
+                    # test runner will have already ran setUp the first time
+                    setup = getattr(cls, "setUp", None)
+                    if callable(setup):
+                        setup()
+                return caller(cls)
+            except SkipTest as exc:
+                cls.skipTest(exc.args[0])
+            except Exception as exc:  # pylint: disable=broad-except
+                exc_info = sys.exc_info()
+                if isinstance(exc, SkipTest):
+                    six.reraise(*exc_info)
+                if not isinstance(exc, AssertionError) and log.isEnabledFor(
+                    logging.DEBUG
+                ):
+                    log.exception(exc, exc_info=exc_info)
+                if attempt >= attempts - 1:
+                    # We won't try to run tearDown once the attempts are exhausted
+                    # because the regular test runner will do that for us
+                    six.reraise(*exc_info)
+                # Run through tearDown again
+                teardown = getattr(cls, "tearDown", None)
+                if callable(teardown):
+                    teardown()
+                backoff_time = attempt ** 2
+                log.info("Found Exception. Waiting %s seconds to retry.", backoff_time)
+                time.sleep(backoff_time)
+        return cls
+
+    return wrap
+
+
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 def requires_sshd_server(caller):
     """
     Mark a test as requiring the tests SSH daemon running.
@@ -422,6 +614,92 @@ class MockWraps(object):
             self.__call_counter += 1
 
 
+<<<<<<< HEAD
+=======
+def requires_network(only_local_network=False):
+    """
+    Simple decorator which is supposed to skip a test case in case there's no
+    network connection to the internet.
+    """
+
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(cls, *args, **kwargs):
+            has_local_network = False
+            # First lets try if we have a local network. Inspired in
+            # verify_socket
+            try:
+                pubsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                retsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                pubsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                pubsock.bind(("", 18000))
+                pubsock.close()
+                retsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                retsock.bind(("", 18001))
+                retsock.close()
+                has_local_network = True
+            except socket.error:
+                # I wonder if we just have IPV6 support?
+                try:
+                    pubsock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+                    retsock = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+                    pubsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                    pubsock.bind(("", 18000))
+                    pubsock.close()
+                    retsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                    retsock.bind(("", 18001))
+                    retsock.close()
+                    has_local_network = True
+                except socket.error:
+                    # Let's continue
+                    pass
+
+            if only_local_network is True:
+                if has_local_network is False:
+                    # Since we're only supposed to check local network, and no
+                    # local network was detected, skip the test
+                    cls.skipTest("No local network was detected")
+                return func(cls)
+
+            if os.environ.get("NO_INTERNET"):
+                cls.skipTest("Environment variable NO_INTERNET is set.")
+
+            # We are using the google.com DNS records as numerical IPs to avoid
+            # DNS lookups which could greatly slow down this check
+            for addr in (
+                "173.194.41.198",
+                "173.194.41.199",
+                "173.194.41.200",
+                "173.194.41.201",
+                "173.194.41.206",
+                "173.194.41.192",
+                "173.194.41.193",
+                "173.194.41.194",
+                "173.194.41.195",
+                "173.194.41.196",
+                "173.194.41.197",
+            ):
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                try:
+                    sock.settimeout(0.25)
+                    sock.connect((addr, 80))
+                    # We connected? Stop the loop
+                    break
+                except socket.error:
+                    # Let's check the next IP
+                    continue
+                else:
+                    cls.skipTest("No internet network connection was detected")
+                finally:
+                    sock.close()
+            return func(cls, *args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 def with_system_user(
     username, on_existing="delete", delete=True, password=None, groups=None
 ):
@@ -485,6 +763,15 @@ def with_system_user(
                                 username
                             )
                         )
+            if not salt.utils.platform.is_windows() and password is not None:
+                if salt.utils.platform.is_darwin():
+                    hashed_password = password
+                else:
+                    hashed_password = salt.utils.pycrypto.gen_hash(password=password)
+                hashed_password = "'{0}'".format(hashed_password)
+                add_pwd = cls.run_function(
+                    "shadow.set_password", [username, hashed_password]
+                )
 
             failure = None
             try:
@@ -840,33 +1127,23 @@ def runs_on(grains=None, **kwargs):
     Skip the test if grains don't match the values passed into **kwargs
     if a kwarg value is a list then skip if the grains don't match any item in the list
     """
-
-    def decorator(caller):
-        @functools.wraps(caller)
-        def wrapper(cls):
-            reason = kwargs.pop("reason", None)
-            for kw, value in kwargs.items():
-                if isinstance(value, list):
-                    if not any(
-                        str(grains.get(kw)).lower() != str(v).lower() for v in value
-                    ):
-                        if reason is None:
-                            reason = "This test does not run on {}={}".format(
-                                kw, grains.get(kw)
-                            )
-                        raise SkipTest(reason)
-                else:
-                    if str(grains.get(kw)).lower() != str(value).lower():
-                        if reason is None:
-                            reason = "This test runs on {}={}, not {}".format(
-                                kw, value, grains.get(kw)
-                            )
-                        raise SkipTest(reason)
-            return caller(cls)
-
-        return wrapper
-
-    return decorator
+    reason = kwargs.pop("reason", None)
+    for kw, value in kwargs.items():
+        if isinstance(value, list):
+            if not any(str(grains.get(kw)).lower() != str(v).lower() for v in value):
+                if reason is None:
+                    reason = "This test does not run on {}={}".format(
+                        kw, grains.get(kw)
+                    )
+                return skip(reason)
+        else:
+            if str(grains.get(kw)).lower() != str(value).lower():
+                if reason is None:
+                    reason = "This test runs on {}={}, not {}".format(
+                        kw, value, grains.get(kw)
+                    )
+                return skip(reason)
+    return _id
 
 
 @requires_system_grains
@@ -876,33 +1153,23 @@ def not_runs_on(grains=None, **kwargs):
     Skip the test if any grains match the values passed into **kwargs
     if a kwarg value is a list then skip if the grains match any item in the list
     """
-
-    def decorator(caller):
-        @functools.wraps(caller)
-        def wrapper(cls):
-            reason = kwargs.pop("reason", None)
-            for kw, value in kwargs.items():
-                if isinstance(value, list):
-                    if any(
-                        str(grains.get(kw)).lower() == str(v).lower() for v in value
-                    ):
-                        if reason is None:
-                            reason = "This test does not run on {}={}".format(
-                                kw, grains.get(kw)
-                            )
-                        raise SkipTest(reason)
-                else:
-                    if str(grains.get(kw)).lower() == str(value).lower():
-                        if reason is None:
-                            reason = "This test does not run on {}={}, got {}".format(
-                                kw, value, grains.get(kw)
-                            )
-                        raise SkipTest(reason)
-            return caller(cls)
-
-        return wrapper
-
-    return decorator
+    reason = kwargs.pop("reason", None)
+    for kw, value in kwargs.items():
+        if isinstance(value, list):
+            if any(str(grains.get(kw)).lower() == str(v).lower() for v in value):
+                if reason is None:
+                    reason = "This test does not run on {}={}".format(
+                        kw, grains.get(kw)
+                    )
+                return skip(reason)
+        else:
+            if str(grains.get(kw)).lower() == str(value).lower():
+                if reason is None:
+                    reason = "This test does not run on {}={}, got {}".format(
+                        kw, value, grains.get(kw)
+                    )
+                return skip(reason)
+    return _id
 
 
 def _check_required_sminion_attributes(sminion_attr, *required_items):
@@ -948,34 +1215,80 @@ def requires_salt_states(*names):
     .. versionadded:: 3000
     """
     not_available = _check_required_sminion_attributes("states", *names)
-
-    def decorator(caller):
-        if inspect.isclass(caller):
-            # We're decorating a class
-            old_setup = getattr(caller, "setUp", None)
-
-            def setUp(self, *args, **kwargs):
-                if not_available:
-                    raise SkipTest("Unavailable salt states: {}".format(*not_available))
-
-                if old_setup is not None:
-                    old_setup(self, *args, **kwargs)
-
-            caller.setUp = setUp
-            return caller
-
-        # We're simply decorating functions
-        @functools.wraps(caller)
-        def wrapper(cls):
-            if not_available:
-                raise SkipTest("Unavailable salt states: {}".format(*not_available))
-            return caller(cls)
-
-        return wrapper
-
-    return decorator
+    if not_available:
+        return skip("Unavailable salt states: {}".format(*not_available))
+    return _id
 
 
+<<<<<<< HEAD
+=======
+def requires_salt_modules(*names):
+    """
+    Makes sure the passed salt module is available. Skips the test if not
+
+    .. versionadded:: 0.5.2
+    """
+    not_available = _check_required_sminion_attributes("functions", *names)
+    if not_available:
+        return skip("Unavailable salt modules: {}".format(*not_available))
+    return _id
+
+
+def skip_if_binaries_missing(*binaries, **kwargs):
+    import salt.utils.path
+
+    if len(binaries) == 1:
+        if isinstance(binaries[0], (list, tuple, set, frozenset)):
+            binaries = binaries[0]
+    check_all = kwargs.pop("check_all", False)
+    message = kwargs.pop("message", None)
+    if kwargs:
+        raise RuntimeError(
+            "The only supported keyword argument is 'check_all' and "
+            "'message'. Invalid keyword arguments: {0}".format(", ".join(kwargs.keys()))
+        )
+    if check_all:
+        for binary in binaries:
+            if salt.utils.path.which(binary) is None:
+                return skip(
+                    "{0}The {1!r} binary was not found".format(
+                        message and "{0}. ".format(message) or "", binary
+                    )
+                )
+    elif salt.utils.path.which_bin(binaries) is None:
+        return skip(
+            "{0}None of the following binaries was found: {1}".format(
+                message and "{0}. ".format(message) or "", ", ".join(binaries)
+            )
+        )
+    return _id
+
+
+def skip_if_not_root(func):
+    # Late import
+    from tests.support.runtests import RUNTIME_VARS
+
+    if RUNTIME_VARS.PYTEST_SESSION:
+        setattr(func, "__skip_if_not_root__", True)
+
+    if not sys.platform.startswith("win"):
+        if os.getuid() != 0:
+            func.__unittest_skip__ = True
+            func.__unittest_skip_why__ = (
+                "You must be logged in as root to run this test"
+            )
+    else:
+        current_user = salt.utils.win_functions.get_current_user()
+        if current_user != "SYSTEM":
+            if not salt.utils.win_functions.is_admin(current_user):
+                func.__unittest_skip__ = True
+                func.__unittest_skip_why__ = (
+                    "You must be logged in as an Administrator to run this test"
+                )
+    return func
+
+
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 def repeat(caller=None, condition=True, times=5):
     """
     Repeat a test X amount of times until the first failure.
@@ -1369,8 +1682,21 @@ class VirtualEnv(object):
     def __exit__(self, *args):
         shutil.rmtree(self.venv_dir, ignore_errors=True)
 
-    def install(self, *args):
-        subprocess.check_call([self.venv_python, "-m", "pip", "install"] + list(args))
+    def install(self, *args, **kwargs):
+        return self.run(self.venv_python, "-m", "pip", "install", *args, **kwargs)
+
+    def run(self, *args, **kwargs):
+        check = kwargs.pop("check", True)
+        kwargs.setdefault("cwd", self.venv_dir)
+        kwargs.setdefault("stdout", subprocess.PIPE)
+        kwargs.setdefault("stderr", subprocess.PIPE)
+        kwargs.setdefault("universal_newlines", True)
+        proc = subprocess.run(args, check=False, **kwargs)
+        ret = ProcessResult(proc.returncode, proc.stdout, proc.stderr, proc.args)
+        log.debug(ret)
+        if check is True:
+            proc.check_returncode()
+        return ret
 
     def run(self, *args, **kwargs):
         kwargs.setdefault("cwd", self.venv_dir)
@@ -1414,3 +1740,19 @@ class VirtualEnv(object):
         sminion.functions.virtualenv.create(
             self.venv_dir, python=self._get_real_python()
         )
+
+
+@contextmanager
+def change_cwd(path):
+    """
+    Context manager helper to change CWD for a with code block and restore
+    it at the end
+    """
+    old_cwd = os.getcwd()
+    try:
+        os.chdir(path)
+        # Do stuff
+        yield
+    finally:
+        # Restore Old CWD
+        os.chdir(old_cwd)

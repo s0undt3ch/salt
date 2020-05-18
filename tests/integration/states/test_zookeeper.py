@@ -10,6 +10,10 @@ import logging
 import pytest
 import salt.utils.path
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import SaltReturnAssertsMixin
 from tests.support.unit import skipIf
 
@@ -49,7 +53,11 @@ class ZookeeperTestCase(ModuleCase, SaltReturnAssertsMixin):
         self.run_state("docker_container.absent", name=self.container_name)
         self.run_state("docker_image.absent", name="docker.io/zookeeper", force=True)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_zookeeper_present(self):
         ret = self.run_state(
             "zookeeper.present", name="/test/name", value="testuser", makepath=True,
@@ -74,7 +82,11 @@ class ZookeeperTestCase(ModuleCase, SaltReturnAssertsMixin):
         )
         self.assertSaltTrueReturn(ret)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_zookeeper_absent(self):
         self.run_state(
             "zookeeper.present", name="/test/name", value="testuser", makepath=True,
@@ -89,7 +101,11 @@ class ZookeeperTestCase(ModuleCase, SaltReturnAssertsMixin):
             bool(ret["zookeeper_|-/test/name_|-/test/name_|-absent"]["changes"])
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_zookeeper_acls(self):
         ret = self.run_state(
             "zookeeper.acls",

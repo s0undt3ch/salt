@@ -11,6 +11,10 @@ import pytest
 import salt.utils.files
 import salt.utils.path
 from tests.support.case import ModuleCase, SPMCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.unit import skipIf
 
 
@@ -38,7 +42,11 @@ class SPMBuildTest(SPMCase, ModuleCase):
         self.assertTrue(os.path.isdir(self.config["formula_path"]))
 
     @skipIf(salt.utils.path.which("fallocate") is None, "fallocate not installed")
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_spm_build_big_file(self):
         """
         test spm build with a big file
@@ -67,7 +75,11 @@ class SPMBuildTest(SPMCase, ModuleCase):
         for sls in files:
             self.assertIn(sls, " ".join(get_files))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_spm_build_exclude(self):
         """
         test spm build while excluding directory

@@ -11,6 +11,10 @@ import salt.utils.stringutils
 import zmq
 from salt.log.handlers.logstash_mod import DatagramLogstashHandler, ZMQLogstashHander
 from saltfactories.utils.ports import get_unused_localhost_port
+<<<<<<< HEAD
+=======
+from tests.support.helpers import slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.unit import TestCase
 
 log = logging.getLogger(__name__)
@@ -31,6 +35,10 @@ class DatagramLogstashHandlerTest(TestCase):
     def tearDown(self):
         self.test_server.close()
 
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_log_pickling(self):
         # given
         the_log = "test message"
@@ -68,7 +76,11 @@ class ZMQLogstashHanderTest(TestCase):
         self.zmq_server.close()
         self.context.term()
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_log_pickling(self):
         # given
         the_log = "test message"

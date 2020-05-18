@@ -5,6 +5,10 @@ from __future__ import absolute_import
 import pytest
 import salt.utils.platform
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.unit import skipIf
 
 
@@ -27,8 +31,13 @@ class FirewallTest(ModuleCase):
                 else:
                     self.assertTrue(self.run_function("firewall.disable", profile=net))
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_firewall_get_config(self):
         """
         test firewall.get_config
@@ -42,8 +51,13 @@ class FirewallTest(ModuleCase):
             self.assertTrue(ret[net])
         self._pre_firewall_status(pre_run)
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_firewall_disable(self):
         """
         test firewall.disable
@@ -60,8 +74,13 @@ class FirewallTest(ModuleCase):
         self.assertFalse(ret)
         self._pre_firewall_status(pre_run)
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_firewall_enable(self):
         """
         test firewall.enable
@@ -78,7 +97,11 @@ class FirewallTest(ModuleCase):
         self.assertTrue(ret)
         self._pre_firewall_status(pre_run)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_firewall_get_rule(self):
         """
         test firewall.get_rule
@@ -90,8 +113,13 @@ class FirewallTest(ModuleCase):
         for check in checks:
             self.assertIn(check, ret[rule])
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_firewall_add_delete_rule(self):
         """
         test firewall.add_rule and delete_rule

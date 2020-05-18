@@ -2,7 +2,10 @@
 """
     :codeauthor: Rahul Handay <rahulha@saltstack.com>
 """
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from __future__ import absolute_import, print_function, unicode_literals
 
 import pytest
@@ -10,6 +13,10 @@ import salt.config
 import salt.loader
 import salt.states.service as service
 import salt.utils.platform
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, patch
 from tests.support.unit import TestCase, skipIf
@@ -432,7 +439,11 @@ class ServiceTestCaseFunctional(TestCase, LoaderModuleMockMixin):
         if self.post_srv_disable:
             self.modules["service.disable"](self.service_name)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_running_with_reload(self):
         with patch.dict(service.__opts__, {"test": False}):
             service.dead(self.service_name, enable=False)

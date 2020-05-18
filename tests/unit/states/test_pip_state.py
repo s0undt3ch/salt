@@ -19,7 +19,13 @@ import salt.states.pip_state as pip_state
 import salt.utils.path
 import salt.version
 from salt.modules.virtualenv_mod import KNOWN_BINARY_NAMES
+<<<<<<< HEAD
 from tests.support.helpers import VirtualEnv, dedent
+=======
+from tests.support.helpers import VirtualEnv, dedent, requires_network, slowTest
+
+# Import Salt Testing libs
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import LoaderModuleMockMixin, SaltReturnAssertsMixin
 from tests.support.mock import MagicMock, patch
 from tests.support.runtests import RUNTIME_VARS
@@ -417,7 +423,11 @@ class PipStateUtilsTest(TestCase):
 )
 @pytest.mark.requires_network
 class PipStateInstallationErrorTest(TestCase):
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_importable_installation_error(self):
         extra_requirements = []
         for name, version in salt.version.dependency_information():

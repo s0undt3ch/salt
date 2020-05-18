@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-# Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import datetime
@@ -15,19 +13,19 @@ import time
 import warnings
 
 import psutil
+<<<<<<< HEAD
 import pytest
 
 # Import salt libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 import salt.utils.platform
 import salt.utils.process
-
-# Import 3rd-party libs
 from salt.ext import six
 from salt.ext.six.moves import range  # pylint: disable=import-error,redefined-builtin
 from salt.utils.versions import warn_until_date
+from tests.support.helpers import slowTest
 from tests.support.mock import patch
-
-# Import Salt Testing libs
 from tests.support.unit import TestCase, skipIf
 
 
@@ -97,6 +95,10 @@ def spin(func):
 
 class TestProcessManager(TestCase):
     @spin
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_basic(self):
         """
         Make sure that the process is alive 2s later
@@ -189,7 +191,11 @@ class TestProcessManager(TestCase):
 
 
 class TestThreadPool(TestCase):
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_basic(self):
         """
         Make sure the threadpool can do things
@@ -207,7 +213,11 @@ class TestThreadPool(TestCase):
         self.assertEqual(counter.value, 1)
         self.assertEqual(pool._job_queue.qsize(), 0)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_full_queue(self):
         """
         Make sure that a full threadpool acts as we expect
@@ -350,7 +360,11 @@ class TestSignalHandlingProcess(TestCase):
             pass
 
     @skipIf(sys.platform.startswith("win"), "No os.fork on Windows")
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_signal_processing_regression_test(self):
         evt = multiprocessing.Event()
         sh_proc = salt.utils.process.SignalHandlingProcess(
@@ -380,7 +394,11 @@ class TestSignalHandlingProcess(TestCase):
         p.join()
 
     @skipIf(sys.platform.startswith("win"), "Required signals not supported on windows")
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_signal_processing_handle_signals_called(self):
         "Validate SignalHandlingProcess handles signals"
         # Gloobal event to stop all processes we're creating
@@ -509,7 +527,11 @@ class TestProcessList(TestCase):
                 raise Exception("Process did not finishe before timeout")
             time.sleep(0.3)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_process_list_process(self):
         plist = salt.utils.process.SubprocessList()
         proc = multiprocessing.Process(target=null_target)
@@ -532,7 +554,11 @@ class TestProcessList(TestCase):
         plist.cleanup()
         assert thread not in plist.processes
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_process_list_cleanup(self):
         plist = salt.utils.process.SubprocessList()
         event = multiprocessing.Event()

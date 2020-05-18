@@ -2,7 +2,6 @@
 """
 Tests for the file state
 """
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import errno
@@ -12,18 +11,18 @@ import tempfile
 import textwrap
 import time
 
+<<<<<<< HEAD
 import pytest
 
 # Import Salt libs
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 import salt.utils.files
 import salt.utils.platform
-
-# Import 3rd-party libs
 from salt.ext import six
 from tests.support.case import ModuleCase
+from tests.support.helpers import slowTest
 from tests.support.mixins import SaltReturnAssertsMixin
-
-# Import Salt Testing libs
 from tests.support.runtests import RUNTIME_VARS
 
 
@@ -119,7 +118,11 @@ class CMDRunRedirectTest(ModuleCase, SaltReturnAssertsMixin):
                 pass
         super(CMDRunRedirectTest, self).tearDown()
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_run_unless(self):
         """
         test cmd.run unless
@@ -143,7 +146,11 @@ class CMDRunRedirectTest(ModuleCase, SaltReturnAssertsMixin):
         ret = self.run_function("state.sls", [self.state_name])
         self.assertTrue(ret[state_key]["result"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_run_unless_multiple_cmds(self):
         """
         test cmd.run using multiple unless options where the first cmd in the
@@ -162,7 +169,11 @@ class CMDRunRedirectTest(ModuleCase, SaltReturnAssertsMixin):
             'Command "echo "hello"" run',
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_run_creates_exists(self):
         """
         test cmd.run creates already there
@@ -187,7 +198,11 @@ class CMDRunRedirectTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(ret[state_key]["result"])
         self.assertEqual(len(ret[state_key]["changes"]), 0)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_run_creates_new(self):
         """
         test cmd.run creates not there
@@ -213,7 +228,11 @@ class CMDRunRedirectTest(ModuleCase, SaltReturnAssertsMixin):
         self.assertTrue(ret[state_key]["result"])
         self.assertEqual(len(ret[state_key]["changes"]), 4)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_run_redirect(self):
         """
         test cmd.run with shell redirect

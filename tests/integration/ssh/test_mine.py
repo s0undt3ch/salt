@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
-
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 import shutil
 
-# Import Salt Libs
 import salt.utils.platform
-
-# Import Salt Testing Libs
 from tests.support.case import SSHCase
+from tests.support.helpers import slowTest
 from tests.support.unit import skipIf
 
 
@@ -20,6 +16,10 @@ class SSHMineTest(SSHCase):
     testing salt-ssh with mine
     """
 
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_ssh_mine_get(self):
         """
         test salt-ssh with mine

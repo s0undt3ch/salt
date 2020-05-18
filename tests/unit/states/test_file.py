@@ -21,6 +21,10 @@ import salt.utils.win_functions
 import salt.utils.yaml
 from salt.exceptions import CommandExecutionError
 from salt.ext.six.moves import range
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, Mock, call, mock_open, patch
 from tests.support.runtests import RUNTIME_VARS
@@ -2517,7 +2521,11 @@ class TestFileState(TestCase, LoaderModuleMockMixin):
             self.assertTrue(filestate.mod_run_check_cmd(cmd, filename))
 
     @skipIf(not HAS_DATEUTIL, NO_DATEUTIL_REASON)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_retention_schedule(self):
         """
         Test to execute the retention_schedule logic.

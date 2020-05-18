@@ -2,22 +2,16 @@
 """
 unit tests for the Salt engines
 """
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
 import pytest
 import salt.config
-
-# Import Salt Libs
 import salt.engines as engines
 import salt.utils.process
-
-# Import 3rd-party libs
 from salt.ext import six
-
-# Import Salt Testing Libs
+from tests.support.helpers import slowTest
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import patch
 from tests.support.unit import TestCase
@@ -33,7 +27,11 @@ class EngineTestCase(TestCase, LoaderModuleMockMixin):
     def setup_loader_modules(self):
         return {engines: {}}
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_engine_module(self):
         """
         Test

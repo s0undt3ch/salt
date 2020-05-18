@@ -16,9 +16,20 @@ import salt.utils.platform
 from salt.ext import six
 from salt.ext.six.moves import range
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
 from tests.support.helpers import not_runs_on, requires_system_grains, runs_on
+=======
+from tests.support.helpers import (
+    destructiveTest,
+    not_runs_on,
+    requires_salt_modules,
+    requires_salt_states,
+    requires_system_grains,
+    runs_on,
+    slowTest,
+)
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import SaltReturnAssertsMixin
-from tests.support.unit import skipIf
 
 log = logging.getLogger(__name__)
 
@@ -115,9 +126,15 @@ class PkgTest(ModuleCase, SaltReturnAssertsMixin):
             else:
                 raise Exception("Package database locked after 60 seconds, bailing out")
 
+<<<<<<< HEAD
     @pytest.mark.requires_salt_states("pkg.installed", "pkg.removed")
     @pytest.mark.requires_salt_modules("pkg.version")
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @requires_salt_modules("pkg.version")
+    @requires_salt_states("pkg.installed", "pkg.removed")
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pkg_001_installed(self):
         """
         This is a destructive test as it installs and then removes a package
@@ -135,9 +152,14 @@ class PkgTest(ModuleCase, SaltReturnAssertsMixin):
         ret = self.run_state("pkg.removed", name=target)
         self.assertSaltTrueReturn(ret)
 
+<<<<<<< HEAD
     @skipIf(not _VERSION_SPEC_SUPPORTED, "Version specification not supported")
     @pytest.mark.requires_salt_states("pkg.installed", "pkg.removed")
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @requires_salt_states("pkg.installed", "pkg.removed")
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pkg_002_installed_with_version(self):
         """
         This is a destructive test as it installs and then removes a package
@@ -160,8 +182,13 @@ class PkgTest(ModuleCase, SaltReturnAssertsMixin):
         ret = self.run_state("pkg.removed", name=target)
         self.assertSaltTrueReturn(ret)
 
+<<<<<<< HEAD
     @pytest.mark.requires_salt_states("pkg.installed", "pkg.removed")
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @requires_salt_states("pkg.installed", "pkg.removed")
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pkg_003_installed_multipkg(self):
         """
         This is a destructive test as it installs and then removes two packages
@@ -185,9 +212,14 @@ class PkgTest(ModuleCase, SaltReturnAssertsMixin):
             ret = self.run_state("pkg.removed", name=None, pkgs=self._PKG_TARGETS)
             self.assertSaltTrueReturn(ret)
 
+<<<<<<< HEAD
     @skipIf(not _VERSION_SPEC_SUPPORTED, "Version specification not supported")
     @pytest.mark.requires_salt_states("pkg.installed", "pkg.removed")
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @requires_salt_states("pkg.installed", "pkg.removed")
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pkg_004_installed_multipkg_with_version(self):
         """
         This is a destructive test as it installs and then removes two packages
@@ -328,9 +360,13 @@ class PkgTest(ModuleCase, SaltReturnAssertsMixin):
 
     @runs_on(kernel="linux")
     @not_runs_on(os="Amazon")
+<<<<<<< HEAD
     @pytest.mark.requires_salt_states("pkg.installed", "pkg.removed")
     @pytest.mark.requires_salt_modules("pkg.version", "pkg.info_installed")
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pkg_009_latest_with_epoch(self):
         """
         This tests for the following issue:
@@ -347,8 +383,13 @@ class PkgTest(ModuleCase, SaltReturnAssertsMixin):
         ret = self.run_function("pkg.info_installed", [package])
         self.assertTrue(pkgquery in six.text_type(ret))
 
+<<<<<<< HEAD
     @pytest.mark.requires_salt_states("pkg.latest", "pkg.removed")
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @requires_salt_states("pkg.latest", "pkg.removed")
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pkg_010_latest(self):
         """
         This tests pkg.latest with a package that has no epoch (or a zero
@@ -369,10 +410,14 @@ class PkgTest(ModuleCase, SaltReturnAssertsMixin):
 
     @pytest.mark.requires_salt_states("pkg.latest")
     @runs_on(kernel="linux", os_family="Debian")
+<<<<<<< HEAD
     @pytest.mark.requires_salt_modules(
         "pkg.list_pkgs", "pkg.list_upgrades", "pkg.version"
     )
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pkg_011_latest_only_upgrade(self):
         """
         WARNING: This test will pick a package with an available upgrade (if
@@ -469,7 +514,11 @@ class PkgTest(ModuleCase, SaltReturnAssertsMixin):
     @pytest.mark.requires_salt_states("pkg.installed", "pkg.removed")
     @pytest.mark.requires_salt_modules("pkg.version", "pkg.latest_version")
     @runs_on(kernel="linux", os_family=["Debian", "RedHat"])
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pkg_013_installed_with_comparison_operator(self):
         """
         This is a destructive test as it installs and then removes a package
@@ -533,7 +582,11 @@ class PkgTest(ModuleCase, SaltReturnAssertsMixin):
         "pkg.hold", "pkg.unhold", "pkg.version", "pkg.list_pkgs"
     )
     @requires_system_grains
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pkg_015_installed_held(self, grains=None):
         """
         Tests that a package can be held even when the package is already installed.

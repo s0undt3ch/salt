@@ -10,7 +10,16 @@ import os
 import pytest
 import salt.utils.files
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
 from tests.support.helpers import with_system_user
+=======
+from tests.support.helpers import (
+    destructiveTest,
+    skip_if_not_root,
+    slowTest,
+    with_system_user,
+)
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import SaltReturnAssertsMixin
 from tests.support.runtests import RUNTIME_VARS
 
@@ -19,7 +28,11 @@ class SSHAuthStateTests(ModuleCase, SaltReturnAssertsMixin):
     @pytest.mark.destructive_test
     @pytest.mark.skip_if_not_root
     @with_system_user("issue_7409", on_existing="delete", delete=True)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_issue_7409_no_linebreaks_between_keys(self, username):
 
         userdetails = self.run_function("user.info", [username])
@@ -55,7 +68,11 @@ class SSHAuthStateTests(ModuleCase, SaltReturnAssertsMixin):
     @pytest.mark.destructive_test
     @pytest.mark.skip_if_not_root
     @with_system_user("issue_10198", on_existing="delete", delete=True)
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_issue_10198_keyfile_from_another_env(self, username=None):
         userdetails = self.run_function("user.info", [username])
         user_ssh_dir = os.path.join(userdetails["home"], ".ssh")

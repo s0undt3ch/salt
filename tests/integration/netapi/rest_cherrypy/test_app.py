@@ -1,15 +1,28 @@
 # coding: utf-8
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from __future__ import absolute_import
 
 import os
 
+<<<<<<< HEAD
 import pytest
 import salt.utils.json
 import salt.utils.stringutils
 import tests.support.cherrypy_testclasses as cptc
 from salt.ext.six.moves.urllib.parse import urlencode
 from tests.support.helpers import PYTEST_MIGRATION_PR_JAM_SKIP_REASON
+=======
+import salt.utils.json
+import salt.utils.stringutils
+import tests.support.cherrypy_testclasses as cptc
+from salt.ext.six.moves.urllib.parse import (  # pylint: disable=no-name-in-module,import-error
+    urlencode,
+)
+from tests.support.helpers import flaky, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 class TestAuth(cptc.BaseRestCherryPyTest):
@@ -109,7 +122,11 @@ class TestRun(cptc.BaseRestCherryPyTest):
         ("fun", "test.ping"),
     )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_run_good_login(self):
         """
         Test the run URL with good auth credentials
@@ -221,7 +238,11 @@ class TestRun(cptc.BaseRestCherryPyTest):
         )
         assert response.status == "401 Unauthorized"
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_run_extra_parameters(self):
         """
         Test the run URL with good auth credentials
@@ -288,8 +309,12 @@ class TestArgKwarg(cptc.BaseRestCherryPyTest):
         )
         return response.headers["X-Auth-Token"]
 
+<<<<<<< HEAD
     @pytest.mark.skipif(reason=PYTEST_MIGRATION_PR_JAM_SKIP_REASON)
     @pytest.mark.slow_test(seconds=480)  # Test takes >240 and <=480 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_accepts_arg_kwarg_keys(self):
         """
         Ensure that (singular) arg and kwarg keys (for passing parameters)
@@ -354,8 +379,13 @@ class TestJobs(cptc.BaseRestCherryPyTest):
         )
         self.assertEqual(response.status, "200 OK")
 
+<<<<<<< HEAD
     @pytest.mark.flaky(max_runs=4)
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @flaky
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_all_jobs(self):
         """
         test query to /jobs returns job data

@@ -11,6 +11,10 @@ import time
 import pytest
 import salt.utils.path
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.sminion import create_sminion
 from tests.support.unit import SkipTest, skipIf
@@ -80,7 +84,11 @@ class VaultTestCase(ModuleCase):
         cls.sminion.states.docker_image.absent(name="vault", force=True)
         cls.sminion = None
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_write_read_secret(self):
         write_return = self.run_function(
             "vault.write_secret", path="secret/my/secret", user="foo", password="bar"
@@ -95,7 +103,11 @@ class VaultTestCase(ModuleCase):
             == "foo"
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_write_raw_read_secret(self):
         assert (
             self.run_function(
@@ -110,7 +122,11 @@ class VaultTestCase(ModuleCase):
             "user2": "foo2",
         }
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_delete_secret(self):
         assert (
             self.run_function(
@@ -125,7 +141,11 @@ class VaultTestCase(ModuleCase):
             self.run_function("vault.delete_secret", arg=["secret/my/secret"]) is True
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_secrets(self):
         assert (
             self.run_function(
@@ -201,7 +221,11 @@ class VaultTestCaseCurrent(ModuleCase):
         cls.sminion.states.docker_image.absent(name="vault", force=True)
         cls.sminion = None
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_write_read_secret_kv2(self):
         write_return = self.run_function(
             "vault.write_secret", path="secret/my/secret", user="foo", password="bar"
@@ -230,7 +254,11 @@ class VaultTestCaseCurrent(ModuleCase):
         )
         self.assertEqual(read_return, "foo")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_secrets_kv2(self):
         write_return = self.run_function(
             "vault.write_secret", path="secret/my/secret", user="foo", password="bar"
@@ -241,7 +269,11 @@ class VaultTestCaseCurrent(ModuleCase):
         list_return = self.run_function("vault.list_secrets", arg=["secret/my/"])
         self.assertIn("secret", list_return["keys"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_write_raw_read_secret_kv2(self):
         write_return = self.run_function(
             "vault.write_raw",
@@ -261,7 +293,11 @@ class VaultTestCaseCurrent(ModuleCase):
         expected_read = {"password2": "bar2", "user2": "foo2"}
         self.assertDictContainsSubset(expected_read, read_return)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_delete_secret_kv2(self):
         write_return = self.run_function(
             "vault.write_secret",
@@ -277,7 +313,11 @@ class VaultTestCaseCurrent(ModuleCase):
         )
         self.assertEqual(delete_return, True)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_destroy_secret_kv2(self):
         write_return = self.run_function(
             "vault.write_secret",

@@ -5,11 +5,12 @@ Tests for the fileserver runner
 from __future__ import absolute_import, print_function, unicode_literals
 
 import contextlib
+import pathlib
 
 import pytest
-import salt.utils.platform
 from tests.support.case import ShellCase
-from tests.support.unit import skipIf
+from tests.support.helpers import slowTest
+from tests.support.runtests import RUNTIME_VARS
 
 
 @pytest.mark.windows_whitelisted
@@ -18,7 +19,11 @@ class FileserverTest(ShellCase):
     Test the fileserver runner
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_dir_list(self):
         """
         fileserver.dir_list
@@ -37,7 +42,11 @@ class FileserverTest(ShellCase):
         self.assertIsInstance(ret["return"], list)
         self.assertTrue("_modules" in ret["return"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_empty_dir_list(self):
         """
         fileserver.empty_dir_list
@@ -56,7 +65,11 @@ class FileserverTest(ShellCase):
         self.assertIsInstance(ret["return"], list)
         self.assertEqual(ret["return"], [])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_envs(self):
         """
         fileserver.envs
@@ -72,7 +85,11 @@ class FileserverTest(ShellCase):
         ret = self.run_run_plus(fun="fileserver.envs", backend=["roots"])
         self.assertIsInstance(ret["return"], list)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_clear_file_list_cache(self):
         """
         fileserver.clear_file_list_cache
@@ -149,7 +166,11 @@ class FileserverTest(ShellCase):
             )
             self.assertEqual(ret["return"], {"roots": ["base"]})
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_file_list(self):
         """
         fileserver.file_list
@@ -168,6 +189,7 @@ class FileserverTest(ShellCase):
         self.assertIsInstance(ret["return"], list)
         self.assertTrue("grail/scene33" in ret["return"])
 
+<<<<<<< HEAD
     # Git doesn't handle symlinks in Windows. See the thread below:
     # http://stackoverflow.com/questions/5917249/git-symlinks-in-windows
     @skipIf(
@@ -175,25 +197,39 @@ class FileserverTest(ShellCase):
         "Git for Windows does not preserve symbolic links when cloning",
     )
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_symlink_list(self):
         """
         fileserver.symlink_list
         """
+        source_sym = pathlib.Path(RUNTIME_VARS.TMP_BASEENV_STATE_TREE) / "source_sym_1"
+        source_sym.write_text("")
+        dest_sym = pathlib.Path(RUNTIME_VARS.TMP_BASEENV_STATE_TREE) / "dest_sym_1"
+        dest_sym.symlink_to(str(source_sym))
+        self.addCleanup(dest_sym.unlink)
+        self.addCleanup(source_sym.unlink)
+
         ret = self.run_run_plus(fun="fileserver.symlink_list")
         self.assertIsInstance(ret["return"], dict)
-        self.assertTrue("dest_sym" in ret["return"])
+        self.assertTrue("dest_sym_1" in ret["return"])
 
         # Backend submitted as a string
         ret = self.run_run_plus(fun="fileserver.symlink_list", backend="roots")
         self.assertIsInstance(ret["return"], dict)
-        self.assertTrue("dest_sym" in ret["return"])
+        self.assertTrue("dest_sym_1" in ret["return"])
 
         # Backend submitted as a list
         ret = self.run_run_plus(fun="fileserver.symlink_list", backend=["roots"])
         self.assertIsInstance(ret["return"], dict)
-        self.assertTrue("dest_sym" in ret["return"])
+        self.assertTrue("dest_sym_1" in ret["return"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_update(self):
         """
         fileserver.update

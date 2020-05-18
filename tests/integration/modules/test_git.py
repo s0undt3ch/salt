@@ -26,6 +26,10 @@ import salt.utils.platform
 from salt.ext import six
 from salt.utils.versions import LooseVersion
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import skip_if_binaries_missing, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.unit import skipIf
 
@@ -159,7 +163,11 @@ class GitModuleTest(ModuleCase):
             delattr(self, key)
         super(GitModuleTest, self).tearDown()
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_add_dir(self):
         """
         Test git.add with a directory
@@ -183,7 +191,11 @@ class GitModuleTest(ModuleCase):
             res = res.replace("\\", "/")
         self.assertEqual(ret, res)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_add_file(self):
         """
         Test git.add with a file
@@ -199,7 +211,11 @@ class GitModuleTest(ModuleCase):
         ret = self.run_function("git.add", [self.repo, filename])
         self.assertEqual(ret, "add '{0}'".format(filename))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_archive(self):
         """
         Test git.archive
@@ -237,7 +253,11 @@ class GitModuleTest(ModuleCase):
             except OSError:
                 pass
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_archive_subdir(self):
         """
         Test git.archive on a subdir, giving only a partial copy of the repo in
@@ -264,7 +284,11 @@ class GitModuleTest(ModuleCase):
             except OSError:
                 pass
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_branch(self):
         """
         Test creating, renaming, and deleting a branch using git.branch
@@ -280,7 +304,11 @@ class GitModuleTest(ModuleCase):
             self.run_function("git.branch", [self.repo, renamed_branch], opts="-D")
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_checkout(self):
         """
         Test checking out a new branch and then checking out master again
@@ -297,7 +325,11 @@ class GitModuleTest(ModuleCase):
             in self.run_function("git.checkout", [self.repo, "master"]),
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_checkout_no_rev(self):
         """
         Test git.checkout without a rev, both with -b in opts and without
@@ -314,7 +346,11 @@ class GitModuleTest(ModuleCase):
             in self.run_function("git.checkout", [self.repo])
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_clone(self):
         """
         Test cloning an existing repo
@@ -324,7 +360,11 @@ class GitModuleTest(ModuleCase):
         # Cleanup after yourself
         shutil.rmtree(clone_parent_dir, True)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_clone_with_alternate_name(self):
         """
         Test cloning an existing repo with an alternate name for the repo dir
@@ -340,7 +380,11 @@ class GitModuleTest(ModuleCase):
         # Cleanup after yourself
         shutil.rmtree(clone_parent_dir, True)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_commit(self):
         """
         Test git.commit two ways:
@@ -369,7 +413,11 @@ class GitModuleTest(ModuleCase):
         )
         self.assertTrue(bool(re.search(commit_re_prefix + commit_msg, ret)))
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_config(self):
         """
         Test setting, getting, and unsetting config values
@@ -556,14 +604,22 @@ class GitModuleTest(ModuleCase):
         finally:
             _clear_config()
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_current_branch(self):
         """
         Test git.current_branch
         """
         self.assertEqual(self.run_function("git.current_branch", [self.repo]), "master")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_describe(self):
         """
         Test git.describe
@@ -573,7 +629,11 @@ class GitModuleTest(ModuleCase):
     # Test for git.fetch would be unreliable on Jenkins, skipping for now
     # The test should go into test_remotes when ready
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_init(self):
         """
         Use git.init to init a new repo
@@ -609,7 +669,11 @@ class GitModuleTest(ModuleCase):
 
         shutil.rmtree(new_repo)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_branches(self):
         """
         Test git.list_branches
@@ -618,7 +682,11 @@ class GitModuleTest(ModuleCase):
             self.run_function("git.list_branches", [self.repo]), sorted(self.branches)
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_tags(self):
         """
         Test git.list_tags
@@ -630,7 +698,11 @@ class GitModuleTest(ModuleCase):
     # Test for git.ls_remote will need to wait for now, while I think of how to
     # properly mock it.
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_merge(self):
         """
         Test git.merge
@@ -642,7 +714,11 @@ class GitModuleTest(ModuleCase):
         # Merge should be a fast-forward
         self.assertTrue("Fast-forward" in ret.splitlines())
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_merge_base_and_tree(self):
         """
         Test git.merge_base, git.merge_tree and git.revision
@@ -679,43 +755,54 @@ class GitModuleTest(ModuleCase):
 
     # Test for git.push would be unreliable on Jenkins, skipping for now
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_rebase(self):
         """
         Test git.rebase
         """
-        # Make a change to a different file than the one modifed in setUp
+        # Switch to the second branch
+        self.assertNotIn(
+            "ERROR",
+            self.run_function("git.checkout", [self.repo], rev=self.branches[0]),
+        )
+        # Make a change to a different file than the one modified in setUp
         file_path = os.path.join(self.repo, self.files[1])
         with salt.utils.files.fopen(file_path, "a") as fp_:
             fp_.write("Added a line\n")
         # Commit the change
-        self.assertTrue(
-            "ERROR"
-            not in self.run_function(
+        self.assertNotIn(
+            "ERROR",
+            self.run_function(
                 "git.commit",
                 [self.repo, "Added a line to " + self.files[1]],
                 filename=self.files[1],
-            )
+            ),
         )
         # Switch to the second branch
-        self.assertTrue(
-            "ERROR"
-            not in self.run_function("git.checkout", [self.repo], rev=self.branches[1])
+        self.assertNotIn(
+            "ERROR",
+            self.run_function("git.checkout", [self.repo], rev=self.branches[1]),
         )
         # Perform the rebase. The commit should show a comment about
         # self.files[0] being modified, as that is the file that was modified
         # in the second branch in the setUp function
-        self.assertEqual(
-            self.run_function("git.rebase", [self.repo]),
-            "First, rewinding head to replay your work on top of it...\n"
-            "Applying: Added a line to " + self.files[0],
-        )
+        ret = self.run_function("git.rebase", [self.repo], opts="-vvv")
+        self.assertNotIn("ERROR", ret)
+        self.assertNotIn("up to date", ret)
 
     # Test for git.remote_get is in test_remotes
 
     # Test for git.remote_set is in test_remotes
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_remotes(self):
         """
         Test setting a remote (git.remote_set), and getting a remote
@@ -745,7 +832,11 @@ class GitModuleTest(ModuleCase):
         )
         self.assertEqual(self.run_function("git.remotes", [self.repo]), remotes)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_reset(self):
         """
         Test git.reset
@@ -770,7 +861,11 @@ class GitModuleTest(ModuleCase):
         # The two revisions should be the same
         self.assertEqual(head_rev, master_rev)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_rev_parse(self):
         """
         Test git.rev_parse
@@ -785,7 +880,11 @@ class GitModuleTest(ModuleCase):
 
     # Test for git.revision happens in test_merge_base
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_rm(self):
         """
         Test git.rm
@@ -807,7 +906,11 @@ class GitModuleTest(ModuleCase):
             self.run_function("git.rm", [self.repo, entire_dir], opts="-r"), expected
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_stash(self):
         """
         Test git.stash
@@ -837,7 +940,11 @@ class GitModuleTest(ModuleCase):
             )
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_status(self):
         """
         Test git.status
@@ -875,7 +982,11 @@ class GitModuleTest(ModuleCase):
 
     # TODO: Add git.submodule test
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_symbolic_ref(self):
         """
         Test git.symbolic_ref
@@ -888,7 +999,11 @@ class GitModuleTest(ModuleCase):
     @skipIf(
         not _worktrees_supported(), "Git 2.5 or newer required for worktree support"
     )
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_worktree_add_rm(self):
         """
         This tests git.worktree_add, git.is_worktree, git.worktree_rm, and

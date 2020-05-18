@@ -9,11 +9,15 @@ Time sync do the following:
     - Select options at the top and 'More Options' on the left
     - Set time to 'Do not sync'
 """
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from __future__ import absolute_import, print_function, unicode_literals
 
 import datetime
 
+<<<<<<< HEAD
 import pytest
 from salt.ext import six
 from tests.support.case import ModuleCase
@@ -24,6 +28,25 @@ from tests.support.unit import skipIf
 @pytest.mark.skip_if_not_root
 @pytest.mark.skip_unless_on_darwin
 @pytest.mark.skip_if_binaries_missing("systemsetup")
+=======
+from salt.ext import six
+from tests.support.case import ModuleCase
+from tests.support.helpers import (
+    destructiveTest,
+    flaky,
+    runs_on,
+    skip_if_binaries_missing,
+    skip_if_not_root,
+    slowTest,
+)
+from tests.support.unit import skipIf
+
+
+@skip_if_not_root
+@flaky
+@runs_on(kernel="Darwin")
+@skip_if_binaries_missing("systemsetup")
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 class MacTimezoneModuleTest(ModuleCase):
     """
     Validate the mac_timezone module
@@ -80,7 +103,11 @@ class MacTimezoneModuleTest(ModuleCase):
             "Invalid Date/Time Format: 13/12/2014",
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_time(self):
         """
         Test timezone.get_time
@@ -171,7 +198,11 @@ class MacTimezoneModuleTest(ModuleCase):
         )
         self.assertEqual(self.run_function("timezone.get_zonecode"), "WAKT")
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_zones(self):
         """
         Test timezone.list_zones

@@ -7,9 +7,22 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
+<<<<<<< HEAD
 import pytest
 from tests.support.case import ModuleCase
 from tests.support.helpers import random_string
+=======
+from tests.support.case import ModuleCase
+from tests.support.helpers import (
+    destructiveTest,
+    flaky,
+    random_string,
+    runs_on,
+    skip_if_binaries_missing,
+    skip_if_not_root,
+    slowTest,
+)
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.unit import skipIf
 
 log = logging.getLogger(__name__)
@@ -19,10 +32,17 @@ SET_COMPUTER_NAME = random_string("RS-", lowercase=False)
 SET_SUBNET_NAME = random_string("RS-", lowercase=False)
 
 
+<<<<<<< HEAD
 @pytest.mark.skip_if_not_root
 @pytest.mark.flaky(max_runs=10)
 @pytest.mark.skip_unless_on_darwin
 @pytest.mark.skip_if_binaries_missing("systemsetup")
+=======
+@skip_if_not_root
+@flaky(attempts=10)
+@runs_on(kernel="Darwin")
+@skip_if_binaries_missing("systemsetup")
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 class MacSystemModuleTest(ModuleCase):
     """
     Validate the mac_system module
@@ -61,8 +81,13 @@ class MacSystemModuleTest(ModuleCase):
             "system.set_disable_keyboard_on_lock", [self.KEYBOARD_DISABLED]
         )
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_set_remote_login(self):
         """
         Test system.get_remote_login
@@ -90,8 +115,13 @@ class MacSystemModuleTest(ModuleCase):
             self.run_function("system.set_remote_login", ["spongebob"]),
         )
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_set_remote_events(self):
         """
         Test system.get_remote_events
@@ -119,8 +149,13 @@ class MacSystemModuleTest(ModuleCase):
             self.run_function("system.set_remote_events", ["spongebob"]),
         )
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_set_subnet_name(self):
         """
         Test system.get_subnet_name
@@ -129,7 +164,11 @@ class MacSystemModuleTest(ModuleCase):
         self.assertTrue(self.run_function("system.set_subnet_name", [SET_SUBNET_NAME]))
         self.assertEqual(self.run_function("system.get_subnet_name"), SET_SUBNET_NAME)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_list_startup_disk(self):
         """
         Test system.get_startup_disk
@@ -166,7 +205,11 @@ class MacSystemModuleTest(ModuleCase):
             self.run_function("system.set_restart_delay", [70]),
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_set_disable_keyboard_on_lock(self):
         """
         Test system.get_disable_keyboard_on_lock
@@ -232,8 +275,13 @@ class MacSystemModuleTest(ModuleCase):
         )
 
 
+<<<<<<< HEAD
 @pytest.mark.skip_if_not_root
 @pytest.mark.skip_unless_on_darwin
+=======
+@skip_if_not_root
+@runs_on(kernel="Darwin")
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 class MacSystemComputerNameTest(ModuleCase):
     def setUp(self):
         self.COMPUTER_NAME = self.run_function("system.get_computer_name")
@@ -247,8 +295,13 @@ class MacSystemComputerNameTest(ModuleCase):
     # something similar again we may want to skip this gain until we
     # investigate
     # @skipIf(salt.utils.platform.is_darwin() and six.PY3, 'This test hangs on OS X on Py3.  Skipping until #53566 is merged.')
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_get_set_computer_name(self):
         """
         Test system.get_computer_name

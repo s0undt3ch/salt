@@ -2,14 +2,20 @@
 """
 Unit tests for salt.config
 """
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import os
 import textwrap
 
+<<<<<<< HEAD
 import pytest
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 import salt.config
 import salt.minion
 import salt.syspaths
@@ -24,7 +30,11 @@ from salt.exceptions import (
 )
 from salt.ext import six
 from salt.syspaths import CONFIG_DIR
+<<<<<<< HEAD
 from tests.support.helpers import patched_environ, with_tempdir, with_tempfile
+=======
+from tests.support.helpers import patched_environ, slowTest, with_tempdir, with_tempfile
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import AdaptedConfigurationTestCaseMixin
 from tests.support.mock import MagicMock, Mock, patch
 from tests.support.runtests import RUNTIME_VARS
@@ -545,7 +555,11 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         assert ret == {"base": expected}
 
     @with_tempdir()
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_master_id_function(self, tempdir):
         master_config = os.path.join(tempdir, "master")
 
@@ -618,7 +632,11 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         )
 
     @with_tempdir()
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_minion_id_function(self, tempdir):
         minion_config = os.path.join(tempdir, "minion")
 
@@ -638,7 +656,11 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(config["id"], "hello_world")
 
     @with_tempdir()
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_minion_id_lowercase(self, tempdir):
         """
         This tests that setting `minion_id_lowercase: True` does lower case
@@ -664,7 +686,11 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(config["id"], "king_bob")
 
     @with_tempdir()
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_minion_id_remove_domain_string_positive(self, tempdir):
         """
         This tests that the values of `minion_id_remove_domain` is suppressed from a generated minion id,
@@ -690,7 +716,11 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(config["id"], "king_bob")
 
     @with_tempdir()
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_minion_id_remove_domain_string_negative(self, tempdir):
         """
         See above
@@ -713,7 +743,11 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(config["id"], "king_bob.foo.org")
 
     @with_tempdir()
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_minion_id_remove_domain_bool_true(self, tempdir):
         """
         See above
@@ -735,7 +769,11 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(config["id"], "king_bob")
 
     @with_tempdir()
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_minion_id_remove_domain_bool_false(self, tempdir):
         """
         See above
@@ -793,10 +831,25 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         self.assertEqual(syndic_opts["id"], "syndic")
         self.assertEqual(syndic_opts["pki_dir"], os.path.join(root_dir, "pki"))
         # the rest is configured master side
+<<<<<<< HEAD
         self.assertEqual(syndic_opts["master"], "127.0.0.1")
         self.assertEqual(
             syndic_opts["sock_dir"], os.path.join(root_dir, "run", "minion")
         )
+=======
+        if RUNTIME_VARS.PYTEST_SESSION is False:
+            # Pytest assigns ports dynamically
+            self.assertEqual(syndic_opts["master_port"], 54506)
+            self.assertEqual(syndic_opts["master"], "localhost")
+            self.assertEqual(
+                syndic_opts["sock_dir"], os.path.join(root_dir, "syndic_sock")
+            )
+        else:
+            self.assertEqual(syndic_opts["master"], "127.0.0.1")
+            self.assertEqual(
+                syndic_opts["sock_dir"], os.path.join(root_dir, "run", "minion")
+            )
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         self.assertEqual(syndic_opts["cachedir"], os.path.join(root_dir, "cache"))
         self.assertEqual(
             syndic_opts["log_file"], os.path.join(root_dir, "logs", "syndic.log")
@@ -1684,8 +1737,13 @@ class ConfigTestCase(TestCase, AdaptedConfigurationTestCaseMixin):
         Tests that cloud.{providers,profiles}.d directories are loaded, even if not
         directly passed in through path
         """
-        log.warning("Clound config file path: %s", self.get_config_file_path("cloud"))
-        config = salt.config.cloud_config(self.get_config_file_path("cloud"))
+        config_file = self.get_config_file_path("cloud")
+        log.debug("Cloud config file path: %s", config_file)
+        self.assertTrue(
+            os.path.exists(config_file), "{} does not exist".format(config_file)
+        )
+        config = salt.config.cloud_config(config_file)
+        self.assertIn("providers", config)
         self.assertIn("ec2-config", config["providers"])
         self.assertIn("ec2-test", config["profiles"])
 

@@ -6,11 +6,19 @@ import re
 
 import pytest
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 @pytest.mark.windows_whitelisted
 class KeyModuleTest(ModuleCase):
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_key_finger(self):
         """
         test key.finger to ensure we receive a valid fingerprint
@@ -19,7 +27,11 @@ class KeyModuleTest(ModuleCase):
         match = re.match("([0-9a-z]{2}:){15,}[0-9a-z]{2}$", out)
         self.assertTrue(match)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_key_finger_master(self):
         """
         test key.finger_master to ensure we receive a valid fingerprint

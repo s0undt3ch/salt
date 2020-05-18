@@ -1,7 +1,12 @@
 mock >= 3.0.0
 # PyTest
 pytest >=4.6.9,<4.7   # PyTest 4.6.x are the last Py2 and Py3 releases
+<<<<<<< HEAD
 pytest-salt-factories >= 0.10.0
+=======
+pytest-salt
+pytest-salt-factories >= 0.10.5
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 pytest-tempdir >= 2019.10.12
 pytest-helpers-namespace >= 2019.1.8
 pytest-salt-runtests-bridge >= 2019.12.5

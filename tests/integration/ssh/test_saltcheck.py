@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
-
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
-# Import Salt Libs
 import salt.utils.platform
-
-# Import Salt Testing Libs
 from tests.support.case import SSHCase
+from tests.support.helpers import slowTest
 from tests.support.unit import skipIf
 
 
@@ -17,6 +13,10 @@ class SSHSaltcheckTest(SSHCase):
     testing saltcheck with salt-ssh
     """
 
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_saltcheck_run_test(self):
         """
         test saltcheck.run_test with salt-ssh
@@ -30,6 +30,10 @@ class SSHSaltcheckTest(SSHCase):
         ret = self.run_function("saltcheck.run_test", test=saltcheck_test)
         self.assertDictContainsSubset({"status": "Pass"}, ret)
 
+<<<<<<< HEAD
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_saltcheck_state(self):
         """
         saltcheck.run_state_tests

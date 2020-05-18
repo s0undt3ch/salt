@@ -2,25 +2,41 @@
 """
     :codeauthor: Nicole Thomas <nicole@saltstack.com>
 """
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
 import random
 
+<<<<<<< HEAD
 import pytest
 import salt.utils.files
 from salt.exceptions import CommandExecutionError
 from tests.support.case import ModuleCase
+=======
+import salt.utils.files
+from salt.exceptions import CommandExecutionError
+from tests.support.case import ModuleCase
+from tests.support.helpers import destructiveTest, runs_on, skip_if_not_root, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 # Module Variables
 ASSIGN_CMD = "net.inet.icmp.icmplim"
 CONFIG = "/etc/sysctl.conf"
 
 
+<<<<<<< HEAD
 @pytest.mark.destructive_test
 @pytest.mark.skip_if_not_root
 @pytest.mark.skip_unless_on_darwin
+=======
+@destructiveTest
+@skip_if_not_root
+@runs_on(kernel="Darwin")
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 class DarwinSysctlModuleTest(ModuleCase):
     """
     Integration tests for the darwin_sysctl module
@@ -46,7 +62,11 @@ class DarwinSysctlModuleTest(ModuleCase):
                 raise CommandExecutionError(msg.format(CONFIG))
             os.remove(CONFIG)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_assign(self):
         """
         Tests assigning a single sysctl parameter
@@ -66,7 +86,11 @@ class DarwinSysctlModuleTest(ModuleCase):
             self.run_function("sysctl.assign", [ASSIGN_CMD, self.val])
             raise
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=1)  # Test takes >0.5 and <=1 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_persist_new_file(self):
         """
         Tests assigning a sysctl value to a system without a sysctl.conf file
@@ -83,7 +107,11 @@ class DarwinSysctlModuleTest(ModuleCase):
             os.remove(CONFIG)
             raise
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_persist_already_set(self):
         """
         Tests assigning a sysctl value that is already set in sysctl.conf file
@@ -99,7 +127,11 @@ class DarwinSysctlModuleTest(ModuleCase):
             os.remove(CONFIG)
             raise
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_persist_apply_change(self):
         """
         Tests assigning a sysctl value and applying the change to system

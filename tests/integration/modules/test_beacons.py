@@ -10,6 +10,7 @@ import os
 import pytest
 from salt.exceptions import CommandExecutionError
 from tests.support.case import ModuleCase
+from tests.support.helpers import slowTest
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.unit import skipIf
 
@@ -39,7 +40,11 @@ class BeaconsAddDeleteTest(ModuleCase):
         # Reset beacons
         self.run_function("beacons.reset", f_timeout=300)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_add_and_delete(self):
         """
         Test adding and deleting a beacon
@@ -62,7 +67,11 @@ class BeaconsAddDeleteTest(ModuleCase):
         # save the results
         self.run_function("beacons.save", f_timeout=300)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_add_and_delete_beacon_module(self):
         """
         Test adding and deleting a beacon
@@ -135,7 +144,11 @@ class BeaconsTest(ModuleCase):
         # Reset beacons
         self.run_function("beacons.reset", f_timeout=300)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_disable(self):
         """
         Test disabling beacons
@@ -162,7 +175,11 @@ class BeaconsTest(ModuleCase):
                 self.assertFalse(bdict["enabled"])
                 break
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_enable(self):
         """
         Test enabling beacons
@@ -196,7 +213,11 @@ class BeaconsTest(ModuleCase):
         _list = self.run_function("beacons.list", return_yaml=False, f_timeout=300)
         self.assertTrue(_list["ps"]["enabled"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list(self):
         """
         Test listing the beacons
@@ -210,7 +231,11 @@ class BeaconsTest(ModuleCase):
         else:
             self.assertEqual(ret, {"ps": [{"processes": {"apache2": "stopped"}}]})
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=480)  # Test takes >240 and <=480 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_available(self):
         """
         Test listing the beacons
@@ -267,7 +292,11 @@ class BeaconsWithBeaconTypeTest(ModuleCase):
         self.run_function("beacons.delete", ["watch_apache"], f_timeout=300)
         self.run_function("beacons.save", f_timeout=300)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_disable(self):
         """
         Test disabling beacons
@@ -298,7 +327,11 @@ class BeaconsWithBeaconTypeTest(ModuleCase):
                 self.assertFalse(bdict["enabled"])
                 break
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_enable(self):
         """
         Test enabling beacons
@@ -333,7 +366,11 @@ class BeaconsWithBeaconTypeTest(ModuleCase):
         _list = self.run_function("beacons.list", return_yaml=False, f_timeout=300)
         self.assertTrue(_list["watch_apache"]["enabled"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list(self):
         """
         Test listing the beacons

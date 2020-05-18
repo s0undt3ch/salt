@@ -2,7 +2,10 @@
 """
 Integration tests for the vault modules
 """
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from __future__ import absolute_import, print_function, unicode_literals
 
 import inspect
@@ -12,6 +15,10 @@ import time
 import pytest
 import salt.utils.path
 from tests.support.case import ModuleCase, ShellCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, flaky, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.unit import skipIf
 
@@ -108,8 +115,13 @@ class VaultTestCase(ModuleCase, ShellCase):
             self.run_state("docker_container.absent", name="vault")
             self.run_state("docker_image.absent", name="vault", force=True)
 
+<<<<<<< HEAD
     @pytest.mark.flaky(max_runs=4)
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @flaky
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_sdb(self):
         set_output = self.run_function(
             "sdb.set", uri="sdb://sdbvault/secret/test/test_sdb/foo", value="bar"
@@ -120,8 +132,13 @@ class VaultTestCase(ModuleCase, ShellCase):
         )
         self.assertEqual(get_output, "bar")
 
+<<<<<<< HEAD
     @pytest.mark.flaky(max_runs=4)
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @flaky
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_sdb_runner(self):
         set_output = self.run_run(
             "sdb.set sdb://sdbvault/secret/test/test_sdb_runner/foo bar"
@@ -132,8 +149,13 @@ class VaultTestCase(ModuleCase, ShellCase):
         )
         self.assertEqual(get_output, ["bar"])
 
+<<<<<<< HEAD
     @pytest.mark.flaky(max_runs=4)
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @flaky
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_config(self):
         set_output = self.run_function(
             "sdb.set", uri="sdb://sdbvault/secret/test/test_pillar_sdb/foo", value="bar"
@@ -231,8 +253,13 @@ class VaultTestCaseCurrent(ModuleCase, ShellCase):
             self.run_state("docker_container.absent", name="vault")
             self.run_state("docker_image.absent", name="vault", force=True)
 
+<<<<<<< HEAD
     @pytest.mark.flaky(max_runs=4)
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @flaky
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_sdb_kv2(self):
         set_output = self.run_function(
             "sdb.set", uri="sdb://sdbvault/secret/test/test_sdb/foo", value="bar"
@@ -243,8 +270,13 @@ class VaultTestCaseCurrent(ModuleCase, ShellCase):
         )
         self.assertEqual(get_output, "bar")
 
+<<<<<<< HEAD
     @pytest.mark.flaky(max_runs=4)
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @flaky
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_sdb_runner_kv2(self):
         set_output = self.run_run(
             "sdb.set sdb://sdbvault/secret/test/test_sdb_runner/foo bar"
@@ -255,8 +287,13 @@ class VaultTestCaseCurrent(ModuleCase, ShellCase):
         )
         self.assertEqual(get_output, ["bar"])
 
+<<<<<<< HEAD
     @pytest.mark.flaky(max_runs=4)
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @flaky
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_config_kv2(self):
         set_output = self.run_function(
             "sdb.set", uri="sdb://sdbvault/secret/test/test_pillar_sdb/foo", value="bar"

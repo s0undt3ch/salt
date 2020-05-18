@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-# Import Python libs
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
@@ -11,12 +9,9 @@ import time
 
 import pytest
 import salt.config
-
-# Import salt libs
 import salt.version
-
-# Import Salt Testing libs
 from tests.support.case import MultimasterModuleCase
+from tests.support.helpers import slowTest
 from tests.support.mixins import AdaptedConfigurationTestCaseMixin
 from tests.support.unit import skipIf
 
@@ -41,7 +36,11 @@ class TestBeaconsInotify(MultimasterModuleCase, AdaptedConfigurationTestCaseMixi
         self.tmpdir = salt.utils.stringutils.to_unicode(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, self.tmpdir, ignore_errors=True)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=240)  # Test takes >120 and <=240 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_beacons_duplicate_53344(self):
         # Also add a status beacon to use it for interval checks
         res = self.run_function(

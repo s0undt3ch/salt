@@ -10,6 +10,28 @@ import logging
 
 # Import 3rd-party libs
 import pytest
+<<<<<<< HEAD
+=======
+import salt.utils.platform
+from salt.ext.six.moves import range
+from salt.utils.pycrypto import gen_hash
+from tests.support.case import ModuleCase, ShellCase
+from tests.support.helpers import (
+    destructiveTest,
+    requires_salt_modules,
+    requires_salt_states,
+    skip_if_not_root,
+    slowTest,
+)
+from tests.support.mixins import SaltReturnAssertsMixin
+from tests.support.unit import skipIf
+
+try:
+    import pwd
+    import grp
+except ImportError:
+    pwd, grp = None, None
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 # Import Salt libs
 import salt.utils.platform
@@ -17,9 +39,24 @@ import salt.utils.platform
 log = logging.getLogger(__name__)
 
 
+<<<<<<< HEAD
 USERA = "saltdev-auth"
 USERA_PWD = "saltdev"
 HASHED_USERA_PWD = "$6$SALTsalt$ZZFD90fKFWq8AGmmX0L3uBtS9fXL62SrTk5zcnQ6EkD6zoiM3kB88G1Zvs0xm/gZ7WXJRs5nsTBybUvGSqZkT."
+=======
+def gen_password():
+    """
+    generate a password and hash it
+    """
+    password = "".join(
+        random.choice(string.ascii_letters + string.digits) for _ in range(20)
+    )
+    hashed_pwd = (
+        password
+        if salt.utils.platform.is_darwin()
+        else gen_hash("salt", password, "sha512")
+    )
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 @pytest.fixture(scope="module")
@@ -48,6 +85,7 @@ def saltops_group(sminion):
     finally:
         sminion.functions.group.delete(SALTOPS)
 
+<<<<<<< HEAD
 
 USERB = "saltdev-adm"
 USERB_PWD = USERA_PWD
@@ -75,6 +113,23 @@ class TestUserAuth(object):
     """
     Test user auth mechanisms
     """
+=======
+    @slowTest
+    def test_pam_auth_valid_user(self):
+        """
+        test that pam auth mechanism works with a valid user
+        """
+        password, hashed_pwd = gen_password()
+
+        # set user password
+        set_pw_cmd = "shadow.set_password {0} '{1}'".format(self.user, hashed_pwd)
+        stdout, stderr, retcode = self.run_call(
+            set_pw_cmd, catch_stderr=True, with_retcode=True
+        )
+        if stderr:
+            log.warning(stderr)
+        self.assertFalse(retcode, stderr)
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
     def test_pam_auth_valid_user(self, salt_cli, saltdev_account):
@@ -95,8 +150,13 @@ class TestUserAuth(object):
         assert ret.exitcode == 0
         assert ret.json is True
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_pam_auth_invalid_user(self, salt_cli, saltdev_account):
+=======
+    @slowTest
+    def test_pam_auth_invalid_user(self):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         """
         test pam auth mechanism errors for an invalid user
         """
@@ -120,11 +180,58 @@ class TestGroupAuth(object):
     Test group auth mechanisms
     """
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=10)  # Test takes >5 and <=10 seconds
     def test_pam_auth_valid_group(self, salt_cli, saltadm_account):
         """
         test that pam auth mechanism works for a valid group
         """
+=======
+    _call_binary_ = "salt"
+
+    user = "saltadm"
+    group = "saltops"
+
+    def setUp(self):
+        ret = self.run_state("group.present", name=self.group)
+        self.assertSaltTrueReturn(ret)
+        ret = self.run_state(
+            "user.present", name=self.user, createhome=False, groups=[self.group]
+        )
+        self.assertSaltTrueReturn(ret)
+        stdout, stderr, retcode = self.run_call(
+            "user.chgroups {0} {1} True".format(self.user, self.group),
+            local=True,
+            with_retcode=True,
+            catch_stderr=True,
+        )
+        if stderr:
+            log.warning(stderr)
+        self.assertFalse(retcode, stderr)
+
+    def tearDown(self):
+        ret0 = self.run_state("user.absent", name=self.user)
+        ret1 = self.run_state("group.absent", name=self.group)
+        self.assertSaltTrueReturn(ret0)
+        self.assertSaltTrueReturn(ret1)
+
+    @slowTest
+    def test_pam_auth_valid_group(self):
+        """
+        test that pam auth mechanism works for a valid group
+        """
+        password, hashed_pwd = gen_password()
+
+        # set user password
+        set_pw_cmd = "shadow.set_password {0} '{1}'".format(self.user, hashed_pwd)
+        stdout, stderr, retcode = self.run_call(
+            set_pw_cmd, catch_stderr=True, with_retcode=True
+        )
+        if stderr:
+            log.warning(stderr)
+        self.assertFalse(retcode, stderr)
+
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         # test group auth against pam: saltadm is not configured in
         # external_auth, but saltops is and saldadm is a member of saltops
         ret = salt_cli.run(

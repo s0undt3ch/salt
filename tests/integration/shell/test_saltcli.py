@@ -18,12 +18,68 @@ import shutil
 import pytest
 import salt.defaults.exitcodes
 import salt.utils.path
+<<<<<<< HEAD
+=======
+from tests.integration.utils import testprogram
+from tests.support.case import ShellCase
+from tests.support.helpers import slowTest
+from tests.support.runtests import RUNTIME_VARS
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 log = logging.getLogger(__name__)
 
 
 @pytest.mark.windows_whitelisted
+<<<<<<< HEAD
 class TestRetcode(object):
+=======
+class SaltTest(testprogram.TestProgramCase):
+    """
+    Various integration tests for the salt executable.
+    """
+
+    # pylint: disable=invalid-name
+    @slowTest
+    def test_exit_status_unknown_argument(self):
+        """
+        Ensure correct exit status when an unknown argument is passed to salt-run.
+        """
+
+        runner = testprogram.TestProgramSalt(
+            name="run-unknown_argument", parent_dir=self._test_dir,
+        )
+        # Call setup here to ensure config and script exist
+        runner.setup()
+        stdout, stderr, status = runner.run(
+            args=["--unknown-argument"], catch_stderr=True, with_retcode=True,
+        )
+        self.assert_exit_status(
+            status, "EX_USAGE", message="unknown argument", stdout=stdout, stderr=stderr
+        )
+        # runner.shutdown() should be unnecessary since the start-up should fail
+
+    @slowTest
+    def test_exit_status_correct_usage(self):
+        """
+        Ensure correct exit status when salt-run starts correctly.
+        """
+
+        runner = testprogram.TestProgramSalt(
+            name="run-correct_usage", parent_dir=self._test_dir,
+        )
+        # Call setup here to ensure config and script exist
+        runner.setup()
+        stdout, stderr, status = runner.run(
+            args=["*", "-h"], catch_stderr=True, with_retcode=True,
+        )
+        self.assert_exit_status(
+            status, "EX_OK", message="correct usage", stdout=stdout, stderr=stderr
+        )
+
+
+@pytest.mark.windows_whitelisted
+class RetcodeTestCase(ShellCase):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     """
     Tests to ensure that we set non-zero retcodes when execution fails
     """
@@ -37,8 +93,27 @@ class TestRetcode(object):
         ret = salt_cli.run("test.ping", minion_tgt="minion")
         assert ret.exitcode == 0, ret
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_zero_exit_code_salt_call(self, salt_call_cli):
+=======
+        retcode = _run("test.raise_exception salt.exceptions.SaltInvocationError")
+        assert retcode == self.error_status, retcode
+
+        retcode = _run(
+            "test.raise_exception " 'OSError 2 "No such file or directory" /tmp/foo.txt'
+        )
+        assert retcode == self.error_status, retcode
+
+        retcode = _run('test.echo "{foo: bar, result: False}"')
+        assert retcode == self.error_status, retcode
+
+        retcode = _run('test.echo "{foo: bar, success: False}"')
+        assert retcode == self.error_status, retcode
+
+    @slowTest
+    def test_zero_exit_code(self):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         """
         Test that a zero exit code is set when there are no errors and there is
         no explicit False result set in the return data.
@@ -46,8 +121,13 @@ class TestRetcode(object):
         ret = salt_call_cli.run("test.ping")
         assert ret.exitcode == 0, ret
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_context_retcode_salt(self, salt_cli):
+=======
+    @slowTest
+    def test_context_retcode(self):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         """
         Test that a nonzero retcode set in the context dunder will cause the
         salt CLI to set a nonzero retcode.
@@ -138,8 +218,13 @@ class TestRetcode(object):
         )
         assert ret.exitcode == salt.defaults.exitcodes.EX_GENERIC, ret
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
     def test_salt_call_error(self, salt_call_cli):
+=======
+    @slowTest
+    def test_salt_error(self):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         """
         Test that we return the expected retcode when a minion function raises
         an exception.
@@ -174,11 +259,16 @@ class TestRetcode(object):
         ret = salt_call_cli.run("test.echo", "{foo: bar, result: False}")
         assert ret.exitcode == salt.defaults.exitcodes.EX_GENERIC, ret
 
+<<<<<<< HEAD
         ret = salt_call_cli.run("test.echo", "{foo: bar, success: False}")
         assert ret.exitcode == salt.defaults.exitcodes.EX_GENERIC, ret
 
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
     def test_missing_minion(self, salt_cli, salt_master):
+=======
+    @slowTest
+    def test_missing_minion(self):
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
         """
         Test that a minion which doesn't respond results in a nonzeo exit code
         """

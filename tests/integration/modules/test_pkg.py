@@ -10,7 +10,19 @@ import salt.utils.path
 import salt.utils.pkg
 import salt.utils.platform
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
 from tests.support.helpers import requires_system_grains
+=======
+from tests.support.helpers import (
+    destructiveTest,
+    requires_network,
+    requires_salt_modules,
+    requires_salt_states,
+    requires_system_grains,
+    skip_if_not_root,
+    slowTest,
+)
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 from tests.support.mixins import SaltReturnAssertsMixin
 from tests.support.unit import skipIf
 
@@ -38,8 +50,13 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
             self.run_function("pkg.refresh_db")
             self.ctx["refresh"] = True
 
+<<<<<<< HEAD
     @pytest.mark.requires_salt_modules("pkg.list_pkgs")
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @requires_salt_modules("pkg.list_pkgs")
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list(self):
         """
         verify that packages are installed
@@ -49,7 +66,11 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
 
     @pytest.mark.requires_salt_modules("pkg.version_cmp")
     @requires_system_grains
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_version_cmp(self, grains):
         """
         test package version comparison on supported platforms
@@ -76,7 +97,11 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
     @pytest.mark.requires_salt_modules("pkg.mod_repo", "pkg.del_repo", "pkg.get_repo")
     @pytest.mark.requires_network
     @requires_system_grains
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_mod_del_repo(self, grains):
         """
         test modifying and deleting a software repository
@@ -138,7 +163,11 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
             if repo is not None:
                 self.run_function("pkg.del_repo", [repo])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_mod_del_repo_multiline_values(self):
         """
         test modifying and deleting a software repository defined with multiline values
@@ -210,10 +239,17 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
         ret = self.run_function(func, ["/usr/local/bin/salt-call"])
         self.assertNotEqual(len(ret), 0)
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.requires_salt_modules("pkg.version", "pkg.install", "pkg.remove")
     @pytest.mark.requires_network
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @destructiveTest
+    @requires_salt_modules("pkg.version", "pkg.install", "pkg.remove")
+    @requires_network()
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_install_remove(self):
         """
         successfully install and uninstall a package
@@ -250,7 +286,11 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
     )
     @pytest.mark.requires_network
     @requires_system_grains
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=120)  # Test takes >60 and <=120 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_hold_unhold(self, grains):
         """
         test holding and unholding a package
@@ -297,7 +337,11 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
     @pytest.mark.requires_salt_modules("pkg.refresh_db")
     @pytest.mark.requires_network
     @requires_system_grains
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_refresh_db(self, grains):
         """
         test refreshing the package database
@@ -329,7 +373,11 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
 
     @pytest.mark.requires_salt_modules("pkg.info_installed")
     @requires_system_grains
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pkg_info(self, grains):
         """
         Test returning useful information on Ubuntu systems.
@@ -366,7 +414,11 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
         "pkg.list_upgrades",
     )
     @requires_system_grains
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=480)  # Test takes >= 480 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pkg_upgrade_has_pending_upgrades(self, grains):
         """
         Test running a system upgrade when there are packages that need upgrading
@@ -445,7 +497,11 @@ class PkgModuleTest(ModuleCase, SaltReturnAssertsMixin):
     @pytest.mark.requires_salt_states("pkg.removed")
     @pytest.mark.requires_salt_modules("pkg.remove", "pkg.latest_version")
     @requires_system_grains
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=60)  # Test takes >30 and <=60 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_pkg_latest_version(self, grains):
         """
         Check that pkg.latest_version returns the latest version of the uninstalled package.

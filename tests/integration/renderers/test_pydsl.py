@@ -11,6 +11,10 @@ import salt.utils.files
 import salt.utils.platform
 import salt.utils.stringutils
 from tests.support.case import ModuleCase
+<<<<<<< HEAD
+=======
+from tests.support.helpers import destructiveTest, slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
 
 
 @pytest.mark.windows_whitelisted
@@ -27,8 +31,13 @@ class PyDSLRendererIncludeTestCase(ModuleCase):
             if self.directory_created:
                 shutil.rmtree("\\tmp")
 
+<<<<<<< HEAD
     @pytest.mark.destructive_test
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @destructiveTest
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_rendering_includes(self):
         """
         This test is currently hard-coded to /tmp to work-around a seeming

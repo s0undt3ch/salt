@@ -8,6 +8,7 @@ import pytest
 
 # Import Salt Testing Libs
 from tests.support.case import ModuleCase
+from tests.support.helpers import slowTest
 from tests.support.mixins import SaltReturnAssertsMixin
 
 
@@ -25,7 +26,11 @@ class BeaconStateTestCase(ModuleCase, SaltReturnAssertsMixin):
     def tearDown(self):
         self.run_function("beacons.reset", f_timeout=300)
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=30)  # Test takes >10 and <=30 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_present_absent(self):
         kwargs = {"/": "38%", "interval": 5}
         ret = self.run_state(

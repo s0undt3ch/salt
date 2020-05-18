@@ -1,9 +1,9 @@
 # coding: utf-8
-
 from __future__ import absolute_import, print_function, unicode_literals
 
 import pytest
 import salt.wheel
+from tests.support.helpers import slowTest
 from tests.support.mixins import AdaptedConfigurationTestCaseMixin
 from tests.support.unit import TestCase
 
@@ -17,13 +17,21 @@ class KeyWheelModuleTest(TestCase, AdaptedConfigurationTestCaseMixin):
     def tearDown(self):
         del self.wheel
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_list_all(self):
         ret = self.wheel.cmd("key.list_all", print_event=False)
         for host in ["minion", "sub_minion"]:
             self.assertIn(host, ret["minions"])
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_gen(self):
         ret = self.wheel.cmd(
             "key.gen", kwarg={"id_": "soundtechniciansrock"}, print_event=False
@@ -42,7 +50,11 @@ class KeyWheelModuleTest(TestCase, AdaptedConfigurationTestCaseMixin):
             ret.get("priv", "").startswith("-----BEGIN RSA PRIVATE KEY-----")
         )
 
+<<<<<<< HEAD
     @pytest.mark.slow_test(seconds=5)  # Test takes >1 and <=5 seconds
+=======
+    @slowTest
+>>>>>>> 9478961652890061dfd444737f3b6353806cb5fc
     def test_master_key_str(self):
         ret = self.wheel.cmd("key.master_key_str", print_event=False)
         self.assertIn("local", ret)
