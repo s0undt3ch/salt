@@ -4,6 +4,7 @@ Salt package
 
 
 import importlib
+import multiprocessing
 import sys
 import warnings
 
@@ -117,3 +118,11 @@ __define_global_system_encoding_variable__()
 
 # This is now garbage collectable
 del __define_global_system_encoding_variable__
+
+# Multiprocessing on macOS using fork is just a bunch of trouble. Default to spawn, if not altready the default.
+# https://stackoverflow.com/questions/50168647/multiprocessing-causes-python-to-crash-and-gives-an-error-may-have-been-in-progr
+if (
+    sys.platform.startswith("darwin")
+    and multiprocessing.get_start_method(allow_none=False) != "spawn"
+):
+    multiprocessing.set_start_method("spawn", force=True)
