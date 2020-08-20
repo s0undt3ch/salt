@@ -584,6 +584,11 @@ def salt_factories_config(log_server_host, log_server_port, log_server_level):
     }
 
 
+@pytest.fixture(scope="session")
+def log_server_host(request):
+    return "0.0.0.0"
+
+
 # <---- Pytest Helpers -----------------------------------------------------------------------------------------------
 
 # ----- From Filenames Test Selection ------------------------------------------------------------------------------->
