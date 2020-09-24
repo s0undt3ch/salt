@@ -1130,7 +1130,7 @@ def info_installed(*names, **kwargs):
             install_date_time_t, md5sum, packager, provides, recommends,
             replaces, size, source, suggests, url, version
 
-    CLI example:
+    CLI Example:
 
     .. code-block:: bash
 

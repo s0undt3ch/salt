@@ -573,7 +573,7 @@ def info_installed(*names, **kwargs):
     names
         The names of the packages for which to return information.
 
-    CLI example:
+    CLI Example:
 
     .. code-block:: bash
 

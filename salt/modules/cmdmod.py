@@ -3238,7 +3238,9 @@ def shells():
 
     .. versionadded:: 2015.5.0
 
-    CLI Example::
+    CLI Example:
+
+    .. code-block:: bash
 
         salt '*' cmd.shells
     """
