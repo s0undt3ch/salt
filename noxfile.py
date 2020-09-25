@@ -1214,6 +1214,7 @@ def _invoke(session):
     """
     Run invoke tasks
     """
+    _install_requirements(session, "zeromq")
     requirements_file = os.path.join(
         "requirements", "static", "ci", _get_pydir(session), "invoke.txt"
     )

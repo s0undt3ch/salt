@@ -1200,7 +1200,7 @@ repos:
     hooks:
       - id: nox
         alias: loader-check-virtual
-        name: Check modules __virtual__
+        name: Check loader modules __virtual__
         files: salt/.*\.py$
         args:
           - -e
@@ -1212,14 +1212,14 @@ repos:
     rev: v2020.8.22
     hooks:
       - id: nox
-        alias: loader-check-module-docstrings
-        name: Check salt/modules/*.py docstrings
-        files: salt/modules/.*\.py$
+        alias: check-docstrings
+        name: Check docstrings
+        files: salt/.*\.py$
         args:
           - -e
           - invoke-pre-commit
           - --
-          - loader.check-module-docstrings
+          - docstrings.check
 
   - repo: https://github.com/saltstack/mirrors-nox
     rev: v2020.8.22
