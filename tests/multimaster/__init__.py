@@ -17,7 +17,6 @@ import salt.utils.platform
 from salt.utils.immutabletypes import freeze
 from salt.utils.verify import verify_env
 from tests.integration import (
-    SALT_LOG_PORT,
     TestDaemon,
     TestDaemonStartFailed,
     get_unused_localhost_port,
@@ -639,7 +638,7 @@ class MultimasterTestDaemon(TestDaemon):
 
             conf["log_forwarding_consumer"] = False
             conf["log_forwarding_host"] = "127.0.0.1"
-            conf["log_forwarding_port"] = SALT_LOG_PORT
+            conf["log_forwarding_port"] = RUNTIME_VARS.SALT_LOG_PORT
             conf["log_forwarding_level"] = "debug"
 
         master_opts["log_forwarding_prefix"] = "master({})".format(master_opts["id"])

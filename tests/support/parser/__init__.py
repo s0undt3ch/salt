@@ -20,23 +20,35 @@ import signal
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import traceback
 import warnings
 from collections import namedtuple
 from functools import partial
 
+import salt._logging
 import salt.utils.data
 import salt.utils.files
+import salt.utils.msgpack
 import salt.utils.path
 import salt.utils.platform
 import salt.utils.stringutils
 import salt.utils.yaml
 import tests.support.paths
+from salt.exceptions import LoggingRuntimeError
 from salt.ext import six
 from tests.support import processes
+from tests.support.runtests import RUNTIME_VARS
 from tests.support.unit import TestLoader, TextTestRunner
 from tests.support.xmlunit import HAS_XMLRUNNER, XMLTestRunner
+
+try:
+    import zmq
+
+    HAS_ZMQ = True
+except ImportError:
+    HAS_ZMQ = False
 
 try:
     from tests.support.ext import console
@@ -130,6 +142,63 @@ def print_header(
 
     if bottom and not inline:
         print(sep * width)
+
+
+def stop_log_forwarding_consumer():
+    log.info("Terminating the test suite log forwarding consumer")
+    context = zmq.Context()
+    sender = context.socket(zmq.PUSH)
+    sender.connect("tcp://127.0.0.1:{}".format(RUNTIME_VARS.SALT_LOG_PORT))
+    try:
+        sender.send(salt.utils.msgpack.dumps(None))
+    finally:
+        sender.close(5000)
+        context.term()
+
+
+def start_log_forwarding_consumer():
+    context = zmq.Context()
+    puller = context.socket(zmq.PULL)
+    bind_address = "tcp://127.0.0.1:{}".format(RUNTIME_VARS.SALT_LOG_PORT)
+    try:
+        puller.bind(bind_address)
+    except zmq.ZMQError as exc:
+        raise LoggingRuntimeError(
+            "Unable to bind to puller at: {}".format(bind_address)
+        )
+
+    try:
+
+        if salt.utils.msgpack.version >= (0, 5, 2):
+            msgpack_kwargs = {"raw": False}
+        else:
+            msgpack_kwargs = {"encoding": "utf-8"}
+
+        while True:
+            try:
+                msg = puller.recv()
+                record_dict = salt.utils.msgpack.loads(msg, **msgpack_kwargs)
+                if record_dict is None:
+                    # A sentinel to stop processing the queue
+                    log.info(
+                        "Stopping Salt's test suite logging process due to sentinel"
+                    )
+                    break
+                # Just handle everything, filtering will be done by the handlers
+                record = logging.makeLogRecord(record_dict)
+                logger = logging.getLogger(record.name)
+                logger.handle(record)
+            except (EOFError, KeyboardInterrupt, SystemExit) as exc:
+                break
+            except Exception as exc:  # pylint: disable=broad-except
+                log.warning(
+                    "An exception occurred in the salt logging " "process: %s",
+                    exc,
+                    exc_info_on_loglevel=logging.DEBUG,
+                )
+    finally:
+        puller.close(1)
+        context.term()
 
 
 class SaltTestingParser(optparse.OptionParser):
@@ -707,11 +776,18 @@ class SaltTestingParser(optparse.OptionParser):
             )  # future lint: disable=blacklisted-function
             consolehandler.setLevel(logging_level)
             logging.root.addHandler(consolehandler)
-            log.info("Runtests logging has been setup")
 
         os.environ["TESTS_MIN_LOG_LEVEL_NAME"] = logging.getLevelName(
             min(log_levels_to_evaluate)
         )
+        if HAS_ZMQ is False:
+            self.exit(1, "pyzmq needs to be installed")
+        # Setup the multiprocessing logging queue listener
+        salt._logging.set_log_forwarding_host("127.0.0.1")
+        salt._logging.set_log_forwarding_port(RUNTIME_VARS.SALT_LOG_PORT)
+        self.log_server_thread = threading.Thread(target=start_log_forwarding_consumer)
+        self.log_server_thread.start()
+        log.info("Runtests logging has been setup")
 
     def pre_execution_cleanup(self):
         """
@@ -948,6 +1024,11 @@ class SaltTestingParser(optparse.OptionParser):
                     "Second run at terminating test suite child processes: %s", children
                 )
                 processes.terminate_process(children=children, kill_children=True)
+        # Shutdown the log server
+        log.info("Stopping log forwarding consumer")
+        stop_log_forwarding_consumer()
+        log.info("Joining log server thread")
+        self.log_server_thread.join()
         exit_msg = "Test suite execution finalized with exit code: {}".format(exit_code)
         log.info(exit_msg)
         self.exit(status=exit_code, msg=exit_msg + "\n")

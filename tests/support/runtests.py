@@ -51,6 +51,7 @@ import shutil
 import salt.utils.path
 import salt.utils.platform
 import tests.support.paths as paths
+from saltfactories.utils.ports import get_unused_localhost_port
 
 try:
     import pwd
@@ -211,5 +212,6 @@ RUNTIME_VARS = RuntimeVars(
     PROD_FILES=paths.PROD_FILES,
     TESTS_DIR=paths.TESTS_DIR,
     PYTEST_SESSION="PYTEST_SESSION" in os.environ,
+    SALT_LOG_PORT=get_unused_localhost_port(),
 )
 # <---- Tests Runtime Variables --------------------------------------------------------------------------------------

@@ -110,75 +110,6 @@ def close_open_sockets(sockets_dict):
 atexit.register(close_open_sockets, _RUNTESTS_PORTS)
 
 
-SALT_LOG_PORT = get_unused_localhost_port()
-
-
-def stop_log_forwarding_consumer():
-    log.info("Terminating the test suite log forwarding consumer")
-    context = zmq.Context()
-    sender = context.socket(zmq.PUSH)
-    sender.connect("tcp://127.0.0.1:{}".format(SALT_LOG_PORT))
-    try:
-        sender.send(salt.utils.msgpack.dumps(None))
-    finally:
-        sender.close(5000)
-        context.term()
-
-
-def start_log_forwarding_consumer():
-    context = zmq.Context()
-    puller = context.socket(zmq.PULL)
-    bind_address = "tcp://127.0.0.1:{}".format(SALT_LOG_PORT)
-    try:
-        puller.bind(bind_address)
-    except zmq.ZMQError as exc:
-        raise LoggingRuntimeError(
-            "Unable to bind to puller at: {}".format(bind_address)
-        )
-
-    try:
-
-        if salt.utils.msgpack.version >= (0, 5, 2):
-            msgpack_kwargs = {"raw": False}
-        else:
-            msgpack_kwargs = {"encoding": "utf-8"}
-
-        while True:
-            try:
-                msg = puller.recv()
-                record_dict = salt.utils.msgpack.loads(msg, **msgpack_kwargs)
-                if record_dict is None:
-                    # A sentinel to stop processing the queue
-                    log.info(
-                        "Stopping Salt's test suite logging process due to sentinel"
-                    )
-                    break
-                # Just handle everything, filtering will be done by the handlers
-                record = logging.makeLogRecord(record_dict)
-                logger = logging.getLogger(record.name)
-                logger.handle(record)
-            except (EOFError, KeyboardInterrupt, SystemExit) as exc:
-                break
-            except OSError as exc:
-                try:
-                    if exc.errno == errno.WSAECONNRESET:
-                        # Connection reset on windows
-                        break
-                except AttributeError:
-                    # We're not on windows
-                    pass
-                log.exception(exc)
-            except Exception as exc:  # pylint: disable=broad-except
-                log.warning(
-                    "An exception occurred in the salt logging process: %s",
-                    exc,
-                    exc_info_on_loglevel=logging.DEBUG,
-                )
-    finally:
-        puller.close(1)
-        context.term()
-
-
 class TestDaemonStartFailed(Exception):
     """
     Simple exception to signal that a test daemon failed to start
@@ -206,10 +137,6 @@ class TestDaemon:
         """
         Start a master and minion
         """
-        # Setup the multiprocessing logging queue listener
-        salt._logging.set_log_forwarding_host("127.0.0.1")
-        salt._logging.set_log_forwarding_port(SALT_LOG_PORT)
-
         # Set up PATH to mockbin
         self._enter_mockbin()
 
@@ -274,8 +201,6 @@ class TestDaemon:
         """
         Fire up the daemons used for zeromq tests
         """
-        self.log_server_thread = threading.Thread(target=start_log_forwarding_consumer)
-        self.log_server_thread.start()
         try:
             sys.stdout.write(
                 " * {LIGHT_YELLOW}Starting salt-master ... {ENDC}".format(**self.colors)
@@ -1096,7 +1021,7 @@ class TestDaemon:
 
             conf["log_forwarding_consumer"] = False
             conf["log_forwarding_host"] = "127.0.0.1"
-            conf["log_forwarding_port"] = SALT_LOG_PORT
+            conf["log_forwarding_port"] = RUNTIME_VARS.SALT_LOG_PORT
             conf["log_forwarding_level"] = "debug"
 
         master_opts["log_forwarding_prefix"] = "master({})".format(master_opts["id"])
@@ -1298,11 +1223,6 @@ class TestDaemon:
             pass
         self._exit_mockbin()
         self._exit_ssh()
-        # Shutdown the log server
-        log.info("Stopping log forwarding consumer")
-        stop_log_forwarding_consumer()
-        log.info("Joining log server thread")
-        self.log_server_thread.join()
 
     def pre_setup_minions(self):
         """
