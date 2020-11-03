@@ -1717,6 +1717,7 @@ class Minion(MinionBase):
                 process._after_fork_methods.append(
                     (salt.utils.crypt.reinit_crypto, [], {})
                 )
+                process.register_after_fork_method(salt.utils.crypt.reinit_crypto)
         else:
             process = threading.Thread(
                 target=self._target,
