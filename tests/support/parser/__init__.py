@@ -8,7 +8,6 @@
     :copyright: Copyright 2013-2017 by the SaltStack Team, see AUTHORS for more details
     :license: Apache 2.0, see LICENSE for more details.
 """
-# pylint: disable=repr-flag-used-in-string
 
 import fnmatch
 import logging
@@ -34,8 +33,6 @@ import salt.utils.platform
 import salt.utils.stringutils
 import salt.utils.yaml
 import tests.support.paths
-
-# Import 3rd-party libs
 from salt.ext import six
 from tests.support import processes
 from tests.support.unit import TestLoader, TextTestRunner
@@ -660,7 +657,7 @@ class SaltTestingParser(optparse.OptionParser):
         # Setup tests logging
         formatter = logging.Formatter(
             "%(asctime)s,%(msecs)03.0f [%(name)-5s:%(lineno)-4d]"
-            "[%(levelname)-8s] %(message)s",
+            "[%(levelname)-8s][%(processName)s(%(process)s)] %(message)s",
             datefmt="%H:%M:%S",
         )
         if not hasattr(logging, "TRACE"):

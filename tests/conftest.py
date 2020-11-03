@@ -27,10 +27,10 @@ import _pytest.logging
 import _pytest.skipping
 import psutil
 import pytest
+import salt._logging
+import salt._logging.mixins
 import salt.config
 import salt.loader
-import salt.log.mixins
-import salt.log.setup
 import salt.utils.files
 import salt.utils.path
 import salt.utils.platform
@@ -82,7 +82,7 @@ collect_ignore = ["setup.py"]
 
 # Patch PyTest logging handlers
 class LogCaptureHandler(
-    salt.log.mixins.ExcInfoOnLogLevelFormatMixIn, _pytest.logging.LogCaptureHandler
+    salt._logging.mixins.ExcInfoOnLogLevelFormatMixin, _pytest.logging.LogCaptureHandler
 ):
     """
     Subclassing PyTest's LogCaptureHandler in order to add the
@@ -96,7 +96,7 @@ _pytest.logging.LogCaptureHandler = LogCaptureHandler
 
 
 class LiveLoggingStreamHandler(
-    salt.log.mixins.ExcInfoOnLogLevelFormatMixIn,
+    salt._logging.mixins.ExcInfoOnLogLevelFormatMixin,
     _pytest.logging._LiveLoggingStreamHandler,
 ):
     """

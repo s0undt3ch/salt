@@ -2,7 +2,6 @@
     :codeauthor: Nicole Thomas <nicole@saltstack.com>
 """
 
-
 import os
 import sys
 import tempfile
@@ -11,9 +10,9 @@ import salt.modules.cmdmod as cmdmod
 import salt.utils.files
 import salt.utils.platform
 import salt.utils.stringutils
+from salt._logging import LOG_LEVELS
 from salt.exceptions import CommandExecutionError
-from salt.ext.six.moves import builtins  # pylint: disable=import-error
-from salt.log import LOG_LEVELS
+from salt.ext.six.moves import builtins
 from tests.support.helpers import TstSuiteLoggingHandler
 from tests.support.mixins import LoaderModuleMockMixin
 from tests.support.mock import MagicMock, Mock, MockTimedProc, mock_open, patch

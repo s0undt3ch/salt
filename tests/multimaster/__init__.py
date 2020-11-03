@@ -2,8 +2,6 @@
 Set up the Salt multimaster test suite
 """
 
-# Import Python libs
-
 import copy
 import logging
 import os
@@ -19,8 +17,6 @@ import salt.utils.path
 import salt.utils.platform
 from salt.utils.immutabletypes import freeze
 from salt.utils.verify import verify_env
-
-# Import Salt libs
 from tests.integration import (
     SocketServerRequestHandler,
     TestDaemon,
@@ -29,8 +25,6 @@ from tests.integration import (
     get_unused_localhost_port,
 )
 from tests.support.parser import PNUM, print_header
-
-# Import salt tests support dirs
 from tests.support.paths import (
     ENGINES_DIR,
     FILES,
@@ -39,8 +33,6 @@ from tests.support.paths import (
     SCRIPT_DIR,
     TMP,
 )
-
-# Import salt tests support libs
 from tests.support.processes import SaltMaster, SaltMinion, start_daemon
 from tests.support.runtests import RUNTIME_VARS
 
@@ -180,11 +172,6 @@ class MultimasterTestDaemon(TestDaemon):
         """
         Fire up the daemons used for zeromq tests
         """
-        self.log_server = ThreadedSocketServer(
-            ("localhost", SALT_LOG_PORT), SocketServerRequestHandler
-        )
-        self.log_server_process = threading.Thread(target=self.log_server.serve_forever)
-        self.log_server_process.start()
         try:
             sys.stdout.write(
                 " * {LIGHT_YELLOW}Starting salt-master ... {ENDC}".format(**self.colors)

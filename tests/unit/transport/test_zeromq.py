@@ -10,10 +10,6 @@ import time
 from concurrent.futures.thread import ThreadPoolExecutor
 
 import salt.config
-import salt.exceptions
-import salt.ext.tornado.gen
-import salt.ext.tornado.ioloop
-import salt.log.setup
 import salt.transport.client
 import salt.transport.server
 import salt.utils.platform
@@ -518,10 +514,7 @@ class PubServerChannel(TestCase, AdaptedConfigurationTestCaseMixin):
         """
         opts = dict(self.master_config, ipc_mode="ipc", pub_hwm=0)
         server_channel = salt.transport.zeromq.ZeroMQPubServerChannel(opts)
-        server_channel.pre_fork(
-            self.process_manager,
-            kwargs={"log_port": salt.log.setup.get_multiprocessing_logging_port()},
-        )
+        server_channel.pre_fork(self.process_manager,)
         pub_uri = "tcp://{interface}:{publish_port}".format(**server_channel.opts)
         send_num = 10000
         expect = []
@@ -664,10 +657,7 @@ class PubServerChannel(TestCase, AdaptedConfigurationTestCaseMixin):
             acceptance_wait_time=5,
         )
         server_channel = salt.transport.zeromq.ZeroMQPubServerChannel(opts)
-        server_channel.pre_fork(
-            self.process_manager,
-            kwargs={"log_port": salt.log.setup.get_multiprocessing_logging_port()},
-        )
+        server_channel.pre_fork(self.process_manager,)
         pub_uri = "tcp://{interface}:{publish_port}".format(**server_channel.opts)
         send_num = 1
         expect = []
@@ -705,10 +695,7 @@ class PubServerChannel(TestCase, AdaptedConfigurationTestCaseMixin):
         """
         opts = dict(self.master_config, ipc_mode="tcp", pub_hwm=0)
         server_channel = salt.transport.zeromq.ZeroMQPubServerChannel(opts)
-        server_channel.pre_fork(
-            self.process_manager,
-            kwargs={"log_port": salt.log.setup.get_multiprocessing_logging_port()},
-        )
+        server_channel.pre_fork(self.process_manager,)
         pub_uri = "tcp://{interface}:{publish_port}".format(**server_channel.opts)
         send_num = 10000
         expect = []
@@ -758,10 +745,7 @@ class PubServerChannel(TestCase, AdaptedConfigurationTestCaseMixin):
         """
         opts = dict(self.master_config, ipc_mode="tcp", pub_hwm=0)
         server_channel = salt.transport.zeromq.ZeroMQPubServerChannel(opts)
-        server_channel.pre_fork(
-            self.process_manager,
-            kwargs={"log_port": salt.log.setup.get_multiprocessing_logging_port()},
-        )
+        server_channel.pre_fork(self.process_manager,)
         send_num = 10 * 4
         expect = []
         results = []

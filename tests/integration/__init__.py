@@ -36,8 +36,7 @@ import salt.utils.platform
 import salt.utils.process
 import salt.utils.stringutils
 import salt.utils.yaml
-import salt.version
-from salt.exceptions import SaltClientError
+from salt.exceptions import LoggingRuntimeError, SaltClientError
 from salt.ext import six
 from salt.utils.immutabletypes import freeze
 from salt.utils.verify import verify_env
