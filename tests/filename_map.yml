@@ -9,6 +9,9 @@ setup.py:
   - unit.setup.test_man
   - unit.setup.test_install
 
+salt/_logging/handlers\.py:
+  - unit.logging.test_deferred_stream_handler
+
 salt/log/setup.py:
   - integration.logging.test_jid_logging
   - integration.logging.test_zmq_logging

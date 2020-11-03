@@ -940,9 +940,11 @@ VALID_OPTS = immutabletypes.freeze(
         "disabled_requisites": (str, list),
         # Feature flag config
         "features": dict,
-        # Multiprocessing Logging
-        "mp_logging_port": int,
-        "mp_logging_consumer": bool,
+        # Log forwarding configs
+        "log_forwarding_port": int,
+        "log_forwarding_host": (str,),
+        "log_forwarding_prefix": (str,),
+        "log_forwarding_consumer": bool,
     }
 )
 
@@ -963,8 +965,6 @@ DEFAULT_MINION_OPTS = immutabletypes.freeze(
         "master_alive_interval": 0,
         "master_failback": False,
         "master_failback_interval": 0,
-        "mp_logging_port": 4311,
-        "mp_logging_consumer": True,
         "verify_master_pubkey_sign": False,
         "sign_pub_messages": False,
         "always_verify_signature": False,
@@ -1243,6 +1243,9 @@ DEFAULT_MINION_OPTS = immutabletypes.freeze(
         "schedule": {},
         "ssh_merge_pillar": True,
         "disabled_requisites": [],
+        "log_forwarding_port": 4311,
+        "log_forwarding_host": "127.0.0.1",
+        "log_forwarding_consumer": True,
     }
 )
 
@@ -1544,8 +1547,6 @@ DEFAULT_MASTER_OPTS = immutabletypes.freeze(
         "master_sign_pubkey": False,
         "master_pubkey_signature": "master_pubkey_signature",
         "master_use_pubkey_signature": False,
-        "mp_logging_port": 4321,
-        "mp_logging_consumer": True,
         "zmq_filtering": False,
         "zmq_monitor": False,
         "con_cache": False,
@@ -1580,6 +1581,9 @@ DEFAULT_MASTER_OPTS = immutabletypes.freeze(
         "minion_data_cache_events": True,
         "enable_ssh_minions": False,
         "netapi_allow_raw_shell": False,
+        "log_forwarding_port": 4321,
+        "log_forwarding_host": "127.0.0.1",
+        "log_forwarding_consumer": True,
     }
 )
 
@@ -1614,8 +1618,9 @@ DEFAULT_PROXY_MINION_OPTS = immutabletypes.freeze(
         "pki_dir": os.path.join(salt.syspaths.CONFIG_DIR, "pki", "proxy"),
         "cachedir": os.path.join(salt.syspaths.CACHE_DIR, "proxy"),
         "sock_dir": os.path.join(salt.syspaths.SOCK_DIR, "proxy"),
-        "mp_logging_port": 4331,
-        "mp_logging_consumer": True,
+        "log_forwarding_port": 4331,
+        "log_forwarding_host": "127.0.0.1",
+        "log_forwarding_consumer": True,
     }
 )
 

@@ -10,6 +10,7 @@
 """
 
 import base64
+import builtins
 import errno
 import fnmatch
 import functools
@@ -28,6 +29,7 @@ import threading
 import time
 import types
 from contextlib import contextmanager
+from io import StringIO
 
 import pytest
 import salt.ext.tornado.ioloop
@@ -38,7 +40,6 @@ import salt.utils.pycrypto
 import salt.utils.stringutils
 import salt.utils.versions
 from salt.ext import six
-from salt.ext.six.moves import builtins
 from saltfactories.exceptions import FactoryFailure as ProcessFailed
 from saltfactories.utils.ports import get_unused_localhost_port
 from saltfactories.utils.processes import ProcessResult
@@ -1771,3 +1772,48 @@ def get_virtualenv_binary_path():
         # We're not running inside a virtualenv
         virtualenv_binary = None
     return virtualenv_binary
+
+
+class CaptureOutput:
+    def __init__(self, capture_stdout=True, capture_stderr=True):
+        if capture_stdout:
+            self._stdout = StringIO()
+        else:
+            self._stdout = None
+        if capture_stderr:
+            self._stderr = StringIO()
+        else:
+            self._stderr = None
+        self._original_stdout = None
+        self._original_stderr = None
+
+    def __enter__(self):
+        if self._stdout:
+            self._original_stdout = sys.stdout
+            sys.stdout = self._stdout
+        if self._stderr:
+            self._original_stderr = sys.stderr
+            sys.stderr = self._stderr
+        return self
+
+    def __exit__(self, *args):
+        if self._stdout:
+            sys.stdout = self._original_stdout
+            self._original_stdout = None
+        if self._stderr:
+            sys.stderr = self._original_stderr
+            self._original_stderr = None
+
+    @property
+    def stdout(self):
+        if self._stdout is None:
+            return
+        self._stdout.seek(0)
+        return self._stdout.read()
+
+    @property
+    def stderr(self):
+        if self._stderr is None:
+            return
+        self._stderr.seek(0)
+        return self._stderr.read()
