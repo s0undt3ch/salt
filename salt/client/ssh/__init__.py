@@ -44,7 +44,7 @@ import salt.utils.thin
 import salt.utils.url
 import salt.utils.verify
 from salt.ext import six
-from salt.ext.six.moves import input  # pylint: disable=import-error,redefined-builtin
+from salt.ext.six.moves import input
 from salt.template import compile_template
 from salt.utils.platform import is_windows
 from salt.utils.process import Process
@@ -600,7 +600,11 @@ class SSH:
                     self.targets[host],
                     mine,
                 )
-                routine = Process(target=self.handle_routine, args=args)
+                routine = Process(
+                    target=self.handle_routine,
+                    args=args,
+                    log_port=self.opts["mp_logging_port"],
+                )
                 routine.start()
                 running[host] = {"thread": routine}
                 continue

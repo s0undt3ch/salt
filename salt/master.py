@@ -3,8 +3,6 @@ This module contains all of the routines needed to set up a master server, this
 involves preparing the three listeners and the workers needed by the master.
 """
 
-# Import python libs
-
 import collections
 import copy
 import ctypes
@@ -23,14 +21,12 @@ import salt.acl
 import salt.auth
 import salt.client
 import salt.client.ssh.client
-
-# Import salt libs
 import salt.crypt
 import salt.daemons.masterapi
 import salt.defaults.exitcodes
 import salt.engines
 import salt.exceptions
-import salt.ext.tornado.gen  # pylint: disable=F0401
+import salt.ext.tornado.gen
 import salt.key
 import salt.log.setup
 import salt.minion
@@ -62,8 +58,6 @@ import salt.utils.zeromq
 import salt.wheel
 from salt.config import DEFAULT_INTERVAL
 from salt.defaults import DEFAULT_TARGET_DELIM
-
-# pylint: disable=import-error,no-name-in-module,redefined-builtin
 from salt.ext import six
 from salt.ext.six.moves import range
 from salt.ext.tornado.stack_context import StackContext
@@ -78,9 +72,6 @@ from salt.utils.event import tagify
 from salt.utils.odict import OrderedDict
 from salt.utils.zeromq import ZMQ_VERSION_INFO, ZMQDefaultLoop, install_zmq, zmq
 
-# pylint: enable=import-error,no-name-in-module,redefined-builtin
-
-
 try:
     import resource
 
@@ -89,7 +80,6 @@ except ImportError:
     # resource is not available on windows
     HAS_RESOURCE = False
 
-# Import halite libs
 try:
     import halite  # pylint: disable=import-error
 
@@ -172,16 +162,14 @@ class Maintenance(salt.utils.process.SignalHandlingProcess):
     # process so that a register_after_fork() equivalent will work on Windows.
     def __setstate__(self, state):
         self.__init__(
-            state["opts"],
-            log_queue=state["log_queue"],
-            log_queue_level=state["log_queue_level"],
+            state["opts"], log_port=state["log_port"], log_level=state["log_level"]
         )
 
     def __getstate__(self):
         return {
             "opts": self.opts,
-            "log_queue": self.log_queue,
-            "log_queue_level": self.log_queue_level,
+            "log_port": self.log_port,
+            "log_level": self.log_level,
         }
 
     def _post_fork_init(self):
@@ -396,13 +384,13 @@ class FileserverUpdate(salt.utils.process.SignalHandlingProcess):
     # process so that a register_after_fork() equivalent will work on Windows.
     def __setstate__(self, state):
         self.__init__(
-            state["opts"], log_queue=state["log_queue"],
+            state["opts"], log_port=state["log_port"],
         )
 
     def __getstate__(self):
         return {
             "opts": self.opts,
-            "log_queue": self.log_queue,
+            "log_port": self.log_port,
         }
 
     def fill_buckets(self):
@@ -723,12 +711,11 @@ class Master(SMaster):
             self.process_manager = salt.utils.process.ProcessManager(wait_for_kill=5)
             pub_channels = []
             log.info("Creating master publisher process")
-            log_queue = salt.log.setup.get_multiprocessing_logging_queue()
+            log_port = salt.log.setup.get_multiprocessing_logging_port()
             for _, opts in iter_transport_opts(self.opts):
                 chan = salt.transport.server.PubServerChannel.factory(opts)
-                chan.pre_fork(self.process_manager, kwargs={"log_queue": log_queue})
+                chan.pre_fork(self.process_manager, kwargs={"log_port": log_port})
                 pub_channels.append(chan)
-
             log.info("Creating master event publisher process")
             self.process_manager.add_process(
                 salt.utils.event.EventPublisher, args=(self.opts,)
@@ -789,10 +776,8 @@ class Master(SMaster):
             log.info("Creating master request server process")
             kwargs = {}
             if salt.utils.platform.is_windows():
-                kwargs["log_queue"] = log_queue
-                kwargs[
-                    "log_queue_level"
-                ] = salt.log.setup.get_multiprocessing_logging_level()
+                kwargs["log_port"] = log_port
+                kwargs["log_level"] = salt.log.setup.get_multiprocessing_logging_level()
                 kwargs["secrets"] = SMaster.secrets
 
             self.process_manager.add_process(
@@ -863,16 +848,14 @@ class Halite(salt.utils.process.SignalHandlingProcess):
     # process so that a register_after_fork() equivalent will work on Windows.
     def __setstate__(self, state):
         self.__init__(
-            state["hopts"],
-            log_queue=state["log_queue"],
-            log_queue_level=state["log_queue_level"],
+            state["hopts"], log_port=state["log_port"], log_level=state["log_level"]
         )
 
     def __getstate__(self):
         return {
             "hopts": self.hopts,
-            "log_queue": self.log_queue,
-            "log_queue_level": self.log_queue_level,
+            "log_port": self.log_port,
+            "log_level": self.log_level,
         }
 
     def run(self):
@@ -916,8 +899,8 @@ class ReqServer(salt.utils.process.SignalHandlingProcess):
             state["key"],
             state["mkey"],
             secrets=state["secrets"],
-            log_queue=state["log_queue"],
-            log_queue_level=state["log_queue_level"],
+            log_port=state["log_port"],
+            log_level=state["log_level"],
         )
 
     def __getstate__(self):
@@ -926,8 +909,8 @@ class ReqServer(salt.utils.process.SignalHandlingProcess):
             "key": self.key,
             "mkey": self.master_key,
             "secrets": self.secrets,
-            "log_queue": self.log_queue,
-            "log_queue_level": self.log_queue_level,
+            "log_port": self.log_port,
+            "log_level": self.log_level,
         }
 
     def _handle_signals(self, signum, sigframe):  # pylint: disable=unused-argument
@@ -938,11 +921,12 @@ class ReqServer(salt.utils.process.SignalHandlingProcess):
         """
         Binds the reply server
         """
-        if self.log_queue is not None:
-            salt.log.setup.set_multiprocessing_logging_queue(self.log_queue)
-        if self.log_queue_level is not None:
-            salt.log.setup.set_multiprocessing_logging_level(self.log_queue_level)
-        salt.log.setup.setup_multiprocessing_logging(self.log_queue)
+        if self.log_port is not None:
+            salt.log.setup.set_multiprocessing_logging_port(self.log_port)
+        if self.log_level is not None:
+            salt.log.setup.set_multiprocessing_logging_level(self.log_level)
+        salt.log.setup.setup_multiprocessing_zmq_logging(self.log_port)
+
         if self.secrets is not None:
             SMaster.secrets = self.secrets
 
@@ -972,8 +956,8 @@ class ReqServer(salt.utils.process.SignalHandlingProcess):
 
         kwargs = {}
         if salt.utils.platform.is_windows():
-            kwargs["log_queue"] = self.log_queue
-            kwargs["log_queue_level"] = self.log_queue_level
+            kwargs["log_port"] = self.log_port
+            kwargs["log_level"] = self.log_level
             # Use one worker thread if only the TCP transport is set up on
             # Windows and we are using Python 2. There is load balancer
             # support on Windows for the TCP transport when using Python 3.
@@ -1059,9 +1043,7 @@ class MWorker(salt.utils.process.SignalHandlingProcess):
     # These methods are only used when pickling so will not be used on
     # non-Windows platforms.
     def __setstate__(self, state):
-        super().__init__(
-            log_queue=state["log_queue"], log_queue_level=state["log_queue_level"]
-        )
+        super().__init__(log_port=state["log_port"], log_level=state["log_level"])
         self.opts = state["opts"]
         self.req_channels = state["req_channels"]
         self.mkey = state["mkey"]
@@ -1077,8 +1059,8 @@ class MWorker(salt.utils.process.SignalHandlingProcess):
             "key": self.key,
             "k_mtime": self.k_mtime,
             "secrets": SMaster.secrets,
-            "log_queue": self.log_queue,
-            "log_queue_level": self.log_queue_level,
+            "log_port": self.log_port,
+            "log_level": self.log_level,
         }
 
     def _handle_signals(self, signum, sigframe):

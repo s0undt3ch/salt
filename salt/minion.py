@@ -27,11 +27,9 @@ import salt.crypt
 import salt.defaults.events
 import salt.defaults.exitcodes
 import salt.engines
-
-# pylint: enable=no-name-in-module,redefined-builtin
 import salt.ext.tornado
-import salt.ext.tornado.gen  # pylint: disable=F0401
-import salt.ext.tornado.ioloop  # pylint: disable=F0401
+import salt.ext.tornado.gen
+import salt.ext.tornado.ioloop
 import salt.loader
 import salt.log.setup
 import salt.payload
@@ -71,10 +69,7 @@ from salt.exceptions import (
     SaltReqTimeoutError,
     SaltSystemExit,
 )
-
-# pylint: disable=import-error,no-name-in-module,redefined-builtin
 from salt.ext import six
-from salt.ext.six.moves import range
 from salt.template import SLS_ENCODING
 from salt.utils.ctx import RequestContext
 from salt.utils.debug import enable_sigusr1_handler
@@ -106,7 +101,6 @@ try:
     HAS_WIN_FUNCTIONS = True
 except ImportError:
     HAS_WIN_FUNCTIONS = False
-# pylint: enable=import-error
 
 log = logging.getLogger(__name__)
 
@@ -1222,7 +1216,6 @@ class Minion(MinionBase):
         self.safe = safe
 
         self._running = None
-        self.win_proc = []
         self.subprocess_list = salt.utils.process.SubprocessList()
         self.loaded_base_name = loaded_base_name
         self.connected = False
@@ -1661,8 +1654,6 @@ class Minion(MinionBase):
         differently.
         """
         # Ensure payload is unicode. Disregard failure to decode binary blobs.
-        if six.PY2:
-            data = salt.utils.data.decode(data, keep=True)
         if "user" in data:
             log.info(
                 "User %s Executing command %s with jid %s",
