@@ -22,8 +22,8 @@ import time
 from datetime import datetime, timedelta
 
 import salt
+import salt._logging
 import salt.config
-import salt.log.setup as salt_log_setup
 import salt.master
 import salt.minion
 import salt.output
@@ -36,6 +36,7 @@ import salt.utils.platform
 import salt.utils.process
 import salt.utils.stringutils
 import salt.utils.yaml
+import zmq
 from salt.exceptions import LoggingRuntimeError, SaltClientError
 from salt.ext import six
 from salt.utils.immutabletypes import freeze
@@ -61,12 +62,6 @@ try:
     import pwd
 except ImportError:
     pass
-
-
-try:
-    import salt.ext.six.moves.socketserver as socketserver
-except ImportError:
-    import socketserver
 
 
 log = logging.getLogger(__name__)
@@ -118,39 +113,51 @@ atexit.register(close_open_sockets, _RUNTESTS_PORTS)
 SALT_LOG_PORT = get_unused_localhost_port()
 
 
-class ThreadingMixIn(socketserver.ThreadingMixIn):
-    daemon_threads = False
+def stop_log_forwarding_consumer():
+    log.info("Terminating the test suite log forwarding consumer")
+    context = zmq.Context()
+    sender = context.socket(zmq.PUSH)
+    sender.connect("tcp://127.0.0.1:{}".format(SALT_LOG_PORT))
+    try:
+        sender.send(salt.utils.msgpack.dumps(None))
+    finally:
+        sender.close(5000)
+        context.term()
 
 
-class ThreadedSocketServer(ThreadingMixIn, socketserver.TCPServer):
+def start_log_forwarding_consumer():
+    context = zmq.Context()
+    puller = context.socket(zmq.PULL)
+    bind_address = "tcp://127.0.0.1:{}".format(SALT_LOG_PORT)
+    try:
+        puller.bind(bind_address)
+    except zmq.ZMQError as exc:
+        raise LoggingRuntimeError(
+            "Unable to bind to puller at: {}".format(bind_address)
+        )
 
-    allow_reuse_address = True
+    try:
 
-    def server_activate(self):
-        self.shutting_down = threading.Event()
-        super().server_activate()
+        if salt.utils.msgpack.version >= (0, 5, 2):
+            msgpack_kwargs = {"raw": False}
+        else:
+            msgpack_kwargs = {"encoding": "utf-8"}
 
-    def server_close(self):
-        if hasattr(self, "shutting_down"):
-            self.shutting_down.set()
-        super().server_close()
-
-
-class SocketServerRequestHandler(socketserver.StreamRequestHandler):
-    def handle(self):
-        unpacker = salt.utils.msgpack.Unpacker(encoding="utf-8")
-        while not self.server.shutting_down.is_set():
+        while True:
             try:
-                wire_bytes = self.request.recv(1024)
-                if not wire_bytes:
+                msg = puller.recv()
+                record_dict = salt.utils.msgpack.loads(msg, **msgpack_kwargs)
+                if record_dict is None:
+                    # A sentinel to stop processing the queue
+                    log.info(
+                        "Stopping Salt's test suite logging process due to sentinel"
+                    )
                     break
-                unpacker.feed(wire_bytes)
-                for record_dict in unpacker:
-                    record = logging.makeLogRecord(record_dict)
-                    logger = logging.getLogger(record.name)
-                    logger.handle(record)
-                    del record_dict
-            except (EOFError, KeyboardInterrupt, SystemExit):
+                # Just handle everything, filtering will be done by the handlers
+                record = logging.makeLogRecord(record_dict)
+                logger = logging.getLogger(record.name)
+                logger.handle(record)
+            except (EOFError, KeyboardInterrupt, SystemExit) as exc:
                 break
             except OSError as exc:
                 try:
@@ -162,7 +169,14 @@ class SocketServerRequestHandler(socketserver.StreamRequestHandler):
                     pass
                 log.exception(exc)
             except Exception as exc:  # pylint: disable=broad-except
-                log.exception(exc)
+                log.warning(
+                    "An exception occurred in the salt logging process: %s",
+                    exc,
+                    exc_info_on_loglevel=logging.DEBUG,
+                )
+    finally:
+        puller.close(1)
+        context.term()
 
 
 class TestDaemonStartFailed(Exception):
@@ -193,11 +207,9 @@ class TestDaemon:
         Start a master and minion
         """
         # Setup the multiprocessing logging queue listener
-        tests_port = get_unused_localhost_port()
-        salt_log_setup.set_multiprocessing_logging_port(tests_port)
-        salt_log_setup.setup_multiprocessing_logging_zmq_listener(
-            self.master_opts, tests_port
-        )
+        salt._logging.set_log_forwarding_host("127.0.0.1")
+        salt._logging.set_log_forwarding_port(SALT_LOG_PORT)
+
         # Set up PATH to mockbin
         self._enter_mockbin()
 
@@ -262,11 +274,8 @@ class TestDaemon:
         """
         Fire up the daemons used for zeromq tests
         """
-        self.log_server = ThreadedSocketServer(
-            ("localhost", SALT_LOG_PORT), SocketServerRequestHandler
-        )
-        self.log_server_process = threading.Thread(target=self.log_server.serve_forever)
-        self.log_server_process.start()
+        self.log_server_thread = threading.Thread(target=start_log_forwarding_consumer)
+        self.log_server_thread.start()
         try:
             sys.stdout.write(
                 " * {LIGHT_YELLOW}Starting salt-master ... {ENDC}".format(**self.colors)
@@ -1085,16 +1094,21 @@ class TestDaemon:
 
             conf["engines_dirs"].insert(0, ENGINES_DIR)
 
-            if "log_handlers_dirs" not in conf:
-                conf["log_handlers_dirs"] = []
-            conf["log_handlers_dirs"].insert(0, LOG_HANDLERS_DIR)
-            conf["runtests_log_port"] = SALT_LOG_PORT
-            conf["mp_logging_port"] = get_unused_localhost_port()
-            conf["mp_logging_consumer"] = True
-            conf["runtests_log_level"] = (
-                os.environ.get("TESTS_MIN_LOG_LEVEL_NAME") or "debug"
-            )
+            conf["log_forwarding_consumer"] = False
+            conf["log_forwarding_host"] = "127.0.0.1"
+            conf["log_forwarding_port"] = SALT_LOG_PORT
+            conf["log_forwarding_level"] = "debug"
 
+        master_opts["log_forwarding_prefix"] = "master({})".format(master_opts["id"])
+        minion_opts["log_forwarding_prefix"] = "minion({})".format(minion_opts["id"])
+        sub_minion_opts["log_forwarding_prefix"] = "minion({})".format(
+            sub_minion_opts["id"]
+        )
+        syndic_opts["log_forwarding_prefix"] = "syndic({})".format(syndic_opts["id"])
+        syndic_master_opts["log_forwarding_prefix"] = "master({})".format(
+            syndic_master_opts["id"]
+        )
+        proxy_opts["log_forwarding_prefix"] = "proxy({})".format(proxy_opts["id"])
         # ----- Transcribe Configuration ---------------------------------------------------------------------------->
         for entry in os.listdir(RUNTIME_VARS.CONF_DIR):
             if entry in (
@@ -1284,13 +1298,11 @@ class TestDaemon:
             pass
         self._exit_mockbin()
         self._exit_ssh()
-        # Shutdown the multiprocessing logging queue listener
-        salt_log_setup.shutdown_multiprocessing_zmq_logging()
-        salt_log_setup.shutdown_multiprocessing_logging_zmq_listener(daemonizing=True)
         # Shutdown the log server
-        self.log_server.server_close()
-        self.log_server.shutdown()
-        self.log_server_process.join()
+        log.info("Stopping log forwarding consumer")
+        stop_log_forwarding_consumer()
+        log.info("Joining log server thread")
+        self.log_server_thread.join()
 
     def pre_setup_minions(self):
         """

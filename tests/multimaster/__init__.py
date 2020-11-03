@@ -12,16 +12,14 @@ import threading
 import time
 
 import salt.config
-import salt.log.setup as salt_log_setup
 import salt.utils.path
 import salt.utils.platform
 from salt.utils.immutabletypes import freeze
 from salt.utils.verify import verify_env
 from tests.integration import (
-    SocketServerRequestHandler,
+    SALT_LOG_PORT,
     TestDaemon,
     TestDaemonStartFailed,
-    ThreadedSocketServer,
     get_unused_localhost_port,
 )
 from tests.support.parser import PNUM, print_header
@@ -44,9 +42,6 @@ except ImportError:
 log = logging.getLogger(__name__)
 
 
-SALT_LOG_PORT = get_unused_localhost_port()
-
-
 class MultimasterTestDaemon(TestDaemon):
     """
     Set up the master and minion daemons, and run related cases
@@ -56,9 +51,6 @@ class MultimasterTestDaemon(TestDaemon):
         """
         Start a master and minion
         """
-        # Setup the multiprocessing logging queue listener
-        salt_log_setup.setup_multiprocessing_logging_listener(self.mm_master_opts)
-
         # Set up PATH to mockbin
         self._enter_mockbin()
 
@@ -160,13 +152,6 @@ class MultimasterTestDaemon(TestDaemon):
 
         self._exit_mockbin()
         self._exit_ssh()
-        # Shutdown the multiprocessing logging queue listener
-        salt_log_setup.shutdown_multiprocessing_logging()
-        salt_log_setup.shutdown_multiprocessing_logging_listener(daemonizing=True)
-        # Shutdown the log server
-        self.log_server.shutdown()
-        self.log_server.server_close()
-        self.log_server_process.join()
 
     def start_zeromq_daemons(self):
         """
@@ -652,13 +637,19 @@ class MultimasterTestDaemon(TestDaemon):
 
             conf["engines_dirs"].insert(0, ENGINES_DIR)
 
-            if "log_handlers_dirs" not in conf:
-                conf["log_handlers_dirs"] = []
-            conf["log_handlers_dirs"].insert(0, LOG_HANDLERS_DIR)
-            conf["runtests_log_port"] = SALT_LOG_PORT
-            conf["runtests_log_level"] = (
-                os.environ.get("TESTS_MIN_LOG_LEVEL_NAME") or "debug"
-            )
+            conf["log_forwarding_consumer"] = False
+            conf["log_forwarding_host"] = "127.0.0.1"
+            conf["log_forwarding_port"] = SALT_LOG_PORT
+            conf["log_forwarding_level"] = "debug"
+
+        master_opts["log_forwarding_prefix"] = "master({})".format(master_opts["id"])
+        minion_opts["log_forwarding_prefix"] = "minion({})".format(minion_opts["id"])
+        sub_master_opts["log_forwarding_prefix"] = "master({})".format(
+            sub_master_opts["id"]
+        )
+        sub_minion_opts["log_forwarding_prefix"] = "minion({})".format(
+            sub_minion_opts["id"]
+        )
 
         # ----- Transcribe Configuration ---------------------------------------------------------------------------->
         computed_config = copy.deepcopy(master_opts)
