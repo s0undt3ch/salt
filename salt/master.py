@@ -58,8 +58,6 @@ import salt.utils.zeromq
 import salt.wheel
 from salt.config import DEFAULT_INTERVAL
 from salt.defaults import DEFAULT_TARGET_DELIM
-from salt.ext import six
-from salt.ext.six.moves import range
 from salt.ext.tornado.stack_context import StackContext
 from salt.transport import iter_transport_opts
 from salt.utils.ctx import RequestContext
@@ -156,21 +154,6 @@ class Maintenance(salt.utils.process.SignalHandlingProcess):
         self.rotate = int(time.time())
         # A serializer for general maint operations
         self.serial = salt.payload.Serial(self.opts)
-
-    # __setstate__ and __getstate__ are only used on Windows.
-    # We do this so that __init__ will be invoked on Windows in the child
-    # process so that a register_after_fork() equivalent will work on Windows.
-    def __setstate__(self, state):
-        self.__init__(
-            state["opts"], log_port=state["log_port"], log_level=state["log_level"]
-        )
-
-    def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "log_port": self.log_port,
-            "log_level": self.log_level,
-        }
 
     def _post_fork_init(self):
         """
@@ -378,20 +361,6 @@ class FileserverUpdate(salt.utils.process.SignalHandlingProcess):
 
         self.fileserver = salt.fileserver.Fileserver(self.opts)
         self.fill_buckets()
-
-    # __setstate__ and __getstate__ are only used on Windows.
-    # We do this so that __init__ will be invoked on Windows in the child
-    # process so that a register_after_fork() equivalent will work on Windows.
-    def __setstate__(self, state):
-        self.__init__(
-            state["opts"], log_port=state["log_port"],
-        )
-
-    def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "log_port": self.log_port,
-        }
 
     def fill_buckets(self):
         """
@@ -843,21 +812,6 @@ class Halite(salt.utils.process.SignalHandlingProcess):
         super().__init__(**kwargs)
         self.hopts = hopts
 
-    # __setstate__ and __getstate__ are only used on Windows.
-    # We do this so that __init__ will be invoked on Windows in the child
-    # process so that a register_after_fork() equivalent will work on Windows.
-    def __setstate__(self, state):
-        self.__init__(
-            state["hopts"], log_port=state["log_port"], log_level=state["log_level"]
-        )
-
-    def __getstate__(self):
-        return {
-            "hopts": self.hopts,
-            "log_port": self.log_port,
-            "log_level": self.log_level,
-        }
-
     def run(self):
         """
         Fire up halite!
@@ -889,29 +843,6 @@ class ReqServer(salt.utils.process.SignalHandlingProcess):
         # Prepare the AES key
         self.key = key
         self.secrets = secrets
-
-    # __setstate__ and __getstate__ are only used on Windows.
-    # We do this so that __init__ will be invoked on Windows in the child
-    # process so that a register_after_fork() equivalent will work on Windows.
-    def __setstate__(self, state):
-        self.__init__(
-            state["opts"],
-            state["key"],
-            state["mkey"],
-            secrets=state["secrets"],
-            log_port=state["log_port"],
-            log_level=state["log_level"],
-        )
-
-    def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "key": self.key,
-            "mkey": self.master_key,
-            "secrets": self.secrets,
-            "log_port": self.log_port,
-            "log_level": self.log_level,
-        }
 
     def _handle_signals(self, signum, sigframe):  # pylint: disable=unused-argument
         self.destroy(signum)
@@ -958,15 +889,6 @@ class ReqServer(salt.utils.process.SignalHandlingProcess):
         if salt.utils.platform.is_windows():
             kwargs["log_port"] = self.log_port
             kwargs["log_level"] = self.log_level
-            # Use one worker thread if only the TCP transport is set up on
-            # Windows and we are using Python 2. There is load balancer
-            # support on Windows for the TCP transport when using Python 3.
-            if tcp_only and six.PY2 and int(self.opts["worker_threads"]) != 1:
-                log.warning(
-                    "TCP transport supports only 1 worker on Windows "
-                    "when using Python 2."
-                )
-                self.opts["worker_threads"] = 1
 
         if self.opts["req_server_niceness"] and not salt.utils.platform.is_windows():
             log.info(
@@ -1043,25 +965,14 @@ class MWorker(salt.utils.process.SignalHandlingProcess):
     # These methods are only used when pickling so will not be used on
     # non-Windows platforms.
     def __setstate__(self, state):
-        super().__init__(log_port=state["log_port"], log_level=state["log_level"])
-        self.opts = state["opts"]
-        self.req_channels = state["req_channels"]
-        self.mkey = state["mkey"]
-        self.key = state["key"]
+        super().__setstate__(state)
         self.k_mtime = state["k_mtime"]
         SMaster.secrets = state["secrets"]
 
     def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "req_channels": self.req_channels,
-            "mkey": self.mkey,
-            "key": self.key,
-            "k_mtime": self.k_mtime,
-            "secrets": SMaster.secrets,
-            "log_port": self.log_port,
-            "log_level": self.log_level,
-        }
+        state = super().__getstate__()
+        state.update({"k_mtime": self.k_mtime, "secrets": SMaster.secrets})
+        return state
 
     def _handle_signals(self, signum, sigframe):
         for channel in getattr(self, "req_channels", ()):

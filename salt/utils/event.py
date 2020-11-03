@@ -75,8 +75,6 @@ import salt.utils.platform
 import salt.utils.process
 import salt.utils.stringutils
 import salt.utils.zeromq
-from salt.ext import six
-from salt.ext.six.moves import range
 
 log = logging.getLogger(__name__)
 
@@ -747,7 +745,7 @@ class SaltEvent:
             dump_data,
             self.opts["max_event_size"],
             is_msgpacked=True,
-            use_bin_type=six.PY3,
+            use_bin_type=True,
         )
         log.debug("Sending event: tag = %s; data = %s", tag, data)
         event = b"".join(
@@ -1092,21 +1090,6 @@ class EventPublisher(salt.utils.process.SignalHandlingProcess):
         self.opts.update(opts)
         self._closing = False
 
-    # __setstate__ and __getstate__ are only used on Windows.
-    # We do this so that __init__ will be invoked on Windows in the child
-    # process so that a register_after_fork() equivalent will work on Windows.
-    def __setstate__(self, state):
-        self.__init__(
-            state["opts"], log_port=state["log_port"], log_level=state["log_level"]
-        )
-
-    def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "log_port": self.log_port,
-            "log_level": self.log_level,
-        }
-
     def run(self):
         """
         Bind the pub and pull sockets for events
@@ -1220,21 +1203,6 @@ class EventReturn(salt.utils.process.SignalHandlingProcess):
         self.minion = salt.minion.MasterMinion(local_minion_opts)
         self.event_queue = []
         self.stop = False
-
-    # __setstate__ and __getstate__ are only used on Windows.
-    # We do this so that __init__ will be invoked on Windows in the child
-    # process so that a register_after_fork() equivalent will work on Windows.
-    def __setstate__(self, state):
-        self.__init__(
-            state["opts"], log_port=state["log_port"], log_level=state["log_level"]
-        )
-
-    def __getstate__(self):
-        return {
-            "opts": self.opts,
-            "log_port": self.log_port,
-            "log_level": self.log_level,
-        }
 
     def _handle_signals(self, signum, sigframe):
         # Flush and terminate
