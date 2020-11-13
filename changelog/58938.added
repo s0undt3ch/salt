@@ -1,0 +1,24 @@
+Salt's versions report `salt --versions-report` now includes all installed salt extensions into its versions report.
+
+```
+Salt Version:
+           Salt: 3002.1
+
+Dependency Versions:
+           cffi: Not Installed
+       cherrypy: Not Installed
+       ..... etc .....
+        Tornado: 4.5.3
+            ZMQ: 4.3.2
+
+Salt Extensions:
+   salt-extension-example: 1.0
+
+System Versions:
+           dist: arch rolling n/a
+         locale: UTF-8
+        machine: x86_64
+        release: 5.9.4-arch1-1
+         system: Linux
+         version: Arch Linux rolling n/a
+```
