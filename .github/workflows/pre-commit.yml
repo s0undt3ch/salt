@@ -44,7 +44,7 @@ jobs:
       uses: pre-commit/action@v2.0.0
       if: github.event_name != 'pull_request'
       env:
-        SKIP: lint-salt,lint-tests,pyupgrade,remove-import-headers,rstcheck
+        SKIP: lint-salt,lint-tests,pyupgrade,remove-import-headers,rstcheck,loader-check-virtual,loader-check-module-docstrings
 
     - name: Check Changed Files On PR
       uses: pre-commit/action@v2.0.0

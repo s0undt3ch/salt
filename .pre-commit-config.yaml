@@ -1172,30 +1172,6 @@ repos:
     rev: v2020.8.22
     hooks:
       - id: nox
-        alias: lint-salt
-        name: Lint Salt
-        files: ^((setup|noxfile)|(salt|tasks)/.*)\.py$
-        args:
-          - -e
-          - lint-salt-pre-commit
-          - --
-
-  - repo: https://github.com/saltstack/mirrors-nox
-    rev: v2020.8.22
-    hooks:
-      - id: nox
-        alias: lint-tests
-        name: Lint Tests
-        files: ^tests/.*\.py$
-        args:
-          - -e
-          - lint-tests-pre-commit
-          - --
-
-  - repo: https://github.com/saltstack/mirrors-nox
-    rev: v2020.8.22
-    hooks:
-      - id: nox
         alias: check-docs
         name: Check Docs
         files: ^(salt/.*\.py|doc/ref/.*\.rst)$
@@ -1218,4 +1194,54 @@ repos:
           - invoke-pre-commit
           - --
           - filemap.check
+
+  - repo: https://github.com/saltstack/mirrors-nox
+    rev: v2020.8.22
+    hooks:
+      - id: nox
+        alias: loader-check-virtual
+        name: Check modules __virtual__
+        files: salt/.*\.py$
+        args:
+          - -e
+          - invoke-pre-commit
+          - --
+          - loader.check-virtual
+
+  - repo: https://github.com/saltstack/mirrors-nox
+    rev: v2020.8.22
+    hooks:
+      - id: nox
+        alias: loader-check-module-docstrings
+        name: Check salt/modules/*.py docstrings
+        files: salt/modules/.*\.py$
+        args:
+          - -e
+          - invoke-pre-commit
+          - --
+          - loader.check-module-docstrings
+
+  - repo: https://github.com/saltstack/mirrors-nox
+    rev: v2020.8.22
+    hooks:
+      - id: nox
+        alias: lint-salt
+        name: Lint Salt
+        files: ^((setup|noxfile)|(salt|tasks)/.*)\.py$
+        args:
+          - -e
+          - lint-salt-pre-commit
+          - --
+
+  - repo: https://github.com/saltstack/mirrors-nox
+    rev: v2020.8.22
+    hooks:
+      - id: nox
+        alias: lint-tests
+        name: Lint Tests
+        files: ^tests/.*\.py$
+        args:
+          - -e
+          - lint-tests-pre-commit
+          - --
   # <---- Pre-Commit -------------------------------------------------------------------------------------------------
