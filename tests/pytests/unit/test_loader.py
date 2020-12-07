@@ -93,3 +93,10 @@ def test_loaders_create_named_loader_contexts(loader_dir):
     module_name = func.func.__module__
     module = sys.modules[module_name]
     assert isinstance(module.__context__, salt.loader_context.NamedLoaderContext)
+
+
+def test_missing_loader_from_salt_internal_loaders():
+    with pytest.raises(RuntimeError):
+        salt.loader._module_dirs(
+            {"extension_modules": "/tmp/foo"}, "missingmodules", "module"
+        )
