@@ -9,6 +9,7 @@ Nox configuration script
 
 import datetime
 import glob
+import json
 import os
 import shutil
 import sys
@@ -88,6 +89,23 @@ def find_session_runner(session, name, **kwargs):
     )
 
 
+def session_run_always(session, *command, **kwargs):
+    try:
+        # Guess we weren't the only ones wanting this
+        # https://github.com/theacodes/nox/pull/331
+        return session.run_always(*command, **kwargs)
+    except AttributeError:
+        old_install_only_value = session._runner.global_config.install_only
+        try:
+            # Force install only to be false for the following chunk of code
+            # For additional information as to why see:
+            #   https://github.com/theacodes/nox/pull/181
+            session._runner.global_config.install_only = False
+            return session.run(*command, **kwargs)
+        finally:
+            session._runner.global_config.install_only = old_install_only_value
+
+
 def _create_ci_directories():
     for dirname in ("logs", "coverage", "xml-unittests-output"):
         path = os.path.join("artifacts", dirname)
@@ -99,25 +117,16 @@ def _get_session_python_version_info(session):
     try:
         version_info = session._runner._real_python_version_info
     except AttributeError:
-        old_install_only_value = session._runner.global_config.install_only
-        try:
-            # Force install only to be false for the following chunk of code
-            # For additional information as to why see:
-            #   https://github.com/theacodes/nox/pull/181
-            session._runner.global_config.install_only = False
-            session_py_version = session.run(
-                "python",
-                "-c"
-                'import sys; sys.stdout.write("{}.{}.{}".format(*sys.version_info))',
-                silent=True,
-                log=False,
-            )
-            version_info = tuple(
-                int(part) for part in session_py_version.split(".") if part.isdigit()
-            )
-            session._runner._real_python_version_info = version_info
-        finally:
-            session._runner.global_config.install_only = old_install_only_value
+        session_py_version = session_run_always(
+            session,
+            "python",
+            "-c" 'import sys; sys.stdout.write("{}.{}.{}".format(*sys.version_info))',
+            silent=True,
+            log=False,
+        )
+        version_info = tuple(
+            int(part) for part in session_py_version.split(".") if part.isdigit()
+        )
     return version_info
 
 
@@ -125,22 +134,14 @@ def _get_session_python_site_packages_dir(session):
     try:
         site_packages_dir = session._runner._site_packages_dir
     except AttributeError:
-        old_install_only_value = session._runner.global_config.install_only
-        try:
-            # Force install only to be false for the following chunk of code
-            # For additional information as to why see:
-            #   https://github.com/theacodes/nox/pull/181
-            session._runner.global_config.install_only = False
-            site_packages_dir = session.run(
-                "python",
-                "-c"
-                "import sys; from distutils.sysconfig import get_python_lib; sys.stdout.write(get_python_lib())",
-                silent=True,
-                log=False,
-            )
-            session._runner._site_packages_dir = site_packages_dir
-        finally:
-            session._runner.global_config.install_only = old_install_only_value
+        site_packages_dir = session_run_always(
+            session,
+            "python",
+            "-c"
+            "import sys; from distutils.sysconfig import get_python_lib; sys.stdout.write(get_python_lib())",
+            silent=True,
+            log=False,
+        )
     return site_packages_dir
 
 
@@ -296,11 +297,20 @@ def _install_requirements(session, transport, *extra_requirements):
         session.install(*install_command, silent=PIP_INSTALL_SILENT)
 
 
+def _get_coverage_context(session):
+    if IS_WINDOWS:
+        return "Windows"
+    if IS_DARWIN:
+        return "macOS"
+    if IS_FREEBSD:
+        return "FreeBSD"
+    distro_json_info = session_run_always(
+        session, "distro", "-j", silent=True, log=False,
+    )
+    return "Linux|{id}-{version}".format(**json.loads(distro_json_info))
+
+
 def _run_with_coverage(session, *test_cmd, env=None):
-    if SKIP_REQUIREMENTS_INSTALL is False:
-        session.install(
-            "--progress-bar=off", "coverage==5.2", silent=PIP_INSTALL_SILENT
-        )
     session.run("coverage", "erase")
     python_path_env_var = os.environ.get("PYTHONPATH") or None
     if python_path_env_var is None:
@@ -327,8 +337,19 @@ def _run_with_coverage(session, *test_cmd, env=None):
         }
     )
 
+    coverage_context = _get_coverage_context(session)
+    env["COVERAGE_DYNAMIC_CONTEXT"] = coverage_context
+    cmd = [
+        "python",
+        "-m",
+        "coverage",
+        "run",
+        "--debug=sql",
+        "--context={}".format(coverage_context),
+    ] + list(test_cmd)
+
     try:
-        session.run(*test_cmd, env=env)
+        session.run(*cmd, env=env)
     finally:
         # Always combine and generate the XML coverage report
         try:
@@ -367,77 +388,13 @@ def _runtests(session, coverage, cmd_args):
         # Don't nuke our multiprocessing efforts objc!
         # https://stackoverflow.com/questions/50168647/multiprocessing-causes-python-to-crash-and-gives-an-error-may-have-been-in-progr
         env["OBJC_DISABLE_INITIALIZE_FORK_SAFETY"] = "YES"
-    try:
-        if coverage is True:
-            _run_with_coverage(
-                session,
-                "coverage",
-                "run",
-                os.path.join("tests", "runtests.py"),
-                *cmd_args,
-                env=env
-            )
-        else:
-            cmd_args = ["python", os.path.join("tests", "runtests.py")] + list(cmd_args)
-            session.run(*cmd_args, env=env)
-    except CommandFailed:  # pylint: disable=try-except-raise
-        # Disabling re-running failed tests for the time being
-        raise
-
-        # pylint: disable=unreachable
-        names_file_path = os.path.join("artifacts", "failed-tests.txt")
-        session.log("Re-running failed tests if possible")
-        session.install(
-            "--progress-bar=off", "xunitparser==1.3.3", silent=PIP_INSTALL_SILENT
+    if coverage is True:
+        _run_with_coverage(
+            session, os.path.join("tests", "runtests.py"), *cmd_args, env=env
         )
-        session.run(
-            "python",
-            os.path.join(
-                "tests", "support", "generate-names-file-from-failed-test-reports.py"
-            ),
-            names_file_path,
-        )
-        if not os.path.exists(names_file_path):
-            session.log(
-                "Failed tests file(%s) was not found. Not rerunning failed tests.",
-                names_file_path,
-            )
-            # raise the original exception
-            raise
-        with open(names_file_path) as rfh:
-            contents = rfh.read().strip()
-            if not contents:
-                session.log(
-                    "The failed tests file(%s) is empty. Not rerunning failed tests.",
-                    names_file_path,
-                )
-                # raise the original exception
-                raise
-            failed_tests_count = len(contents.splitlines())
-            if failed_tests_count > 500:
-                # 500 test failures?! Something else must have gone wrong, don't even bother
-                session.error(
-                    "Total failed tests({}) > 500. No point on re-running the failed tests".format(
-                        failed_tests_count
-                    )
-                )
-
-        for idx, flag in enumerate(cmd_args[:]):
-            if "--names-file=" in flag:
-                cmd_args.pop(idx)
-                break
-            elif flag == "--names-file":
-                cmd_args.pop(idx)  # pop --names-file
-                cmd_args.pop(idx)  # pop the actual names file
-                break
-        cmd_args.append("--names-file={}".format(names_file_path))
-        if coverage is True:
-            _run_with_coverage(
-                session, "coverage", "run", "-m", "tests.runtests", *cmd_args
-            )
-        else:
-            session.run("python", os.path.join("tests", "runtests.py"), *cmd_args)
-        # pylint: enable=unreachable
+    else:
+        cmd_args = ["python", os.path.join("tests", "runtests.py")] + list(cmd_args)
+        session.run(*cmd_args, env=env)
 
 
 @nox.session(python=_PYTHON_VERSIONS, name="runtests-parametrized")
@@ -939,49 +896,10 @@ def _pytest(session, coverage, cmd_args):
             "python", "-m", "pytest", *(cmd_args + ["--collect-only", "-qqq"]), env=env
         )
 
-    try:
-        if coverage is True:
-            _run_with_coverage(
-                session,
-                "python",
-                "-m",
-                "coverage",
-                "run",
-                "-m",
-                "pytest",
-                "--showlocals",
-                *cmd_args,
-                env=env
-            )
-        else:
-            session.run("python", "-m", "pytest", *cmd_args, env=env)
-    except CommandFailed:  # pylint: disable=try-except-raise
-        # Not rerunning failed tests for now
-        raise
-
-        # pylint: disable=unreachable
-        # Re-run failed tests
-        session.log("Re-running failed tests")
-
-        for idx, parg in enumerate(cmd_args):
-            if parg.startswith("--junitxml="):
-                cmd_args[idx] = parg.replace(".xml", "-rerun-failed.xml")
-        cmd_args.append("--lf")
-        if coverage is True:
-            _run_with_coverage(
-                session,
-                "python",
-                "-m",
-                "coverage",
-                "run",
-                "-m",
-                "pytest",
-                "--showlocals",
-                *cmd_args
-            )
-        else:
-            session.run("python", "-m", "pytest", *cmd_args, env=env)
-        # pylint: enable=unreachable
+    if coverage is True:
+        _run_with_coverage(session, "-m", "pytest", "--showlocals", *cmd_args, env=env)
+    else:
+        session.run("python", "-m", "pytest", *cmd_args, env=env)
 
 
 class Tee:

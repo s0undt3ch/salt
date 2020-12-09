@@ -7,6 +7,9 @@ relative_files = True
 omit =
   setup.py
   .nox/*
+#context = salt
+#plugins =
+#  coveragectx.coverage.plugin
 
 [report]
 # Regexes for lines to exclude from consideration

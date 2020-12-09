@@ -22,6 +22,7 @@ cherrypy==17.4.1
 click==7.1.2              # via geomet
 colorama==0.4.1           # via pytest
 contextlib2==0.6.0.post1
+coverage==5.3             # via pytest-coverage-context
 cryptography==3.2
 distlib==0.3.0            # via virtualenv
 distro==1.5.0
@@ -78,6 +79,7 @@ pymssql==2.1.4 ; python_version < "3.8"
 pymysql==0.9.3
 pyopenssl==19.0.0
 pyparsing==2.4.5          # via packaging
+pytest-coverage-context==0.5.0
 pytest-helpers-namespace==2019.1.8
 pytest-salt-factories==0.98.2
 pytest-salt==2020.1.27
