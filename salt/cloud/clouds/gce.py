@@ -562,7 +562,8 @@ def __get_ssh_credentials(vm_):
 
 def create_network(kwargs=None, call=None):
     """
-    ... versionchanged:: 2017.7.0
+    .. versionchanged:: 2017.7.0
+
     Create a GCE network. Must specify name and cidr.
 
     CLI Example:
@@ -692,7 +693,8 @@ def show_network(kwargs=None, call=None):
 
 def create_subnetwork(kwargs=None, call=None):
     """
-    ... versionadded:: 2017.7.0
+    .. versionadded:: 2017.7.0
+
     Create a GCE Subnetwork. Must specify name, cidr, network, and region.
 
     CLI Example:
@@ -766,7 +768,8 @@ def create_subnetwork(kwargs=None, call=None):
 
 def delete_subnetwork(kwargs=None, call=None):
     """
-    ... versionadded:: 2017.7.0
+    .. versionadded:: 2017.7.0
+
     Delete a GCE Subnetwork. Must specify name and region.
 
     CLI Example:
@@ -825,7 +828,8 @@ def delete_subnetwork(kwargs=None, call=None):
 
 def show_subnetwork(kwargs=None, call=None):
     """
-    ... versionadded:: 2017.7.0
+    .. versionadded:: 2017.7.0
+
     Show details of an existing GCE Subnetwork. Must specify name and region.
 
     CLI Example:
