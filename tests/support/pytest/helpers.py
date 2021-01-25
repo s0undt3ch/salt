@@ -593,7 +593,7 @@ class FakeSaltExtension:
 
         [options.entry_points]
         salt.loader=
-          module_dirs = {1}.loader:get_module_dirs
+          module_dirs = {1}
           runner_dirs = {1}.loader:get_runner_dirs
         """.format(
                     self.name, self.pkgname
