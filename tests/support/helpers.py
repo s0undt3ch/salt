@@ -1680,7 +1680,8 @@ class VirtualEnv:
                 )
         return ret
 
-    def _get_real_python(self):
+    @staticmethod
+    def get_real_python():
         """
         The reason why the virtualenv creation is proxied by this function is mostly
         because under windows, we can't seem to properly create a virtualenv off of
@@ -1716,7 +1717,7 @@ class VirtualEnv:
     def _create_virtualenv(self):
         sminion = create_sminion()
         sminion.functions.virtualenv.create(
-            self.venv_dir, python=self._get_real_python()
+            self.venv_dir, python=self.get_real_python()
         )
         self.install("-U", "pip")
         # https://github.com/pypa/setuptools/issues?q=is%3Aissue+setuptools+50+

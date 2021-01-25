@@ -10,6 +10,7 @@ import pathlib
 import pprint
 import re
 import shutil
+import subprocess
 import tempfile
 import textwrap
 import types
@@ -21,6 +22,7 @@ import pytest
 import salt.utils.platform
 import salt.utils.pycrypto
 from saltfactories.utils import random_string
+from tests.support.helpers import VirtualEnv
 from tests.support.pytest.loader import LoaderModuleMock
 from tests.support.runtests import RUNTIME_VARS
 from tests.support.sminion import create_sminion
@@ -526,6 +528,182 @@ def shell_test_false():
     if salt.utils.platform.is_darwin() or salt.utils.platform.is_freebsd():
         return "/usr/bin/false"
     return "/bin/false"
+
+
+@attr.s(kw_only=True, frozen=True)
+class FakeSaltExtension:
+    tmp_path_factory = attr.ib(repr=False)
+    name = attr.ib()
+    pkgname = attr.ib(init=False)
+    srcdir = attr.ib(init=False)
+
+    @srcdir.default
+    def _srcdir(self):
+        return self.tmp_path_factory.mktemp("src", numbered=True)
+
+    @pkgname.default
+    def _pkgname(self):
+        replace_chars = ("-", " ")
+        name = self.name
+        for char in replace_chars:
+            name = name.replace(char, "_")
+        return name
+
+    def __attrs_post_init__(self):
+        self.srcdir.joinpath("setup.py").write_text(
+            textwrap.dedent(
+                """\
+        import setuptools
+
+        if __name__ == "__main__":
+            setuptools.setup()
+        """
+            )
+        )
+        self.srcdir.joinpath("setup.cfg").write_text(
+            textwrap.dedent(
+                """\
+        [metadata]
+        name = {0}
+        version = 1.0
+        description = Salt Extension Test
+        author = Pedro
+        author_email = pedro@algarvio.me
+        keywords = salt-extension
+        url = http://saltstack.com
+        license = Apache Software License 2.0
+        classifiers =
+            Programming Language :: Python
+            Programming Language :: Cython
+            Programming Language :: Python :: 3
+            Programming Language :: Python :: 3 :: Only
+            Development Status :: 4 - Beta
+            Intended Audience :: Developers
+            License :: OSI Approved :: Apache Software License
+        platforms = any
+
+        [options]
+        zip_safe = False
+        include_package_data = True
+        packages = find:
+        python_requires = >= 3.5
+        setup_requires =
+          wheel
+          setuptools>=50.3.2
+
+        [options.entry_points]
+        salt.loader=
+          module_dirs = {1}.loader:get_module_dirs
+          runner_dirs = {1}.loader:get_runner_dirs
+        """.format(
+                    self.name, self.pkgname
+                )
+            )
+        )
+
+        extension_package_dir = self.srcdir / self.pkgname
+        extension_package_dir.mkdir()
+        extension_package_dir.joinpath("__init__.py").write_text("")
+        extension_package_dir.joinpath("loader.py").write_text(
+            textwrap.dedent(
+                """\
+        import pathlib
+
+        PKG_ROOT = pathlib.Path(__file__).resolve().parent
+
+        def get_module_dirs():
+            return [str(PKG_ROOT / "modules")]
+
+        def get_runner_dirs():
+            return [str(PKG_ROOT / "runners1"), str(PKG_ROOT / "runners2")]
+        """
+            )
+        )
+
+        runners1_dir = extension_package_dir / "runners1"
+        runners1_dir.mkdir()
+        runners1_dir.joinpath("__init__.py").write_text("")
+        runners1_dir.joinpath("foobar1.py").write_text(
+            textwrap.dedent(
+                """\
+        __virtualname__ = "foobar"
+
+        def __virtual__():
+            return True
+
+        def echo1(string):
+            return string
+        """
+            )
+        )
+
+        runners2_dir = extension_package_dir / "runners2"
+        runners2_dir.mkdir()
+        runners2_dir.joinpath("__init__.py").write_text("")
+        runners2_dir.joinpath("foobar2.py").write_text(
+            textwrap.dedent(
+                """\
+        __virtualname__ = "foobar"
+
+        def __virtual__():
+            return True
+
+        def echo2(string):
+            return string
+        """
+            )
+        )
+
+        modules_dir = extension_package_dir / "modules"
+        modules_dir.mkdir()
+        modules_dir.joinpath("__init__.py").write_text("")
+        modules_dir.joinpath("foobar1.py").write_text(
+            textwrap.dedent(
+                """\
+        __virtualname__ = "foobar"
+
+        def __virtual__():
+            return True
+
+        def echo1(string):
+            return string
+        """
+            )
+        )
+        modules_dir.joinpath("foobar2.py").write_text(
+            textwrap.dedent(
+                """\
+        __virtualname__ = "foobar"
+
+        def __virtual__():
+            return True
+
+        def echo2(string):
+            return string
+        """
+            )
+        )
+
+    def __enter__(self):
+        subprocess.run(
+            [VirtualEnv.get_real_python(), "-m", "pip", "install", str(self.srcdir)],
+            check=True,
+            cwd=str(self.srcdir),
+        )
+        return self
+
+    def __exit__(self, *args):
+        subprocess.run(
+            [
+                VirtualEnv.get_real_python(),
+                "-m",
+                "pip",
+                "uninstall",
+                "-y",
+                self.pkgname,
+            ],
+            check=True,
+        )
 
 
 # Only allow star importing the functions defined in this module
