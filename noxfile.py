@@ -362,11 +362,6 @@ def _run_with_coverage(session, *test_cmd, env=None):
 def _runtests(session, coverage, cmd_args):
     # Create required artifacts directories
     _create_ci_directories()
-    env = {}
-    if IS_DARWIN:
-        # Don't nuke our multiprocessing efforts objc!
-        # https://stackoverflow.com/questions/50168647/multiprocessing-causes-python-to-crash-and-gives-an-error-may-have-been-in-progr
-        env["OBJC_DISABLE_INITIALIZE_FORK_SAFETY"] = "YES"
     try:
         if coverage is True:
             _run_with_coverage(
@@ -375,11 +370,10 @@ def _runtests(session, coverage, cmd_args):
                 "run",
                 os.path.join("tests", "runtests.py"),
                 *cmd_args,
-                env=env
             )
         else:
             cmd_args = ["python", os.path.join("tests", "runtests.py")] + list(cmd_args)
-            session.run(*cmd_args, env=env)
+            session.run(*cmd_args)
     except CommandFailed:  # pylint: disable=try-except-raise
         # Disabling re-running failed tests for the time being
         raise
@@ -926,10 +920,6 @@ def _pytest(session, coverage, cmd_args):
     )
 
     env = {"PYTEST_SESSION": "1", "CI_RUN": "1" if CI_RUN else "0"}
-    if IS_DARWIN:
-        # Don't nuke our multiprocessing efforts objc!
-        # https://stackoverflow.com/questions/50168647/multiprocessing-causes-python-to-crash-and-gives-an-error-may-have-been-in-progr
-        env["OBJC_DISABLE_INITIALIZE_FORK_SAFETY"] = "YES"
 
     if CI_RUN:
         # We'll print out the collected tests on CI runs.
@@ -951,7 +941,7 @@ def _pytest(session, coverage, cmd_args):
                 "pytest",
                 "--showlocals",
                 *cmd_args,
-                env=env
+                env=env,
             )
         else:
             session.run("python", "-m", "pytest", *cmd_args, env=env)
@@ -977,10 +967,10 @@ def _pytest(session, coverage, cmd_args):
                 "-m",
                 "pytest",
                 "--showlocals",
-                *cmd_args
+                *cmd_args,
             )
         else:
-            session.run("python", "-m", "pytest", *cmd_args, env=env)
+            session.run("python", "-m", "pytest", *cmd_args)
         # pylint: enable=unreachable
 
 
