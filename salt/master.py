@@ -735,7 +735,7 @@ class Master(SMaster):
 
             log.info("Creating master request server process")
             kwargs = {}
-            if salt.utils.platform.is_windows():
+            if salt.utils.platform.spawning_platform():
                 kwargs["log_queue"] = log_queue
                 kwargs[
                     "log_queue_level"
@@ -856,7 +856,7 @@ class ReqServer(salt.utils.process.SignalHandlingProcess):
                 tcp_only = False
 
         kwargs = {}
-        if salt.utils.platform.is_windows():
+        if salt.utils.platform.spawning_platform():
             kwargs["log_queue"] = self.log_queue
             kwargs["log_queue_level"] = self.log_queue_level
 

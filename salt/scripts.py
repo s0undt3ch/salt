@@ -108,9 +108,12 @@ def minion_process():
     """
     Start a minion process
     """
+    import salt.log.setup
     import salt.utils.platform
     import salt.utils.process
     import salt.cli.daemons
+
+    salt.log.setup.in_mainprocess.__pid__ = os.getpid()
 
     # salt_minion spawns this function in a new process
 

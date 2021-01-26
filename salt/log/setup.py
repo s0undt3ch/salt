@@ -62,8 +62,6 @@ __MP_LOGGING_QUEUE = None
 __MP_LOGGING_LEVEL = logging.GARBAGE
 __MP_LOGGING_QUEUE_PROCESS = None
 __MP_LOGGING_QUEUE_HANDLER = None
-__MP_IN_MAINPROCESS = multiprocessing.current_process().name == "MainProcess"
-__MP_MAINPROCESS_ID = None
 
 
 def is_console_configured():
@@ -481,6 +479,19 @@ def setup_extended_logging(opts):
     __EXTERNAL_LOGGERS_CONFIGURED = True
 
 
+def in_mainprocess():
+    mp_pid = None
+    try:
+        mp_pid = in_mainprocess.__pid__
+    except AttributeError:
+        if multiprocessing.current_process().name == "MainProcess":
+            mp_pid = in_mainprocess.__pid__ = os.getpid()
+
+    if mp_pid is None:
+        return False
+    return mp_pid == os.getpid()
+
+
 def get_multiprocessing_logging_queue():
     global __MP_LOGGING_QUEUE
     from salt.utils.platform import is_darwin, is_aix
@@ -488,7 +499,7 @@ def get_multiprocessing_logging_queue():
     if __MP_LOGGING_QUEUE is not None:
         return __MP_LOGGING_QUEUE
 
-    if __MP_IN_MAINPROCESS is False:
+    if in_mainprocess() is False:
         # We're not in the MainProcess, return! No Queue shall be instantiated
         return __MP_LOGGING_QUEUE
 
@@ -535,23 +546,18 @@ def set_multiprocessing_logging_level_by_opts(opts):
 def setup_multiprocessing_logging_listener(opts, queue=None):
     global __MP_LOGGING_QUEUE_PROCESS
     global __MP_LOGGING_LISTENER_CONFIGURED
-    global __MP_MAINPROCESS_ID
 
-    if __MP_IN_MAINPROCESS is False:
+    if in_mainprocess() is False:
         # We're not in the MainProcess, return! No logging listener setup shall happen
         return
 
     if __MP_LOGGING_LISTENER_CONFIGURED is True:
         return
 
-    if __MP_MAINPROCESS_ID is not None and __MP_MAINPROCESS_ID != os.getpid():
-        # We're not in the MainProcess, return! No logging listener setup shall happen
-        return
-
-    __MP_MAINPROCESS_ID = os.getpid()
     __MP_LOGGING_QUEUE_PROCESS = multiprocessing.Process(
         target=__process_multiprocessing_logging_queue,
         args=(opts, queue or get_multiprocessing_logging_queue(),),
+        name="MultiprocessingLoggingQueueProcess",
     )
     __MP_LOGGING_QUEUE_PROCESS.daemon = True
     __MP_LOGGING_QUEUE_PROCESS.start()
@@ -563,12 +569,12 @@ def setup_multiprocessing_logging(queue=None):
     This code should be called from within a running multiprocessing
     process instance.
     """
-    from salt.utils.platform import is_windows
+    from salt.utils.platform import spawning_platform
 
     global __MP_LOGGING_CONFIGURED
     global __MP_LOGGING_QUEUE_HANDLER
 
-    if __MP_IN_MAINPROCESS is True and not is_windows():
+    if in_mainprocess() is True and not spawning_platform():
         # We're in the MainProcess, return! No multiprocessing logging setup shall happen
         # Windows is the exception where we want to set up multiprocessing
         # logging in the MainProcess.
@@ -680,7 +686,7 @@ def shutdown_multiprocessing_logging_listener(daemonizing=False):
     global __MP_LOGGING_QUEUE_PROCESS
     global __MP_LOGGING_LISTENER_CONFIGURED
 
-    if daemonizing is False and __MP_IN_MAINPROCESS is True:
+    if daemonizing is False and in_mainprocess() is True:
         # We're in the MainProcess and we're not daemonizing, return!
         # No multiprocessing logging listener shutdown shall happen
         return
@@ -691,10 +697,6 @@ def shutdown_multiprocessing_logging_listener(daemonizing=False):
         shutdown_multiprocessing_logging()
 
     if __MP_LOGGING_QUEUE_PROCESS is None:
-        return
-
-    if __MP_MAINPROCESS_ID is not None and __MP_MAINPROCESS_ID != os.getpid():
-        # We're not in the MainProcess, return! No logging listener setup shall happen
         return
 
     if __MP_LOGGING_QUEUE_PROCESS.is_alive():
@@ -762,9 +764,9 @@ def __process_multiprocessing_logging_queue(opts, queue):
     if user:
         check_user(user)
 
-    from salt.utils.platform import is_windows
+    from salt.utils.platform import spawning_platform
 
-    if is_windows():
+    if spawning_platform():
         # On Windows, creating a new process doesn't fork (copy the parent
         # process image). Due to this, we need to setup all of our logging
         # inside this process.

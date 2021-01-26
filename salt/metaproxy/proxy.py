@@ -5,7 +5,6 @@
 import logging
 import os
 import signal
-import sys
 import threading
 import traceback
 import types
@@ -806,7 +805,7 @@ def handle_decoded_payload(self, data):
     instance = self
     multiprocessing_enabled = self.opts.get("multiprocessing", True)
     if multiprocessing_enabled:
-        if sys.platform.startswith("win"):
+        if salt.utils.platform.spawning_platform():
             # let python reconstruct the minion on the other side if we're
             # running on windows
             instance = None

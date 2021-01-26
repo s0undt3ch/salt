@@ -515,7 +515,7 @@ class ProcessManager:
         if kwargs is None:
             kwargs = {}
 
-        if salt.utils.platform.is_windows():
+        if salt.utils.platform.spawning_platform():
             # Need to ensure that 'log_queue' and 'log_queue_level' is
             # correctly transferred to processes that inherit from
             # 'Process'.
@@ -821,8 +821,8 @@ class Process(multiprocessing.Process, NewStyleClassMixIn):
         instance._after_fork_methods = []
         instance._finalize_methods = []
 
-        if salt.utils.platform.is_windows():
-            # On Windows, subclasses should call super if they define
+        if salt.utils.platform.spawning_platform():
+            # On spawning platforms, subclasses should call super if they define
             # __setstate__ and/or __getstate__
             instance._args_for_getstate = copy.copy(args)
             instance._kwargs_for_getstate = copy.copy(kwargs)

@@ -849,7 +849,7 @@ class LogLevelMixIn(metaclass=MixInMeta):
         self.config["log_rotate_backup_count"] = log_rotate_backup_count
 
     def setup_logfile_logger(self):
-        if salt.utils.platform.is_windows() and self._setup_mp_logging_listener_:
+        if salt.utils.platform.spawning_platform() and self._setup_mp_logging_listener_:
             # On Windows when using a logging listener, all log file logging
             # will go through the logging listener.
             return
@@ -873,7 +873,7 @@ class LogLevelMixIn(metaclass=MixInMeta):
             log.set_logger_level(name, level)
 
     def __setup_extended_logging(self):
-        if salt.utils.platform.is_windows() and self._setup_mp_logging_listener_:
+        if salt.utils.platform.spawning_platform() and self._setup_mp_logging_listener_:
             # On Windows when using a logging listener, all extended logging
             # will go through the logging listener.
             return
@@ -884,6 +884,7 @@ class LogLevelMixIn(metaclass=MixInMeta):
 
     def _setup_mp_logging_listener(self):
         if self._setup_mp_logging_listener_:
+            log.in_mainprocess.__pid__ = os.getpid()
             log.setup_multiprocessing_logging_listener(
                 self.config, self._get_mp_logging_listener_queue()
             )
@@ -897,7 +898,7 @@ class LogLevelMixIn(metaclass=MixInMeta):
             # logging client.
             log.set_multiprocessing_logging_level_by_opts(self.config)
 
-            if salt.utils.platform.is_windows():
+            if salt.utils.platform.spawning_platform():
                 # On Windows, all logging including console and
                 # log file logging will go through the multiprocessing
                 # logging listener if it exists.
@@ -935,7 +936,7 @@ class LogLevelMixIn(metaclass=MixInMeta):
         if getattr(self.options, "daemon", False) is True:
             return
 
-        if salt.utils.platform.is_windows() and self._setup_mp_logging_listener_:
+        if salt.utils.platform.spawning_platform() and self._setup_mp_logging_listener_:
             # On Windows when using a logging listener, all console logging
             # will go through the logging listener.
             return
