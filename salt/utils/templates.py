@@ -444,9 +444,11 @@ def render_jinja_tmpl(tmplstr, context, tmplpath=None):
         opt_jinja_env_helper(opt_jinja_env, "jinja_env")
 
     if opts.get("allow_undefined", False):
-        jinja_env = jinja2.Environment(**env_args)
+        jinja_env = jinja2.Environment(autoescape=True, **env_args)
     else:
-        jinja_env = jinja2.Environment(undefined=jinja2.StrictUndefined, **env_args)
+        jinja_env = jinja2.Environment(
+            undefined=jinja2.StrictUndefined, autoescape=True, **env_args
+        )
 
     tojson_filter = jinja_env.filters.get("tojson")
     indent_filter = jinja_env.filters.get("indent")
