@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Use LDAP data as a Pillar source
 
@@ -122,16 +121,11 @@ Result
     }
 """
 
-# Import python libs
-from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import os
 
-# Import third party libs
 import jinja2
-
-# Import salt libs
 import salt.utils.data
 from salt.exceptions import SaltInvocationError
 
@@ -161,7 +155,7 @@ def _render_template(config_file):
     Render config template, substituting grains where found.
     """
     dirname, filename = os.path.split(config_file)
-    env = jinja2.Environment(loader=jinja2.FileSystemLoader(dirname))
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader(dirname), autoescape=True)
     template = env.get_template(filename)
     return template.render(__grains__)
 
