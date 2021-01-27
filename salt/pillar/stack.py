@@ -424,6 +424,7 @@ def _process_stack_cfg(cfg, stack, minion_id, pillar):
     jenv = Environment(
         loader=FileSystemLoader(basedir),
         extensions=["jinja2.ext.do", salt.utils.jinja.SerializerExtension],
+        autoescape=True,
     )
     jenv.globals.update(
         {
