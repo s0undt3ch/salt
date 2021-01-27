@@ -12,7 +12,9 @@ log = logging.getLogger(__name__)
 
 # Renders jinja from a template file
 def render_jinja(_file, salt_data):
-    j_env = Environment(loader=FileSystemLoader(os.path.dirname(_file)))
+    j_env = Environment(
+        loader=FileSystemLoader(os.path.dirname(_file)), autoescape=True
+    )
     j_env.globals.update(
         {
             "__opts__": salt_data["__opts__"],
