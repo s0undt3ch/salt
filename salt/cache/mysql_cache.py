@@ -74,7 +74,7 @@ _RECONNECT_INTERVAL_SEC = 0.050
 log = logging.getLogger(__name__)
 client = None
 _mysql_kwargs = None
-_table_name = None
+_TABLE_NAME = None
 
 # Module properties
 
@@ -89,16 +89,21 @@ def __virtual__():
     return bool(MySQLdb), "No python mysql client installed." if MySQLdb is None else ""
 
 
-def run_query(conn, query, retries=3):
+def run_query(conn, query, retries=3, params=None):
     """
     Get a cursor and run a query. Reconnect up to `retries` times if
     needed.
     Returns: cursor, affected rows counter
     Raises: SaltCacheError, AttributeError, OperationalError
     """
+    if params is not None and not isinstance(params, (tuple, dict)):
+        raise ValueError(
+            "Only tuples and dictionaries can be passed for the 'params' "
+            "keyword argument, not {}".format(type(params))
+        )
     try:
         cur = conn.cursor()
-        out = cur.execute(query)
+        out = cur.execute(query, params=params)
         return cur, out
     except (AttributeError, OperationalError) as e:
         if retries == 0:
@@ -124,11 +129,15 @@ def _create_table():
     """
     # Explicitly check if the table already exists as the library logs a
     # warning on CREATE TABLE
-    query = """SELECT COUNT(TABLE_NAME) FROM information_schema.tables
-        WHERE table_schema = '{}' AND table_name = '{}'""".format(
-        _mysql_kwargs["db"], _table_name,
+    query = (
+        "SELECT COUNT(TABLE_NAME) FROM information_schema.tables "
+        "WHERE table_schema = %(table_schema)s AND table_name = %(table_name)s"
     )
-    cur, _ = run_query(client, query)
+    cur, _ = run_query(
+        client,
+        query,
+        params={"table_schema": _mysql_kwargs["db"], "table_name": _TABLE_NAME},
+    )
     r = cur.fetchone()
     cur.close()
     if r[0] == 1:
@@ -140,9 +149,9 @@ def _create_table():
       data MEDIUMBLOB,
       PRIMARY KEY(bank, etcd_key)
     );""".format(
-        _table_name
+        _TABLE_NAME
     )
-    log.info("mysql_cache: creating table %s", _table_name)
+    log.info("mysql_cache: creating table %s", _TABLE_NAME)
     cur, _ = run_query(client, query)
     cur.close()
 
@@ -153,7 +162,7 @@ def _init_client():
     if client is not None:
         return
 
-    global _mysql_kwargs, _table_name
+    global _mysql_kwargs, _TABLE_NAME
     _mysql_kwargs = {
         "host": __opts__.get("mysql.host", "127.0.0.1"),
         "user": __opts__.get("mysql.user", None),
@@ -164,14 +173,14 @@ def _init_client():
         "connect_timeout": __opts__.get("mysql.connect_timeout", None),
         "autocommit": True,
     }
-    _table_name = __opts__.get("mysql.table_name", _table_name)
+    _TABLE_NAME = __opts__.get("mysql.table_name", _TABLE_NAME)
     # TODO: handle SSL connection parameters
 
     for k, v in _mysql_kwargs.items():
         if v is None:
             _mysql_kwargs.pop(k)
     kwargs_copy = _mysql_kwargs.copy()
-    kwargs_copy["passwd"] = "<hidden>"
+    kwargs_copy["passwd"] = "<hidden>"  # nosec
     log.info("mysql_cache: Setting up client with params: %r", kwargs_copy)
     # The MySQL client is created later on by run_query
     _create_table()
@@ -183,12 +192,11 @@ def store(bank, key, data):
     """
     _init_client()
     data = __context__["serial"].dumps(data)
-    query = (
-        b"REPLACE INTO {} (bank, etcd_key, data) values('{}', '{}', "
-        b"'{}')".format(_table_name, bank, key, data)
+    query = "REPLACE INTO {} (bank, etcd_key, data) values(%s, %s, %s)".format(
+        _TABLE_NAME
     )
 
-    cur, cnt = run_query(client, query)
+    cur, cnt = run_query(client, query, params=(bank, key, data))
     cur.close()
     if cnt not in (1, 2):
         raise SaltCacheError("Error storing {} {} returned {}".format(bank, key, cnt))
@@ -199,10 +207,9 @@ def fetch(bank, key):
     Fetch a key value.
     """
     _init_client()
-    query = "SELECT data FROM {} WHERE bank='{}' AND etcd_key='{}'".format(
-        _table_name, bank, key
-    )
-    cur, _ = run_query(client, query)
+    query = "SELECT data FROM {}".format(_TABLE_NAME)  # nosec
+    query += " WHERE bank=%(bank)s AND etcd_key=%(etcd_key)s"
+    cur, _ = run_query(client, query, params={"bank": bank, "etcd_key": key})
     r = cur.fetchone()
     cur.close()
     if r is None:
@@ -215,11 +222,14 @@ def flush(bank, key=None):
     Remove the key from the cache bank with all the key content.
     """
     _init_client()
-    query = "DELETE FROM {} WHERE bank='{}'".format(_table_name, bank)
+    params = {"bank": bank}
+    query = "DELETE FROM {}".format(_TABLE_NAME)  # nosec
+    query += " WHERE bank=%(bank)s"
     if key is not None:
-        query += " AND etcd_key='{}'".format(key)
+        params["etcd_key"] = key
+        query += " AND etcd_key=%(etcd_key)s"
 
-    cur, _ = run_query(client, query)
+    cur, _ = run_query(client, query, params=params)
     cur.close()
 
 
@@ -229,8 +239,9 @@ def ls(bank):
     bank.
     """
     _init_client()
-    query = "SELECT etcd_key FROM {} WHERE bank='{}'".format(_table_name, bank)
-    cur, _ = run_query(client, query)
+    query = "SELECT etcd_key FROM {}".format(_TABLE_NAME)  # nosec
+    query += " WHERE bank=%(bank)s"
+    cur, _ = run_query(client, query, params={"bank": bank})
     out = [row[0] for row in cur.fetchall()]
     cur.close()
     return out
@@ -241,10 +252,9 @@ def contains(bank, key):
     Checks if the specified bank contains the specified key.
     """
     _init_client()
-    query = "SELECT COUNT(data) FROM {} WHERE bank='{}' " "AND etcd_key='{}'".format(
-        _table_name, bank, key
-    )
-    cur, _ = run_query(client, query)
+    query = "SELECT COUNT(data) FROM {}".format(_TABLE_NAME)  # nosec
+    query += " WHERE bank=%(bank)s AND etcd_key=%(etcd_key)s"
+    cur, _ = run_query(client, query, params={"bank": bank, "etcd_key": key})
     r = cur.fetchone()
     cur.close()
     return r[0] == 1
