@@ -1,9 +1,6 @@
 """
-    :codeauthor: Pedro Algarvio (pedro@algarvio.me)
-
-
-    tests.integration.states.pip_state
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tests.integration.states.pip_state
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 """
 
 import errno
