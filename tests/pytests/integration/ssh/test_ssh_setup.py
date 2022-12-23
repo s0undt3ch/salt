@@ -22,6 +22,7 @@ log = logging.getLogger(__name__)
 
 pytestmark = [
     pytest.mark.slow_test,
+    pytest.mark.skip_initial_gh_actions_failure,
     pytest.mark.skip_if_binaries_missing("dockerd"),
 ]
 

@@ -135,6 +135,7 @@ def test_exit_status_correct_usage(salt_cli, salt_minion):
 @pytest.mark.slow_test
 @pytest.mark.skip_on_windows(reason="Windows does not support SIGINT")
 @pytest.mark.skip_initial_onedir_failure
+@pytest.mark.skip_initial_gh_actions_failure
 def test_interrupt_on_long_running_job(salt_cli, salt_master, salt_minion):
     """
     Ensure that a call to ``salt`` that is taking too long, when a user
