@@ -84,11 +84,18 @@ def test_directory_max_depth(file, tmp_path):
     changed_mode = "0555"
 
     if salt.utils.platform.is_photonos():
-        initial_modes = {
-            0: {sub: "0750", subsub: "0110"},
-            1: {sub: "0110", subsub: "0110"},
-            2: {sub: "0110", subsub: "0110"},
-        }
+        if "RUNNER_NAME" in os.environ:
+            initial_modes = {
+                0: {sub: "0755", subsub: "0111"},
+                1: {sub: "0111", subsub: "0111"},
+                2: {sub: "0111", subsub: "0111"},
+            }
+        else:
+            initial_modes = {
+                0: {sub: "0750", subsub: "0110"},
+                1: {sub: "0110", subsub: "0110"},
+                2: {sub: "0110", subsub: "0110"},
+            }
     else:
         initial_modes = {
             0: {sub: "0755", subsub: "0111"},

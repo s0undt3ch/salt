@@ -1,6 +1,5 @@
 import logging
 import os
-import shutil
 
 import pytest
 
@@ -44,7 +43,6 @@ def subdir(tmp_path):
     subdir = tmp_path / "file-selinux-test-dir"
     subdir.mkdir()
     yield subdir
-    shutil.rmtree(str(subdir))
 
 
 @pytest.fixture
@@ -53,7 +51,6 @@ def tfile1(subdir):
     with salt.utils.files.fopen(filename, "w+"):
         pass
     yield filename
-    os.remove(filename)
 
 
 @pytest.fixture
@@ -62,7 +59,6 @@ def tfile2(subdir):
     with salt.utils.files.fopen(filename, "w+"):
         pass
     yield filename
-    os.remove(filename)
 
 
 @pytest.fixture
@@ -71,7 +67,6 @@ def tfile3(subdir):
     with salt.utils.files.fopen(filename, "w+"):
         pass
     yield filename
-    os.remove(filename)
 
 
 def test_selinux_getcontext(tfile1):
@@ -79,8 +74,13 @@ def test_selinux_getcontext(tfile1):
     Test get selinux context
     Assumes default selinux attributes on temporary files
     """
+    if "RUNNER_NAME" in os.environ:
+        # We're running off a golden image running the GH Actions runner
+        expected_result = "system_u:object_r:tmp_t:s0"
+    else:
+        expected_result = "system_u:object_r:user_tmp_t:s0"
     result = filemod.get_selinux_context(tfile1)
-    assert result == "unconfined_u:object_r:user_tmp_t:s0"
+    assert result == expected_result
 
 
 def test_selinux_setcontext(tfile2):
@@ -88,8 +88,13 @@ def test_selinux_setcontext(tfile2):
     Test set selinux context
     Assumes default selinux attributes on temporary files
     """
+    if "RUNNER_NAME" in os.environ:
+        # We're running off a golden image running the GH Actions runner
+        expected_result = "system_u:object_r:tmp_t:s0"
+    else:
+        expected_result = "system_u:object_r:user_tmp_t:s0"
     result = filemod.set_selinux_context(tfile2, user="system_u")
-    assert result == "system_u:object_r:user_tmp_t:s0"
+    assert result == expected_result
 
 
 def test_selinux_setcontext_persist(tfile2):
@@ -97,16 +102,29 @@ def test_selinux_setcontext_persist(tfile2):
     Test set selinux context with persist=True
     Assumes default selinux attributes on temporary files
     """
+    if "RUNNER_NAME" in os.environ:
+        # We're running off a golden image running the GH Actions runner
+        expected_result = "system_u:object_r:tmp_t:s0"
+    else:
+        expected_result = "system_u:object_r:user_tmp_t:s0"
     result = filemod.set_selinux_context(tfile2, user="system_u", persist=True)
-    assert result == "system_u:object_r:user_tmp_t:s0"
+    assert result == expected_result
 
 
 def test_file_check_perms(tfile3):
+    if "RUNNER_NAME" in os.environ:
+        # We're running off a golden image running the GH Actions runner
+        selinux_type = "tmp_t"
+    else:
+        selinux_type = "user_tmp_t"
     expected_result = (
         {
             "comment": "The file {} is set to be changed".format(tfile3),
             "changes": {
-                "selinux": {"New": "Type: lost_found_t", "Old": "Type: user_tmp_t"},
+                "selinux": {
+                    "New": "Type: lost_found_t",
+                    "Old": f"Type: {selinux_type}",
+                },
                 "mode": "0664",
             },
             "name": tfile3,
