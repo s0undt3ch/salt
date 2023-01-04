@@ -751,18 +751,18 @@ def set_lcm_config(
     cmd += "        LocalConfigurationManager {"
     if config_mode:
         if config_mode not in ("ApplyOnly", "ApplyAndMonitor", "ApplyAndAutoCorrect"):
-            error = (
+            raise SaltInvocationError(
                 "config_mode must be one of ApplyOnly, ApplyAndMonitor, "
                 "or ApplyAndAutoCorrect. Passed {}".format(config_mode)
             )
-            raise SaltInvocationError(error)
         cmd += '            ConfigurationMode = "{}";'.format(config_mode)
     if config_mode_freq:
         if not isinstance(config_mode_freq, int):
-            error = "config_mode_freq must be an integer. Passed {}".format(
-                config_mode_freq
+            raise SaltInvocationError(
+                "config_mode_freq must be an integer. Passed {}".format(
+                    config_mode_freq
+                )
             )
-            raise SaltInvocationError(error)
         cmd += "            ConfigurationModeFrequencyMins = {};".format(
             config_mode_freq
         )
@@ -831,7 +831,8 @@ def set_lcm_config(
     # Apply the config
     cmd = r'Set-DscLocalConfigurationManager -Path "{}\SaltConfig"' r"".format(temp_dir)
     ret = __salt__["cmd.run_all"](cmd, shell="powershell", python_shell=True)
-    __salt__["file.remove"](r"{}\SaltConfig".format(temp_dir))
+    if os.path.exists(temp_dir):
+        __salt__["file.remove"](r"{}\SaltConfig".format(temp_dir))
     if not ret["retcode"]:
         log.info("DSC: LCM config applied successfully")
         return True
