@@ -17,12 +17,15 @@ pytestmark = [
 def dsc(modules):
     # We seem to be hitting an issue where there is a consistency check in
     # progress during some of the tests. When this happens, the test fails
-    # This should disabled background refreshes
+    # This should disable background refreshes
     # https://github.com/saltstack/salt/issues/62714
     existing_config_mode = modules.dsc.get_lcm_config()["ConfigurationMode"]
     modules.dsc.set_lcm_config(config_mode="ApplyOnly")
-    yield modules.dsc
-    modules.dsc.set_lcm_config(config_mode=existing_config_mode)
+    try:
+        yield modules.dsc
+    finally:
+        # Always restore, even on failures
+        modules.dsc.set_lcm_config(config_mode=existing_config_mode)
 
 
 @pytest.fixture(scope="function")
