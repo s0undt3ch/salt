@@ -244,11 +244,16 @@ class BuildoutTestCase(Base):
             buildout._get_bootstrap_content(os.path.join(self.tdir, "var", "tb", "1")),
         )
 
-        if (
-            salt.utils.platform.is_windows()
-            and os.environ.get("GITHUB_ACTIONS_PIPELINE", "0") == "0"
-        ):
-            line_break = "\r\n"
+        if salt.utils.platform.is_windows():
+            if os.environ.get("RUNNER_NAME"):
+                # GH Actions runner running on VM
+                line_break = "\r\n"
+            elif os.environ.get("GITHUB_ACTIONS_PIPELINE", "0") == "0":
+                # WinRM from kitchen on Jenkins
+                line_break = "\r\n"
+            else:
+                # GH Actions ssh bastion VM
+                line_break = "\n"
         else:
             line_break = "\n"
         self.assertEqual(

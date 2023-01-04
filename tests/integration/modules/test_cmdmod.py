@@ -581,6 +581,8 @@ class CMDModuleTest(ModuleCase):
         except AssertionError as exc:
             if not salt.utils.platform.is_windows():
                 raise exc from None
+            if "\\\\" in user:
+                user = user.split("\\\\")[-1]
             if "\\" in user:
                 user = user.split("\\")[-1]
             self.assertEqual(user.lower(), cmd.lower())
