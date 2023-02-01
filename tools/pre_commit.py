@@ -56,6 +56,9 @@ def generate_workflows(ctx: Context):
         "Nightly": {
             "template": "nightly.yml",
         },
+        "Stage Release": {
+            "template": "staging.yml",
+        },
         "Scheduled": {
             "template": "scheduled.yml",
         },
