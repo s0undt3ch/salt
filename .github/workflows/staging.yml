@@ -261,6 +261,8 @@ jobs:
 
       - name: Build Documentation
         shell: bash
+        env:
+          AGENT_TOOLSDIRECTORY: "/opt/hostedtoolcache"
         run: |
           tools docs html --no-clean --archive salt-${{ needs.prepare-workflow.outputs.salt-version }}-docs.tar.xz
 
