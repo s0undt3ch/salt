@@ -191,6 +191,7 @@ jobs:
       - prepare-workflow
     with:
       changed-files: ${{ needs.prepare-workflow.outputs.changed-files }}
+      default-linux-runs-on: ${{ fromJSON(needs.prepare-workflow.outputs.runners)['default-linux-runs-on'] }}
 
   lint:
     name: Lint
@@ -199,12 +200,13 @@ jobs:
     needs:
       - prepare-workflow
     with:
+      default-linux-runs-on: ${{ fromJSON(needs.prepare-workflow.outputs.runners)['default-linux-runs-on'] }}
       changed-files: ${{ needs.prepare-workflow.outputs.changed-files }}
 
   prepare-release:
     name: Prepare Release
     if: ${{ fromJSON(needs.prepare-workflow.outputs.jobs)['prepare-release'] && fromJSON(needs.prepare-workflow.outputs.runners)['github-hosted'] }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(fromJSON(needs.prepare-workflow.outputs.runners)['default-linux-runs-on']) }}
     needs:
       - prepare-workflow
     steps:
@@ -304,7 +306,7 @@ jobs:
     needs:
       - prepare-workflow
       - prepare-release
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(fromJSON(needs.prepare-workflow.outputs.runners)['default-linux-runs-on']) }}
     steps:
       - uses: actions/checkout@v3
 

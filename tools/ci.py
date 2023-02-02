@@ -166,7 +166,11 @@ def runner_types(ctx: Context, event_name: str):
     time.sleep(1)
 
     ctx.info("Selecting which type of runners(self hosted runners or not) to run")
-    runners = {"github-hosted": False, "self-hosted": False}
+    runners = {
+        "github-hosted": False,
+        "self-hosted": False,
+        "default-linux-runs-on": json.dumps(["ubuntu-latest"]),
+    }
     if event_name == "pull_request":
         ctx.info("Running from a pull request event")
         pr_event_data = gh_event["pull_request"]
@@ -204,6 +208,10 @@ def runner_types(ctx: Context, event_name: str):
     # Not running on a fork, run everything
     ctx.info(f"The {event_name!r} event is from the main repository")
     runners["github-hosted"] = runners["self-hosted"] = True
+
+    # Use our self hosted runners to free up the github hosted runners for PR's
+    runners["default-linux-runs-on"] = json.dumps(["self-hosted", "linux", "x86_64"])
+
     ctx.info("Writing 'runners' to the github outputs file")
     with open(github_output, "a", encoding="utf-8") as wfh:
         wfh.write(f"runners={json.dumps(runners)}")

@@ -7,6 +7,10 @@ on:
         required: true
         type: string
         description: JSON string containing information about changed files
+      default-linux-runs-on:
+        required: true
+        type: string
+        description: JSON string containing the default runs-on runners defined in the prepare-workflow step
 
 env:
   PRE_COMMIT_VERSION: "2.21.0"
@@ -15,7 +19,7 @@ jobs:
   Pre-Commit:
     name: Run Pre-Commit Against Salt
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(inputs.default-linux-runs-on) }}
 
     container:
       image: python:3.10-slim-buster

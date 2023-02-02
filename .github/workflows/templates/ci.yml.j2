@@ -20,6 +20,7 @@ on:
       - prepare-workflow
     with:
       changed-files: ${{ needs.prepare-workflow.outputs.changed-files }}
+      default-linux-runs-on: ${{ fromJSON(needs.prepare-workflow.outputs.runners)['default-linux-runs-on'] }}
 
   <%- endif %>
 
@@ -35,6 +36,7 @@ on:
     needs:
       - prepare-workflow
     with:
+      default-linux-runs-on: ${{ fromJSON(needs.prepare-workflow.outputs.runners)['default-linux-runs-on'] }}
       changed-files: ${{ needs.prepare-workflow.outputs.changed-files }}
 
   <%- endif %>
@@ -46,7 +48,7 @@ on:
   <{ job_name }>:
     name: Prepare Release
     if: ${{ fromJSON(needs.prepare-workflow.outputs.jobs)['<{ job_name }>'] && fromJSON(needs.prepare-workflow.outputs.runners)['github-hosted'] }}
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(fromJSON(needs.prepare-workflow.outputs.runners)['default-linux-runs-on']) }}
     needs:
       - prepare-workflow
     steps:
@@ -152,7 +154,7 @@ on:
     needs:
       - prepare-workflow
       - prepare-release
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(fromJSON(needs.prepare-workflow.outputs.runners)['default-linux-runs-on']) }}
     steps:
       - uses: actions/checkout@v3
 
