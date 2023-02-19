@@ -1,5 +1,5 @@
 ---
-name: Test Artifact(macOS)
+name: Test Artifact(Linux)
 
 on:
   workflow_call:
@@ -52,10 +52,11 @@ env:
 
 jobs:
 
-  generate-matrix:
+  prepare-ci:
     name: Generate Test Matrix
     runs-on: ubuntu-latest
     outputs:
+      ami: ${{ steps.discover-ami.outputs.ami }}
       matrix-include: ${{ steps.generate-matrix.outputs.matrix }}
       transport-matrix-include: ${{ steps.generate-transport-matrix.outputs.matrix }}
     steps:
@@ -79,16 +80,23 @@ jobs:
           echo "$TRANSPORT_MATRIX"
           echo "matrix=$TRANSPORT_MATRIX" >> "$GITHUB_OUTPUT"
 
+      - name: Get Golden Image AMI
+        id: discover-ami
+        run: |
+          tools ci set-golden-image-ami-output ${{ inputs.distro-slug }}
+
   dependencies:
     name: Setup Test Dependencies
-    runs-on: ${{ inputs.distro-slug }}
+    runs-on:
+      - self-hosted
+      - ${{ needs.prepare-ci.outputs.ami }}
     timeout-minutes: 90
     needs:
-      - generate-matrix
+      - prepare-ci
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(needs.generate-matrix.outputs.transport-matrix-include) }}
+        include: ${{ fromJSON(needs.prepare-ci.outputs.transport-matrix-include) }}
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v3
@@ -98,7 +106,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: nox.${{ inputs.distro-slug }}.tar.*
-          key: ${{ inputs.cache-prefix }}|testrun-deps|${{ inputs.distro-slug }}|${{ inputs.nox-session }}|${{ matrix.transport }}|${{ hashFiles('requirements/**/*.txt') }}
+          key: ${{ inputs.cache-prefix }}|testrun-deps|${{ inputs.distro-slug }}|${{ needs.prepare-ci.outputs.ami }}|${{ inputs.nox-session }}|${{ matrix.transport }}|${{ hashFiles('requirements/**/*.txt') }}
 
       - name: Download Onedir Tarball as an Artifact
         if: steps.nox-dependencies-cache.outputs.cache-hit != 'true'
@@ -121,13 +129,7 @@ jobs:
         with:
           python-version: "${{ inputs.python-version }}"
 
-      - name: Install System Dependencies
-        if: steps.nox-dependencies-cache.outputs.cache-hit != 'true'
-        run: |
-          brew install openssl@3
-
       - name: Install Nox
-        if: steps.nox-dependencies-cache.outputs.cache-hit != 'true'
         run: |
           python3 -m pip install 'nox==${{ env.NOX_VERSION }}'
 
@@ -146,10 +148,6 @@ jobs:
           PRINT_TEST_SELECTION: "0"
           PRINT_SYSTEM_INFO: "0"
         run: |
-          export PYCURL_SSL_LIBRARY=openssl
-          export LDFLAGS="-L/usr/local/opt/openssl@3/lib"
-          export CPPFLAGS="-I/usr/local/opt/openssl@3/include"
-          export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig"
           nox --install-only -e ${{ env.NOX_SESSION }}
 
       - name: Cleanup .nox Directory
@@ -164,15 +162,17 @@ jobs:
 
   test:
     name: Test
-    runs-on: ${{ inputs.distro-slug }}
+    runs-on:
+      - self-hosted
+      - ${{ needs.prepare-ci.outputs.ami }}
     timeout-minutes: 360  # 6 Hours
     needs:
-      - generate-matrix
+      - prepare-ci
       - dependencies
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(needs.generate-matrix.outputs.matrix-include) }}
+        include: ${{ fromJSON(needs.prepare-ci.outputs.matrix-include) }}
 
     steps:
       - name: Checkout Source Code
@@ -195,15 +195,11 @@ jobs:
           cd artifacts
           tar xvf ${{ inputs.package-name }}-${{ inputs.salt-version }}-onedir-${{ inputs.platform }}-${{ inputs.arch }}.tar.xz
 
-      - name: Install System Dependencies
-        run: |
-          brew install tree
-
       - name: Download cached nox.${{ inputs.distro-slug }}.tar.* for session ${{ inputs.nox-session }}
         uses: actions/cache@v3
         with:
           path: nox.${{ inputs.distro-slug }}.tar.*
-          key: ${{ inputs.cache-prefix }}|testrun-deps|${{ inputs.distro-slug }}|${{ inputs.nox-session }}|${{ matrix.transport }}|${{ hashFiles('requirements/**/*.txt') }}
+          key: ${{ inputs.cache-prefix }}|testrun-deps|${{ inputs.distro-slug }}|${{ needs.prepare-ci.outputs.ami }}|${{ inputs.nox-session }}|${{ matrix.transport }}|${{ hashFiles('requirements/**/*.txt') }}
 
       - name: Set up Python ${{ inputs.python-version }}
         uses: actions/setup-python@v4
@@ -240,8 +236,9 @@ jobs:
           PRINT_SYSTEM_INFO: "1"
           GITHUB_ACTIONS_PIPELINE: "1"
           SKIP_INITIAL_GH_ACTIONS_FAILURES: "1"
+          SKIP_INITIAL_PHOTONOS_FAILURES: "1"
         run: |
-          sudo -E nox -e ${{ env.NOX_SESSION }} -- ${{ matrix.tests-chunk }} -- -k "mac or darwin"
+          sudo -E nox -e ${{ env.NOX_SESSION }} -- ${{ matrix.tests-chunk }}
 
       - name: Run Slow/Changed Tests
         id: run-slow-changed-tests
@@ -254,9 +251,10 @@ jobs:
           RERUN_FAILURES: "1"
           GITHUB_ACTIONS_PIPELINE: "1"
           SKIP_INITIAL_GH_ACTIONS_FAILURES: "1"
+          SKIP_INITIAL_PHOTONOS_FAILURES: "1"
         run: |
           sudo -E nox -e ${{ env.NOX_SESSION }} -- ${{ matrix.tests-chunk }} -- \
-            -k "mac or darwin" --suppress-no-test-exit-code --run-slow --from-filenames=testrun-changed-files.txt
+            --suppress-no-test-exit-code --run-slow --from-filenames=testrun-changed-files.txt
 
       - name: Run Fast Tests
         id: run-fast-tests
@@ -269,9 +267,9 @@ jobs:
           RERUN_FAILURES: "1"
           GITHUB_ACTIONS_PIPELINE: "1"
           SKIP_INITIAL_GH_ACTIONS_FAILURES: "1"
+          SKIP_INITIAL_PHOTONOS_FAILURES: "1"
         run: |
-          sudo -E nox -e ${{ env.NOX_SESSION }} -- ${{ matrix.tests-chunk }} -- \
-            -k "mac or darwin"
+          sudo -E nox -e ${{ env.NOX_SESSION }} -- ${{ matrix.tests-chunk }}
 
       - name: Run Full Tests
         id: run-full-tests
@@ -284,11 +282,13 @@ jobs:
           RERUN_FAILURES: "1"
           GITHUB_ACTIONS_PIPELINE: "1"
           SKIP_INITIAL_GH_ACTIONS_FAILURES: "1"
+          SKIP_INITIAL_PHOTONOS_FAILURES: "1"
         run: |
           sudo -E nox -e ${{ env.NOX_SESSION }} -- ${{ matrix.tests-chunk }} -- \
-            --run-slow -k "mac or darwin"
+            --run-slow
 
       - name: Fix file ownership
+        if: always()
         run: |
           sudo chown -R "$(id -un)" .
 
@@ -338,12 +338,12 @@ jobs:
     if: always() && needs.test.result != 'cancelled' && needs.test.result != 'skipped'
     runs-on: ubuntu-latest
     needs:
-      - generate-matrix
+      - prepare-ci
       - test
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(needs.generate-matrix.outputs.transport-matrix-include) }}
+        include: ${{ fromJSON(needs.prepare-ci.outputs.transport-matrix-include) }}
 
     steps:
       - name: Checkout Source Code
