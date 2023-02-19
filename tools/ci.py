@@ -531,6 +531,44 @@ def transport_matrix(ctx: Context, distro_slug: str):
 
 
 @ci.command(
+    name="set-golden-image-ami-output",
+    arguments={
+        "distro_slug": {
+            "help": "The distribution slug to generate the matrix for",
+        },
+    },
+)
+def set_golden_image_ami_output(ctx: Context, distro_slug: str):
+    """
+    Set `ami` on `GITHUB_OUTPUT` based on the passed golden image slug.
+    """
+    github_output = os.environ.get("GITHUB_OUTPUT")
+    if github_output is None:
+        ctx.warn("The 'GITHUB_OUTPUT' variable is not set.")
+        ctx.exit(1)
+
+    if TYPE_CHECKING:
+        assert github_output is not None
+    golden_images_json_file = tools.utils.REPO_ROOT / "cicd" / "golden-images.json"
+    with golden_images_json_file.open() as rfh:
+        golden_images = json.load(rfh)
+
+    if distro_slug not in golden_images:
+        ctx.error(
+            f"{distro_slug!r} was not found in '{golden_images_json_file.relative_to(tools.utils.REPO_ROOT)}'"
+        )
+        ctx.exit(1)
+
+    ami = golden_images[distro_slug]["ami"]
+    ctx.info(f"Discovered AMI for '{distro_slug}': {ami}")
+    ctx.info("Writing 'ami' to the github outputs file")
+    with open(github_output, "a", encoding="utf-8") as wfh:
+        wfh.write(f"ami={ami}\n")
+
+    ctx.exit(0)
+
+
+@ci.command(
     name="rerun-workflow",
 )
 def rerun_workflow(ctx: Context):
