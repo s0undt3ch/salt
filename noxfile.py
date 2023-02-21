@@ -1051,6 +1051,16 @@ def _ci_test(session, transport, onedir=False):
     env = {}
     if onedir:
         env["ONEDIR_TESTRUN"] = "1"
+    if IS_WINDOWS:
+        session.run(
+            "icacls",
+            str(REPO_ROOT),
+            "/inheritance:r",
+            "/grant:r",
+            '"*S-1-5-32-544":(OI)(CI)F',
+            "/grant:r",
+            '"*S-1-5-18":(OI)(CI)F',
+        )
     chunks = {
         "unit": [
             "tests/unit",
@@ -1157,7 +1167,6 @@ def ci_test_onedir(session):
                 ONEDIR_ARTIFACT_PATH.relative_to(REPO_ROOT)
             )
         )
-
     _ci_test(session, "zeromq", onedir=True)
 
 
