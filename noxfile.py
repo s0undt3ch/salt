@@ -1052,15 +1052,7 @@ def _ci_test(session, transport, onedir=False):
     if onedir:
         env["ONEDIR_TESTRUN"] = "1"
     if IS_WINDOWS:
-        session.run(
-            "icacls",
-            str(REPO_ROOT),
-            "/inheritance:r",
-            "/grant:r",
-            '"*S-1-5-32-544":(OI)(CI)F',
-            "/grant:r",
-            '"*S-1-5-18":(OI)(CI)F',
-        )
+        session.run("icacls", str(REPO_ROOT), "/T", "/reset")
     chunks = {
         "unit": [
             "tests/unit",
