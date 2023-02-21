@@ -1052,9 +1052,18 @@ def _ci_test(session, transport, onedir=False):
     if onedir:
         env["ONEDIR_TESTRUN"] = "1"
     if IS_WINDOWS:
-        session.run(
-            "icacls", str(REPO_ROOT), "/T", "/reset", external=True, silent=True
-        )
+        try:
+            session.run(
+                "icacls",
+                str(REPO_ROOT),
+                "/T",
+                "/reset",
+                external=True,
+                silent=True,
+                log=False,
+            )
+        except CommandFailed:
+            pass
         try:
             session.run(
                 "icacls",
@@ -1063,6 +1072,7 @@ def _ci_test(session, transport, onedir=False):
                 "/reset",
                 external=True,
                 silent=True,
+                log=False,
             )
         except CommandFailed:
             pass
