@@ -123,16 +123,6 @@ jobs:
           cd artifacts
           tar xvf ${{ inputs.package-name }}-${{ inputs.salt-version }}-onedir-${{ inputs.platform }}-${{ inputs.arch }}.tar.xz
 
-      - name: Set up Python ${{ inputs.python-version }}
-        if: steps.nox-dependencies-cache.outputs.cache-hit != 'true'
-        uses: actions/setup-python@v4
-        with:
-          python-version: "${{ inputs.python-version }}"
-
-      - name: Install Nox
-        run: |
-          python3 -m pip install 'nox==${{ env.NOX_VERSION }}'
-
       - name: Define Nox Session
         if: steps.nox-dependencies-cache.outputs.cache-hit != 'true'
         run: |
@@ -200,15 +190,6 @@ jobs:
         with:
           path: nox.${{ inputs.distro-slug }}.tar.*
           key: ${{ inputs.cache-prefix }}|testrun-deps|${{ inputs.distro-slug }}|${{ needs.prepare-ci.outputs.ami }}|${{ inputs.nox-session }}|${{ matrix.transport }}|${{ hashFiles('requirements/**/*.txt') }}
-
-      - name: Set up Python ${{ inputs.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: "${{ inputs.python-version }}"
-
-      - name: Install Nox
-        run: |
-          python3 -m pip install 'nox==${{ env.NOX_VERSION }}'
 
       - name: Decompress .nox Directory
         run: |

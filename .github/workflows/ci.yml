@@ -401,7 +401,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-windows.yml
     with:
       distro-slug: windows-2016
       nox-session: ci-test-onedir
@@ -417,7 +417,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-windows.yml
     with:
       distro-slug: windows-2019
       nox-session: ci-test-onedir
@@ -433,7 +433,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-windows.yml
     with:
       distro-slug: windows-2022
       nox-session: ci-test-onedir
@@ -465,7 +465,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: almalinux-8
       nox-session: ci-test-onedir
@@ -481,7 +481,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: almalinux-9
       nox-session: ci-test-onedir
@@ -497,7 +497,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: amazonlinux-2
       nox-session: ci-test-onedir
@@ -513,7 +513,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: archlinux-lts
       nox-session: ci-test-onedir
@@ -529,7 +529,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: centos-7
       nox-session: ci-test-onedir
@@ -545,7 +545,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: centosstream-8
       nox-session: ci-test-onedir
@@ -561,7 +561,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: centosstream-9
       nox-session: ci-test-onedir
@@ -577,7 +577,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: debian-10
       nox-session: ci-test-onedir
@@ -593,7 +593,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: debian-11
       nox-session: ci-test-onedir
@@ -609,7 +609,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: debian-11-arm64
       nox-session: ci-test-onedir
@@ -625,7 +625,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: fedora-36
       nox-session: ci-test-onedir
@@ -641,7 +641,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: fedora-37
       nox-session: ci-test-onedir
@@ -657,7 +657,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: fedora-38
       nox-session: ci-test-onedir
@@ -673,7 +673,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: opensuse-15
       nox-session: ci-test-onedir
@@ -689,7 +689,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: photonos-3
       nox-session: ci-test-onedir
@@ -705,7 +705,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: photonos-4
       nox-session: ci-test-onedir
@@ -721,7 +721,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: ubuntu-20.04
       nox-session: ci-test-onedir
@@ -737,7 +737,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: ubuntu-20.04-arm64
       nox-session: ci-test-onedir
@@ -753,7 +753,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: ubuntu-22.04
       nox-session: ci-test-onedir
@@ -769,7 +769,7 @@ jobs:
     needs:
       - prepare-workflow
       - build-salt-onedir
-    uses: ./.github/workflows/test-action-bastion.yml
+    uses: ./.github/workflows/test-action-linux.yml
     with:
       distro-slug: ubuntu-22.04-arm64
       nox-session: ci-test-onedir
