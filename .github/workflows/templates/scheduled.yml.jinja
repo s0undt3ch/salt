@@ -1,4 +1,4 @@
-<%- set prepare_workflow_if_check = "${{ needs.workflow-requirements.outputs.requirements-met }}" %>
+<%- set prepare_workflow_if_check = "${{ fromJSON(needs.workflow-requirements.outputs.requirements-met) }}" %>
 <%- extends 'ci.yml.jinja' %>
 
 <%- block on %>
@@ -28,7 +28,7 @@ concurrency:
     name: Check Workflow Requirements
     runs-on: ubuntu-latest
     outputs:
-      requirements-met: ${{ fromJSON(steps.check-requirements.outputs.requirements-met) }}
+      requirements-met: ${{ steps.check-requirements.outputs.requirements-met }}
     steps:
       - name: Check Requirements
         id: check-requirements
