@@ -3,7 +3,9 @@
 
 <%- block on %>
 on:
-  push: {}
+  push:
+    branches:
+      - master
   pull_request: {}
 <%- endblock on %>
 
