@@ -2,7 +2,7 @@
 # Instead, edit the template '.github/workflows/templates/staging.yml.jinja'
 ---
 name: Stage Release
-run-name: Stage Release (${{ github.ref_name }})
+run-name: "Stage Release (${{ github.event_name == 'pull_request' && format('PR: {0}', github.event.number) || format('Branch: {0}', github.ref_name) }})"
 
 on:
   workflow_dispatch:

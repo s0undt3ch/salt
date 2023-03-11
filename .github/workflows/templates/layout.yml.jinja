@@ -12,7 +12,7 @@
 <%- set prepare_actual_release = prepare_actual_release | default(False) %>
 ---
 name: <{ workflow_name }>
-run-name: <{ workflow_name }> (${{ github.ref_name }})
+run-name: "<{ workflow_name }> (${{ github.event_name == 'pull_request' && format('PR: {0}', github.event.number) || format('Branch: {0}', github.ref_name) }})"
 
 <%- block on %>
 
