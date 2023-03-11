@@ -2,6 +2,7 @@
 # Instead, edit the template '.github/workflows/templates/scheduled.yml.jinja'
 ---
 name: Scheduled
+run-name: Scheduled (${{ github.ref_name }})
 
 on:
   schedule:

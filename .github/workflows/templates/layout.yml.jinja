@@ -12,6 +12,7 @@
 <%- set prepare_actual_release = prepare_actual_release | default(False) %>
 ---
 name: <{ workflow_name }>
+run-name: <{ workflow_name }> (${{ github.ref_name }})
 
 <%- block on %>
 
