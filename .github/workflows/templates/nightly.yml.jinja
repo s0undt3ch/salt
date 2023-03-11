@@ -33,7 +33,7 @@ concurrency:
 
   <{ job_name }>:
   <%- do prepare_workflow_needs.append(job_name) %>
-    name: Check Workflow Requirements
+    name: Check Requirements (${{ github.ref_name }})
     runs-on: ubuntu-latest
     outputs:
       requirements-met: ${{ fromJSON(steps.check-requirements.outputs.requirements-met) }}

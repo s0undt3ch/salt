@@ -42,7 +42,7 @@ permissions:
 
   <{ job_name }>:
   <%- do prepare_workflow_needs.append(job_name) %>
-    name: Check Requirements
+    name: Check Requirements (${{ github.ref_name }})
     runs-on: ubuntu-latest
     environment: <{ gh_environment }>-check
     steps:

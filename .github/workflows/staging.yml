@@ -38,7 +38,7 @@ concurrency:
 jobs:
 
   check-requirements:
-    name: Check Requirements
+    name: Check Requirements (${{ github.ref_name }})
     runs-on: ubuntu-latest
     environment: staging-check
     steps:
@@ -59,7 +59,7 @@ jobs:
           fi
 
   prepare-workflow:
-    name: Prepare Workflow Run
+    name: Prepare Run (${{ github.ref_name }})
     runs-on: ubuntu-latest
     needs:
       - check-requirements

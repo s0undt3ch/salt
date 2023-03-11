@@ -26,7 +26,7 @@ concurrency:
 jobs:
 
   workflow-requirements:
-    name: Check Workflow Requirements
+    name: Check Requirements (${{ github.ref_name }})
     runs-on: ubuntu-latest
     outputs:
       requirements-met: ${{ fromJSON(steps.check-requirements.outputs.requirements-met) }}
@@ -60,7 +60,7 @@ jobs:
           gh workflow run nightly.yml --repo ${{ github.repository }} --ref 3006.x
 
   prepare-workflow:
-    name: Prepare Workflow Run
+    name: Prepare Run (${{ github.ref_name }})
     runs-on: ubuntu-latest
     if: ${{ needs.workflow-requirements.outputs.requirements-met }}
     needs:

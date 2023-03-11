@@ -26,7 +26,7 @@ concurrency:
 jobs:
 
   prepare-workflow:
-    name: Prepare Workflow Run
+    name: Prepare Run (${{ github.ref_name }})
     runs-on: ubuntu-latest
     outputs:
       jobs: ${{ steps.define-jobs.outputs.jobs }}

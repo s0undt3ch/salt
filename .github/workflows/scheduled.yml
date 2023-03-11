@@ -44,7 +44,7 @@ jobs:
           fi
 
   prepare-workflow:
-    name: Prepare Workflow Run
+    name: Prepare Run (${{ github.ref_name }})
     runs-on: ubuntu-latest
     if: ${{ needs.workflow-requirements.outputs.requirements-met }}
     needs:
