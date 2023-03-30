@@ -1,0 +1,65 @@
+# Do not edit these workflows directly as the changes made will be overwritten.
+# Instead, edit the template '.github/workflows/templates/nightly.yml.jinja'
+---
+
+name: macOS Test
+run-name: "macOS Test (branch: ${{ github.ref_name }})"
+
+on:
+  workflow_dispatch: {}
+
+env:
+  COLUMNS: 190
+  CACHE_SEED: SEED-0  # Bump the number to invalidate all caches
+  RELENV_DATA: "${{ github.workspace }}/.relenv"
+
+permissions:
+  contents: read  # for dorny/paths-filter to fetch a list of changed files
+  pull-requests: read  # for dorny/paths-filter to read pull requests
+  actions: write  # to trigger branch nightly builds
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.repository }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+
+  job-1:
+    name: Job 1
+    runs-on:
+      - self-hosted
+      - macos
+      - x86_64
+    steps:
+
+      - name: Cat File
+        run: |
+          cat ~/foo.txt || echo "File does not exist"
+
+      - name: Set File
+        run: |
+          echo FOO >> ~/foo.txt
+
+      - name: Cat File
+        run: |
+          cat ~/foo.txt || echo "File does not exist"
+
+  job-2:
+    name: Job 2
+    runs-on:
+      - self-hosted
+      - macos
+      - x86_64
+    steps:
+
+      - name: Cat File
+        run: |
+          cat ~/foo.txt || echo "File does not exist"
+
+      - name: Set File
+        run: |
+          echo FOO >> ~/foo.txt
+
+      - name: Cat File
+        run: |
+          cat ~/foo.txt || echo "File does not exist"
