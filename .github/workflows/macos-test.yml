@@ -28,7 +28,7 @@ jobs:
     name: Job 1
     runs-on:
       - self-hosted
-      - macos
+      - macos-12
       - x86_64
     steps:
 
@@ -48,7 +48,47 @@ jobs:
     name: Job 2
     runs-on:
       - self-hosted
-      - macos
+      - macos-12
+      - x86_64
+    steps:
+
+      - name: Cat File
+        run: |
+          cat ~/foo.txt || echo "File does not exist"
+
+      - name: Set File
+        run: |
+          echo FOO >> ~/foo.txt
+
+      - name: Cat File
+        run: |
+          cat ~/foo.txt || echo "File does not exist"
+
+  job-3:
+    name: Job 3
+    runs-on:
+      - self-hosted
+      - macos-12
+      - x86_64
+    steps:
+
+      - name: Cat File
+        run: |
+          cat ~/foo.txt || echo "File does not exist"
+
+      - name: Set File
+        run: |
+          echo FOO >> ~/foo.txt
+
+      - name: Cat File
+        run: |
+          cat ~/foo.txt || echo "File does not exist"
+
+  job-4:
+    name: Job 4
+    runs-on:
+      - self-hosted
+      - macos-12
       - x86_64
     steps:
 
