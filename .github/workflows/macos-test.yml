@@ -43,7 +43,7 @@ jobs:
       - name: Cat File
         run: |
           cat ~/foo.txt || echo "File does not exist"
-          dd if=/dev/urandom of=~/foo.txt count=20 bs=1m
+          dd if=/dev/urandom of=~/foo.txt count=1 bs=1m
 
       - name: Upload Cat File
         uses: actions/upload-artifact@v3
@@ -70,7 +70,7 @@ jobs:
       - name: Cat File
         run: |
           cat ~/foo.txt || echo "File does not exist"
-          dd if=/dev/urandom of=~/foo.txt count=20 bs=1m
+          dd if=/dev/urandom of=~/foo.txt count=1 bs=1m
 
       - name: Upload Cat File
         uses: actions/upload-artifact@v3
@@ -97,7 +97,7 @@ jobs:
       - name: Cat File
         run: |
           cat ~/foo.txt || echo "File does not exist"
-          dd if=/dev/urandom of=~/foo.txt count=20 bs=1m
+          dd if=/dev/urandom of=~/foo.txt count=1 bs=1m
 
       - name: Upload Cat File
         uses: actions/upload-artifact@v3
@@ -124,7 +124,7 @@ jobs:
       - name: Cat File
         run: |
           cat ~/foo.txt || echo "File does not exist"
-          dd if=/dev/urandom of=~/foo.txt count=20 bs=1m
+          dd if=/dev/urandom of=~/foo.txt count=1 bs=1m
 
       - name: Upload Cat File
         uses: actions/upload-artifact@v3
