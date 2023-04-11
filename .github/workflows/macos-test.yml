@@ -37,7 +37,7 @@ jobs:
           dd if=/dev/urandom of=~/foo.txt count=1 bs=1m
 
       - name: Upload Cat File
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: foo-1
           path: ~/foo.txt
@@ -47,7 +47,7 @@ jobs:
           dd if=/dev/urandom of=~/foo2.txt count=3 bs=1m
 
       - name: Upload Cat File
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: foo-2
           path: ~/foo2.txt
@@ -57,7 +57,7 @@ jobs:
           dd if=/dev/urandom of=~/foo3.txt count=6 bs=1m
 
       - name: Upload Cat File
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: foo-3
           path: ~/foo3.txt
@@ -67,7 +67,7 @@ jobs:
           dd if=/dev/urandom of=~/foo4.txt count=10 bs=1m
 
       - name: Upload Cat File
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: foo-4
           path: ~/foo4.txt
