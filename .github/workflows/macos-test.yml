@@ -34,15 +34,6 @@ jobs:
 
       - name: Cat File
         run: |
-          cat ~/foo.txt || echo "File does not exist"
-
-      - name: Set File
-        run: |
-          echo FOO >> ~/foo.txt
-
-      - name: Cat File
-        run: |
-          cat ~/foo.txt || echo "File does not exist"
           dd if=/dev/urandom of=~/foo.txt count=1 bs=1m
 
       - name: Upload Cat File
@@ -51,83 +42,32 @@ jobs:
           name: foo-1
           path: ~/foo.txt
 
-  job-2:
-    name: Job 2
-    runs-on:
-      - self-hosted
-      - macos-12
-      - x86_64
-    steps:
-
       - name: Cat File
         run: |
-          cat ~/foo.txt || echo "File does not exist"
-
-      - name: Set File
-        run: |
-          echo FOO >> ~/foo.txt
-
-      - name: Cat File
-        run: |
-          cat ~/foo.txt || echo "File does not exist"
-          dd if=/dev/urandom of=~/foo.txt count=1 bs=1m
+          dd if=/dev/urandom of=~/foo2.txt count=3 bs=1m
 
       - name: Upload Cat File
         uses: actions/upload-artifact@v3
         with:
           name: foo-2
-          path: ~/foo.txt
-
-  job-3:
-    name: Job 3
-    runs-on:
-      - self-hosted
-      - macos-12
-      - x86_64
-    steps:
+          path: ~/foo2.txt
 
       - name: Cat File
         run: |
-          cat ~/foo.txt || echo "File does not exist"
-
-      - name: Set File
-        run: |
-          echo FOO >> ~/foo.txt
-
-      - name: Cat File
-        run: |
-          cat ~/foo.txt || echo "File does not exist"
-          dd if=/dev/urandom of=~/foo.txt count=1 bs=1m
+          dd if=/dev/urandom of=~/foo3.txt count=6 bs=1m
 
       - name: Upload Cat File
         uses: actions/upload-artifact@v3
         with:
           name: foo-3
-          path: ~/foo.txt
-
-  job-4:
-    name: Job 4
-    runs-on:
-      - self-hosted
-      - macos-12
-      - x86_64
-    steps:
+          path: ~/foo3.txt
 
       - name: Cat File
         run: |
-          cat ~/foo.txt || echo "File does not exist"
-
-      - name: Set File
-        run: |
-          echo FOO >> ~/foo.txt
-
-      - name: Cat File
-        run: |
-          cat ~/foo.txt || echo "File does not exist"
-          dd if=/dev/urandom of=~/foo.txt count=1 bs=1m
+          dd if=/dev/urandom of=~/foo4.txt count=10 bs=1m
 
       - name: Upload Cat File
         uses: actions/upload-artifact@v3
         with:
           name: foo-4
-          path: ~/foo.txt
+          path: ~/foo4.txt
