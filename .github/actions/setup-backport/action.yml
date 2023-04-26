@@ -1,0 +1,32 @@
+---
+name: setup-backport
+description: Setup 'backport'
+
+inputs:
+  version:
+    type: string
+    decription: The version of the backport library to install
+    default: v8.9.4
+  cwd:
+    type: string
+    description: The directory the salt checkout is located in
+    default: "."
+
+
+runs:
+  using: composite
+
+  steps:
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        cache: npm
+        node-version: 16
+        cache-dependency-path: package-lock.json
+
+    - name: Install 'backport@${{ inputs.version }}'
+      shell: bash
+      working-directory: ${{ inputs.cwd }}
+      run: |
+        npm install backport@${{ inputs.version }}
