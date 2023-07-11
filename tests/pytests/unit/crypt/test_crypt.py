@@ -5,13 +5,17 @@ tests.pytests.unit.test_crypt
 Unit tests for salt's crypt module
 """
 
+import os
 import uuid
 
 import pytest
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
 
 import salt.crypt
 import salt.master
 import salt.utils.files
+from tests.support.mock import MagicMock, MockCall, mock_open, patch
 
 PRIV_KEY = """
 -----BEGIN RSA PRIVATE KEY-----
@@ -214,3 +218,123 @@ V\x80+b\xca\x06M\xb6\x12\xc6\xe8\xf2\xb5\xbb\xd8m\xc0\x97\x9a\xeb\xb9q\x19\xc3\
 \x07\xa5\xa1\x058\xc7\xce\xbeb\x92\xbf\x0bL\xec\xdf\xc3M\x83\xfb$\xec\xd5\xf9\
 """
     assert salt.crypt.pwdata_decrypt(key_string, pwdata) == "1234"
+
+
+@pytest.mark.slow_test
+def test_gen_keys():
+    open_priv_wb = MockCall("/keydir{}keyname.pem".format(os.sep), "wb+")
+    open_pub_wb = MockCall("/keydir{}keyname.pub".format(os.sep), "wb+")
+
+    with patch.multiple(
+        os,
+        umask=MagicMock(),
+        chmod=MagicMock(),
+        access=MagicMock(return_value=True),
+    ):
+        with patch("salt.utils.files.fopen", mock_open()) as m_open, patch(
+            "os.path.isfile", return_value=True
+        ):
+            result = salt.crypt.gen_keys("/keydir", "keyname", 2048)
+            assert result == "/keydir{}keyname.pem".format(os.sep), result
+            assert open_priv_wb not in m_open.calls
+            assert open_pub_wb not in m_open.calls
+
+        with patch("salt.utils.files.fopen", mock_open()) as m_open, patch(
+            "os.path.isfile", return_value=False
+        ):
+            salt.crypt.gen_keys("/keydir", "keyname", 2048)
+            assert open_priv_wb in m_open.calls
+            assert open_pub_wb in m_open.calls
+
+
+@pytest.mark.slow_test
+def test_gen_keys_with_passphrase():
+    key_path = os.path.join(os.sep, "keydir")
+    open_priv_wb = MockCall(os.path.join(key_path, "keyname.pem"), "wb+")
+    open_pub_wb = MockCall(os.path.join(key_path, "keyname.pub"), "wb+")
+
+    with patch("os.umask", MagicMock()), patch("os.chmod", MagicMock()), patch(
+        "os.chown", MagicMock(), create=True
+    ), patch("os.access", MagicMock(return_value=True)):
+        with patch("salt.utils.files.fopen", mock_open()) as m_open, patch(
+            "os.path.isfile", return_value=True
+        ):
+            assert salt.crypt.gen_keys(
+                key_path, "keyname", 2048, passphrase="password"
+            ) == os.path.join(key_path, "keyname.pem")
+            result = salt.crypt.gen_keys(
+                key_path, "keyname", 2048, passphrase="password"
+            )
+            assert result == os.path.join(key_path, "keyname.pem"), result
+            assert open_priv_wb not in m_open.calls
+            assert open_pub_wb not in m_open.calls
+
+        with patch("salt.utils.files.fopen", mock_open()) as m_open, patch(
+            "os.path.isfile", return_value=False
+        ):
+            salt.crypt.gen_keys(key_path, "keyname", 2048)
+            assert open_priv_wb in m_open.calls
+            assert open_pub_wb in m_open.calls
+
+
+def test_sign_message(key_data):
+    key = serialization.load_pem_private_key(
+        key_data.privkey_data, None, default_backend()
+    )
+    with patch("salt.crypt.get_rsa_key", return_value=key):
+        sig = salt.crypt.sign_message("/keydir/keyname.pem", key_data.msg)
+        assert sig == key_data.sig
+
+
+def test_sign_message_with_passphrase(key_data):
+    key = serialization.load_pem_private_key(
+        key_data.privkey_data, None, default_backend()
+    )
+    with patch("salt.crypt.get_rsa_key", return_value=key):
+        sig = salt.crypt.sign_message(
+            "/keydir/keyname.pem", key_data.msg, passphrase="password"
+        )
+        assert sig == key_data.sig
+
+
+def test_encrypt_decrypt_bin(key_data):
+    priv_key = serialization.load_pem_private_key(
+        key_data.privkey_data, None, default_backend()
+    )
+    pub_key = serialization.load_pem_public_key(key_data.pubkey_data)
+    encrypted = salt.crypt.private_encrypt(priv_key, b"salt")
+    decrypted = salt.crypt.public_decrypt(pub_key, encrypted)
+    assert b"salt" == decrypted
+
+
+@pytest.fixture
+def bad_key_path(tmp_path):
+    key_path = tmp_path / "cryptodom-3.4.6.pub"
+    key_path.write_bytes(
+        b"-----BEGIN RSA PUBLIC KEY-----\n"
+        b"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzLtFhsvfbFDFaUgulSEX\n"
+        b"Gl12XriL1DT78Ef2/u8HHaSMmPie37BLWas/zaHwI6066bIyYQJ/nUCahTaoHM7L\n"
+        b"GlWc0wOU6zyfpihCRQHil05Y6F+olFBoZuYbFPvtp7/hJx/D7I/0n2o/c7M5i3Y2\n"
+        b"3sBxAYNooIQHXHUmPQW6C9iu95ylZDW8JQzYy/EI4vCC8yQMdTK8jK1FQV0Sbwny\n"
+        b"qcMxSyAWDoFbnhh2P2TnO8HOWuUOaXR8ZHOJzVcDl+a6ew+medW090x3K5O1f80D\n"
+        b"+WjgnG6b2HG7VQpOCfM2GALD/FrxicPilvZ38X1aLhJuwjmVE4LAAv8DVNJXohaO\n"
+        b"WQIDAQAB\n"
+        b"-----END RSA PUBLIC KEY-----\n"
+    )
+    return key_path
+
+
+def test_m2_bad_key(bad_key_path):
+    """
+    Load public key with an invalid header using m2crypto and validate it
+    """
+    key = salt.crypt.get_rsa_pub_key(bad_key_path)
+    assert key.check_key() == 1
+
+
+def test_crypto_bad_key(bad_key_path):
+    """
+    Load public key with an invalid header and validate it without m2crypto
+    """
+    key = salt.crypt.get_rsa_pub_key(bad_key_path)
+    assert key.can_encrypt()

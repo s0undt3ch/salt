@@ -670,12 +670,11 @@ blacklisted-functions=posix.umask=salt.utils.files.set_umask or get_umask,
 
 [3RD-PARTY-IMPORTS]
 
-# Known 3rd-party modules which don' require being gated, separated by a comma
+# Known 3rd-party modules which don't require being gated, separated by a comma
 allowed-3rd-party-modules=msgpack,
                           tornado,
                           yaml,
                           jinja2,
-                          Crypto,
                           requests,
                           libcloud,
                           zmq,
@@ -688,16 +687,10 @@ allowed-3rd-party-modules=msgpack,
                           psutil,
                           pytestshellutils,
                           distro,
-                          os,
-                          re,
-                          shutil,
-                          copy,
-                          base64,
-                          tempfile,
-                          fnmatch,
                           ptscripts,
                           packaging,
-                          looseversion
+                          looseversion,
+                          cryptography
 
 [EXCEPTIONS]
 
