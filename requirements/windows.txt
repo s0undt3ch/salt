@@ -29,3 +29,4 @@ urllib3>=1.26.5
 wheel>=0.38.1
 
 importlib-metadata>=3.3.0
+pydantic>=2.4.0 # not directly required, pinned by Snyk to avoid a vulnerability
