@@ -12,3 +12,4 @@ flaky
 more-itertools
 pyfakefs
 trustme
+werkzeug>=2.3.8 # not directly required, pinned by Snyk to avoid a vulnerability
